@@ -1,0 +1,14 @@
+{
+  "name": "Talk-Talk---Twitter-Bootstrap-theme",
+  "version": "0.0.0",
+  "authors": [
+    "Olivier Philippon <olivier@rougemine.com>"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-less": "~0.9.0",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "license": "GPL v2",
+  "private": true
+}

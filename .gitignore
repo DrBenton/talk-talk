@@ -1,0 +1,22 @@
+# IDE files
+/.idea/
+*.iml
+
+# Misc general ignores
+*.bak
+
+# Misc PHP ignores
+composer.phar
+composer.lock
+/vendor/php
+
+# Misc Grunt/Gulp/Whatever & Bower ignores
+node_modules/
+/vendor/js
+
+# App specific
+/app/var/**/*
+
+# Plugins specific
+/plugins/*/assets/components/
+/plugins/*/node_modules/

@@ -1,0 +1,29 @@
+{
+  "name": "rougemine/talk-talk",
+  "license": "GPL v2",
+  "authors": [
+    {
+      "name": "Olivier Philippon",
+      "email": "olivier@rougemine.com",
+      "homepage": "http://rougemine.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "silex/silex": "~1.2",
+    "twig/twig": ">=1.8,<2.0-dev",
+    "symfony/twig-bridge": "~2.3",
+    "monolog/monolog": ">=1.0.0",
+    "symfony/yaml": "~2.3",
+    "querypath/QueryPath": ">=3.0.0"
+  },
+  "config": {
+    "vendor-dir": "vendor/php"
+  },
+  "autoload": {
+    "psr-4": {
+      "TalkTalk\\Core\\": "app/bootstrap/classes/TalkTalk/Core"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Talk Talk</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{ enable_html_hook('app_stylesheets') }}
+    {% set plugins_stylesheets = get_plugins_stylesheets() %}
+    {% for stylesheet in plugins_stylesheets %}
+        <link rel="stylesheet" href="{{ stylesheet }}">
+    {% endfor %}
+
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+{{ enable_html_hook('site_container') }}
+<div id="site-container">
+
+    {% block header %}
+        {% include '/core/common/header.twig' %}
+    {% endblock %}
+
+    {#% include '/common/notifications-display' %#}
+
+    {{ enable_html_hook('main_content_container') }}
+    <div id="main-content-container" class="clearfix">
+        {% block content %}
+            !
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+        {% include '/core/common/footer.twig' %}
+    {% endblock %}
+
+    <div id="debug-info-container"></div>
+
+</div>{# end #site-container #}
+
+{# JavaScript, it's up to you now! #}
+{{ enable_html_hook('app_javascripts') }}
+{% set plugins_javascripts = get_plugins_javascripts() %}
+{% for javascript in plugins_javascripts %}
+    <script src="{{ javascript }}"></script>
+{% endfor %}
+
+</body>
+</html>

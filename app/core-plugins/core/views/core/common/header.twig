@@ -1,0 +1,25 @@
+{{ enable_html_hook('header') }}
+<header>
+    <h1><a href="{{ path('core/home') }}" class="ajax-link">Talk-Talk</a></h1>
+
+    <nav>
+        <ul>
+            <li class="sign-up {#{ isAuthenticated ? 'hidden' : '' }#}">
+                <a href="{#{ path('core/auth/sign-up') }#}" class="ajax-link">Sign up</a>
+            </li>
+            <li class="sign-in {#{ isAuthenticated ? 'hidden' : '' }#}">
+                <a href="{#{ path('core/auth/sign-in') }#}" class="ajax-link">Sign in</a>
+            </li>
+            <li class="sign-out {#{ isAuthenticated ? '' : 'hidden' }#}">
+                <a href="signout" class="ajax-link">Sign out</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="logged-user-container">
+        {#% if isAuthenticated %}
+            {% include 'common/user-display' with {'user': user} %}
+        {% endif %#}
+    </div>
+
+</header>
