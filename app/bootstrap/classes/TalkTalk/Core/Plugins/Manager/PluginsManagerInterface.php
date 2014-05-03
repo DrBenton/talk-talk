@@ -8,9 +8,12 @@ use TalkTalk\Core\Plugins\PluginData;
 
 interface PluginsManagerInterface
 {
-    public function setApplication (Application $app);
+    public function setApplication(Application $app);
+
     public function addBehaviour(BehaviourInterface $behaviour);
+
     public function addPlugin(PluginData $plugin);
+
     /**
      * @return \Silex\Application
      */
@@ -20,6 +23,8 @@ interface PluginsManagerInterface
      * @return array
      */
     public function getPlugins();
+
     public function includeFileInIsolatedClosure($filePath);
-    public function handlePluginRelatedString (PluginData $plugin, $pluginRelatedString);
+
+    public function handlePluginRelatedString(PluginData $plugin, $pluginRelatedString);
 }

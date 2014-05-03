@@ -6,6 +6,5 @@ use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
 
 interface BehaviourInterface
 {
-    public function setPluginsManager (PluginsManagerInterface $pluginsManager);
-
+    public function setPluginsManager(PluginsManagerInterface $pluginsManager);
 }

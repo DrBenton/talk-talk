@@ -17,6 +17,9 @@ return function (Request $request) {
     $app['app.var.path'] = $app['app.path'] . '/app/var';
     $app['app.var.cache.path'] = $app['app.var.path'] . '/cache';
     $app['app.var.logs.path'] = $app['app.var.path'] . '/logs';
+    $app['app.vendors.path'] = $app['app.path'] . '/vendor';
+    $app['app.vendors.php.path'] = $app['app.vendors.path'] . '/php';
+    $app['app.vendors.js.path'] = $app['app.vendors.path'] . '/js';
     $app['debug'] = true;
 
     // Composer autoloader is a central part of our App.

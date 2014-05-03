@@ -21,8 +21,9 @@ class ClassesManager extends BehaviourBase
 
                 // Paths setup
                 $paths = $serviceClassMapScheme['paths'];
-                if (is_string($paths))
+                if (is_string($paths)) {
                     $paths = array($paths);
+                }
                 foreach ($paths as $index => $path) {
                     $paths[$index] = str_replace(
                         $app['app.path'] . '/',

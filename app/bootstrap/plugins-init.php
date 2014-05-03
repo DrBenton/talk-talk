@@ -1,9 +1,9 @@
 <?php
 
 use Silex\Application;
-use TalkTalk\Core\Plugins\Manager\Behaviour\ServicesManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ActionsManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ClassesManager;
+use TalkTalk\Core\Plugins\Manager\Behaviour\ServicesManager;
 
 call_user_func(
     function () use ($app) {
@@ -31,9 +31,12 @@ call_user_func(
         $app['plugins.manager']->registerActions();
 
         // Some plugins ops can be resolved later
-        $app->before(function () use ($app) {
+        $app->before(
+            function () use ($app) {
 
-        }, Application::EARLY_EVENT - 1);
+            },
+            Application::EARLY_EVENT - 1
+        );
 
     }
 );

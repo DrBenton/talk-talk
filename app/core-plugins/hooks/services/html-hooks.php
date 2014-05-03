@@ -28,6 +28,8 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
 );
 
 // HTML hooks will be triggered just before the Response sending
-$app->after(function (Request $request, Response $response) use ($app) {
-    $app['plugins.html_hooks.trigger_hooks']($response);
-});
+$app->after(
+    function (Request $request, Response $response) use ($app) {
+        $app['plugins.html_hooks.trigger_hooks']($response);
+    }
+);

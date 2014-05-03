@@ -46,7 +46,9 @@ class ActionsManager extends BehaviourBase
             $route->bind($actionData['name']);
         }
 
-        $app['monolog']->addDebug(sprintf('Route "%s" (method %s) registered.', $actionData['url'], $actionData['method']));
+        $app['monolog']->addDebug(
+            sprintf('Route "%s" (method %s) registered.', $actionData['url'], $actionData['method'])
+        );
     }
 
 }

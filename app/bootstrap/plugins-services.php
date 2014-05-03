@@ -1,7 +1,7 @@
 <?php
 
-use TalkTalk\Core\Plugins\PluginsFinder;
 use TalkTalk\Core\Plugins\Manager\PluginsManager;
+use TalkTalk\Core\Plugins\PluginsFinder;
 
 call_user_func(
     function () use ($app) {
@@ -10,7 +10,7 @@ call_user_func(
 
         $app['plugins.manager'] = $app->share(
             function ($app) {
-                $pluginsManager =  new PluginsManager();
+                $pluginsManager = new PluginsManager();
                 $pluginsManager->setApplication($app);
 
                 return $pluginsManager;

@@ -40,7 +40,9 @@ class AssetsManager extends BehaviourBase
         $app['monolog']->addDebug(
             sprintf(
                 '%d CSS and %d JS assets registered by %d plugins.',
-                count($pluginsAssetsCss), count($pluginsAssetsJs), count($this->_pluginsManager->getPlugins())
+                count($pluginsAssetsCss),
+                count($pluginsAssetsJs),
+                count($this->_pluginsManager->getPlugins())
             )
         );
     }

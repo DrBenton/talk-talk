@@ -2,8 +2,8 @@
 
 namespace TalkTalk\Core\Plugins;
 
-use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
 use Symfony\Component\Yaml\Yaml;
+use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
 
 class PluginsFinder
 {
@@ -18,12 +18,15 @@ class PluginsFinder
     }
 
     /**
-     * @param string        $rootPath
-     * @param string        $pluginsInitFilePattern
+     * @param string $rootPath
+     * @param string $pluginsInitFilePattern
      * @param callable|null $pluginConfigParseFunc
      */
-    public function findPlugins($rootPath, $pluginsInitFilePattern, /*callable*/ $pluginConfigParseFunc = null)
-    {
+    public function findPlugins(
+        $rootPath,
+        $pluginsInitFilePattern,
+        /*callable*/ $pluginConfigParseFunc = null
+    ) {
         if (null === $pluginConfigParseFunc) {
             $pluginConfigParseFunc = function ($filePath) {
                 return Yaml::parse($filePath);

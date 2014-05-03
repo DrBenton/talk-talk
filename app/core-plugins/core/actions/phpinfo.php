@@ -1,7 +1,7 @@
 <?php
 
 $action = function (\Silex\Application $app) {
-    if (! $app['debug']) {
+    if (!$app['debug']) {
         return $app->abort(500, 'PHP info is forbidden on this server.');
     }
 

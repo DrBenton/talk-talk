@@ -19,7 +19,17 @@ classes:
 services:
   - logger
   - session
+  - db
+  - crypt
   - url-generator
   - twig
+  - translator
+  - validator
+  
+assets:
+  stylesheets:
+  javascripts:
+    - ${vendorsUrl}/jquery/dist/jquery.min.js
 
 twig-extensions:
+  - func.get-flashes

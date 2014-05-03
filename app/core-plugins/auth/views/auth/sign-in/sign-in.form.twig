@@ -1,0 +1,51 @@
+{% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
+
+{% block content %}
+    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
+
+    {{ enable_html_hook('form') }}
+    {{ enable_html_hook('signin_form') }}
+    <form id="signin-form" role="form"
+        action="{{ path('core/auth/sign-in/submit') }}"
+        method="post"
+        class="sign-form ajax-form">
+
+        {# TODO: CSRF provider #}
+        {#<input type="hidden" name="_token" value="{{ csrf_token() }}">#}
+
+        <fieldset id="core-inputs">
+
+            <div class="form-group login">
+                <label for="signup-input-login">
+                    Login <!-- TODO: handle i18n -->
+                </label>
+                <div class="input-container">
+                    <input type="text" name="user[login]"
+                       id="signup-input-login"
+                       class="input input-text login"
+                       required>
+                </div>
+            </div>
+
+            <div class="form-group password">
+                <label for="signup-input-password">
+                    Password
+                </label>
+                <div class="input-container">
+                    <input type="password" name="user[password]"
+                        id="signup-input-password"
+                        class="input input-password password"
+                        required>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="form-group submit">
+            <div class="input-container">
+                <input type="submit" class="submit-button">
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

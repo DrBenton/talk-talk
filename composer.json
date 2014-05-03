@@ -16,7 +16,12 @@
     "symfony/twig-bridge": "~2.3",
     "monolog/monolog": ">=1.0.0",
     "symfony/yaml": "~2.3",
-    "querypath/QueryPath": ">=3.0.0"
+    "querypath/QueryPath": ">=3.0.0",
+    "illuminate/database": "4.0.x",
+    "illuminate/validation": "4.0.x",
+    "ircmaxell/password-compat": "1.0.2",
+    "symfony/translation": "~2.3",
+    "symfony/config": "~2.3"
   },
   "config": {
     "vendor-dir": "vendor/php"

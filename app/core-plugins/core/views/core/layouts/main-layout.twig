@@ -16,7 +16,8 @@
 </head>
 <body>
 <!--[if lt IE 8]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
 <![endif]-->
 
 {{ enable_html_hook('site_container') }}
@@ -26,7 +27,7 @@
         {% include '/core/common/header.twig' %}
     {% endblock %}
 
-    {#% include '/common/notifications-display' %#}
+    {% include 'core//common/notifications-display.twig' %}
 
     {{ enable_html_hook('main_content_container') }}
     <div id="main-content-container" class="clearfix">

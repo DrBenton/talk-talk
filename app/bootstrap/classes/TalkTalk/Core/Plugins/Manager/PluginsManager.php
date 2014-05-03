@@ -3,8 +3,8 @@
 namespace TalkTalk\Core\Plugins\Manager;
 
 use Silex\Application;
-use TalkTalk\Core\Plugins\PluginData;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
+use TalkTalk\Core\Plugins\PluginData;
 
 class PluginsManager implements PluginsManagerInterface
 {
@@ -31,14 +31,23 @@ class PluginsManager implements PluginsManagerInterface
         $this->_behaviours[] = $behaviour;
     }
 
+    /**
+     * Includes a file within an isolated Closure, and returns its result (if any).
+     * The file PHP core will only have access to a "$app" variable.
+     * 
+     * @param string $filePath
+     * @return mixed
+     */
     public function includeFileInIsolatedClosure($filePath)
     {
         $app = $this->getApp();
         $__includedFilePath = $filePath;
 
-        return call_user_func(function () use (&$app, $__includedFilePath) {
-            return include_once $__includedFilePath;
-        });
+        return call_user_func(
+            function () use (&$app, $__includedFilePath) {
+                return include_once $__includedFilePath;
+            }
+        );
     }
 
     public function handlePluginRelatedString(PluginData $plugin, $pluginRelatedString)
@@ -46,8 +55,12 @@ class PluginsManager implements PluginsManagerInterface
         $app = $this->getApp();
 
         return str_replace(
-            array('${pluginPath}', '${pluginUrl}'),
-            array($plugin->pluginPath, str_replace($app['app.path'], $app['app.base_url'], $plugin->pluginPath)),
+            array('${pluginPath}', '${pluginUrl}', '${vendorsUrl}'),
+            array(
+                $plugin->pluginPath,
+                str_replace($app['app.path'], $app['app.base_url'], $plugin->pluginPath),
+                str_replace($app['app.path'], $app['app.base_url'], $app['app.vendors.js.path']),
+            ),
             $pluginRelatedString
         );
     }
@@ -76,6 +89,8 @@ class PluginsManager implements PluginsManagerInterface
             }
         }
 
-        throw new \RuntimeException(sprintf('No behaviour found for method "%s" (%u registered behaviours)', $name, count($this->_behaviours)));
+        throw new \RuntimeException(
+            sprintf('No behaviour found for method "%s" (%u registered behaviours)', $name, count($this->_behaviours))
+        );
     }
 }
