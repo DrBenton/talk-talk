@@ -13,8 +13,8 @@ actions:
 
 classes:
   -
-    prefix: TalkTalk\Core\
-    paths: ${pluginPath}/classes/TalkTalk/Core
+    prefix: TalkTalk\CorePlugins\Core\
+    paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Core
 
 services:
   - logger

@@ -1,7 +1,8 @@
 <?php
 
-namespace TalkTalk\Core\Plugins\Manager\Behaviour;
+namespace TalkTalk\CorePlugins\Hooks\PluginsManagerBehaviour;
 
+use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
 use TalkTalk\Core\Plugins\PluginData;
 
 class HooksManager extends BehaviourBase

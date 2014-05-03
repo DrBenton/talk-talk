@@ -4,9 +4,6 @@ use Silex\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ServicesManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ActionsManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ClassesManager;
-use TalkTalk\Core\Plugins\Manager\Behaviour\TwigViewsFinder;
-use TalkTalk\Core\Plugins\Manager\Behaviour\TwigExtensionsManager;
-use TalkTalk\Core\Plugins\Manager\Behaviour\AssetsManager;
 
 call_user_func(
     function () use ($app) {
@@ -29,13 +26,12 @@ call_user_func(
 
         // Plugins services init
         $app['plugins.manager']->registerPluginsServices();
-        
+
         // Plugins actions init (map URLs to functions)
         $app['plugins.manager']->registerActions();
 
         // Some plugins ops can be resolved later
         $app->before(function () use ($app) {
-
 
         }, Application::EARLY_EVENT - 1);
 

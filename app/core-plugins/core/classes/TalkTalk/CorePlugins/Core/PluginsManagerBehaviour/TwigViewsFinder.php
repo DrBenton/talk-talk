@@ -1,6 +1,8 @@
 <?php
 
-namespace TalkTalk\Core\Plugins\Manager\Behaviour;
+namespace TalkTalk\CorePlugins\Core\PluginsManagerBehaviour;
+
+use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
 
 class TwigViewsFinder extends BehaviourBase
 {

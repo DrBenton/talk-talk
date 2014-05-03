@@ -4,8 +4,8 @@ general:
 
 classes:
   -
-    prefix: TalkTalk\Core\
-    paths: ${pluginPath}/classes/TalkTalk/Core
+    prefix: TalkTalk\CorePlugins\Hooks\
+    paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Hooks
 
 services:
   - hooks
