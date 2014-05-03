@@ -1,0 +1,27 @@
+{
+  "name": "talk-talk",
+  "version": "0.0.0",
+  "authors": [
+    "Olivier Philippon <olivier@rougemine.com>"
+  ],
+  "license": "GPL v2",
+  "description": "a new forum approach",
+  "dependencies": {
+    "jquery": "1.11.0",
+    "requirejs": "~2.1.10",
+    "lodash": "~2.4.1",
+    "console-polyfill": "~0.1.1",
+    "history.js": "~1.8.0",
+    "pace": "~0.4.17",
+    "locache": "~0.4.2",
+    "purl": "~2.3.1",
+    "momentjs": "~2.5.1",
+    "jquery-form": "~3.46.0"
+  },
+  "keywords": [
+    "forum",
+    "php",
+    "silex"
+  ],
+  "private": true
+}

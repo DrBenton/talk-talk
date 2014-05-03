@@ -19,7 +19,8 @@ $action = function (Application $app, Request $request) {
         return $app['twig']->render(
             'auth/sign-up/sign-up.form.twig',
             array(
-                'user' => new User($userData)
+                'user' => new User($userData),
+                'failed_fields' => $validator->failed()
             )
         );
     }
@@ -32,6 +33,8 @@ $action = function (Application $app, Request $request) {
     $user->login = $userData['login'];
     $user->password = $userData['password'];
     $user->email = $userData['email'];
+    $user->provider = 'talk-talk';
+    $user->provider_version = 0.1;
     // Save!
     $user->save();
 
@@ -39,8 +42,12 @@ $action = function (Application $app, Request $request) {
     $app['session']->set('user', $user->toArray());
 
     // Success feedback
-    $app['session.flash.add']('success', 'Welcome '.$user->login.'!');//TODO: i18n
-
+    $app['session.flash.add.translated'](
+        'core-plugins.auth.sign-up.notifications.success',
+        array('%login%' => $user->login),
+        'success'
+    );
+    
     if ($app['isAjax']) {
         // JS response
         return $app['twig']->render(

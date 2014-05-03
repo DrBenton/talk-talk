@@ -31,18 +31,21 @@ $hooks['html.form'] = function (\QueryPath\DOMQuery $html) {
     $forms->addClass('form-horizontal');
     // Labels with + TB dedicated attributes
     $forms->find('label')
-        ->addClass('col-sm-2 control-label');
+        ->addClass('col-sm-4 control-label');
     // Inputs containers with
     $forms->find('.input-container')
-        ->addClass('col-sm-10');
+        ->addClass('col-sm-8');
     // Inputs TB dedicated attributes
     $forms->find('.input')
         ->addClass('form-control');
     // Submit button specific stuff
     $forms->find('.form-group.submit .input-container')
-        ->addClass('col-sm-offset-2 col-sm-10');
+        ->addClass('col-sm-offset-4 col-sm-8');
     $forms->find('.submit-button')
         ->addClass('btn btn-default');
+    // Form errors
+    $forms->find('.form-group.form-error')
+        ->addClass('has-error');
 };
 
 $hooks['html.notifications_display'] = function (\QueryPath\DOMQuery $html) {

@@ -1,5 +1,11 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
+core-plugins:
+  auth:
+    sign-up:
+      notifications:
+        success: Welcome %login%!
+        
 hello: Hello %name%
 goodbye: Goodbye %name%
 

@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {{ enable_html_hook('app_stylesheets') }}
-    {% set plugins_stylesheets = get_plugins_stylesheets() %}
-    {% for stylesheet in plugins_stylesheets %}
+    {% for stylesheet in get_plugins_stylesheets() %}
         <link rel="stylesheet" href="{{ stylesheet }}">
     {% endfor %}
 
@@ -21,13 +20,15 @@
 <![endif]-->
 
 {{ enable_html_hook('site_container') }}
-<div id="site-container">
+<div id="site-container"
+     class="requirejs-widget"
+     data-widget="app-modules/ajax-nav/widgets/ajax-links-handler">
 
     {% block header %}
         {% include '/core/common/header.twig' %}
     {% endblock %}
 
-    {% include 'core//common/notifications-display.twig' %}
+    {% include 'core/common/notifications-display.twig' %}
 
     {{ enable_html_hook('main_content_container') }}
     <div id="main-content-container" class="clearfix">
@@ -46,8 +47,7 @@
 
 {# JavaScript, it's up to you now! #}
 {{ enable_html_hook('app_javascripts') }}
-{% set plugins_javascripts = get_plugins_javascripts() %}
-{% for javascript in plugins_javascripts %}
+{% for javascript in get_plugins_javascripts() %}
     <script src="{{ javascript }}"></script>
 {% endfor %}
 
