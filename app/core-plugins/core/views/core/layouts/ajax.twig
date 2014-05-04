@@ -1,9 +1,9 @@
 <div class="ajax-loaded-content">
 
+    {# Notifications display through JavaScript (if any) #}
+    {% include 'core/common/notifications-display.twig' %}
+
     {% block content %}
     {% endblock %}
-
-    {# Notifications display through JavaScript (if any) #}
-    {#{% include 'common/notifications-display' %}#}
 
 </div><!-- end .ajax-loaded-content -->

@@ -25,11 +25,11 @@ services:
   - twig
   - translator
   - validator
-  
+  - uuid
+
 assets:
   stylesheets:
   javascripts:
-    - ${vendorsUrl}/jquery/dist/jquery.min.js
     - ${vendorsUrl}/requirejs/require.js
     - ${pluginUrl}/assets/js/requirejs-config.js
     - ${pluginUrl}/assets/js/main.js

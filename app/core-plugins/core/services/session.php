@@ -30,3 +30,9 @@ $app['session.flash.get.all'] = $app->protect(
         return $app['session']->getFlashBag()->all();
     }
 );
+
+$app['session.flash.clear'] = $app->protect(
+    function () use ($app) {
+        $app['session']->getFlashBag()->clear();
+    }
+);

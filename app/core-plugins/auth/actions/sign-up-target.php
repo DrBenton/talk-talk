@@ -4,13 +4,13 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use TalkTalk\Model\User;
 
-$action = function (Application $app, Request $request) {
-    
+$action = function (Application $app, Request $request) use (&$getFormValidator) {
+
     // Get form User data
     $userData = $request->get('user');
-    
+
     // Validate!
-    $validator = $app['auth.helpers.sign-up.get-form-validator']($userData);
+    $validator = $getFormValidator($app, $userData);
 
     if ($validator->fails()) {
         // Flash errors & redirect if validation failed
@@ -47,17 +47,30 @@ $action = function (Application $app, Request $request) {
         array('%login%' => $user->login),
         'success'
     );
-    
+
     if ($app['isAjax']) {
         // JS response
         return $app['twig']->render(
-            'core/auth/sign-in/sign-up.success.twig',
+            'auth/sign-in/sign-up.success.ajax.twig',
             array('user' => $user)
         );
     } else {
         // Redirection to home, with flashed notification
-        return $app->redirect('/');
+        return $app->redirect($app['url_generator']->generate('core/home'));
     }
+};
+
+$getFormValidator = function (Application $app, array $userData) {
+    $validator = $app['validator.get'](
+        $userData,
+        array(
+            'login' => 'required|min:5|unique:users',
+            'password' => 'required|confirmed|min:6',
+            'email' => 'required|email|unique:users',
+        )
+    );
+
+    return $validator;
 };
 
 return $action;

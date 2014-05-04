@@ -34,8 +34,8 @@ class PluginsManager implements PluginsManagerInterface
     /**
      * Includes a file within an isolated Closure, and returns its result (if any).
      * The file PHP core will only have access to a "$app" variable.
-     * 
-     * @param string $filePath
+     *
+     * @param  string $filePath
      * @return mixed
      */
     public function includeFileInIsolatedClosure($filePath)

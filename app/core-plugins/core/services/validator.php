@@ -7,7 +7,7 @@ $app['validator.get'] = $app->protect(
     function($data, $rules, $messages = array(), $customAttributes = array()) use ($app) {
         $validator =  new Validator($app['translator'], $data, $rules, $messages, $customAttributes);
         $validator->setPresenceVerifier(new DatabasePresenceVerifier($app['db.connection_resolver']));
-        
+
         return $validator;
     }
 );

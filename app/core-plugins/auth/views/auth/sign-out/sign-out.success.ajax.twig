@@ -1,0 +1,20 @@
+{% extends "core/layouts/ajax.twig" %}
+
+{% block content %}
+    <script>
+        require(['jquery'], function ($)
+        {
+            // The user profile must be removed
+            $('#logged-user-container').text('');
+
+            // "sign-up"/"sign-in" links are back in our header
+            $("header .sign-up, header .sign-in").removeClass("hidden");
+            // ...but we hide the "signout" link
+            $("header .sign-out").addClass("hidden");
+
+            // Back to home, please!
+            History.pushState(null, null, '/');
+        });
+    </script>
+
+{% endblock %}

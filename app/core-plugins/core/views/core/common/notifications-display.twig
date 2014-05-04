@@ -1,28 +1,29 @@
+{#
 <div>sessionBag={{ dump(app.session.all) }}</div>
 <div>flashBag={{ dump(app.session.flashBag.peekAll) }}</div>
+#}
 
-
-{% set notifications = get_flashes() %} 
+{% set notifications = get_flashes() %}
 
 {% if
     not app.isAjax or
     notifications is not empty
 %}
-    
+
     {% if app.isAjax %}
         {# We use a temporary container when in an Ajax context #}
-        {% set tmpNotificationsContainerId = app.uuid()  %}
+        {% set tmpNotificationsContainerId = app.uuid  %}
         {% set notificationsContainerId = "notifications-" ~ tmpNotificationsContainerId %}
     {% else %}
         {# We use a real, permanent container when not in an Ajax context #}
         {% set notificationsContainerId = "notifications-container" %}
     {% endif %}
-    
+
     <div id="{{ notificationsContainerId }}"
         class="notifications-to-display {{ app.isAjax ? 'hidden' : '' }}">
-        
+
         {% if notifications is not empty %}
-            {{ enable_html_hook('notifications_display') }}
+            {{ enable_html_hooks('notifications_display') }}
             {% for type in ['error', 'success', 'info'] %}
                 {% if notifications[type] is defined %}
                     <div class="notification notification-{{ type }}">
@@ -41,18 +42,21 @@
                 {% endif %}
             {% endfor %}
         {% endif %}
-    </div>
-    
+
+    </div><!-- end .notifications-to-display -->
+
     {% if app.isAjax %}
         <script>
-            (function ($)
+            require(['jquery'], function ($)
             {
                 // These notifications are displayed in the layout #notifications-container
                 var $notificationToDisplay = $("#{{ notificationsContainerId }}");
                 $('#notifications-container').html( $notificationToDisplay.html() );
+                console.warn('$notificationToDisplay=', $notificationToDisplay.length, "$('#notifications-container')=", $('#notifications-container').length);
+//                debugger;
                 $notificationToDisplay.remove();
-            })(jQuery);
-        </script>    
+            });
+        </script>
     {% endif %}
-    
+
 {% endif %}

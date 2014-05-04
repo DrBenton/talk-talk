@@ -50,7 +50,7 @@ define(function (require, exports, module) {
 
   function onFormSendingError(jqXHR, textStatus, err) {
     myDebug && logger.debug(module.id, "Ajax form loading failed!");
-    notifyService.notify("Error while ajax-loading this form! (" + err + ")", "error");
+    //notifyService.notify("Error while ajax-loading this form! (" + err + ")", "error");
   }
 
   function unbindPreviousAjaxForms($formsContainer) {

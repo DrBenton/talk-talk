@@ -52,4 +52,3 @@ $connectionResolver->setDefaultConnection('core');
 Model::setConnectionResolver($connectionResolver);
 
 $app['db.connection_resolver'] = $connectionResolver;
-      

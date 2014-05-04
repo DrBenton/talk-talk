@@ -18,8 +18,8 @@ class PluginsFinder
     }
 
     /**
-     * @param string $rootPath
-     * @param string $pluginsInitFilePattern
+     * @param string        $rootPath
+     * @param string        $pluginsInitFilePattern
      * @param callable|null $pluginConfigParseFunc
      */
     public function findPlugins(

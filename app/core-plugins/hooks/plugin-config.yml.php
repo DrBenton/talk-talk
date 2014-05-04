@@ -12,6 +12,6 @@ services:
   - html-hooks
 
 twig-extensions:
-  - func.enable-html-hook
+  - func.enable-html-hooks
   - func.get-plugins-stylesheets
   - func.get-plugins-javascripts

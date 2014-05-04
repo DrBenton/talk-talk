@@ -3,18 +3,17 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
-    {{ enable_html_hook('form') }}
-    {{ enable_html_hook('signup_form') }}
+    {{ enable_html_hooks('form', 'signup_form') }}
     <form id="signup-form" role="form"
-        action="{{ path('auth/signup-submit') }}"
+        action="{{ path('auth/sign-up/submit') }}"
         method="post"
         class="sign-form ajax-form">
 
         {# TODO: CSRF provider #}
         {#<input type="hidden" name="_token" value="{{ csrf_token() }}">#}
-        
+
         <fieldset id="core-inputs">
-            
+
             <div class="form-group login {{ failed_fields.login is defined ? 'form-error' : '' }}">
                 <label for="signup-input-login">
                     <!-- TODO: handle i18n -->
@@ -28,7 +27,7 @@
                        required>
                 </div>
             </div>
-            
+
             <div class="form-group email {{ failed_fields.email is defined ? 'form-error' : '' }}">
                 <label for="signup-input-email">
                     Email address
@@ -41,7 +40,7 @@
                         required>
                 </div>
             </div>
-            
+
             <div class="form-group password {{ failed_fields.password is defined ? 'form-error' : '' }}">
                 <label for="signup-input-password">
                     Password
@@ -53,7 +52,7 @@
                         required>
                 </div>
             </div>
-            
+
             <div class="form-group password-confirmation">
                 <label for="signup-input-password-confirmation">
                     Password confirmation
@@ -65,14 +64,14 @@
                         required="">
                 </div>
             </div>
-            
+
         </fieldset>
-        
+
         <div class="form-group submit">
             <div class="input-container">
                 <input type="submit" class="submit-button">
             </div>
         </div>
-        
+
     </form>
 {% endblock %}

@@ -1,16 +1,16 @@
-{% extends "layouts/ajax.twig" %}
+{% extends "core/layouts/ajax.twig" %}
 
 {% block content %}
 
-    {% set temporaryUserProfileContainerId = uniqid()  %}
+    {% set temporaryUserProfileContainerId = app.uuid  %}
 
     <!-- temporary HTML container for our user profile display -->
     <div id="user-profile-{{ temporaryUserProfileContainerId }}" class="hidden">
-        {% include 'common/user-display' with {'user': user} %}
+        {% include 'auth/common/user-display.twig' with {'user': user} %}
     </div>
 
     <script>
-        (function ($)
+        require(['jquery'], function ($)
         {
             // The user profile must be displayed in the #logged-user-container
             var $userProfile = $("#user-profile-{{ temporaryUserProfileContainerId }}");
@@ -18,15 +18,15 @@
             $userProfile.remove();
 
             // No "signup"/"signin" links in our header
-            $("header .signup, header .signin").addClass("hidden");
+            $("header .sign-up, header .sign-in").addClass("hidden");
             // ...but we show the "signout" link
-            $("header .signout").removeClass("hidden");
+            $("header .sign-out").removeClass("hidden");
 
             // Back to intended page or home, please!
-            History.pushState(null, null, '{{ session_get('url.intended', '/') }}');
-            {% set dummy = session_forget('url.intended') %}
+            History.pushState(null, null, '{{ app.session.get('url.intended', '/') }}');
+            {% set dummy = app.session.remove('url.intended') %}
 
-        })(jQuery);
+        });
     </script>
 
 {% endblock %}

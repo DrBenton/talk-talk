@@ -4,3 +4,5 @@
 
 general:
 
+hooks:
+  - html.site_container

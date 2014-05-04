@@ -6,12 +6,25 @@ actions:
   -
     url: /sign-up
     target: actions/sign-up-form.php
-    name: auth/signup
+    name: auth/sign-up
   -
     url: /sign-up
-    target: actions/sign-up-target.php
-    name: auth/signup-submit
     method: POST
+    target: actions/sign-up-target.php
+    name: auth/sign-up/submit
+  -
+    url: /sign-in
+    target: actions/sign-in-form.php
+    name: auth/sign-in
+  -
+    url: /sign-in
+    method: POST
+    target: actions/sign-in-target.php
+    name: auth/sign-in/submit
+  -
+    url: /sign-out
+    target: actions/sign-out.php
+    name: auth/sign-out
 
 classes:
   -
@@ -19,7 +32,7 @@ classes:
     paths: ${pluginPath}/classes/TalkTalk/Model
 
 services:
-  - auth-helpers 
-  
+  - is-authentificated
+
 
 twig-extensions:

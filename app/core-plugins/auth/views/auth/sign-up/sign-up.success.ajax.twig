@@ -1,16 +1,16 @@
-{% extends "layouts/ajax" %}
+{% extends "core/layouts/ajax.twig" %}
 
 {% block content %}
 
-    {% set temporaryUserProfileContainerId = app.uuid()  %}
-    
+    {% set temporaryUserProfileContainerId = app.uuid  %}
+
     <!-- temporary HTML container for our user profile display -->
     <div id="user-profile-{{ temporaryUserProfileContainerId }}" class="hidden">
         {% include 'auth/common/user-display.twig' with {'user': user} %}
     </div>
-    
+
     <script>
-        (function ($)
+        require(['jquery'], function ($)
         {
             // The user profile must be displayed in the #logged-user-container
             var $userProfile = $("#user-profile-{{ temporaryUserProfileContainerId }}");
@@ -21,11 +21,11 @@
             $("header .sign-up, header .sign-in").addClass("hidden");
             // ...but we show the "signout" link
             $("header .sign-out").removeClass("hidden");
-            
+
             // Back to home, please!
             History.pushState(null, null, '/');
-            
-        })(jQuery);
+
+        });
     </script>
 
 {% endblock %}

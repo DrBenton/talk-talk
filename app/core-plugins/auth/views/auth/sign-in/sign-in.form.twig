@@ -3,10 +3,9 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
-    {{ enable_html_hook('form') }}
-    {{ enable_html_hook('signin_form') }}
+    {{ enable_html_hooks('form', 'signin_form') }}
     <form id="signin-form" role="form"
-        action="{{ path('core/auth/sign-in/submit') }}"
+        action="{{ path('auth/sign-in/submit') }}"
         method="post"
         class="sign-form ajax-form">
 

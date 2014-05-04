@@ -26,9 +26,6 @@
       "locache": {
         exports: "locache"
       },
-      "moment": {
-        exports: "moment"
-      }
     },
     waitSeconds: 1,
     urlArgs: "dev-bust=" + (new Date()).getTime() //TODO: remove this later :-)

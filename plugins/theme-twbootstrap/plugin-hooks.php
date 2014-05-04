@@ -49,11 +49,10 @@ $hooks['html.form'] = function (\QueryPath\DOMQuery $html) {
 };
 
 $hooks['html.notifications_display'] = function (\QueryPath\DOMQuery $html) {
-    //TODO: handle it in a more generic way
-    $html->find('.notifications-to-display .notification-success')
-        ->addClass('alert alert-success');
-    $html->find('.notifications-to-display .notification-error')
-        ->addClass('alert alert-danger');
+    foreach(array('info', 'success', 'error') as $notificationType) {
+        $html->find(".notifications-to-display .notification-$notificationType")
+            ->addClass("alert alert-$notificationType");
+    }
 };
 
 $hooks['html.user_profile_display'] = function (\QueryPath\DOMQuery $html) {

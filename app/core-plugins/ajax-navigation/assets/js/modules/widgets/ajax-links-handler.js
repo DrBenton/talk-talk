@@ -182,6 +182,10 @@ define(function (require, exports, module) {
 
   }
 
+  function removeNotifications () {
+      $('#notifications-container').text('');
+  }
+
   function normalizeUrl (rawUrl) {
     return purl(rawUrl).attr('path');
   }
@@ -199,6 +203,9 @@ define(function (require, exports, module) {
 
     var $clickedLink = $(this);
     var targetUrl = $clickedLink.attr('href');
+
+    // Let's remove previous page Notifications
+    removeNotifications();
 
     myDebug && logger.debug(module.id, "History.pushState(" + targetUrl + ")");
     History.pushState(null, null, targetUrl);
@@ -231,6 +238,9 @@ define(function (require, exports, module) {
     initHistory();
     
     handleInitialMainContentCache();
+
+    // Ajax forms?
+    ajaxFormsHandler.findAndHandleAjaxForms();
   }
 
 });

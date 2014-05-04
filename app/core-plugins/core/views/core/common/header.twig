@@ -1,25 +1,25 @@
-{{ enable_html_hook('header') }}
+{{ enable_html_hooks('header') }}
 <header>
     <h1><a href="{{ path('core/home') }}" class="ajax-link">Talk-Talk</a></h1>
 
     <nav>
         <ul>
-            <li class="sign-up {#{ isAuthenticated ? 'hidden' : '' }#}">
-                <a href="{{ path('auth/signup-submit') }}" class="ajax-link">Sign up</a>
+            <li class="sign-up {{ app.isAuthenticated ? 'hidden' : '' }}">
+                <a href="{{ path('auth/sign-up') }}" class="ajax-link">Sign up</a>
             </li>
-            <li class="sign-in {#{ isAuthenticated ? 'hidden' : '' }#}">
-                <a href="{#{ path('core/auth/sign-in') }#}" class="ajax-link">Sign in</a>
+            <li class="sign-in {{ app.isAuthenticated ? 'hidden' : '' }}">
+                <a href="{{ path('auth/sign-in') }}" class="ajax-link">Sign in</a>
             </li>
-            <li class="sign-out {#{ isAuthenticated ? '' : 'hidden' }#}">
-                <a href="signout" class="ajax-link">Sign out</a>
+            <li class="sign-out {{ app.isAuthenticated ? '' : 'hidden' }}">
+                <a href="{{ path('auth/sign-out') }}" class="ajax-link">Sign out</a>
             </li>
         </ul>
     </nav>
 
     <div id="logged-user-container">
-        {#% if isAuthenticated %}
-            {% include 'common/user-display' with {'user': user} %}
-        {% endif %#}
+        {% if app.isAuthenticated %}
+            {% include 'auth/common/user-display.twig' with {'user': app.session.get('user')} %}
+        {% endif %}
     </div>
 
 </header>
