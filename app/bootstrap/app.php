@@ -35,7 +35,10 @@ return function (Request $request) {
     $app['isAjax'] = $request->isXmlHttpRequest();
 
     // Plugins services must be initialized quickly, as all our app will rely on it :-)
-    require_once __DIR__ . '/plugins-services.php';
+    require_once __DIR__ . '/services/services.php';
+
+    // Cache service may be useful ASAP too for early data cache
+    require_once __DIR__ . '/services/cache.php';
 
     // Plugins init!
     require_once __DIR__ . '/plugins-init.php';
