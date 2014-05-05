@@ -5,15 +5,18 @@ namespace TalkTalk\Core\Plugins;
 class PluginData
 {
 
-    public $pluginPath;
+    public $id;
+    public $path;
     /**
      * @var array
      */
     public $data = array();
 
-    public function __construct($pluginPath, array $pluginData)
+    public function __construct($pluginId, $pluginPath, array $pluginData)
     {
-        $this->pluginPath = $pluginPath;
+        $this->id = $pluginId;
+        $this->path = $pluginPath;
+        //TODO: sanitize plugins data (no "/ start", no "../"...)
         $this->data = $pluginData;
     }
 

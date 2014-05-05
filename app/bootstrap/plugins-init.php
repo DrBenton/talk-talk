@@ -1,17 +1,13 @@
 <?php
 
-use Silex\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ActionsManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ClassesManager;
+use TalkTalk\Core\Plugins\Manager\Behaviour\EventsManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ServicesManager;
+use TalkTalk\Core\Plugins\Manager\Behaviour\LocalesManager;
 
 call_user_func(
     function () use ($app) {
-
-        // Plugins manager init
-        $app['plugins.manager']->addBehaviour(new ServicesManager());
-        $app['plugins.manager']->addBehaviour(new ActionsManager());
-        $app['plugins.manager']->addBehaviour(new ClassesManager());
 
         // Core plugins discovery
         $corePluginsPath = $app['app.path'] . '/app/core-plugins';
@@ -22,21 +18,24 @@ call_user_func(
         $app['plugins.finder']->findPlugins($thirdPartyPluginsPath, $app['plugins.config_files_pattern']);
 
         // Plugins classes loading init
+        $app['plugins.manager']->addBehaviour(new ClassesManager());
         $app['plugins.manager']->registerClassLoadingSchemes();
 
         // Plugins services init
+        $app['plugins.manager']->addBehaviour(new ServicesManager());
         $app['plugins.manager']->registerPluginsServices();
 
         // Plugins actions init (map URLs to functions)
+        $app['plugins.manager']->addBehaviour(new ActionsManager());
         $app['plugins.manager']->registerActions();
 
-        // Some plugins ops can be resolved later
-        $app->before(
-            function () use ($app) {
+        // Plugins events init
+        $app['plugins.manager']->addBehaviour(new EventsManager());
+        $app['plugins.manager']->registerPluginsEvents();
 
-            },
-            Application::EARLY_EVENT - 1
-        );
+        // Plugins own locales files init
+        $app['plugins.manager']->addBehaviour(new LocalesManager($app['translator']));
+        $app['plugins.manager']->registerPluginsLocales();
 
     }
 );

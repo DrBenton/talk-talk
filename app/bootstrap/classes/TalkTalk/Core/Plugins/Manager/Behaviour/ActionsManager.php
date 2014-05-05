@@ -6,12 +6,10 @@ use TalkTalk\Core\Plugins\PluginData;
 
 class ActionsManager extends BehaviourBase
 {
-    /**
-     * @return array
-     */
+
     public function registerActions()
     {
-        foreach ($this->_pluginsManager->getPlugins() as $plugin) {
+        foreach ($this->pluginsManager->getPlugins() as $plugin) {
             if (!isset($plugin->data['actions'])) {
                 continue;
             }
@@ -24,14 +22,15 @@ class ActionsManager extends BehaviourBase
 
     protected function registerAction(PluginData $plugin, array $actionData)
     {
-        $app = $this->_pluginsManager->getApp();
-        $pluginsManager = $this->_pluginsManager;
+        $app = $this->pluginsManager->getApp();
+        $pluginsManager = $this->pluginsManager;
         $actionData['method'] = isset($actionData['method']) ? $actionData['method'] : 'GET';
+        $urlsPrefix = isset($plugin->data['general']['actionsUrlsPrefix']) ? $plugin->data['general']['actionsUrlsPrefix'] : '';
 
         $route = $app->match(
-            $actionData['url'],
+            $urlsPrefix . $actionData['url'],
             function () use ($app, $pluginsManager, $plugin, $actionData) {
-                $actionPath = $plugin->pluginPath . '/' . $actionData['target'];
+                $actionPath = $plugin->path . '/' . $actionData['target'];
                 $actionFunc = $pluginsManager->includeFileInIsolatedClosure($actionPath);
                 $actionArgs = $app['resolver']->getArguments(
                     $app['request'],

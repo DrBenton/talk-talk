@@ -9,7 +9,7 @@ $app['twig'] = $app->share(
                     $hooksNames = func_get_args();
                     call_user_func_array($app['plugins.html_hooks.add'], $hooksNames);
                     if ($app['debug']) {
-                        return '<!-- HTML hooks : '.implode(', ', $hooksNames).' -->';
+                        return '<!-- HTML hooks : ' . implode(', ', $hooksNames) . ' -->';
                     }
                 },
                 array('is_safe' => array('all'))

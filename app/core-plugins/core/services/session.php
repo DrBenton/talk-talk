@@ -15,7 +15,7 @@ $app['session.flash.add.translated'] = $app->protect(
                 $translationKey,
                 $translationParams
             )
-        , $type);
+            , $type);
     }
 );
 

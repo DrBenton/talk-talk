@@ -12,8 +12,8 @@ class TwigViewsFinder extends BehaviourBase
     public function getPluginsViewsPaths()
     {
         $viewsPaths = array();
-        foreach ($this->_pluginsManager->getPlugins() as $plugin) {
-            $pluginViewPath = $plugin->pluginPath . '/views';
+        foreach ($this->pluginsManager->getPlugins() as $plugin) {
+            $pluginViewPath = $plugin->path . '/views';
             if (is_dir($pluginViewPath)) {
                 $viewsPaths[] = $pluginViewPath;
             }

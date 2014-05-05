@@ -5,9 +5,9 @@
 
     {{ enable_html_hooks('form', 'signup_form') }}
     <form id="signup-form" role="form"
-        action="{{ path('auth/sign-up/submit') }}"
-        method="post"
-        class="sign-form ajax-form">
+          action="{{ path('auth/sign-up/submit') }}"
+          method="post"
+          class="sign-form ajax-form">
 
         {# TODO: CSRF provider #}
         {#<input type="hidden" name="_token" value="{{ csrf_token() }}">#}
@@ -16,52 +16,55 @@
 
             <div class="form-group login {{ failed_fields.login is defined ? 'form-error' : '' }}">
                 <label for="signup-input-login">
-                    <!-- TODO: handle i18n -->
-                    Login
+                    {{ 'core-plugins.auth.sign-up.form.login'|trans }}
                 </label>
+
                 <div class="input-container">
                     <input type="text" name="user[login]"
-                       id="signup-input-login"
-                       class="input input-text login"
-                       value="{{ user.login }}"
-                       required>
+                           id="signup-input-login"
+                           class="input input-text login"
+                           value="{{ user.login }}"
+                           required>
                 </div>
             </div>
 
             <div class="form-group email {{ failed_fields.email is defined ? 'form-error' : '' }}">
                 <label for="signup-input-email">
-                    Email address
+                    {{ 'core-plugins.auth.sign-up.form.email'|trans }}
                 </label>
+
                 <div class="input-container">
                     <input type="email" name="user[email]"
-                        id="signup-input-email"
-                        class="input input-email email"
-                       value="{{ user.email }}"
-                        required>
+                           id="signup-input-email"
+                           class="input input-email email"
+                           value="{{ user.email }}"
+                           required>
                 </div>
             </div>
 
             <div class="form-group password {{ failed_fields.password is defined ? 'form-error' : '' }}">
                 <label for="signup-input-password">
-                    Password
+                    {{ 'core-plugins.auth.sign-up.form.password'|trans }}
                 </label>
+
                 <div class="input-container">
                     <input type="password" name="user[password]"
-                        id="signup-input-password"
-                        class="input input-password password"
-                        required>
+                           id="signup-input-password"
+                           class="input input-password password"
+                           required>
                 </div>
             </div>
 
             <div class="form-group password-confirmation">
                 <label for="signup-input-password-confirmation">
-                    Password confirmation
+                    {{ 'core-plugins.auth.sign-up.form.password_confirmation'|trans }}
                 </label>
+
                 <div class="input-container">
                     <input type="password" name="user[password_confirmation]"
-                        id="signup-input-password-confirmation"
-                        class="input input-password password-confirmation"
-                        required="">
+                           id="signup-input-password-confirmation"
+                           class="input input-password password-confirmation"
+                           required="">
                 </div>
             </div>
 
@@ -69,7 +72,8 @@
 
         <div class="form-group submit">
             <div class="input-container">
-                <input type="submit" class="submit-button">
+                <input type="submit" class="submit-button"
+                       value="{{ 'core-plugins.auth.sign-up.form.submit'|trans }}">
             </div>
         </div>
 

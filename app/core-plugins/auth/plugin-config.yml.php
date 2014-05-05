@@ -1,6 +1,7 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
 general:
+  id: auth
 
 actions:
   -
@@ -34,5 +35,10 @@ classes:
 services:
   - is-authentificated
 
+locales:
+  - en
+
+hooks:
+  - html.header
 
 twig-extensions:

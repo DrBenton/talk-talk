@@ -49,9 +49,14 @@ $hooks['html.form'] = function (\QueryPath\DOMQuery $html) {
 };
 
 $hooks['html.notifications_display'] = function (\QueryPath\DOMQuery $html) {
-    foreach(array('info', 'success', 'error') as $notificationType) {
+    $transforms = array(
+        'info' => 'info',
+        'success' => 'success',
+        'error' => 'danger',
+    );
+    foreach($transforms as $notificationType => $TWBootstrapNotificationType) {
         $html->find(".notifications-to-display .notification-$notificationType")
-            ->addClass("alert alert-$notificationType");
+            ->addClass("alert alert-$TWBootstrapNotificationType");
     }
 };
 

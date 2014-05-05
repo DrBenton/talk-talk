@@ -1,1 +1,4 @@
-{{ user.login }}
+{{ enable_html_hooks('user_profile_display') }}
+<div class="logged-user-display">
+    {{ user.login }}
+</div>

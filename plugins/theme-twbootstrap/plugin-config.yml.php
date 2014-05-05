@@ -1,7 +1,8 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
 general:
-
+  id: theme/twbootstrap
+  htmlHooksPriority: -100 # since we are a theme plugin, we want to be triggered *after* all other plugins
 
 assets:
   stylesheets:

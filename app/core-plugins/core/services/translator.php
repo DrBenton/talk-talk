@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\Translation\Loader\YamlFileLoader;
+//use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallbacks' => array('en'),
@@ -8,10 +8,12 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 
 $app['translator.locales_path'] = $app['app.path'] . '/app/data/locales';
 
+/*
+// We shouldn't need the YamlFileLoader anymore...
+// @see app/bootstrap/classes/TalkTalk/Core/Plugins/Manager/Behaviour/LocalesManager.php
 $app['translator'] = $app->share($app->extend('translator', function ($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
 
-    $translator->addResource('yaml', $app['translator.locales_path'] . '/en.yml.php', 'en');
-
     return $translator;
 }));
+*/

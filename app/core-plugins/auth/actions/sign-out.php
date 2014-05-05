@@ -10,7 +10,6 @@ $action = function (Application $app, Request $request) {
 
     $app['session.flash.add.translated']('core-plugins.auth.sign-out.notifications.success', array(), 'info');
 
-
     if ($app['isAjax']) {
         // JS response
         return $app['twig']->render(

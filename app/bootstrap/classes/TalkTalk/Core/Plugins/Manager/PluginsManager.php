@@ -2,6 +2,8 @@
 
 namespace TalkTalk\Core\Plugins\Manager;
 
+use Doctrine\Common\Cache\Cache;
+use Psr\Log\LoggerInterface;
 use Silex\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
 use TalkTalk\Core\Plugins\PluginData;
@@ -11,24 +13,39 @@ class PluginsManager implements PluginsManagerInterface
     /**
      * @var \Silex\Application
      */
-    protected $_app;
-    protected $_plugins = array();
-    protected $_behaviours = array();
+    protected $app;
+    protected $plugins = array();
+    protected $behaviours = array();
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+    /**
+     * @var \Doctrine\Common\Cache\Cache
+     */
+    protected $cache;
 
     public function setApplication(Application $app)
     {
-        $this->_app = $app;
+        $this->app = $app;
     }
 
     public function addPlugin(PluginData $plugin)
     {
-        $this->_plugins[] = $plugin;
+        $this->plugins[$plugin->id] = $plugin;
+    }
+
+    public function getPlugin($pluginId)
+    {
+        return $this->plugins[$pluginId];
     }
 
     public function addBehaviour(BehaviourInterface $behaviour)
     {
         $behaviour->setPluginsManager($this);
-        $this->_behaviours[] = $behaviour;
+        $behaviour->setLogger($this->logger);
+        $behaviour->setCache($this->cache);
+        $this->behaviours[] = $behaviour;
     }
 
     /**
@@ -57,8 +74,8 @@ class PluginsManager implements PluginsManagerInterface
         return str_replace(
             array('${pluginPath}', '${pluginUrl}', '${vendorsUrl}'),
             array(
-                $plugin->pluginPath,
-                str_replace($app['app.path'], $app['app.base_url'], $plugin->pluginPath),
+                $plugin->path,
+                str_replace($app['app.path'], $app['app.base_url'], $plugin->path),
                 str_replace($app['app.path'], $app['app.base_url'], $app['app.vendors.js.path']),
             ),
             $pluginRelatedString
@@ -70,7 +87,7 @@ class PluginsManager implements PluginsManagerInterface
      */
     public function getApp()
     {
-        return $this->_app;
+        return $this->app;
     }
 
     /**
@@ -78,19 +95,29 @@ class PluginsManager implements PluginsManagerInterface
      */
     public function getPlugins()
     {
-        return $this->_plugins;
+        return $this->plugins;
     }
 
     public function __call($name, array $arguments)
     {
-        foreach ($this->_behaviours as $behaviour) {
+        foreach ($this->behaviours as $behaviour) {
             if (method_exists($behaviour, $name)) {
                 return call_user_func_array(array($behaviour, $name), $arguments);
             }
         }
 
         throw new \RuntimeException(
-            sprintf('No behaviour found for method "%s" (%u registered behaviours)', $name, count($this->_behaviours))
+            sprintf('No behaviour found for method "%s" (%u registered behaviours)', $name, count($this->behaviours))
         );
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function setCache(Cache $cache)
+    {
+        $this->cache = $cache;
     }
 }

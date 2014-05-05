@@ -34,11 +34,21 @@ return function (Request $request) {
     $app['app.base_url'] = $request->getBasePath();
     $app['isAjax'] = $request->isXmlHttpRequest();
 
+    // We have a few bootstrap Services to register very early.
+    // Let's create a simple Closure to handle them like the PluginsManager
+    $loadBootstrapService = function ($serviceName) use ($app) {
+        // Services PHP code only have access to our $app
+        require_once __DIR__ . '/services/' . $serviceName . '.php';
+    };
+
+    // Anybody can need a Logger; let's intialize this Service first!
+    $loadBootstrapService('logger');
+
     // Plugins services must be initialized quickly, as all our app will rely on it :-)
-    require_once __DIR__ . '/services/services.php';
+    $loadBootstrapService('plugins');
 
     // Cache service may be useful ASAP too for early data cache
-    require_once __DIR__ . '/services/cache.php';
+    $loadBootstrapService('cache');
 
     // Plugins init!
     require_once __DIR__ . '/plugins-init.php';

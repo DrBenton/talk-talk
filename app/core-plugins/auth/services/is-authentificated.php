@@ -1,5 +1,9 @@
 <?php
 
 $app['isAuthenticated'] = $app->share(function () use ($app) {
-  return (null !== $app['session']->get('user'));
+    return $app['session']->has('user');
+});
+
+$app['isAnonymous'] = $app->share(function () use ($app) {
+    return !$app['isAuthenticated'];
 });

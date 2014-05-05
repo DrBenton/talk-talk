@@ -4,15 +4,6 @@
 
     <nav>
         <ul>
-            <li class="sign-up {{ app.isAuthenticated ? 'hidden' : '' }}">
-                <a href="{{ path('auth/sign-up') }}" class="ajax-link">Sign up</a>
-            </li>
-            <li class="sign-in {{ app.isAuthenticated ? 'hidden' : '' }}">
-                <a href="{{ path('auth/sign-in') }}" class="ajax-link">Sign in</a>
-            </li>
-            <li class="sign-out {{ app.isAuthenticated ? '' : 'hidden' }}">
-                <a href="{{ path('auth/sign-out') }}" class="ajax-link">Sign out</a>
-            </li>
         </ul>
     </nav>
 

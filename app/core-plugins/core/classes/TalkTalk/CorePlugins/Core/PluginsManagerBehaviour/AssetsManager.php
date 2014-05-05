@@ -6,18 +6,16 @@ use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
 
 class AssetsManager extends BehaviourBase
 {
-    /**
-     * @return array
-     */
+
     public function registerPluginsAssets()
     {
-        $pluginsManager = $this->_pluginsManager;
+        $pluginsManager = $this->pluginsManager;
         $app = $pluginsManager->getApp();
 
         $pluginsAssetsCss = array();
         $pluginsAssetsJs = array();
 
-        foreach ($this->_pluginsManager->getPlugins() as $plugin) {
+        foreach ($this->pluginsManager->getPlugins() as $plugin) {
             if (!isset($plugin->data['assets'])) {
                 continue;
             }
@@ -37,12 +35,12 @@ class AssetsManager extends BehaviourBase
 
         $app['plugins.assets.css'] = $pluginsAssetsCss;
         $app['plugins.assets.js'] = $pluginsAssetsJs;
-        $app['monolog']->addDebug(
+        $this->logger->addDebug(
             sprintf(
                 '%d CSS and %d JS assets registered by %d plugins.',
                 count($pluginsAssetsCss),
                 count($pluginsAssetsJs),
-                count($this->_pluginsManager->getPlugins())
+                count($this->pluginsManager->getPlugins())
             )
         );
     }

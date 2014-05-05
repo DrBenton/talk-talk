@@ -6,13 +6,12 @@
 {% set notifications = get_flashes() %}
 
 {% if
-    not app.isAjax or
-    notifications is not empty
-%}
+not app.isAjax or
+notifications is not empty %}
 
     {% if app.isAjax %}
         {# We use a temporary container when in an Ajax context #}
-        {% set tmpNotificationsContainerId = app.uuid  %}
+        {% set tmpNotificationsContainerId = app.uuid %}
         {% set notificationsContainerId = "notifications-" ~ tmpNotificationsContainerId %}
     {% else %}
         {# We use a real, permanent container when not in an Ajax context #}
@@ -20,7 +19,7 @@
     {% endif %}
 
     <div id="{{ notificationsContainerId }}"
-        class="notifications-to-display {{ app.isAjax ? 'hidden' : '' }}">
+         class="notifications-to-display {{ app.isAjax ? 'hidden' : '' }}">
 
         {% if notifications is not empty %}
             {{ enable_html_hooks('notifications_display') }}
@@ -30,7 +29,7 @@
                         <ul>
                             {% for notification in notifications[type] %}
                                 <li>
-                                    {% if notification.field is defined  %}
+                                    {% if notification.field is defined %}
                                         <b>{{ notification.field }}</b> {{ notification.messages|join(' ') }}
                                     {% else %}
                                         {{ notification }}
@@ -47,11 +46,10 @@
 
     {% if app.isAjax %}
         <script>
-            require(['jquery'], function ($)
-            {
+            require(['jquery'], function ($) {
                 // These notifications are displayed in the layout #notifications-container
                 var $notificationToDisplay = $("#{{ notificationsContainerId }}");
-                $('#notifications-container').html( $notificationToDisplay.html() );
+                $('#notifications-container').html($notificationToDisplay.html());
                 console.warn('$notificationToDisplay=', $notificationToDisplay.length, "$('#notifications-container')=", $('#notifications-container').length);
 //                debugger;
                 $notificationToDisplay.remove();

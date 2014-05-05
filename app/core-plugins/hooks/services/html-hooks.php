@@ -1,6 +1,5 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $html_hooks = array();
@@ -20,6 +19,7 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
         $rawView = $appResponse->getContent();
 
         if (
+            0 === count($html_hooks) ||
             $rawView === null ||
             false === strpos($appResponse->headers->get('Content-Type'), 'text/html')
         ) {
@@ -29,7 +29,7 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
         libxml_use_internal_errors(true); //disable warnings...
         $domView = QueryPath::withHTML($rawView);
         foreach ($html_hooks as $hookName) {
-            $app['plugins.manager']->triggerHook($hookName, array($domView));
+            $app['plugins.manager']->triggerHook($hookName, array(&$domView));
         }
         libxml_use_internal_errors(false); //...and enable it again!
 
@@ -45,12 +45,5 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
             $modifiedHtml = $domView->html();
         }
         $appResponse->setContent($modifiedHtml);
-    }
-);
-
-// HTML hooks actions will be triggered just before the Response sending
-$app->after(
-    function (Request $request, Response $response) use ($app) {
-        $app['plugins.html_hooks.trigger_hooks']($response);
     }
 );

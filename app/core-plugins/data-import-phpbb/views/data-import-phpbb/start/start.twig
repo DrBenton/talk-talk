@@ -3,11 +3,13 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
-    {{ enable_html_hooks('form', 'signin_form') }}
-    <form id="signin-form" role="form"
-          action="{{ path('auth/sign-in/submit') }}"
+    {{ 'core-plugins.data-import-phpbb.start.form.intro'|trans }}
+
+    {{ enable_html_hooks('form', 'dataimport_phpbb_form') }}
+    <form id="dataimport-phpbb-start-form" role="form"
+          action="{#{ path('auth/sign-in/submit') }#}"
           method="post"
-          class="sign-form ajax-form">
+          class="ajax-form">
 
         {# TODO: CSRF provider #}
         {#<input type="hidden" name="_token" value="{{ csrf_token() }}">#}
@@ -16,7 +18,7 @@
 
             <div class="form-group login">
                 <label for="signup-input-login">
-                    {{ 'core-plugins.auth.sign-in.form.login'|trans }}
+                    Login <!-- TODO: handle i18n -->
                 </label>
 
                 <div class="input-container">
@@ -29,7 +31,7 @@
 
             <div class="form-group password">
                 <label for="signup-input-password">
-                    {{ 'core-plugins.auth.sign-in.form.password'|trans }}
+                    Password
                 </label>
 
                 <div class="input-container">
@@ -44,8 +46,7 @@
 
         <div class="form-group submit">
             <div class="input-container">
-                <input type="submit" class="submit-button"
-                       value="{{ 'core-plugins.auth.sign-in.form.submit'|trans }}">
+                <input type="submit" class="submit-button">
             </div>
         </div>
 

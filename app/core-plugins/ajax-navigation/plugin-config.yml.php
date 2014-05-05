@@ -3,6 +3,7 @@
 #TODO: refactor all this JS stuff in a cleaner, event-driven, way
 
 general:
+  id: ajax-nav
 
 hooks:
   - html.site_container

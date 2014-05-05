@@ -1,21 +1,5 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
-core-plugins:
-  auth:
-    sign-up:
-      notifications:
-        success: Welcome %login%!
-    sign-in:
-      notifications:
-        success: Welcome back %login%!
-        error: No User found for this login or password.
-    sign-out:
-      notifications:
-        success: Bye! Hope to see you soon!
-
-hello: Hello %name%
-goodbye: Goodbye %name%
-
 # Validation messages copied from Laravel - © Taylor Otwell - MIT license
 validation:
   accepted: The :attribute must be accepted.

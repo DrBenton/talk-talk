@@ -1,6 +1,7 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
 general:
+  id: core
 
 actions:
   -
@@ -17,7 +18,6 @@ classes:
     paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Core
 
 services:
-  - logger
   - session
   - db
   - crypt
@@ -26,6 +26,11 @@ services:
   - translator
   - validator
   - uuid
+
+locales:
+  -
+    file: validation-en
+    language: en
 
 assets:
   stylesheets:

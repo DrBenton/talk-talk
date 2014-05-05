@@ -9,10 +9,10 @@ class ClassesManager extends BehaviourBase
      */
     public function registerClassLoadingSchemes()
     {
-        $pluginsManager = $this->_pluginsManager;
+        $pluginsManager = $this->pluginsManager;
         $app = $pluginsManager->getApp();
 
-        foreach ($this->_pluginsManager->getPlugins() as $plugin) {
+        foreach ($this->pluginsManager->getPlugins() as $plugin) {
             if (!isset($plugin->data['classes'])) {
                 continue;
             }
