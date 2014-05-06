@@ -26,6 +26,11 @@ services:
   - translator
   - validator
   - uuid
+  - csrf
+  
+events:
+  - error.app-error
+  - before.check-csrf
 
 locales:
   -

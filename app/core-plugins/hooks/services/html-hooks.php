@@ -16,6 +16,10 @@ $app['plugins.html_hooks.add'] = $app->protect(
 $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
     function (Response &$appResponse) use ($app, &$html_hooks) {
 
+        if (null !== $app['app.error']) {
+            return;//don't modify any HTML code if we have an error
+        }
+        
         $rawView = $appResponse->getContent();
 
         if (

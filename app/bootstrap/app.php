@@ -20,6 +20,7 @@ return function (Request $request) {
     $app['app.vendors.path'] = $app['app.path'] . '/vendor';
     $app['app.vendors.php.path'] = $app['app.vendors.path'] . '/php';
     $app['app.vendors.js.path'] = $app['app.vendors.path'] . '/js';
+    $app['app.error'] = null;
 
     // Composer autoloader is a central part of our App.
     // Let's add it as a shared service!

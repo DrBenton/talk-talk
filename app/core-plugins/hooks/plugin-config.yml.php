@@ -13,7 +13,7 @@ services:
   - html-hooks
 
 events:
-  - after/trigger-html-hooks
+  - after.trigger-html-hooks
 
 twig-extensions:
   - func.enable-html-hooks

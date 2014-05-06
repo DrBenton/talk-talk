@@ -9,8 +9,8 @@
           method="post"
           class="sign-form ajax-form">
 
-        {# TODO: CSRF provider #}
-        {#<input type="hidden" name="_token" value="{{ csrf_token() }}">#}
+        <input type="hidden" name="{{ app['csrf.token_name'] }}"
+               value="{{ app['csrf.token_value'] }}">
 
         <fieldset id="core-inputs">
 

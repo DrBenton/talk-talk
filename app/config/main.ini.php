@@ -3,6 +3,9 @@
 [general]
 debug = true
 
+[security]
+csrf.token_name = _token 
+
 [db]
 driver = mysql
 host = localhost
