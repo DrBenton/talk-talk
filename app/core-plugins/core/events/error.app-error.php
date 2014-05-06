@@ -2,10 +2,14 @@
 
 use Silex\Application;
 
-$app->error(function (\Exception $e, $code) use ($app) {
+$app->error(
+    function (\Exception $e, $code) use ($app) {
 
-    // We just inform the others app components that we have an error
-    $app['app.error'] = $e;
-    return;
+        // We just inform the others app components that we have an error
+        $app['app.error'] = $e;
 
-}, Application::EARLY_EVENT);
+        return;
+
+    },
+    Application::EARLY_EVENT
+);

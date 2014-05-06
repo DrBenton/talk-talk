@@ -5,50 +5,6 @@
 
     {{ 'core-plugins.data-import-phpbb.start.form.intro'|trans }}
 
-    {{ enable_html_hooks('form', 'dataimport_phpbb_form') }}
-    <form id="dataimport-phpbb-start-form" role="form"
-          action="{#{ path('auth/sign-in/submit') }#}"
-          method="post"
-          class="ajax-form">
+    {% include 'data-import-phpbb/start/_form.twig' with { dbSettings: dbSettings } %}
 
-        <input type="hidden" name="{{ app['csrf.token_name'] }}"
-               value="{{ app['csrf.token_value'] }}">
-
-        <fieldset id="core-inputs">
-
-            <div class="form-group login">
-                <label for="signup-input-login">
-                    Login <!-- TODO: handle i18n -->
-                </label>
-
-                <div class="input-container">
-                    <input type="text" name="user[login]"
-                           id="signup-input-login"
-                           class="input input-text login"
-                           required>
-                </div>
-            </div>
-
-            <div class="form-group password">
-                <label for="signup-input-password">
-                    Password
-                </label>
-
-                <div class="input-container">
-                    <input type="password" name="user[password]"
-                           id="signup-input-password"
-                           class="input input-password password"
-                           required>
-                </div>
-            </div>
-
-        </fieldset>
-
-        <div class="form-group submit">
-            <div class="input-container">
-                <input type="submit" class="submit-button">
-            </div>
-        </div>
-
-    </form>
 {% endblock %}

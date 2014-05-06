@@ -41,9 +41,11 @@ $app['db'] = $app->share(
 );
 
 // Wires our Silex app to the Eloquent system
-$app['db.connection_resolver.init'] = $app->protect(function () use ($app) {
-    return $app['db'];
-});
+$app['db.connection_resolver.init'] = $app->protect(
+    function () use ($app) {
+        return $app['db'];
+    }
+);
 $connectionResolver = new ConnectionResolver();
 $connectionResolver->addConnectionInitCallable('core', $app['db.connection_resolver.init']);
 $connectionResolver->setDefaultConnection('core');

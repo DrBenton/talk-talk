@@ -1,0 +1,163 @@
+{{ enable_html_hooks('form', 'dataimport_phpbb_form') }}
+<form id="dataimport-phpbb-start-form" role="form"
+      action="{{ path('data-import/phpbb/start/target') }}"
+      method="post"
+      class="ajax-form">
+
+    <input type="hidden" name="{{ app['csrf.token_name'] }}"
+           value="{{ app['csrf.token_value'] }}">
+
+    <fieldset id="core-inputs">
+
+        <div class="form-group driver">
+            <label for="phpbb-data-input-hostname">
+                {{ 'core-plugins.data-import-phpbb.start.form.driver'|trans }}
+            </label>
+
+            <div class="input-container">
+                <select name="db-settings[driver]"
+                        id="phpbb-data-input-driver"
+                        class="input input-select driver">
+                    required>
+                    <option value="mysql" {{ dbSettings.driver == 'mysql' ? 'selected' : '' }}>MySQL</option>
+                    <option value="pgsql" {{ dbSettings.driver == 'pgsql' ? 'selected' : '' }}>PostgreSQL</option>
+                </select>
+
+                <p class="help-block">
+                    {{ 'core-plugins.data-import-phpbb.start.form.driver.help'|trans }}
+                </p>
+            </div>
+
+        </div>
+
+        <div class="form-group host">
+            <label for="phpbb-data-input-host">
+                {{ 'core-plugins.data-import-phpbb.start.form.host'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="text" name="db-settings[host]"
+                       id="phpbb-data-input-host"
+                       class="input input-text host"
+                       value="{{ dbSettings.host }}"
+                       required>
+
+                <p class="help-block">
+                    {{ 'core-plugins.data-import-phpbb.start.form.host.help'|trans }}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group username">
+            <label for="phpbb-data-input-username">
+                {{ 'core-plugins.data-import-phpbb.start.form.username'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="text" name="db-settings[username]"
+                       id="phpbb-data-input-username"
+                       class="input input-text username"
+                       value="{{ dbSettings.username }}"
+                       required>
+            </div>
+        </div>
+
+        <div class="form-group password">
+            <label for="phpbb-data-input-password">
+                {{ 'core-plugins.data-import-phpbb.start.form.password'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="password" name="db-settings[password]"
+                       id="phpbb-data-input-password"
+                       class="input input-password password">
+            </div>
+        </div>
+
+        <div class="form-group database">
+            <label for="phpbb-data-input-database">
+                {{ 'core-plugins.data-import-phpbb.start.form.database'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="text" name="db-settings[database]"
+                       id="phpbb-data-input-database"
+                       class="input input-text database"
+                       value="{{ dbSettings.database }}"
+                       required>
+            </div>
+        </div>
+
+        <div class="form-group prefix">
+            <label for="phpbb-data-input-prefix">
+                {{ 'core-plugins.data-import-phpbb.start.form.prefix'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="text" name="db-settings[prefix]"
+                       id="phpbb-data-input-prefix"
+                       class="input input-text prefix"
+                       value="{{ dbSettings.prefix }}"
+                       required>
+            </div>
+        </div>
+
+        <div class="form-group port">
+            <label for="phpbb-data-input-port">
+                {{ 'core-plugins.data-import-phpbb.start.form.port'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="number" name="db-settings[port]"
+                       id="phpbb-data-input-port"
+                       class="input input-text port"
+                       value="{{ dbSettings.port }}"
+                       required>
+            </div>
+        </div>
+
+        <div class="form-group charset">
+            <label for="phpbb-data-input-charset">
+                {{ 'core-plugins.data-import-phpbb.start.form.charset'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="text" name="db-settings[charset]"
+                       id="phpbb-data-input-charset"
+                       class="input input-text charset"
+                       value="{{ dbSettings.charset }}"
+                       required>
+
+                <p class="help-block">
+                    {{ 'core-plugins.data-import-phpbb.start.form.charset.help'|trans }}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group collation">
+            <label for="phpbb-data-input-collation">
+                {{ 'core-plugins.data-import-phpbb.start.form.collation'|trans }}
+            </label>
+
+            <div class="input-container">
+                <input type="text" name="db-settings[collation]"
+                       id="phpbb-data-input-collation"
+                       class="input input-text collation"
+                       value="{{ dbSettings.collation }}"
+                       required>
+
+                <p class="help-block">
+                    {{ 'core-plugins.data-import-phpbb.start.form.collation.help'|trans }}
+                </p>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <div class="form-group submit">
+        <div class="input-container">
+            <input type="submit" class="submit-button">
+        </div>
+    </div>
+
+</form>

@@ -7,13 +7,12 @@ $LIVERELOAD_SCRIPT_TAG = <<<'END'
     + 'script>')]]></script>
 END;
 
-
 $hooks['html.site_container'] = function (\QueryPath\DOMQuery $html) use ($app, $LIVERELOAD_SCRIPT_TAG) {
     if (!$app['debug']) {
         return;
     }
-  
-    $port = (int)$app['config']['development']['livereload.port'];
+
+    $port = (int) $app['config']['development']['livereload.port'];
     $html->find('body')->append(
         str_replace('${livereload_port}', $port, $LIVERELOAD_SCRIPT_TAG)
     );

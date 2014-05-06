@@ -12,7 +12,7 @@ actions:
     url: /sign-up
     method: POST
     target: actions/sign-up-target.php
-    name: auth/sign-up/submit
+    name: auth/sign-up/target
   -
     url: /sign-in
     target: actions/sign-in-form.php
@@ -21,7 +21,7 @@ actions:
     url: /sign-in
     method: POST
     target: actions/sign-in-target.php
-    name: auth/sign-in/submit
+    name: auth/sign-in/target
   -
     url: /sign-out
     target: actions/sign-out.php
@@ -34,6 +34,7 @@ classes:
 
 services:
   - is-authentificated
+  - before-middlewares
 
 locales:
   - en

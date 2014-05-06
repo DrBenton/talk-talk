@@ -2,9 +2,12 @@
 
 //use Symfony\Component\Translation\Loader\YamlFileLoader;
 
-$app->register(new Silex\Provider\TranslationServiceProvider(), array(
-    'locale_fallbacks' => array('en'),
-));
+$app->register(
+    new Silex\Provider\TranslationServiceProvider(),
+    array(
+        'locale_fallbacks' => array('en'),
+    )
+);
 
 $app['translator.locales_path'] = $app['app.path'] . '/app/data/locales';
 

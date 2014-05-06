@@ -27,7 +27,8 @@ services:
   - validator
   - uuid
   - csrf
-  
+  - html-escape
+
 events:
   - error.app-error
   - before.check-csrf

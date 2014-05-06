@@ -4,6 +4,7 @@ namespace TalkTalk\CorePlugins\Hooks\PluginsManagerBehaviour;
 
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
 use TalkTalk\Core\Plugins\PluginData;
+use TalkTalk\CorePlugins\Utils\ArrayUtils;
 
 class HooksManager extends BehaviourBase
 {
@@ -70,11 +71,7 @@ class HooksManager extends BehaviourBase
 
     protected function getNormalizedHookData(PluginData $plugin, $hookData)
     {
-        if (!is_array($hookData)) {
-            $hookData = array(
-                'name' => (string)$hookData
-            );
-        }
+        $hookData = ArrayUtils::getArray($hookData, 'name');
 
         if (!isset($hookData['priority'])) {
             if (
@@ -87,7 +84,7 @@ class HooksManager extends BehaviourBase
             }
         }
 
-        $hookData['priority'] = (int)$hookData['priority'];
+        $hookData['priority'] = (int) $hookData['priority'];
 
         return array(
             'plugin_id' => $plugin->id,
@@ -99,12 +96,13 @@ class HooksManager extends BehaviourBase
     {
         $priorityA = $hookA['data']['priority'];
         $priorityB = $hookB['data']['priority'];
-        if ($priorityA > $priorityB)
+        if ($priorityA > $priorityB) {
             return -1;
-        elseif ($priorityA < $priorityB)
+        } elseif ($priorityA < $priorityB) {
             return 1;
-        else
+        } else {
             return 0;
+        }
     }
 
     protected function triggerPluginHook($pluginId, $hookName, array $hookArgs)

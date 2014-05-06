@@ -3,6 +3,7 @@
 namespace TalkTalk\Core\Plugins\Manager\Behaviour;
 
 use TalkTalk\Core\Plugins\PluginData;
+use TalkTalk\CorePlugins\Utils\ArrayUtils;
 
 class ActionsManager extends BehaviourBase
 {
@@ -41,8 +42,27 @@ class ActionsManager extends BehaviourBase
             }
         )->method($actionData['method']);
 
+        // Route name management
         if (isset($actionData['name'])) {
             $route->bind($actionData['name']);
+        }
+
+        // "before" middlewares management
+        if (isset($actionData['before'])) {
+            if (isset($plugin->data['general']['actionsBefore'])) {
+                // Whole Plugin "general/actionsBefore" Middlewares goes first
+                $plugin->data['general']['actionsBefore'] = ArrayUtils::getArray(
+                    $plugin->data['general']['actionsBefore']
+                );
+                foreach ($plugin->data['general']['actionsBefore'] as $wholePluginbeforeMiddlewareServiceName) {
+                    $route->before($app[$wholePluginbeforeMiddlewareServiceName]);
+                }
+
+            }
+            $actionData['before'] = ArrayUtils::getArray($actionData['before']);
+            foreach ($actionData['before'] as $beforeMiddlewareServiceName) {
+                $route->before($app[$beforeMiddlewareServiceName]);
+            }
         }
 
         $app['monolog']->addDebug(

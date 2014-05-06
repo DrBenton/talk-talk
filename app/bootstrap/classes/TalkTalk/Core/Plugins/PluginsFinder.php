@@ -27,8 +27,8 @@ class PluginsFinder
     }
 
     /**
-     * @param string $rootPath
-     * @param string $pluginsInitFilePattern
+     * @param string        $rootPath
+     * @param string        $pluginsInitFilePattern
      * @param callable|null $pluginConfigParseFunc
      */
     public function findPlugins(
@@ -36,8 +36,7 @@ class PluginsFinder
         $pluginsInitFilePattern,
         /*callable*/
         $pluginConfigParseFunc = null
-    )
-    {
+    ) {
         if (null === $pluginConfigParseFunc) {
             $pluginConfigParseFunc = array($this, 'defaultPluginConfigParseFunc');
         }
@@ -68,7 +67,7 @@ class PluginsFinder
                     continue;
                 }
 
-                $pluginId = (string)$pluginConfigData['general']['id'];
+                $pluginId = (string) $pluginConfigData['general']['id'];
                 $pluginsData[] = array(
                     'id' => $pluginId,
                     'path' => $pluginPath,

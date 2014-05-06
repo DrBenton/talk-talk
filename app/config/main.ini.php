@@ -4,7 +4,7 @@
 debug = true
 
 [security]
-csrf.token_name = _token 
+csrf.token_name = _token
 
 [db]
 driver = mysql

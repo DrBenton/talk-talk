@@ -29,8 +29,10 @@ notifications is not empty %}
                         <ul>
                             {% for notification in notifications[type] %}
                                 <li>
-                                    {% if notification.field is defined %}
-                                        <b>{{ notification.field }}</b> {{ notification.messages|join(' ') }}
+                                    {% if notification.secured is defined %}
+                                        {{ notification.message|raw }}
+                                    {% elseif notification.field is defined %}
+                                        {{ notification.messages|join(' ') }}
                                     {% else %}
                                         {{ notification }}
                                     {% endif %}

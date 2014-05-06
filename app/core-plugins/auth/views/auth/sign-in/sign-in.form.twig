@@ -5,12 +5,12 @@
 
     {{ enable_html_hooks('form', 'signin_form') }}
     <form id="signin-form" role="form"
-          action="{{ path('auth/sign-in/submit') }}"
+          action="{{ path('auth/sign-in/target') }}"
           method="post"
           class="sign-form ajax-form">
 
-        <input type="hidden" name="{{ app['csrf.token_name'] }}" 
-                value="{{ app['csrf.token_value'] }}">
+        <input type="hidden" name="{{ app['csrf.token_name'] }}"
+               value="{{ app['csrf.token_value'] }}">
 
         <fieldset id="core-inputs">
 

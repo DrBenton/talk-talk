@@ -9,13 +9,17 @@ use Doctrine\Common\Cache\PhpFileCache;
 //use Doctrine\Common\Cache\ApcCache;
 //use Doctrine\Common\Cache\RedisCache;
 
-$app['cache.file.path'] = $app->share(function ($app) {
-    return $app['app.var.cache.path'] . '/cache';
-});
+$app['cache.file.path'] = $app->share(
+    function ($app) {
+        return $app['app.var.cache.path'] . '/data-cache';
+    }
+);
 
-$app['cache'] = $app->share(function ($app) {
-    // Let's disable our data cache for the moment...
-    return new ArrayCache();
+$app['cache'] = $app->share(
+    function ($app) {
+        // Let's disable our data cache for the moment...
+        return new ArrayCache();
 
-    return new PhpFileCache($app['cache.file.path']);
-});
+        return new PhpFileCache($app['cache.file.path']);
+    }
+);
