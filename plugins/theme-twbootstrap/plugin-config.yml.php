@@ -2,7 +2,8 @@
 
 general:
   id: theme/twbootstrap
-  htmlHooksPriority: -100 # since we are a theme plugin, we want to be triggered *after* all other plugins
+  # since we are a theme plugin, we want to be triggered *after* all other plugins:
+  htmlHooksPriority: -100
 
 assets:
   stylesheets:

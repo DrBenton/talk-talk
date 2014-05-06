@@ -9,6 +9,8 @@ services:
 hooks:
   -
     name: html.header
-    priority: -10 # this hook will be triggered *after* the other plugins "html.header" hooks
-
+    # this hook will be triggered *after* the other plugins "html.header" hooks:
+    priority: -10
+  - html.site_container
+  
 twig-extensions:

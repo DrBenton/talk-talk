@@ -12,7 +12,7 @@ return function (Request $request) {
     $app = new Application();
 
     // Core params
-    //TODO: handle this in a config file
+    //TODO: handle this in a config file?
     $app['app.path'] = realpath(__DIR__ . '/../../');
     $app['app.var.path'] = $app['app.path'] . '/app/var';
     $app['app.var.cache.path'] = $app['app.var.path'] . '/cache';
@@ -20,7 +20,6 @@ return function (Request $request) {
     $app['app.vendors.path'] = $app['app.path'] . '/vendor';
     $app['app.vendors.php.path'] = $app['app.vendors.path'] . '/php';
     $app['app.vendors.js.path'] = $app['app.vendors.path'] . '/js';
-    $app['debug'] = true;
 
     // Composer autoloader is a central part of our App.
     // Let's add it as a shared service!
@@ -41,7 +40,12 @@ return function (Request $request) {
         require_once __DIR__ . '/services/' . $serviceName . '.php';
     };
 
-    // Anybody can need a Logger; let's intialize this Service first!
+    // Let's load the very heart of our app config...
+    $loadBootstrapService('config');
+    // ...and start using it right now!
+    $app['debug'] = $app['config']['general']['debug'];
+
+    // Anybody can need a Logger; let's initialize this Service first!
     $loadBootstrapService('logger');
 
     // Plugins services must be initialized quickly, as all our app will rely on it :-)

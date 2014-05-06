@@ -12,7 +12,7 @@ class ConnectionResolver implements ConnectionResolverInterface
      *
      * @var array
      */
-    protected $connectionsClosuresInit = array();
+    protected $connectionsInitCallables = array();
     /**
      * All of the registered connections.
      *
@@ -58,7 +58,7 @@ class ConnectionResolver implements ConnectionResolverInterface
             $name = $this->getDefaultConnection();
         }
 
-        if (!isset($this->connections[$name]) && isset($this->connectionsClosuresInit[$name])) {
+        if (!isset($this->connections[$name]) && isset($this->connectionsInitCallables[$name])) {
             $this->initConnectionClosure($name);
         }
 
@@ -69,12 +69,12 @@ class ConnectionResolver implements ConnectionResolverInterface
      * Add a connection to the resolver.
      *
      * @param  string $name
-     * @param  \Closure $connectionInitClosure
+     * @param  callable $connectionInitClosure
      * @return void
      */
-    public function addConnectionClosureInit($name, \Closure $connectionInitClosure)
+    public function addConnectionInitCallable($name, /*callable*/ $connectionInitClosure)
     {
-        $this->connectionsClosuresInit[$name] = $connectionInitClosure;
+        $this->connectionsInitCallables[$name] = $connectionInitClosure;
     }
 
     /**
@@ -85,7 +85,7 @@ class ConnectionResolver implements ConnectionResolverInterface
      */
     public function hasConnection($name)
     {
-        return isset($this->connections[$name]) || isset($this->connectionsClosuresInit[$name]);
+        return isset($this->connections[$name]) || isset($this->connectionsInitCallables[$name]);
     }
 
     /**
@@ -111,6 +111,6 @@ class ConnectionResolver implements ConnectionResolverInterface
 
     protected function initConnectionClosure($name)
     {
-        $this->connections[$name] = call_user_func($this->connectionsClosuresInit[$name]);
+        $this->connections[$name] = call_user_func($this->connectionsInitCallables[$name]);
     }
 }

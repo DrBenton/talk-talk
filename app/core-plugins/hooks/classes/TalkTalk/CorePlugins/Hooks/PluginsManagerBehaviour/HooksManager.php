@@ -77,7 +77,10 @@ class HooksManager extends BehaviourBase
         }
 
         if (!isset($hookData['priority'])) {
-            if (isset($plugin->data['general']['htmlHooksPriority'])) {
+            if (
+                0 === strpos($hookData['name'], 'html.') &&
+                isset($plugin->data['general']['htmlHooksPriority'])
+            ) {
                 $hookData['priority'] = $plugin->data['general']['htmlHooksPriority'];
             } else {
                 $hookData['priority'] = self::DEFAULT_HOOK_PRIORITY;
