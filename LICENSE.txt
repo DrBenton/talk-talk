@@ -1,7 +1,8 @@
 Project codename "Talk-Talk" - Web Forum software
 
-Copyright 2014 by Olivier Philippon and Nicolas Goussin
+Copyright 2014 by Olivier Philippon <olivier@rougemine.com> and Nicolas Goussin
 
+@see https://drupal.org/licensing/faq/ for more details about this license terms.
 
 This code is released under the GPL.
 
