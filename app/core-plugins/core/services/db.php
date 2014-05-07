@@ -4,6 +4,11 @@ use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
 use TalkTalk\CorePlugins\Core\Database\ConnectionResolver;
 
+$connectionsManager = new Manager();
+$connectionResolver = new ConnectionResolver();
+
+$DEFAULT_CONNECTION_NAME = 'talk-talk';
+
 $app['db.settings'] = $app->share(
     function () use ($app) {
         return array_merge(
@@ -23,12 +28,19 @@ $app['db.settings'] = $app->share(
 );
 
 $app['db.connection.factory'] = $app->protect(
-    function (array $connectionSettings) use ($app) {
-        $manager = new Manager();
-        $manager->addConnection($connectionSettings);
-        $manager->bootEloquent();
+    function (array $connectionSettings, $connectionName = null) use ($app, $connectionsManager, $connectionResolver) {
 
-        $db = $manager->getConnection();
+        $connectionsManager->addConnection($connectionSettings);
+        $connectionsManager->bootEloquent();
+
+        $db = $connectionsManager->getConnection();
+
+        if (null !== $connectionName) {
+            // This is it not the default "talk-talk" DB connection,
+            // already handled at the end of this file.
+            // --> Let's add it to the ConnectionResolver!
+            $connectionResolver->addConnection($connectionName, $db);
+        }
 
         return $db;
     }
@@ -41,14 +53,15 @@ $app['db'] = $app->share(
 );
 
 // Wires our Silex app to the Eloquent system
-$app['db.connection_resolver.init'] = $app->protect(
+$app['db.connections.resolver.default.init'] = $app->protect(
     function () use ($app) {
         return $app['db'];
     }
 );
-$connectionResolver = new ConnectionResolver();
-$connectionResolver->addConnectionInitCallable('core', $app['db.connection_resolver.init']);
-$connectionResolver->setDefaultConnection('core');
+
+$connectionResolver->addConnectionInitCallable($DEFAULT_CONNECTION_NAME, $app['db.connections.resolver.default.init']);
+$connectionResolver->setDefaultConnection($DEFAULT_CONNECTION_NAME);
 Model::setConnectionResolver($connectionResolver);
 
-$app['db.connection_resolver'] = $connectionResolver;
+$app['db.connections.manager'] = $connectionsManager;
+$app['db.connections.resolver'] = $connectionResolver;

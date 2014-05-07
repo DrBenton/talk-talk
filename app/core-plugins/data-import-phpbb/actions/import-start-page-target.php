@@ -12,7 +12,8 @@ $action = function (Application $app, Request $request) {
 
     // Let's check these DB connection settings!
     try {
-        $phpBbDbConnection = $app['db.connection.factory']($dbSettings);
+        $app['data-import-phpbb.db.connection.set_settings']($dbSettings);
+        $phpBbDbConnection = $app['data-import-phpbb.db'];
         $success = true;
     } catch (\PDOException $e) {
         $errMsg = array(
@@ -32,9 +33,9 @@ $action = function (Application $app, Request $request) {
             array('dbSettings' => $dbSettings)
         );
     } else {
-        // Let's put these successfull connection setting in our Session data
+        // Let's put these successful connection setting in our Session data
         $app['session']->set('phpbb.db-settings', $dbSettings);
-        // Let's display a successful notification
+        // Let's display a "success" notification
         $app['session.flash.add.translated'](
             'core-plugins.data-import-phpbb.start.db-success',
             array(),

@@ -1,0 +1,7 @@
+{% set visibilityClass = (
+(options.onlyForAuthenticated == true and not app.isAuthenticated) or
+(options.onlyForAnonymous == true and app.isAuthenticated)
+) ? 'hidden' : '' %}
+<li class="{{ options.class }} {{ visibilityClass }}">
+    <a href="{{ url }}" class="{{ options.ajaxLink ? 'ajax-link' : '' }}">{{ label|trans }}</a>
+</li>

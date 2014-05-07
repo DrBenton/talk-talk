@@ -33,7 +33,7 @@ classes:
     paths: ${pluginPath}/classes/TalkTalk/Model
 
 services:
-  - is-authentificated
+  - is-authenticated
   - before-middlewares
 
 locales:

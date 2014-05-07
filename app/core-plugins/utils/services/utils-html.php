@@ -3,13 +3,19 @@
 $headerLinks = array();
 
 $app['utils.html.add_page_header_link'] = $app->protect(
-    function ($href, $label, $ajaxLink = true, $class = '') use (&$headerLinks) {
-        $ajaxLinkClass = $ajaxLink ? 'ajax-link' : '';
-        $headerLinks[] = <<<HTML
-    <li class="$class">
-        <a href="$href" class="$class $ajaxLinkClass">$label</a>
-    </li>
-HTML;
+    function ($url, $labelLocaleKey, array $options = array()) use ($app, &$headerLinks) {
+        $options = array_merge(
+            array(
+                'ajaxLink' => true,
+                'onlyForAuthenticated' => false,
+                'onlyForAnonymous' => false,
+            ),
+            $options
+        );
+        $headerLinks[] = $app['twig']->render(
+            'utils/common/header-link.twig',
+            array('url' => $url, 'label' => $labelLocaleKey, 'options' => $options)
+        );
     }
 );
 

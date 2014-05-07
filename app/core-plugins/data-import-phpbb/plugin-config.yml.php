@@ -29,6 +29,10 @@ classes:
 
 services:
   - before-middlewares
+  - phpbb-db
+
+events:
+  - before.set-phpbb-db-settings-from-session
 
 locales:
   - en

@@ -3,6 +3,7 @@
 namespace TalkTalk\CorePlugins\Core\Database;
 
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Database\Connection;
 
 class ConnectionResolver implements ConnectionResolverInterface
 {
@@ -66,17 +67,30 @@ class ConnectionResolver implements ConnectionResolverInterface
     }
 
     /**
-     * Add a connection to the resolver.
+     * Add a connection to the resolver, resolved through a Closure.
      *
      * @param  string   $name
      * @param  callable $connectionInitClosure
      * @return void
      */
     public function addConnectionInitCallable(
-        $name, /*callable*/
+        $name,
+        /*callable*/
         $connectionInitClosure
     ) {
         $this->connectionsInitCallables[$name] = $connectionInitClosure;
+    }
+
+    /**
+     * Add a connection to the resolver.
+     *
+     * @param  string                          $name
+     * @param  \Illuminate\Database\Connection $connection
+     * @return void
+     */
+    public function addConnection($name, Connection $connection)
+    {
+        $this->connections[$name] = $connection;
     }
 
     /**

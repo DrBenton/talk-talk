@@ -2,33 +2,37 @@
 
 $hooks['html.header'] = function (\QueryPath\DOMQuery $html) use ($app) {
     // Some vars setup...
-    $addHeaderLink = $app['utils.html.add_page_header_link'];
     $urlGenerator = $app['url_generator'];
-    $translator = $app['translator'];
-    $isAuthenticated = $app['isAuthenticated'];
     $translationKeyBase = 'core-plugins.auth.header_links.';
     // Ok, let's define our 3 header links!
     $headerLinks = array(
         array(
-            'href' => $urlGenerator->generate('auth/sign-up', array()),
-            'label' => $translator->trans($translationKeyBase . 'sign-up'),
-            'isAjax' => true,
-            'class' => 'sign-up ' . ($isAuthenticated ? 'hidden' : ''),
+            'url' => $urlGenerator->generate('auth/sign-up', array()),
+            'label' => $translationKeyBase . 'sign-up',
+            'options' => array(
+                'onlyForAnonymous' => true,
+                'class' => 'sign-up',
+            )
         ),
         array(
-            'href' => $urlGenerator->generate('auth/sign-in', array()),
-            'label' => $translator->trans($translationKeyBase . 'sign-in'),
-            'isAjax' => true,
-            'class' => 'sign-in ' . ($isAuthenticated ? 'hidden' : ''),
+            'url' => $urlGenerator->generate('auth/sign-in', array()),
+            'label' => $translationKeyBase . 'sign-in',
+            'options' => array(
+                'onlyForAnonymous' => true,
+                'class' => 'sign-in',
+            )
         ),
         array(
-            'href' => $urlGenerator->generate('auth/sign-out', array()),
-            'label' => $translator->trans($translationKeyBase . 'sign-out'),
-            'isAjax' => true,
-            'class' => 'sign-out ' . ($isAuthenticated ? '' : 'hidden'),
+            'url' => $urlGenerator->generate('auth/sign-out', array()),
+            'label' => $translationKeyBase . 'sign-out',
+            'options' => array(
+                'onlyForAuthenticated' => true,
+                'class' => 'sign-out',
+            )
         ),
     );
     // At last, we can add these header links
+    $addHeaderLink = $app['utils.html.add_page_header_link'];
     foreach ($headerLinks as $headerLink) {
         call_user_func_array($addHeaderLink, array_values($headerLink));
     }

@@ -9,6 +9,8 @@ class ArrayUtils
      * Forces the "arrayness" of a $subject.
      * Only handles string -> array conversion at the moment... :-)
      *
+     * <code>ArrayUtils::getArray('hello') => array('hello')</code>
+     * <code>ArrayUtils::getArray('hello', 'key') => array('key' => 'hello')</code>
      * @param  mixed  $subject
      * @param  string $hashKeyName
      * @return array
