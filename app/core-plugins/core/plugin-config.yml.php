@@ -1,23 +1,26 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
-general:
+@general:
   id: core
 
-actions:
+@actions:
   -
+    # GET / => actions/home.php
     url: /
-    target: actions/home.php
+    target: home
     name: core/home
   -
+    # GET /phpinfo => actions/phpinfo.php (only when $app['debug'] === true)
     url: /phpinfo
-    target: actions/phpinfo.php
-
-classes:
+    target: phpinfo
+    debugOnly: true
+    
+@classes:
   -
     prefix: TalkTalk\CorePlugins\Core\
     paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Core
 
-services:
+@services:
   - session
   - db
   - crypt
@@ -29,21 +32,21 @@ services:
   - csrf
   - html-escape
 
-events:
+@events:
   - error.app-error
   - before.check-csrf
 
-locales:
+@locales:
   -
     file: validation-en
     language: en
 
-assets:
+@assets:
   stylesheets:
   javascripts:
     - ${vendorsUrl}/requirejs/require.js
     - ${pluginUrl}/assets/js/requirejs-config.js
     - ${pluginUrl}/assets/js/main.js
 
-twig-extensions:
+@twig-extensions:
   - func.get-flashes

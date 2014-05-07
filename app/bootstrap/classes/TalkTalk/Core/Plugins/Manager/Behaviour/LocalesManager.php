@@ -25,23 +25,17 @@ class LocalesManager extends BehaviourBase
     {
         if ($this->cache->contains(self::CACHE_KEY)) {
             // Let's restore all our plugins locales data from cache!
-            $allPluginsLocalesData = $this->cache->fetch(self::CACHE_KEY);
-            foreach ($allPluginsLocalesData as $pluginLocaleData) {
-                $localeData = $pluginLocaleData['data'];
-                $language = $pluginLocaleData['language'];
-                $this->translator->addResource('array', $localeData, $language);
-            }
-
+            $this->restorePluginsLocalesDataFromCache();
             return;
         }
 
         $pluginsLocalesData = array();
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
-            if (!isset($plugin->data['locales'])) {
+            if (!isset($plugin->data['@locales'])) {
                 continue;
             }
 
-            foreach ($plugin->data['locales'] as $localeData) {
+            foreach ($plugin->data['@locales'] as $localeData) {
 
                 $localeData = $this->getNormalizedLocaleData($localeData);
 
@@ -56,10 +50,10 @@ class LocalesManager extends BehaviourBase
             }
         }
 
+        // We're gonna load all the locales right now, without lazy-loading.
+        // This is more expensive at first run, but thanks to this
+        // we will be able to cache the YAML files data.
         foreach ($pluginsLocalesData as &$pluginLocaleData) {
-            // We're gonna load all the locales right now, without lazy-loading.
-            // This is more expensive at first run, but thanks to this
-            // we will be able to cache the YAML files data.
             $localeData = Yaml::parse($pluginLocaleData['file_path']);
 
             $this->translator->addResource('array', $localeData, $pluginLocaleData['language']);
@@ -81,6 +75,16 @@ class LocalesManager extends BehaviourBase
         }
 
         return $localeData;
+    }
+    
+    protected function restorePluginsLocalesDataFromCache () {
+        $allPluginsLocalesData = $this->cache->fetch(self::CACHE_KEY);
+        
+        foreach ($allPluginsLocalesData as $pluginLocaleData) {
+            $localeData = $pluginLocaleData['data'];
+            $language = $pluginLocaleData['language'];
+            $this->translator->addResource('array', $localeData, $language);
+        }
     }
 
 }

@@ -1,10 +1,6 @@
 <?php
 
-$action = function (\Silex\Application $app) {
-    if (!$app['debug']) {
-        return $app->abort(500, 'PHP info is forbidden on this server.');
-    }
-
+$action = function () {
     ob_start();
     phpinfo();
 

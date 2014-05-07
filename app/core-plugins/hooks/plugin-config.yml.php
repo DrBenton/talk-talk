@@ -1,21 +1,21 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
-general:
+@general:
   id: hooks
 
-classes:
+@classes:
   -
     prefix: TalkTalk\CorePlugins\Hooks\
     paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Hooks
 
-services:
+@services:
   - hooks
   - html-hooks
 
-events:
+@events:
   - after.trigger-html-hooks
 
-twig-extensions:
+@twig-extensions:
   - func.enable-html-hooks
   - func.get-plugins-stylesheets
   - func.get-plugins-javascripts

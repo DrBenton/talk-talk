@@ -10,11 +10,11 @@ class TwigExtensionsManager extends BehaviourBase
     public function registerTwigExtensions()
     {
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
-            if (!isset($plugin->data['twig-extensions'])) {
+            if (!isset($plugin->data['@twig-extensions'])) {
                 continue;
             }
 
-            foreach ($plugin->data['twig-extensions'] as $twigExtFileName) {
+            foreach ($plugin->data['@twig-extensions'] as $twigExtFileName) {
                 $twigExtFilePath = $plugin->path . '/twig-ext/' . $twigExtFileName . '.php';
                 $this->pluginsManager->includeFileInIsolatedClosure($twigExtFilePath);
             }

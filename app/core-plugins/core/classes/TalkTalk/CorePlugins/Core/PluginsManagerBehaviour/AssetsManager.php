@@ -16,18 +16,19 @@ class AssetsManager extends BehaviourBase
         $pluginsAssetsJs = array();
 
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
-            if (!isset($plugin->data['assets'])) {
+            if (!isset($plugin->data['@assets'])) {
                 continue;
             }
 
-            if (isset($plugin->data['assets']['stylesheets'])) {
-                foreach ($plugin->data['assets']['stylesheets'] as $jsAssetPath) {
+            $assets = &$plugin->data['@assets'];
+            if (isset($assets['stylesheets'])) {
+                foreach ($assets['stylesheets'] as $jsAssetPath) {
                     $pluginsAssetsCss[] = $pluginsManager->handlePluginRelatedString($plugin, $jsAssetPath);
                 }
             }
 
-            if (isset($plugin->data['assets']['javascripts'])) {
-                foreach ($plugin->data['assets']['javascripts'] as $jsAssetPath) {
+            if (isset($assets['javascripts'])) {
+                foreach ($assets['javascripts'] as $jsAssetPath) {
                     $pluginsAssetsJs[] = $pluginsManager->handlePluginRelatedString($plugin, $jsAssetPath);
                 }
             }

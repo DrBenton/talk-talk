@@ -48,11 +48,11 @@ class HooksManager extends BehaviourBase
         $this->pluginsHooksDataStructure = array();
 
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
-            if (!isset($plugin->data['hooks'])) {
+            if (!isset($plugin->data['@hooks'])) {
                 continue;
             }
 
-            foreach ($plugin->data['hooks'] as $pluginHookData) {
+            foreach ($plugin->data['@hooks'] as $pluginHookData) {
                 // Let's normalize this hook data
                 $normalizedPluginHookData = $this->getNormalizedHookData($plugin, $pluginHookData);
                 // And now, let's store it in the hooks data structure!
@@ -61,7 +61,7 @@ class HooksManager extends BehaviourBase
             }
         }
 
-        // Now, let's sort each hook definition by priority
+        // Now, let's sort each hook definition by priority!
         foreach ($this->pluginsHooksDataStructure as $hookName => &$hookDefinitions) {
             usort($hookDefinitions, array($this, 'sortHooks'));
         }
@@ -76,9 +76,9 @@ class HooksManager extends BehaviourBase
         if (!isset($hookData['priority'])) {
             if (
                 0 === strpos($hookData['name'], 'html.') &&
-                isset($plugin->data['general']['htmlHooksPriority'])
+                isset($plugin->data['@general']['htmlHooksPriority'])
             ) {
-                $hookData['priority'] = $plugin->data['general']['htmlHooksPriority'];
+                $hookData['priority'] = $plugin->data['@general']['htmlHooksPriority'];
             } else {
                 $hookData['priority'] = self::DEFAULT_HOOK_PRIORITY;
             }

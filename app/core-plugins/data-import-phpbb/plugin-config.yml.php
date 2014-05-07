@@ -1,40 +1,43 @@
 #<?php die('Unauthorized access');__halt_compiler(); //PHP security: don't remove this line!
 
-general:
+@general:
   id: import-phpbb
   actionsUrlsPrefix: /import/phpbb
   actionsBefore:
    - auth.middleware.is-authenticated
 
-actions:
+@actions:
   -
+    # GET /import/phpbb/start => actions/import-start-page.php
     url: /start
-    target: actions/import-start-page.php
+    target: import-start-page
     name: data-import/phpbb/start
   -
+    # POST /import/phpbb/start => actions/import-start-page-target.php
     url: /start
     method: POST
-    target: actions/import-start-page-target.php
+    target: import-start-page-target
     name: data-import/phpbb/start/target
   -
+    # GET /import/phpbb/importing => actions/import-importing-page.php
     url: /importing
-    target: actions/import-importing-page.php
+    target: import-importing-page
     name: data-import/phpbb/importing
     before: data-import-phpbb.middleware.has-phpbb-settings-in-session
 
-classes:
+@classes:
   -
     prefix: TalkTalk\CorePlugins\DataImport\PhpBb\
     paths: ${pluginPath}/classes/TalkTalk/CorePlugins/DataImport/PhpBb
 
-services:
+@services:
   - before-middlewares
   - phpbb-db
 
-events:
+@events:
   - before.set-phpbb-db-settings-from-session
 
-locales:
+@locales:
   - en
 
-twig-extensions:
+@twig-extensions:

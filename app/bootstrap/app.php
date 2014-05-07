@@ -2,6 +2,9 @@
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Debug\ExceptionHandler;
+
 
 return function (Request $request) {
 
@@ -43,8 +46,11 @@ return function (Request $request) {
 
     // Let's load the very heart of our app config...
     $loadBootstrapService('config');
+    
     // ...and start using it right now!
     $app['debug'] = $app['config']['general']['debug'];
+    ErrorHandler::register();
+    ExceptionHandler::register($app['debug']);
 
     // Anybody can need a Logger; let's initialize this Service first!
     $loadBootstrapService('logger');

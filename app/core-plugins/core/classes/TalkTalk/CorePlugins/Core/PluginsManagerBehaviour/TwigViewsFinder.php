@@ -11,6 +11,7 @@ class TwigViewsFinder extends BehaviourBase
      */
     public function getPluginsViewsPaths()
     {
+        //TODO: use data cache here too
         $viewsPaths = array();
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
             $pluginViewPath = $plugin->path . '/views';

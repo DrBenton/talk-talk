@@ -13,11 +13,11 @@ class ClassesManager extends BehaviourBase
         $app = $pluginsManager->getApp();
 
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
-            if (!isset($plugin->data['classes'])) {
+            if (!isset($plugin->data['@classes'])) {
                 continue;
             }
 
-            foreach ($plugin->data['classes'] as $serviceClassMapScheme) {
+            foreach ($plugin->data['@classes'] as $serviceClassMapScheme) {
 
                 // Paths setup
                 $paths = $serviceClassMapScheme['paths'];

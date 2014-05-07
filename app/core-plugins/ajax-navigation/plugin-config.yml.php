@@ -2,8 +2,8 @@
 
 #TODO: refactor all this JS stuff in a cleaner, event-driven, way
 
-general:
+@general:
   id: ajax-nav
 
-hooks:
+@hooks:
   - html.site_container

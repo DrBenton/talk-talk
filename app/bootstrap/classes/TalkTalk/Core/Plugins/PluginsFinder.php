@@ -61,13 +61,13 @@ class PluginsFinder
                 $pluginPath = realpath(dirname($pluginInitFilePath));
 
                 if (
-                    isset($pluginConfigData['general']['disabled']) &&
-                    !!$pluginConfigData['general']['disabled']
+                    isset($pluginConfigData['@general']['disabled']) &&
+                    !!$pluginConfigData['@general']['disabled']
                 ) {
                     continue;
                 }
 
-                $pluginId = (string) $pluginConfigData['general']['id'];
+                $pluginId = (string) $pluginConfigData['@general']['id'];
                 $pluginsData[] = array(
                     'id' => $pluginId,
                     'path' => $pluginPath,
