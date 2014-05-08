@@ -6,7 +6,7 @@ use Doctrine\Common\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
 
-class BehaviourBase implements BehaviourInterface
+abstract class BehaviourBase implements BehaviourInterface
 {
     /**
      * @var \TalkTalk\Core\Plugins\Manager\PluginsManagerInterface
@@ -20,10 +20,15 @@ class BehaviourBase implements BehaviourInterface
      * @var \Doctrine\Common\Cache\Cache
      */
     protected $cache;
+    /**
+     * @var \Silex\Application
+     */
+    protected $app;
 
     public function setPluginsManager(PluginsManagerInterface $pluginsManager)
     {
         $this->pluginsManager = $pluginsManager;
+        $this->app = $this->pluginsManager->getApp();
     }
 
     public function setLogger(LoggerInterface $logger)

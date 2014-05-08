@@ -5,6 +5,7 @@ namespace TalkTalk\Core\Plugins;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\Yaml\Yaml;
 use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
+use TalkTalk\Core\Utils\ArrayUtils;
 
 class PluginsFinder
 {
@@ -183,9 +184,15 @@ class PluginsFinder
     protected function isPluginDisabledForRequestPath($requestPath, array &$pluginConfigData)
     {
         if (
-            isset($pluginConfigData['@general']['enabledOnlyForUrl']) &&
-            !preg_match('~' . $pluginConfigData['@general']['enabledOnlyForUrl'] . '~', $requestPath)
+        isset($pluginConfigData['@general']['enabledOnlyForUrl'])
         ) {
+            $pathsPatterns = ArrayUtils::getArray($pluginConfigData['@general']['enabledOnlyForUrl']);
+            foreach ($pathsPatterns as $pathPattern) {
+                if (preg_match('~' . $pathPattern . '~', $requestPath)) {
+                    return false;
+                }
+            }
+
             return true;
         }
 

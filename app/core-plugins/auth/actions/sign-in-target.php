@@ -2,6 +2,7 @@
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use TalkTalk\Core\Utils\ArrayUtils;
 use TalkTalk\Model\User;
 
 $action = function (Application $app, Request $request) use (&$showFormOnError) {
@@ -16,8 +17,14 @@ $action = function (Application $app, Request $request) use (&$showFormOnError) 
     }
 
     // Well, we have one! Is it the right password?
-    $passwordSuccess = $app['crypt.password.verify']($userData['password'], $dbUser->password);
-    if (false === $passwordSuccess) {
+    // --> we trigger the 'auth.user.check-signin-credentials' hook!
+    $passwordSuccesses = $app['plugins.trigger_hook'](
+        'auth.user.check-signin-credentials',
+        array($userData, $dbUser)
+    );
+
+    if (!ArrayUtils::containsTrue($passwordSuccesses)) {
+        // No Plugin responded "true" for this hook: these User credentials are not correct!
         return $showFormOnError($app, $userData);
     }
 

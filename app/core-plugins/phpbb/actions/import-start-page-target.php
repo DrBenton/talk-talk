@@ -42,7 +42,7 @@ $action = function (Application $app, Request $request) {
             'success'
         );
         // And now, we just have to send the appropriate response!
-        $targetUrl = $app['url_generator']->generate('phpbb/importing');
+        $targetUrl = $app['url_generator']->generate('phpbb/import/importing');
         if ($app['isAjax']) {
             // JS response
             return $app['twig']->render(

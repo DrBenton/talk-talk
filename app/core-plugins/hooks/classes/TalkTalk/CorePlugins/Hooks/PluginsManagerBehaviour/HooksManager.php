@@ -4,7 +4,7 @@ namespace TalkTalk\CorePlugins\Hooks\PluginsManagerBehaviour;
 
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
 use TalkTalk\Core\Plugins\Plugin;
-use TalkTalk\CorePlugins\Utils\ArrayUtils;
+use TalkTalk\Core\Utils\ArrayUtils;
 
 class HooksManager extends BehaviourBase
 {
@@ -16,6 +16,11 @@ class HooksManager extends BehaviourBase
     protected $pluginsHooksDataStructure;
     protected $pluginsHooksDefinitions = array();
 
+    /**
+     * @param $hookName
+     * @param  array $hookArgs
+     * @return array
+     */
     public function triggerHook($hookName, array $hookArgs = array())
     {
         if (null === $this->pluginsHooksDataStructure) {
@@ -23,14 +28,21 @@ class HooksManager extends BehaviourBase
             $this->initPluginsHooksDataStructure();
         }
 
+        $res = array();
         if (!isset($this->pluginsHooksDataStructure[$hookName])) {
             // No plugin implements this hook...
-            return;
+            return $res;
         }
 
+        $this->app['monolog']->addDebug(
+            sprintf('Hook "%s": %d Plugins registered.', $hookName, count($this->pluginsHooksDataStructure[$hookName]))
+        );
+
         foreach ($this->pluginsHooksDataStructure[$hookName] as $hookData) {
-            $this->triggerPluginHook($hookData['plugin_id'], $hookName, $hookArgs);
+            $res[] = $this->triggerPluginHook($hookData['plugin_id'], $hookName, $hookArgs);
         }
+
+        return $res;
     }
 
     /**
@@ -119,7 +131,7 @@ class HooksManager extends BehaviourBase
             );
         }
 
-        call_user_func_array($this->pluginsHooksDefinitions[$plugin->path][$hookName], $hookArgs);
+        return call_user_func_array($this->pluginsHooksDefinitions[$plugin->path][$hookName], $hookArgs);
     }
 
     protected function initPluginHooksDefinitions(Plugin $plugin)
@@ -128,7 +140,7 @@ class HooksManager extends BehaviourBase
         $hooks = array();
 
         // Vars injected in the hooks implementation Closure
-        $app = $this->pluginsManager->getApp();
+        $app = $this->app;
         $__pluginHooksImplementationsFilePath = $plugin->path . '/plugin-hooks.php';
 
         if (!file_exists($__pluginHooksImplementationsFilePath)) {

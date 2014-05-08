@@ -28,9 +28,9 @@ $app['db.settings'] = $app->share(
 );
 
 $app['db.connection.factory'] = $app->protect(
-    function (array $connectionSettings, $connectionName = null) use ($app, $connectionsManager, $connectionResolver) {
+    function (array $connectionSettings, $connectionName) use ($app, $connectionsManager, $connectionResolver) {
 
-        $connectionsManager->addConnection($connectionSettings);
+        $connectionsManager->addConnection($connectionSettings, $connectionName);
         $connectionsManager->bootEloquent();
 
         $db = $connectionsManager->getConnection();
@@ -47,8 +47,8 @@ $app['db.connection.factory'] = $app->protect(
 );
 
 $app['db'] = $app->share(
-    function () use ($app) {
-        return $app['db.connection.factory']($app['db.settings']);
+    function () use ($app, $DEFAULT_CONNECTION_NAME) {
+        return $app['db.connection.factory']($app['db.settings'], $DEFAULT_CONNECTION_NAME);
     }
 );
 
@@ -58,6 +58,8 @@ $app['db.connections.resolver.default.init'] = $app->protect(
         return $app['db'];
     }
 );
+
+$connectionsManager->manager->setDefaultConnection($DEFAULT_CONNECTION_NAME);
 
 $connectionResolver->addConnectionInitCallable($DEFAULT_CONNECTION_NAME, $app['db.connections.resolver.default.init']);
 $connectionResolver->setDefaultConnection($DEFAULT_CONNECTION_NAME);

@@ -1,9 +1,7 @@
 <?php
 
-use TalkTalk\CorePlugins\Hooks\PluginsManagerBehaviour\HooksManager;
-
-$app->before(
-    function () use ($app) {
-        $app['plugins.manager']->addBehaviour(new HooksManager());
+$app['plugins.trigger_hook'] = $app->protect(
+    function ($hookName, array $hookArgs = array()) use ($app) {
+        return $app['plugins.manager']->triggerHook($hookName, $hookArgs);
     }
 );

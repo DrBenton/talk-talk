@@ -9,8 +9,8 @@ class AssetsManager extends BehaviourBase
 
     public function registerPluginsAssets()
     {
+        $app = $this->app;
         $pluginsManager = $this->pluginsManager;
-        $app = $pluginsManager->getApp();
 
         $pluginsAssetsCss = array();
         $pluginsAssetsJs = array();
@@ -36,6 +36,8 @@ class AssetsManager extends BehaviourBase
 
         $app['plugins.assets.css'] = $pluginsAssetsCss;
         $app['plugins.assets.js'] = $pluginsAssetsJs;
+
+        /*
         $this->logger->addDebug(
             sprintf(
                 '%d CSS and %d JS assets registered by %d plugins.',
@@ -44,6 +46,7 @@ class AssetsManager extends BehaviourBase
                 count($this->pluginsManager->getPlugins())
             )
         );
+        */
     }
 
 }

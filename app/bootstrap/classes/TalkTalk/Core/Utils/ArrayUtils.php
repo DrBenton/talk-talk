@@ -1,6 +1,8 @@
 <?php
 
-namespace TalkTalk\CorePlugins\Utils;
+namespace TalkTalk\Core\Utils;
+
+use __;
 
 class ArrayUtils
 {
@@ -30,6 +32,22 @@ class ArrayUtils
         }
 
         return $subject;
+    }
+
+    /**
+     * Returns "true" if any of the array items is "true".
+     *
+     * @param  array $haystack
+     * @return bool
+     */
+    public static function containsTrue(array $haystack)
+    {
+        return __::any(
+            $haystack,
+            function ($item) {
+                return true === $item;
+            }
+        );
     }
 
 }

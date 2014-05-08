@@ -13,6 +13,7 @@
   - html-hooks
 
 @events:
+  - before.init-hooks-manager
   - after.trigger-html-hooks
 
 @twig-extensions:

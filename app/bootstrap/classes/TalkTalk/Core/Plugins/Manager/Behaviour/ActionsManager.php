@@ -3,7 +3,7 @@
 namespace TalkTalk\Core\Plugins\Manager\Behaviour;
 
 use TalkTalk\Core\Plugins\Plugin;
-use TalkTalk\CorePlugins\Utils\ArrayUtils;
+use TalkTalk\Core\Utils\ArrayUtils;
 use Silex\Controller;
 
 class ActionsManager extends BehaviourBase
@@ -11,7 +11,7 @@ class ActionsManager extends BehaviourBase
 
     public function registerActions()
     {
-        $app = $this->pluginsManager->getApp();
+        $app = $this->app;
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
             if (!isset($plugin->data['@actions'])) {
                 continue;
@@ -28,7 +28,7 @@ class ActionsManager extends BehaviourBase
 
     protected function registerAction(Plugin $plugin, array $actionData)
     {
-        $app = $this->pluginsManager->getApp();
+        $app = $this->app;
         $pluginsManager = $this->pluginsManager;
         $actionData['method'] = isset($actionData['method']) ? $actionData['method'] : 'GET';
         $urlsPrefix = isset($plugin->data['@general']['actionsUrlsPrefix']) ? $plugin->data['@general']['actionsUrlsPrefix'] : '';
@@ -59,9 +59,12 @@ class ActionsManager extends BehaviourBase
         // "before" middlewares management
         $this->handleActionBeforeMiddlewares($plugin, $controller, $actionData);
 
+        /*
+         * TODO: add a optional "verbose" mode to Behaviours
         $app['monolog']->addDebug(
             sprintf('Route "%s" (method %s) registered.', $actionData['url'], $actionData['method'])
         );
+        */
     }
 
     protected function handleActionBeforeMiddlewares(
@@ -69,7 +72,7 @@ class ActionsManager extends BehaviourBase
         Controller $controller,
         array $actionData
     ) {
-        $app = $this->pluginsManager->getApp();
+        $app = $this->app;
 
         // Whole Plugin "general/actionsBefore" middlewares goes first
         if (isset($plugin->data['@general']['actionsBefore'])) {

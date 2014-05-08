@@ -1,5 +1,17 @@
 <?php
 
+use TalkTalk\Model\User;
+
+$hooks['auth.user.check-signin-credentials'] = function ($submittedUserData, User $dbUser) use ($app) {
+    $app['logger']->addDebug('auth.user.check-signin-credentials hook of auth.');
+    if ('talk-talk' !== $dbUser->provider) {
+        // This user is handled by another "user provider"; let's stop here...
+        return false;
+    }
+
+    return $app['crypt.password.verify']($submittedUserData['password'], $dbUser->password);
+};
+
 $hooks['html.header'] = function (\QueryPath\DOMQuery $html) use ($app) {
     // Some vars setup...
     $urlGenerator = $app['url_generator'];

@@ -45,6 +45,7 @@
   - en
 
 @hooks:
+  - auth.user.check-signin-credentials
   - html.header
 
 @twig-extensions:

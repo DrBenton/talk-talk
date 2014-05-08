@@ -2,7 +2,7 @@
 
 @general:
   id: utils
-  
+
 @actions:
   -
     # GET /phpinfo => actions/phpinfo.php (only when $app['debug'] === true)
