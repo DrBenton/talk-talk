@@ -2,6 +2,13 @@
 
 @general:
   id: utils
+  
+@actions:
+  -
+    # GET /phpinfo => actions/phpinfo.php (only when $app['debug'] === true)
+    url: /phpinfo
+    target: phpinfo
+    onlyForDebug: true
 
 @classes:
   -
@@ -10,6 +17,7 @@
 
 @services:
   - utils-html
+  - perfs
 
 @hooks:
   -
@@ -19,3 +27,4 @@
   - html.site_container
 
 @twig-extensions:
+  - func.display-app-debug-info

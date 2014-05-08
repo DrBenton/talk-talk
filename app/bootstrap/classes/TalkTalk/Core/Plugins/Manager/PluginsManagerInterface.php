@@ -6,7 +6,7 @@ use Doctrine\Common\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use Silex\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
-use TalkTalk\Core\Plugins\PluginData;
+use TalkTalk\Core\Plugins\Plugin;
 
 interface PluginsManagerInterface
 {
@@ -14,11 +14,11 @@ interface PluginsManagerInterface
 
     public function addBehaviour(BehaviourInterface $behaviour);
 
-    public function addPlugin(PluginData $plugin);
+    public function addPlugin(Plugin $plugin);
 
     /**
      * @param $pluginId
-     * @return \TalkTalk\Core\Plugins\PluginData
+     * @return \TalkTalk\Core\Plugins\Plugin
      */
     public function getPlugin($pluginId);
 
@@ -34,7 +34,7 @@ interface PluginsManagerInterface
 
     public function includeFileInIsolatedClosure($filePath);
 
-    public function handlePluginRelatedString(PluginData $plugin, $pluginRelatedString);
+    public function handlePluginRelatedString(Plugin $plugin, $pluginRelatedString);
 
     public function setLogger(LoggerInterface $logger);
 

@@ -6,7 +6,7 @@ use Doctrine\Common\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use Silex\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
-use TalkTalk\Core\Plugins\PluginData;
+use TalkTalk\Core\Plugins\Plugin;
 
 class PluginsManager implements PluginsManagerInterface
 {
@@ -30,7 +30,7 @@ class PluginsManager implements PluginsManagerInterface
         $this->app = $app;
     }
 
-    public function addPlugin(PluginData $plugin)
+    public function addPlugin(Plugin $plugin)
     {
         $this->plugins[$plugin->id] = $plugin;
     }
@@ -67,7 +67,7 @@ class PluginsManager implements PluginsManagerInterface
         );
     }
 
-    public function handlePluginRelatedString(PluginData $plugin, $pluginRelatedString)
+    public function handlePluginRelatedString(Plugin $plugin, $pluginRelatedString)
     {
         $app = $this->getApp();
 

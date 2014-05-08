@@ -11,8 +11,9 @@ $app['auth.middleware.is-authenticated'] = $app->protect(
                 $currentUrl = $app['request']->getPathInfo();
                 $app['session']->set('url.intended', $currentUrl);
             }
+
             return $app->redirect(
-              $app['url_generator']->generate('auth/sign-in')
+                $app['url_generator']->generate('auth/sign-in')
             );
             //throw new AuthenticationException('You must be authenticated to access this resource!');
         }

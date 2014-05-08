@@ -20,7 +20,7 @@ class AssetsManager extends BehaviourBase
                 continue;
             }
 
-            $assets = &$plugin->data['@assets'];
+            $assets = & $plugin->data['@assets'];
             if (isset($assets['stylesheets'])) {
                 foreach ($assets['stylesheets'] as $jsAssetPath) {
                     $pluginsAssetsCss[] = $pluginsManager->handlePluginRelatedString($plugin, $jsAssetPath);

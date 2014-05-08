@@ -9,12 +9,7 @@
     url: /
     target: home
     name: core/home
-  -
-    # GET /phpinfo => actions/phpinfo.php (only when $app['debug'] === true)
-    url: /phpinfo
-    target: phpinfo
-    debugOnly: true
-    
+
 @classes:
   -
     prefix: TalkTalk\CorePlugins\Core\

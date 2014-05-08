@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugins\Manager\Behaviour;
 
-use TalkTalk\Core\Plugins\PluginData;
+use TalkTalk\Core\Plugins\Plugin;
 use TalkTalk\CorePlugins\Utils\ArrayUtils;
 use Silex\Controller;
 
@@ -18,7 +18,7 @@ class ActionsManager extends BehaviourBase
             }
 
             foreach ($plugin->data['@actions'] as $actionData) {
-                if (isset($actionData['debugOnly']) && !$app['debug']) {
+                if (isset($actionData['onlyForDebug']) && !$app['debug']) {
                     continue;
                 }
                 $this->registerAction($plugin, $actionData);
@@ -26,7 +26,7 @@ class ActionsManager extends BehaviourBase
         }
     }
 
-    protected function registerAction(PluginData $plugin, array $actionData)
+    protected function registerAction(Plugin $plugin, array $actionData)
     {
         $app = $this->pluginsManager->getApp();
         $pluginsManager = $this->pluginsManager;
@@ -38,15 +38,15 @@ class ActionsManager extends BehaviourBase
             function () use ($app, $pluginsManager, $plugin, $actionData) {
                 // We resolve this action controller file path...
                 $actionPath = $plugin->path . '/actions/' . $actionData['target'] . '.php';
-                // ...we include it in an isolated context, with only "$app" access... 
+                // ...we include it in an isolated context, with only "$app" access...
                 $actionFunc = $pluginsManager->includeFileInIsolatedClosure($actionPath);
-                // ...we trigger the Dependencies Injector on the returned Closure... 
+                // ...we trigger the Dependencies Injector on the returned Closure...
                 $actionArgs = $app['resolver']->getArguments(
                     $app['request'],
                     $actionFunc
                 );
 
-                // ...and we finally trigger the Closure! 
+                // ...and we finally trigger the Closure!
                 return call_user_func_array($actionFunc, $actionArgs);
             }
         )->method($actionData['method']);
@@ -64,24 +64,24 @@ class ActionsManager extends BehaviourBase
         );
     }
 
-    protected function handleActionBeforeMiddlewares (
-        PluginData $plugin,
+    protected function handleActionBeforeMiddlewares(
+        Plugin $plugin,
         Controller $controller,
         array $actionData
     ) {
         $app = $this->pluginsManager->getApp();
-        
+
         // Whole Plugin "general/actionsBefore" middlewares goes first
         if (isset($plugin->data['@general']['actionsBefore'])) {
             $plugin->data['@general']['actionsBefore'] = ArrayUtils::getArray(
                 $plugin->data['@general']['actionsBefore']
             );
-            
+
             foreach ($plugin->data['@general']['actionsBefore'] as $wholePluginbeforeMiddlewareServiceName) {
                 $controller->before($app[$wholePluginbeforeMiddlewareServiceName]);
             }
         }
-        
+
         // Now, let's handle this route specific middlewares
         if (isset($actionData['before'])) {
             $actionData['before'] = ArrayUtils::getArray($actionData['before']);

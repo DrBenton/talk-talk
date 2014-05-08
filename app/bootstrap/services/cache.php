@@ -17,9 +17,16 @@ $app['cache.file.path'] = $app->share(
 
 $app['cache'] = $app->share(
     function ($app) {
-        // Let's disable our data cache for the moment...
-        return new ArrayCache();
 
+        if (
+            isset($app['config']['data-cache']['enabled']) &&
+            false == $app['config']['data-cache']['enabled']
+        ) {
+            // The app data cache is disabled: let's use the ArrayCache!
+            return new ArrayCache();
+        }
+
+        //TODO: allow full data cache customization through the app "main.ini.php" file
         return new PhpFileCache($app['cache.file.path']);
     }
 );

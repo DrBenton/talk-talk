@@ -26,6 +26,7 @@ class LocalesManager extends BehaviourBase
         if ($this->cache->contains(self::CACHE_KEY)) {
             // Let's restore all our plugins locales data from cache!
             $this->restorePluginsLocalesDataFromCache();
+
             return;
         }
 
@@ -76,10 +77,11 @@ class LocalesManager extends BehaviourBase
 
         return $localeData;
     }
-    
-    protected function restorePluginsLocalesDataFromCache () {
+
+    protected function restorePluginsLocalesDataFromCache()
+    {
         $allPluginsLocalesData = $this->cache->fetch(self::CACHE_KEY);
-        
+
         foreach ($allPluginsLocalesData as $pluginLocaleData) {
             $localeData = $pluginLocaleData['data'];
             $language = $pluginLocaleData['language'];

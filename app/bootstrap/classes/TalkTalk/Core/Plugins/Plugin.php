@@ -2,7 +2,13 @@
 
 namespace TalkTalk\Core\Plugins;
 
-class PluginData
+/**
+ * Class Plugin
+ * Stores a Plugin data, as it has been parsed in its config file.
+ *
+ * @package TalkTalk\Core\Plugins
+ */
+class Plugin
 {
 
     public $id;

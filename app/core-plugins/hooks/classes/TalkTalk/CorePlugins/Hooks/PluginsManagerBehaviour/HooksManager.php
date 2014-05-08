@@ -3,7 +3,7 @@
 namespace TalkTalk\CorePlugins\Hooks\PluginsManagerBehaviour;
 
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
-use TalkTalk\Core\Plugins\PluginData;
+use TalkTalk\Core\Plugins\Plugin;
 use TalkTalk\CorePlugins\Utils\ArrayUtils;
 
 class HooksManager extends BehaviourBase
@@ -69,7 +69,7 @@ class HooksManager extends BehaviourBase
         $this->cache->save(self::CACHE_KEY, $this->pluginsHooksDataStructure, self::CACHE_LIFETIME);
     }
 
-    protected function getNormalizedHookData(PluginData $plugin, $hookData)
+    protected function getNormalizedHookData(Plugin $plugin, $hookData)
     {
         $hookData = ArrayUtils::getArray($hookData, 'name');
 
@@ -122,7 +122,7 @@ class HooksManager extends BehaviourBase
         call_user_func_array($this->pluginsHooksDefinitions[$plugin->path][$hookName], $hookArgs);
     }
 
-    protected function initPluginHooksDefinitions(PluginData $plugin)
+    protected function initPluginHooksDefinitions(Plugin $plugin)
     {
         // We're going to inject hooks implementations in the following array:
         $hooks = array();

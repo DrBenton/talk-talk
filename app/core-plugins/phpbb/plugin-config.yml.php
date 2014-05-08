@@ -3,6 +3,7 @@
 @general:
   id: phpbb
   actionsUrlsPrefix: /phpbb
+  enabledOnlyForItsActionsUrlsPrefix: true
   actionsBefore:
    - auth.middleware.is-authenticated
 

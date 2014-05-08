@@ -3,6 +3,9 @@
 [general]
 debug = true
 
+[data-cache]
+enabled = false
+
 [security]
 csrf.token_name = _token
 

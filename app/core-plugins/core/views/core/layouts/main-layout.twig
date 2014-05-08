@@ -39,6 +39,7 @@
     {% endblock %}
 
     <div id="debug-info-container"></div>
+    {% if app.debug %}{{ display_app_debug_info() }}{% endif %}
 
 </div>{# end #site-container #}
 
@@ -47,6 +48,7 @@
 {% for javascript in get_plugins_javascripts() %}
     <script src="{{ javascript }}"></script>
 {% endfor %}
+
 
 </body>
 </html>
