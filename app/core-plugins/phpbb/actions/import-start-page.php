@@ -17,7 +17,7 @@ $action = function (Application $app, Request $request) {
     );
 
     return $app['twig']->render(
-        'data-import-phpbb/start/start.twig',
+        'phpbb/start/start.twig',
         array('dbSettings' => $defaultDbSettings)
     );
 };
