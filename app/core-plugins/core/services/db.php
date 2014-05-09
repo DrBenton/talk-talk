@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Eloquent\Model;
 use TalkTalk\CorePlugins\Core\Database\ConnectionResolver;
 
-$connectionsManager = new Manager();
-$connectionResolver = new ConnectionResolver();
+$DEFAULT_DB_CONNECTION_NAME = 'default';//this is hard-coded in the Capsule\Manager class
 
-$DEFAULT_CONNECTION_NAME = 'talk-talk';
+$capsule = new Capsule;
+$connectionResolver = new ConnectionResolver();
 
 $app['db.settings'] = $app->share(
     function () use ($app) {
@@ -27,43 +27,35 @@ $app['db.settings'] = $app->share(
     }
 );
 
-$app['db.connection.factory'] = $app->protect(
-    function (array $connectionSettings, $connectionName) use ($app, $connectionsManager, $connectionResolver) {
-
-        $connectionsManager->addConnection($connectionSettings, $connectionName);
-        $connectionsManager->bootEloquent();
-
-        $db = $connectionsManager->getConnection();
-
-        if (null !== $connectionName) {
-            // This is it not the default "talk-talk" DB connection,
-            // already handled at the end of this file.
-            // --> Let's add it to the ConnectionResolver!
-            $connectionResolver->addConnection($connectionName, $db);
+$app['db.connection.add'] = $app->protect(
+    function (array $connectionSettings, $connectionName) use ($app, $capsule, $connectionResolver, $DEFAULT_DB_CONNECTION_NAME) {
+        $capsule->addConnection($connectionSettings, $connectionName);
+        
+        if ($DEFAULT_DB_CONNECTION_NAME !== $connectionName) {
+            // We only add the connection if this is not the default one
+            // (default connection is already initialized at the end of this file)
+            $connectionResolver->addConnection($connectionName, $capsule->getConnection($connectionName));
         }
-
-        return $db;
     }
 );
 
 $app['db'] = $app->share(
-    function () use ($app, $DEFAULT_CONNECTION_NAME) {
-        return $app['db.connection.factory']($app['db.settings'], $DEFAULT_CONNECTION_NAME);
+    function () use ($app, $capsule, $DEFAULT_DB_CONNECTION_NAME) {
+        $app['db.connection.add']($app['db.settings'], $DEFAULT_DB_CONNECTION_NAME);
+        $capsule->bootEloquent();
+        return $capsule;
     }
 );
 
 // Wires our Silex app to the Eloquent system
 $app['db.connections.resolver.default.init'] = $app->protect(
     function () use ($app) {
-        return $app['db'];
+        return $app['db']->getConnection();
     }
 );
 
-$connectionsManager->manager->setDefaultConnection($DEFAULT_CONNECTION_NAME);
-
-$connectionResolver->addConnectionInitCallable($DEFAULT_CONNECTION_NAME, $app['db.connections.resolver.default.init']);
-$connectionResolver->setDefaultConnection($DEFAULT_CONNECTION_NAME);
+$connectionResolver->addConnectionInitCallable($DEFAULT_DB_CONNECTION_NAME, $app['db.connections.resolver.default.init']);
+$connectionResolver->setDefaultConnection($DEFAULT_DB_CONNECTION_NAME);
 Model::setConnectionResolver($connectionResolver);
 
-$app['db.connections.manager'] = $connectionsManager;
 $app['db.connections.resolver'] = $connectionResolver;

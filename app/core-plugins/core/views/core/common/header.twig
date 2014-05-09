@@ -9,7 +9,7 @@
 
     <div id="logged-user-container">
         {% if app.isAuthenticated %}
-            {% include 'auth/common/user-display.twig' with {'user': app.session.get('user')} %}
+            {% include 'auth/common/user-display.twig' %}
         {% endif %}
     </div>
 

@@ -29,7 +29,7 @@ $action = function (Application $app, Request $request) use (&$showFormOnError) 
     }
 
     // All right, our User is correctly authentified! Let's log him/her...
-    $app['session']->set('user', $dbUser->toArray());
+    $app['session']->set('userId', $dbUser->id);
 
     // Success feedback
     $app['session.flash.add.translated'](

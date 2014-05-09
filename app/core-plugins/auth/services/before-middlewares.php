@@ -4,7 +4,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 $app['auth.middleware.is-authenticated'] = $app->protect(
     function () use ($app) {
-        if (!$app['session']->has('user')) {
+        if ($app['isAnonymous']) {
             // We store this URL: if the User successfully authenticates afterwards,
             // we will redirect him/her to this URL
             if ('GET' === $app['request']->getMethod()) {
@@ -22,7 +22,7 @@ $app['auth.middleware.is-authenticated'] = $app->protect(
 
 $app['auth.middleware.is-anonymous'] = $app->protect(
     function () use ($app) {
-        if ($app['session']->has('user')) {
+        if ($app['isAuthenticated']) {
             throw new AuthenticationException('You must not be authenticated to access this resource!');
         }
     }

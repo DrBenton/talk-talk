@@ -27,13 +27,15 @@
     url: /import/importing
     target: import-importing-page
     name: phpbb/import/importing
-    before: phpbb.middleware.init-phpbb-connection-or-fail
+    before: phpbb.middleware.require-phpbb-connection-settings
   -
-    # GET /phpbb/import/importing/import-users => actions/data-import/users-import.php
+    # GET /phpbb/import/importing/import-users/X => actions/data-import/users-import.php
     # (needs "phpbb-settings" in Session, previously initialized in "/import/start")
-    url: /import/importing/import-users
+    url: /import/importing/import-users/{batchIndex}
     target: data-import/users-import
-    before: phpbb.middleware.init-phpbb-connection-or-fail
+    before: phpbb.middleware.require-phpbb-connection-settings
+    requirements:
+     batchIndex: \d+ #{batchIndex} must be an integer
 
 @classes:
   -
@@ -43,6 +45,7 @@
 @services:
   - before-middlewares
   - phpbb-db
+  - phpbb-users-import
 
 @events:
   - before.set-phpbb-db-settings-from-session

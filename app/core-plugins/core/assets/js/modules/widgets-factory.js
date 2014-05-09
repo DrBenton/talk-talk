@@ -13,6 +13,7 @@ define(function (require, exports, module) {
   var loadModule = function ($jqElement) {
     var moduleName = $jqElement.data("widget")
 
+    myDebug && logger.debug(module.id, "loadModule("+moduleName+")");
     require([moduleName], function (module) {
       module.createWidget($jqElement);
     });

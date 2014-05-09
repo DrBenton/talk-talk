@@ -2,7 +2,7 @@
 
 $app['isAuthenticated'] = $app->share(
     function () use ($app) {
-        return $app['session']->has('user');
+        return $app['session']->has('userId');
     }
 );
 

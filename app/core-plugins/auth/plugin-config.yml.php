@@ -40,6 +40,7 @@
 @services:
   - is-authenticated
   - before-middlewares
+  - user
 
 @locales:
   - en

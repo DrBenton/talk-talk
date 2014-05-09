@@ -12,8 +12,8 @@ $action = function (Application $app, Request $request) {
 
     // Let's check these DB connection settings!
     try {
-        $app['phpbb.db.connection.set_settings']($dbSettings);
-        $phpBbDbConnection = $app['phpbb.db'];
+        $app['phpbb.db.init']($dbSettings);
+        $phpBbDbConnection = $app['db']->getConnection($app['phpbb.db.connection.name']);
         $success = true;
     } catch (\PDOException $e) {
         $errMsg = array(

@@ -56,8 +56,11 @@ class ActionsManager extends BehaviourBase
             $controller->bind($actionData['name']);
         }
 
-        // "before" middlewares management
+        // Route "before" middlewares management
         $this->handleActionBeforeMiddlewares($plugin, $controller, $actionData);
+
+        // Route requirements management
+        $this->handleActionRequirements($plugin, $controller, $actionData);
 
         /*
          * TODO: add a optional "verbose" mode to Behaviours
@@ -90,6 +93,18 @@ class ActionsManager extends BehaviourBase
             $actionData['before'] = ArrayUtils::getArray($actionData['before']);
             foreach ($actionData['before'] as $beforeMiddlewareServiceName) {
                 $controller->before($app[$beforeMiddlewareServiceName]);
+            }
+        }
+    }
+
+    protected function handleActionRequirements(
+        Plugin $plugin,
+        Controller $controller,
+        array $actionData
+    ) {
+        if (isset($actionData['requirements'])) {
+            foreach ($actionData['requirements'] as $argName => $pattern) {
+                $controller->assert($argName, $pattern);
             }
         }
     }

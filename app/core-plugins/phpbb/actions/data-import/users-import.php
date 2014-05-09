@@ -2,25 +2,28 @@
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use TalkTalk\Model\User as TalkTalkUser;
-use TalkTalk\CorePlugins\PhpBb\Model\User as PhpBbUser;
 
-$action = function (Application $app, Request $request) {
+$NB_USERS_PER_RANGE = 100;
 
-    $phpBbUsers = PhpBbUser::whereIn('user_type', array(3, 0))
-        ->get(array('username', 'user_password', 'user_email'))->take(2);
-    foreach ($phpBbUsers as $phpBbUser) {
-        $talkTalkUser = new TalkTalkUser();
-        $talkTalkUser->login = $phpBbUser->username;
-        $talkTalkUser->email = $phpBbUser->user_email;
-        $talkTalkUser->password = $phpBbUser->user_password;
-        $talkTalkUser->provider = 'phpbb-import';
-        print_r($talkTalkUser);
-        $talkTalkUser->save();
+$action = function (Application $app, Request $request, $batchIndex) use ($NB_USERS_PER_RANGE) {
+
+    $nbUsersToCreate = $NB_USERS_PER_RANGE;
+    $from = $batchIndex * $NB_USERS_PER_RANGE;
+    $nbUsersCreated = $app['phpbb.import.import-users']($nbUsersToCreate, $from);
+    
+    if ($nbUsersCreated === $nbUsersToCreate) {
+        // Seems that we still have users to create
+        $importDone = false;
+    } else {
+        $importDone = true;
     }
 
-    return 'done!';
-
+    return $app->json(array(
+        'batchIndex' => $batchIndex,
+        'created' => $nbUsersCreated,
+        'duration' => $app['perfs.script.duration'],
+        'done' => $importDone,
+    ));
 };
 
 return $action;

@@ -39,7 +39,7 @@ $action = function (Application $app, Request $request) use (&$getFormValidator)
     $user->save();
 
     // Our new User is automatically logged
-    $app['session']->set('user', $user->toArray());
+    $app['session']->set('userId', $user->id);
 
     // Success feedback
     $app['session.flash.add.translated'](
@@ -51,7 +51,7 @@ $action = function (Application $app, Request $request) use (&$getFormValidator)
     if ($app['isAjax']) {
         // JS response
         return $app['twig']->render(
-            'auth/sign-in/sign-up.success.ajax.twig',
+            'auth/sign-up/sign-up.success.ajax.twig',
             array('user' => $user)
         );
     } else {
@@ -64,8 +64,8 @@ $getFormValidator = function (Application $app, array $userData) {
     $validator = $app['validator.get'](
         $userData,
         array(
-            'login' => 'required|min:5|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'login' => 'required|min:3|unique:users',
+            'password' => 'required|confirmed|min:3',
             'email' => 'required|email|unique:users',
         )
     );
