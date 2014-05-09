@@ -1,7 +1,6 @@
 define(function (require, exports, module) {
 
   var $ = require("jquery");
-  var _ = require("lodash");
 
   var History = require("history");
   var purl = require("purl");
@@ -19,20 +18,19 @@ define(function (require, exports, module) {
 
   var LOCACHE_AJAX_CONTENT_KEYS_PREFIX = "main-content-ajax-data---";
 
-  var $currentAjaxLinks;
   var ajaxLoadingsCounter = 0;
 
   myDebug && logger.debug(module.id, "on the bridge, captain!");
-  
+
   // Exports
   exports.createWidget = createWidget;
 
-  
-  function initHistory () {
+
+  function initHistory() {
     History.Adapter.bind(window, 'statechange', onHistoryStateChange);
   }
 
-  function onHistoryStateChange () {
+  function onHistoryStateChange() {
 
     var state = History.getState();
     myDebug && logger.debug(module.id, "state=", state);
@@ -56,7 +54,7 @@ define(function (require, exports, module) {
     }
   }
 
-  function loadAjaxMainContent (contentUrl) {
+  function loadAjaxMainContent(contentUrl) {
 
     contentUrl = normalizeUrl(contentUrl);
 
@@ -90,7 +88,7 @@ define(function (require, exports, module) {
         .fail(function (jqXHR, textStatus, err) {
 
           myDebug && logger.debug(module.id, "Ajax link '" + contentUrl + "' loading failed!");
-          notifyService.notify("Error while ajax-loading '" + contentUrl + "' ! (" + err + ")", "error");
+          //notifyService.notify("Error while ajax-loading '" + contentUrl + "' ! (" + err + ")", "error");
 
         });
 
@@ -98,9 +96,7 @@ define(function (require, exports, module) {
 
   }
 
-  function handleAjaxLoadedMainContent (htmlContent, loadedUrl, loadingDuration) {
-    // Previous Ajax links event cleaning (for those who where in the main container)
-    unbindPreviousMainContentAjaxLinks();
+  function handleAjaxLoadedMainContent(htmlContent, loadedUrl, loadingDuration) {
 
     // Main content container update!
     varsRegistry.$mainContentContainer.html(htmlContent);
@@ -115,31 +111,7 @@ define(function (require, exports, module) {
     checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration);
   }
 
-  //TODO: refactor this so that we can use it for other containers
-  function unbindPreviousMainContentAjaxLinks () {
-    var ajaxLinksToUnbind = [];
-    for (var i = 0, j = $currentAjaxLinks.length; i < j; i++) {
-      var link = $currentAjaxLinks.get(i);
-      if ($.contains(varsRegistry.$mainContentContainer, link))
-        ajaxLinksToUnbind.push(link);
-    }
-
-    myDebug && logger.debug(module.id, ajaxLinksToUnbind.length +
-      " Ajax links to unbind among " + $currentAjaxLinks.length);
-
-    $currentAjaxLinks = $currentAjaxLinks.filter(function () {
-      if (_.indexOf(ajaxLinksToUnbind, this) > -1) {
-        // We have to unbind this previous "main content" link and
-        // remove it from our $currentAjaxLinks jQuery collection
-        var $linkToUnbind = $(this);
-        $linkToUnbind.off();
-        return false;
-      }
-      return true;
-    });
-  }
-
-  function checkForAjaxLoadingDataOnAjaxLoadedMainContent (loadedUrl, loadingDuration) {
+  function checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration) {
 
     if (getCachedAjaxMainContent(loadedUrl) !== null) {
       // We already have cached content for this URL. We have to wait for its expiration...
@@ -182,26 +154,27 @@ define(function (require, exports, module) {
 
   }
 
-  function removeNotifications () {
-      $('#notifications-container').text('');
+  function removeNotifications() {
+    $('#notifications-container').text('');
   }
 
-  function normalizeUrl (rawUrl) {
+  function normalizeUrl(rawUrl) {
     return purl(rawUrl).attr('path');
   }
 
-  function getAjaxMainContentCacheKey (url) {
+  function getAjaxMainContentCacheKey(url) {
     return LOCACHE_AJAX_CONTENT_KEYS_PREFIX + url;
   }
 
-  function getCachedAjaxMainContent (url) {
+  function getCachedAjaxMainContent(url) {
     return dataStore.getCacheData(getAjaxMainContentCacheKey(url));
   }
 
-  function onAjaxLinkClick (e) {
+  function onAjaxLinkClick(e) {
     e.preventDefault();
 
     var $clickedLink = $(this);
+    myDebug && logger.debug(module.id, "Ajax link clicked :", $clickedLink);
     var targetUrl = $clickedLink.attr('href');
 
     // Let's remove previous page Notifications
@@ -213,30 +186,26 @@ define(function (require, exports, module) {
     return false;
   }
 
-  function showAjaxLoading (showItOrNot) {
+  function showAjaxLoading(showItOrNot) {
     if (showItOrNot)
       $("header h1 a").addClass("ajax-loader");
     else
       $("header h1 a").removeClass("ajax-loader");
   }
 
-  function handleInitialMainContentCache () {
+  function handleInitialMainContentCache() {
     myDebug && logger.debug(module.id, "Let's check if the initial content has cache information...");
     checkForAjaxLoadingDataOnAjaxLoadedMainContent(purl().attr('path'));
   }
 
-  function createWidget ($widgetNode) {
+  function createWidget($widgetNode) {
     myDebug && logger.debug(module.id, "#createWidget() ; $widgetNode=", $widgetNode);
-    
-    $currentAjaxLinks = $widgetNode.find("a.ajax-link");
 
-    myDebug && logger.debug(module.id, $currentAjaxLinks.length + " Ajax links.");
-    
-    $currentAjaxLinks.click(onAjaxLinkClick);
+    varsRegistry.$document.on('click', 'a.ajax-link', onAjaxLinkClick);
 
     myDebug && logger.debug(module.id, "Initializing HTML5 History binding...");
     initHistory();
-    
+
     handleInitialMainContentCache();
 
     // Ajax forms?

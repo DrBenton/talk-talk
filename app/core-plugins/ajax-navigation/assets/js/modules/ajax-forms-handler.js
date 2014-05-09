@@ -16,7 +16,7 @@ define(function (require, exports, module) {
 
   // Exports
   exports.findAndHandleAjaxForms = findAndHandleAjaxForms;
-  
+
 
   function onFormSubmit(e) {
 

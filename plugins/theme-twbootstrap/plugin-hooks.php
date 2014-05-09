@@ -48,14 +48,14 @@ $hooks['html.form'] = function (\QueryPath\DOMQuery $html) {
         ->addClass('has-error');
 };
 
-$hooks['html.notifications_display'] = function (\QueryPath\DOMQuery $html) {
+$hooks['html.alerts_display'] = function (\QueryPath\DOMQuery $html) {
     $transforms = array(
         'info' => 'info',
         'success' => 'success',
         'error' => 'danger',
     );
-    foreach($transforms as $notificationType => $TWBootstrapNotificationType) {
-        $html->find(".notifications-to-display .notification-$notificationType")
+    foreach($transforms as $alertType => $TWBootstrapNotificationType) {
+        $html->find(".alerts-to-display .alert-$alertType")
             ->addClass("alert alert-$TWBootstrapNotificationType");
     }
 };

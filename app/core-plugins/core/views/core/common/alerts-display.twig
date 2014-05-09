@@ -1,0 +1,55 @@
+{% set alerts = get_flashes() %}
+
+{% if
+not app.isAjax or
+alerts is not empty %}
+
+    {% if app.isAjax %}
+        {# We use a temporary container when in an Ajax context #}
+        {% set tmpNotificationsContainerId = app.uuid %}
+        {% set alertsContainerId = "alerts-" ~ tmpNotificationsContainerId %}
+    {% else %}
+        {# We use a real, permanent container when not in an Ajax context #}
+        {% set alertsContainerId = "alerts-container" %}
+    {% endif %}
+
+    <div id="{{ alertsContainerId }}"
+         class="alerts-to-display {{ app.isAjax ? 'hidden' : '' }}">
+
+        {% if alerts is not empty %}
+            {{ enable_html_hooks('alerts_display') }}
+            {% for type in ['error', 'success', 'info'] %}
+                {% if alerts[type] is defined %}
+                    <div class="alert alert-{{ type }}">
+                        <ul>
+                            {% for alert in alerts[type] %}
+                                <li>
+                                    {% if alert.secured is defined %}
+                                        {{ alert.message|raw }}
+                                    {% elseif alert.field is defined %}
+                                        {{ alert.messages|join(' ') }}
+                                    {% else %}
+                                        {{ alert }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+    </div><!-- end .alerts-to-display -->
+
+    {% if app.isAjax %}
+        <script>
+            require(['jquery'], function ($) {
+                // These alerts are displayed in the layout #alerts-container
+                var $alertToDisplay = $("#{{ alertsContainerId }}");
+                $('#alerts-container').html($alertToDisplay.html());
+                $alertToDisplay.remove();
+            });
+        </script>
+    {% endif %}
+
+{% endif %}

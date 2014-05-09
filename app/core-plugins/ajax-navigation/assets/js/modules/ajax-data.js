@@ -20,7 +20,7 @@ define(function (require, exports, module) {
   exports.getStat = getStat;
   exports.addStat = addStat;
   exports.displayStat = displayStat;
-  
+
 
   function getStat(url) {
     return statsData[url];

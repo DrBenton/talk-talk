@@ -4,6 +4,7 @@
 
 @general:
   id: ajax-nav
+  disabled: false
 
 @hooks:
   - html.site_container

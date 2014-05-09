@@ -16,5 +16,5 @@
   - html.main_content_container 
   - html.header
   - html.form
-  - html.notifications_display
+  - html.alerts_display
   - html.user_profile_display

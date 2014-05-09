@@ -2,8 +2,6 @@
 
 namespace TalkTalk\Core\Utils;
 
-use __;
-
 class ArrayUtils
 {
 
@@ -13,6 +11,7 @@ class ArrayUtils
      *
      * <code>ArrayUtils::getArray('hello') => array('hello')</code>
      * <code>ArrayUtils::getArray('hello', 'key') => array('key' => 'hello')</code>
+     *
      * @param  mixed  $subject
      * @param  string $hashKeyName
      * @return array
@@ -42,12 +41,7 @@ class ArrayUtils
      */
     public static function containsTrue(array $haystack)
     {
-        return __::any(
-            $haystack,
-            function ($item) {
-                return true === $item;
-            }
-        );
+        return in_array(true, $haystack, true);
     }
 
 }
