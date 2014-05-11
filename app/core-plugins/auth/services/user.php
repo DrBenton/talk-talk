@@ -7,7 +7,7 @@ $app['user'] = $app->share(
         if ($app['isAnonymous']) {
             return null;
         }
-        
+
         return User::find($app['session']->get('userId'));
     }
 );

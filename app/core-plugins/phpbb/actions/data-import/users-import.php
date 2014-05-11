@@ -10,7 +10,7 @@ $action = function (Application $app, Request $request, $batchIndex) use ($NB_US
     $nbUsersToCreate = $NB_USERS_PER_RANGE;
     $from = $batchIndex * $NB_USERS_PER_RANGE;
     $nbUsersCreated = $app['phpbb.import.import-users']($nbUsersToCreate, $from);
-    
+
     if ($nbUsersCreated === $nbUsersToCreate) {
         // Seems that we still have users to create
         $importDone = false;
@@ -18,12 +18,14 @@ $action = function (Application $app, Request $request, $batchIndex) use ($NB_US
         $importDone = true;
     }
 
-    return $app->json(array(
-        'batchIndex' => $batchIndex,
-        'created' => $nbUsersCreated,
-        'duration' => $app['perfs.script.duration'],
-        'done' => $importDone,
-    ));
+    return $app->json(
+        array(
+            'batchIndex' => $batchIndex,
+            'created' => $nbUsersCreated,
+            'duration' => $app['perfs.script.duration'],
+            'done' => $importDone,
+        )
+    );
 };
 
 return $action;

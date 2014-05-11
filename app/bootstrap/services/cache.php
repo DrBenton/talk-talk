@@ -9,6 +9,8 @@ use Doctrine\Common\Cache\PhpFileCache;
 //use Doctrine\Common\Cache\ApcCache;
 //use Doctrine\Common\Cache\RedisCache;
 
+$app['cache.prefix'] = 'talk-talk';
+
 $app['cache.file.path'] = $app->share(
     function ($app) {
         return $app['app.var.cache.path'] . '/data-cache';

@@ -19,6 +19,7 @@
     "querypath/QueryPath": ">=3.0.0",
     "illuminate/database": "4.0.x",
     "illuminate/validation": "4.0.x",
+    "illuminate/cache": "4.0.x",
     "ircmaxell/password-compat": "1.0.2",
     "symfony/translation": "~2.3",
     "symfony/config": "~2.3",

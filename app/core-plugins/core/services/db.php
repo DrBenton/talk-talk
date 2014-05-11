@@ -3,8 +3,9 @@
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Eloquent\Model;
 use TalkTalk\CorePlugins\Core\Database\ConnectionResolver;
+use TalkTalk\CorePlugins\Core\Cache\IlluminateCacheManager;
 
-$DEFAULT_DB_CONNECTION_NAME = 'default';//this is hard-coded in the Capsule\Manager class
+$DEFAULT_DB_CONNECTION_NAME = 'talk-talk';
 
 $capsule = new Capsule;
 $connectionResolver = new ConnectionResolver();
@@ -28,9 +29,14 @@ $app['db.settings'] = $app->share(
 );
 
 $app['db.connection.add'] = $app->protect(
-    function (array $connectionSettings, $connectionName) use ($app, $capsule, $connectionResolver, $DEFAULT_DB_CONNECTION_NAME) {
+    function (array $connectionSettings, $connectionName) use (
+        $app,
+        $capsule,
+        $connectionResolver,
+        $DEFAULT_DB_CONNECTION_NAME
+    ) {
         $capsule->addConnection($connectionSettings, $connectionName);
-        
+
         if ($DEFAULT_DB_CONNECTION_NAME !== $connectionName) {
             // We only add the connection if this is not the default one
             // (default connection is already initialized at the end of this file)
@@ -42,7 +48,9 @@ $app['db.connection.add'] = $app->protect(
 $app['db'] = $app->share(
     function () use ($app, $capsule, $DEFAULT_DB_CONNECTION_NAME) {
         $app['db.connection.add']($app['db.settings'], $DEFAULT_DB_CONNECTION_NAME);
+        $capsule->setCacheManager(new IlluminateCacheManager($app));
         $capsule->bootEloquent();
+
         return $capsule;
     }
 );
@@ -54,7 +62,12 @@ $app['db.connections.resolver.default.init'] = $app->protect(
     }
 );
 
-$connectionResolver->addConnectionInitCallable($DEFAULT_DB_CONNECTION_NAME, $app['db.connections.resolver.default.init']);
+$capsule->manager->setDefaultConnection($DEFAULT_DB_CONNECTION_NAME);
+
+$connectionResolver->addConnectionInitCallable(
+    $DEFAULT_DB_CONNECTION_NAME,
+    $app['db.connections.resolver.default.init']
+);
 $connectionResolver->setDefaultConnection($DEFAULT_DB_CONNECTION_NAME);
 Model::setConnectionResolver($connectionResolver);
 
