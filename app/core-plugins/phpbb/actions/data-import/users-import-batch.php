@@ -3,13 +3,11 @@
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-$NB_USERS_PER_RANGE = 100;
+$action = function (Application $app, Request $request, $batchIndex) {
 
-$action = function (Application $app, Request $request, $batchIndex) use ($NB_USERS_PER_RANGE) {
-
-    $nbUsersToCreate = $NB_USERS_PER_RANGE;
-    $from = $batchIndex * $NB_USERS_PER_RANGE;
-    $nbUsersCreated = $app['phpbb.import.import-users']($nbUsersToCreate, $from);
+    $nbUsersToCreate = $app['phpbb.import.users.nb_items_per_batch'];
+    $from = $batchIndex * $nbUsersToCreate;
+    $nbUsersCreated = $app['phpbb.import.users.trigger_batch']($nbUsersToCreate, $from);
 
     if ($nbUsersCreated === $nbUsersToCreate) {
         // Seems that we still have users to create

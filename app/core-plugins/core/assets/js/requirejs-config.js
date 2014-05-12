@@ -15,7 +15,8 @@
       "locache": "vendor/js/locache/build/locache.min",
       "purl": "vendor/js/purl/purl",
       "moment": "vendor/js/momentjs/min/moment.min",
-      "jquery-form": "vendor/js/jquery-form/jquery.form"
+      "jquery-form": "vendor/js/jquery-form/jquery.form",
+      "q": "vendor/js/q/q"
     },
     shim: {
       "logger": {
@@ -26,10 +27,11 @@
       },
       "locache": {
         exports: "locache"
-      },
+      }
     },
     waitSeconds: 1,
-    urlArgs: "dev-bust=" + (new Date()).getTime() //TODO: remove this later :-)
+    //urlArgs: "dev-bust=" + (new Date()).getTime() //TODO: remove this later :-)
+    lastItem: true
   });
 
 

@@ -15,4 +15,9 @@ class User extends Model
 
     protected $table = 'users';
 
+    public function scopeRealUsers($query)
+    {
+        return $query->whereIn('user_type', array(self::TYPE_USER, self::TYPE_ADMIN));
+    }
+
 }

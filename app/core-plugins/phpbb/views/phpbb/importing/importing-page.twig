@@ -2,18 +2,31 @@
 
 {% block content %}
 
-    {{ 'core-plugins.phpbb.importing.intro'|trans }}
 
     <div class="requirejs-widget"
-         data-widget="app-modules/phpbb/widgets/imports-handler"
-         data-phpbb-nb-users="{{ phpBb.nbUsers }}">
+         data-widget="app-modules/phpbb/widgets/imports-handler">
 
         <div id="phpbb-users-import-display">
-            <p><b>{{ phpBb.nbUsers }}</b> users to import</p>
+            <h4>Users</h4>
+            <p class="nb-items-to-import hidden">
+                <b class="number">0</b> items to import
+            </p>
             <progress value="0" max="100"></progress>
             <span class="percentage">0</span>%
         </div>
 
+        <div id="phpbb-forums-import-display">
+            <h4>Forums</h4>
+            <p class="nb-items-to-import hidden">
+                <b class="number">0</b> items to import
+            </p>
+            <progress value="0" max="100"></progress>
+            <span class="percentage">0</span>%
+        </div>
+
+        <div class="please-wait hidden">
+            {{ 'core-plugins.phpbb.importing.intro'|trans }}
+        </div>
         <button class="start-import">Start import</button>
     </div>
 

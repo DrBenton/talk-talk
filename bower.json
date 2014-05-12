@@ -16,7 +16,8 @@
     "locache": "~0.4.2",
     "purl": "~2.3.1",
     "momentjs": "~2.5.1",
-    "jquery-form": "~3.46.0"
+    "jquery-form": "~3.46.0",
+    "q": "1.0.1"
   },
   "keywords": [
     "forum",
