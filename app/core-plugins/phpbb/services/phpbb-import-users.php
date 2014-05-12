@@ -11,7 +11,7 @@ $app['phpbb.import.users.metadata'] = $app->share(
         $ret['nbItemsPerBatch'] = $app['phpbb.import.users.nb_items_per_batch'];
         $ret['nbItemsToImport'] = PhpBbUser::realUsers()->count();
         $ret['nbBatchesRequired'] = ceil($ret['nbItemsToImport'] / $ret['nbItemsPerBatch']);
-        
+
         return $ret;
     }
 );
@@ -26,7 +26,7 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
                 ->get(array('username', 'user_password', 'user_email'));
 
         $nbUsersCreated = 0;
-            
+
         foreach ($phpBbUsers as $phpBbUser) {
 
             $talkTalkUser = new TalkTalkUser();
@@ -34,7 +34,7 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
             $talkTalkUser->email = $phpBbUser->user_email;
             $talkTalkUser->password = $phpBbUser->user_password;
             $talkTalkUser->provider = 'phpbb-import';
-            
+
             try {
                 $talkTalkUser->save();
             } catch (\Exception $e) {
@@ -43,7 +43,7 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
                     throw $e;
                 }
             }
-            
+
             $nbUsersCreated++;
 
         }

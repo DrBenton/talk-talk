@@ -25,7 +25,7 @@ define(function (require, exports, module) {
     'forums'
   ];
   var currentImportedItemTypeIndex = 0;
-  
+
   // Exports
   exports.createWidget = createWidget;
 
@@ -37,35 +37,35 @@ define(function (require, exports, module) {
         importNextBatch();
       });
   }
-  
+
   function fetchNextItemTypesImportMetadata() {
     myDebug && logger.debug(module.id, "fetchNextItemTypesImportMetadata()");
     return Q($.ajax({
-      url: '/phpbb/import/importing/import-'+currentItemsImport.type+'/metadata',
+      url: '/phpbb/import/importing/import-' + currentItemsImport.type + '/metadata',
       dataType: 'json'
     }))
-    .then(function (currentItemTypeMetada) {
+      .then(function (currentItemTypeMetada) {
         myDebug && logger.debug(module.id, "-> currentItemTypeMetada=", currentItemTypeMetada);
         currentItemsImport.nbItemsPerBatch = currentItemTypeMetada.nbItemsPerBatch;
         currentItemsImport.nbItemsToImport = currentItemTypeMetada.nbItemsToImport;
         currentItemsImport.nbBatchesRequired = currentItemTypeMetada.nbBatchesRequired;
         currentItemsImport.currentBatchIndex = 0;
         currentItemsImport.nbItemsImported = 0;
-        
+
         var $phpBbItemsImportDisplay = getCurrentItemTypeDisplay();
         var $nbItemsToImportDisplay = $phpBbItemsImportDisplay.find('.nb-items-to-import');
         $nbItemsToImportDisplay.find('.number').text(currentItemsImport.nbItemsToImport);
         $nbItemsToImportDisplay.removeClass('hidden').show();
-    })
-    .fail(function () {
+      })
+      .fail(function () {
 
-    })
+      })
   }
-  
+
   function importNextBatch() {
     myDebug && logger.debug(module.id, "importNextBatch()");
     Q($.ajax({
-      url: '/phpbb/import/importing/import-'+currentItemsImport.type+'/batch/'+currentItemsImport.currentBatchIndex,
+      url: '/phpbb/import/importing/import-' + currentItemsImport.type + '/batch/' + currentItemsImport.currentBatchIndex,
       dataType: 'json'
     }))
       .then(function (createdItemsData) {
@@ -94,9 +94,9 @@ define(function (require, exports, module) {
 
       })
   }
-  
+
   function getCurrentItemTypeDisplay() {
-    return $('#phpbb-'+currentItemsImport.type+'-import-display');
+    return $('#phpbb-' + currentItemsImport.type + '-import-display');
   }
 
   function createWidget($widgetNode) {

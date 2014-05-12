@@ -2,6 +2,7 @@
 
 namespace TalkTalk\Core\Plugins\Manager\Behaviour;
 
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use TalkTalk\Core\Plugins\Plugin;
 use TalkTalk\Core\Utils\ArrayUtils;
 use Silex\Controller;
@@ -28,6 +29,7 @@ class ActionsManager extends BehaviourBase
 
     protected function registerAction(Plugin $plugin, array $actionData)
     {
+        $that = & $this; //PHP 5.3: old school JS "this" scope management, yeah ^^
         $app = $this->app;
         $pluginsManager = $this->pluginsManager;
         $actionData['method'] = isset($actionData['method']) ? $actionData['method'] : 'GET';
@@ -35,9 +37,9 @@ class ActionsManager extends BehaviourBase
 
         $controller = $app->match(
             $urlsPrefix . $actionData['url'],
-            function () use ($app, $pluginsManager, $plugin, $actionData) {
+            function () use ($app, &$that, $pluginsManager, $plugin, $actionData) {
                 // We resolve this action controller file path...
-                $actionPath = $plugin->path . '/actions/' . $actionData['target'] . '.php';
+                $actionPath = $that->getActionPath($plugin, $actionData);
                 // ...we include it in an isolated context, with only "$app" access...
                 $actionFunc = $pluginsManager->includeFileInIsolatedClosure($actionPath);
                 // ...we trigger the Dependencies Injector on the returned Closure...
@@ -68,6 +70,45 @@ class ActionsManager extends BehaviourBase
             sprintf('Route "%s" (method %s) registered.', $actionData['url'], $actionData['method'])
         );
         */
+    }
+
+    /**
+     * Only used in an internal context by a Closure which need "public" access.
+     *
+     * @private
+     * @param  Plugin $plugin
+     * @param  array  $actionData
+     * @return string
+     */
+    public function getActionPath(Plugin $plugin, array $actionData)
+    {
+        $app = $this->app;
+
+        $targetFile = $actionData['target'];
+        // We may have dynamic params in the target file; let's handle them!
+        $targetFile = preg_replace_callback(
+            '/\{([a-z]+)\}/i',
+            function ($matches) use ($app, $actionData) {
+                $paramName = $matches[1];
+
+                // Security check: we do want a "Action requirement" for this param!
+                if (
+                    !isset($actionData['requirements']) ||
+                    !in_array($paramName, array_keys($actionData['requirements']))
+                ) {
+                    throw new InvalidParameterException(
+                        sprintf('Action file dynamic parameter "%s" must have a requirement!', $paramName)
+                    );
+                }
+
+                return $app['request']->get($paramName, '');
+            },
+            $targetFile
+        );
+
+        $actionPath = $plugin->path . '/actions/' . $targetFile . '.php';
+
+        return $actionPath;
     }
 
     protected function handleActionBeforeMiddlewares(

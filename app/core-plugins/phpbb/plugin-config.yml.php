@@ -29,32 +29,21 @@
     name: phpbb/import/importing
     before: phpbb.middleware.require-phpbb-connection-settings
   -
-    # GET /phpbb/import/importing/import-users/metadata => actions/data-import/users-import-metadata.php
+    # GET /phpbb/import/importing/import-XXX/metadata => actions/data-import/XXX-import-metadata.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
-    url: /import/importing/import-users/metadata
-    target: data-import/users-import-metadata
-    before: phpbb.middleware.require-phpbb-connection-settings
-  -
-    # GET /phpbb/import/importing/import-users/batch/N => actions/data-import/users-import-batch.php
-    # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
-    url: /import/importing/import-users/batch/{batchIndex}
-    target: data-import/users-import-batch
+    url: /import/importing/import-{itemType}/metadata
+    target: data-import/{itemType}-import-metadata
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:
-     batchIndex: \d+ #{batchIndex} must be an integer
+     itemType: (users|forums)
   -
-    # GET /phpbb/import/importing/import-forums/metadata => actions/data-import/forums-import-metadata.php
+    # GET /phpbb/import/importing/import-XXX/batch/N => actions/data-import/XXX-import-batch.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
-    url: /import/importing/import-forums/metadata
-    target: data-import/forums-import-metadata
-    before: phpbb.middleware.require-phpbb-connection-settings
-  -
-    # GET /phpbb/import/importing/import-forums/batch/N => actions/data-import/forums-import-batch.php
-    # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
-    url: /import/importing/import-forums/batch/{batchIndex}
-    target: data-import/forums-import-batch
+    url: /import/importing/import-{itemType}/batch/{batchIndex}
+    target: data-import/{itemType}-import-batch
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:
+     itemType: (users|forums)
      batchIndex: \d+ #{batchIndex} must be an integer
 
 @classes:
