@@ -23,7 +23,12 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
             PhpBbUser::realUsers()
                 ->orderBy('user_id')
                 ->skip($from)->take($nbToImport)
-                ->get(array('username', 'user_password', 'user_email'));
+                ->get(array('user_id', 'username', 'user_password', 'user_email'));
+
+        // This array will allow us to map phpBb users ids to our new Talk-Talk users ids
+        // This is a heavy var to store in Session, it will be useful for next imports processes
+        // and we will carefully clear this var after the phpbb import process.
+        $idsMapping = $app['session']->get('phpbb.import.users.ids_mapping', array());
 
         $nbUsersCreated = 0;
 
@@ -34,19 +39,16 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
             $talkTalkUser->email = $phpBbUser->user_email;
             $talkTalkUser->password = $phpBbUser->user_password;
             $talkTalkUser->provider = 'phpbb-import';
+            $talkTalkUser->save();
 
-            try {
-                $talkTalkUser->save();
-            } catch (\Exception $e) {
-                if ('23000' === $e->getCode()) {
-                    // We tolerate "Duplicate entry" Exceptions, but not others PDOExceptions
-                    throw $e;
-                }
-            }
+            $idsMapping[$phpBbUser->user_id] = $talkTalkUser->id;
 
             $nbUsersCreated++;
 
         }
+
+        // We have to keep the users ids in our Session data, as other phpBb import processes will need it
+        $app['session']->set('phpbb.import.users.ids_mapping', $idsMapping);
 
         return $nbUsersCreated;
     }

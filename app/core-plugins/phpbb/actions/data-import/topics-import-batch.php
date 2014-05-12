@@ -5,12 +5,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 $action = function (Application $app, Request $request, $batchIndex) {
 
-    $nbForumsToCreate = $app['phpbb.import.forums.nb_items_per_batch'];
-    $from = $batchIndex * $nbForumsToCreate;
-    $nbForumsCreated = $app['phpbb.import.forums.trigger_batch']($nbForumsToCreate, $from);
+    $nbTopicsToCreate = $app['phpbb.import.topics.nb_items_per_batch'];
+    $from = $batchIndex * $nbTopicsToCreate;
+    $nbTopicsCreated = $app['phpbb.import.topics.trigger_batch']($nbTopicsToCreate, $from);
 
-    if ($nbForumsCreated === $nbForumsToCreate) {
-        // Seems that we still have users to create
+    if ($nbTopicsCreated === $nbTopicsToCreate) {
+        // Seems that we still have topics to create
         $importDone = false;
     } else {
         $importDone = true;
@@ -19,7 +19,7 @@ $action = function (Application $app, Request $request, $batchIndex) {
     return $app->json(
         array(
             'batchIndex' => $batchIndex,
-            'created' => $nbForumsCreated,
+            'created' => $nbTopicsCreated,
             'duration' => $app['perfs.script.duration'],
             'done' => $importDone,
         )

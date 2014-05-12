@@ -22,7 +22,8 @@ define(function (require, exports, module) {
 
   var itemsToImportTypes = [
     'users',
-    'forums'
+    'forums',
+    'topics'
   ];
   var currentImportedItemTypeIndex = 0;
 
