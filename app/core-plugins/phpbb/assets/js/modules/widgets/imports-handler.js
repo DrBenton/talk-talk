@@ -3,7 +3,6 @@ define(function (require, exports, module) {
   var $ = require("jquery");
   var Q = require("q");
 
-  var purl = require("purl");
   var moment = require("moment");
   var logger = require("logger");
 
@@ -15,7 +14,8 @@ define(function (require, exports, module) {
     nbItemsPerBatch: 0,
     nbItemsToImport: 0,
     nbItemsImported: 0,
-    currentBatchIndex: 0
+    currentBatchIndex: 0,
+    startTime: null
   };
 
   myDebug && logger.debug(module.id, "on the bridge, captain!");
@@ -23,9 +23,12 @@ define(function (require, exports, module) {
   var itemsToImportTypes = [
     'users',
     'forums',
-    'topics'
+    'topics',
+    'posts'
   ];
   var currentImportedItemTypeIndex = 0;
+
+  //TODO: clean that code! :-)
 
   // Exports
   exports.createWidget = createWidget;
@@ -35,6 +38,7 @@ define(function (require, exports, module) {
     myDebug && logger.debug(module.id, "startNextItemsTypeImport() ; currentItemsImport.type=", currentItemsImport.type);
     fetchNextItemTypesImportMetadata()
       .then(function () {
+        currentItemsImport.startTime = new Date();
         importNextBatch();
       });
   }
@@ -82,6 +86,11 @@ define(function (require, exports, module) {
           setTimeout(importNextBatch, 0);
         } else {
           // No more items to process for this phpBb items type
+
+          var $doneDisplay = $phpBbItemsImportDisplay.find('.done');
+          $doneDisplay.find('.duration').text(moment().diff(currentItemsImport.startTime, 'seconds'));
+          $doneDisplay.removeClass('hidden').show();
+
           currentImportedItemTypeIndex++;
           if (currentImportedItemTypeIndex === itemsToImportTypes.length) {
             // Hey, it seems that we have imported all the phpBb items type!

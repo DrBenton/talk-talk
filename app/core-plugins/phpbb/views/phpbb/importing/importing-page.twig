@@ -5,7 +5,7 @@
     <div class="requirejs-widget"
          data-widget="app-modules/phpbb/widgets/imports-handler">
 
-        {% set itemsTypes = {'users': 'Users', 'forums': 'Forums', 'topics': 'Topics'} %}
+        {% set itemsTypes = {'users': 'Users', 'forums': 'Forums', 'topics': 'Topics', 'posts': 'Posts'} %}
         {% for itemType, itemLabel in itemsTypes %}
             <div id="phpbb-{{ itemType }}-import-display">
                 <h4>{{ itemLabel }}</h4>
@@ -15,6 +15,10 @@
                 </p>
                 <progress value="0" max="100"></progress>
                 <span class="percentage">0</span>%
+
+                <div class="done hidden">
+                    Done! (<span class="duration"></span> seconds)
+                </div>
             </div>
         {% endfor %}
 

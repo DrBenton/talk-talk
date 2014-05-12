@@ -35,7 +35,7 @@
     target: data-import/{itemType}-import-metadata
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:
-     itemType: (users|forums|topics)
+     itemType: (users|forums|topics|posts)
   -
     # GET /phpbb/import/importing/import-XXX/batch/N => actions/data-import/XXX-import-batch.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
@@ -43,7 +43,7 @@
     target: data-import/{itemType}-import-batch
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:
-     itemType: (users|forums|topics)
+     itemType: (users|forums|topics|posts)
      batchIndex: \d+ #{batchIndex} must be an integer
 
 @classes:
@@ -57,6 +57,7 @@
   - phpbb-import-users
   - phpbb-import-forums
   - phpbb-import-topics
+  - phpbb-import-posts
 
 @events:
   - before.set-phpbb-db-settings-from-session
