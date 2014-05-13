@@ -6,6 +6,7 @@
   enabledOnlyForUrl:
     - ^/phpbb
     - ^/sign-in
+    - ^/utils/get-alerts-display
   actionsBefore:
    - auth.middleware.is-authenticated
 
@@ -29,22 +30,31 @@
     name: phpbb/import/importing
     before: phpbb.middleware.require-phpbb-connection-settings
   -
-    # GET /phpbb/import/importing/import-XXX/metadata => actions/data-import/XXX-import-metadata.php
+    # POST /phpbb/import/importing/import-XXX/metadata => actions/data-import/XXX-import-metadata.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
     url: /import/importing/import-{itemType}/metadata
+    method: POST
     target: data-import/{itemType}-import-metadata
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:
      itemType: (users|forums|topics|posts)
   -
-    # GET /phpbb/import/importing/import-XXX/batch/N => actions/data-import/XXX-import-batch.php
+    # POST /phpbb/import/importing/import-XXX/batch/N => actions/data-import/XXX-import-batch.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
     url: /import/importing/import-{itemType}/batch/{batchIndex}
+    method: POST
     target: data-import/{itemType}-import-batch
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:
      itemType: (users|forums|topics|posts)
      batchIndex: \d+ #{batchIndex} must be an integer
+  -
+    # POST /phpbb/import/importing/finish-import => actions/data-import/finish-import.php
+    # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
+    url: /import/importing/finish-import
+    method: POST
+    target: data-import/finish-import
+    before: phpbb.middleware.require-phpbb-connection-settings
 
 @classes:
   -

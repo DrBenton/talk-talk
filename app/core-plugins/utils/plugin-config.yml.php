@@ -2,13 +2,18 @@
 
 @general:
   id: utils
-
+  actionsUrlsPrefix: /utils
 @actions:
   -
-    # GET /phpinfo => actions/phpinfo.php (only when $app['debug'] === true)
+    # GET /utils/phpinfo => actions/phpinfo.php (only when $app['debug'] === true)
     url: /phpinfo
     target: phpinfo
     onlyForDebug: true
+  -
+    # POST /utils/get-alerts-display => actions/get-alerts-display.php
+    url: /get-alerts-display
+    target: get-alerts-display
+    method: POST
 
 @classes:
   -

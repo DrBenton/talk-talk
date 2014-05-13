@@ -77,7 +77,8 @@ class ConnectionResolver implements ConnectionResolverInterface
         $name,
         /*callable*/
         $connectionInitClosure
-    ) {
+    )
+    {
         $this->connectionsInitCallables[$name] = $connectionInitClosure;
     }
 

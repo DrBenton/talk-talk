@@ -3,7 +3,7 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
-    {{ 'core-plugins.phpbb.start.form.intro'|trans }}
+    {{ 'core-plugins.phpbb.import.start.form.intro'|trans }}
 
     {% include 'phpbb/start/_form.twig' with { dbSettings: dbSettings } %}
 

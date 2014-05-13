@@ -6,5 +6,8 @@
   id: ajax-nav
   disabled: false
 
+@locales:
+  - en
+
 @hooks:
   - html.site_container

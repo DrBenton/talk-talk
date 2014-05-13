@@ -2,10 +2,10 @@
 
 {% block content %}
 
-    <div class="requirejs-widget"
-         data-widget="app-modules/phpbb/widgets/imports-handler">
+    <div class="imports-container requirejs-widget"
+         data-widget="app-modules/phpbb/widgets/imports-handler"
+         data-items-types="{{ itemsTypes|json_encode() }}">
 
-        {% set itemsTypes = {'users': 'Users', 'forums': 'Forums', 'topics': 'Topics', 'posts': 'Posts'} %}
         {% for itemType, itemLabel in itemsTypes %}
             <div id="phpbb-{{ itemType }}-import-display">
                 <h4>{{ itemLabel }}</h4>
@@ -23,7 +23,7 @@
         {% endfor %}
 
         <div class="please-wait hidden">
-            {{ 'core-plugins.phpbb.importing.intro'|trans }}
+            {{ 'core-plugins.phpbb.import.importing.intro'|trans }}
         </div>
         <button class="start-import">Start import</button>
     </div>

@@ -6,6 +6,8 @@ define(function (require, exports, module) {
 
   // Some pre-defined values...
   registry.$document = $(document);
+  registry.$head = $("head");
+  registry.$body = $("body");
   registry.$mainContentContainer = $("#main-content-container");
   registry.$debugInfoContainer = $("#debug-info-container");
 

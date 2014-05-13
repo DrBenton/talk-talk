@@ -14,7 +14,7 @@ define(function (require, exports, module) {
     date: null,
     nbLoadings: 0,
     loadingDuration: 0
-  }
+  };
 
   // Exports
   exports.getStat = getStat;
@@ -90,7 +90,7 @@ define(function (require, exports, module) {
     var computedData = {
       averageDuration: parseFloat((loadingsDurationsSum / nbStatsToCompute).toPrecision(3)),
       nbRequests: nbRequests
-    }
+    };
     myDebug && logger.log('computeAjaxStats ; computedData=', computedData);
 
     return computedData;

@@ -39,7 +39,8 @@ class PluginsFinder
         $pluginsInitFilePattern,
         /*callable*/
         $pluginConfigParseFunc = null
-    ) {
+    )
+    {
         $this->findAndParsePluginsConfigurations($rootPath, $pluginsInitFilePattern, $pluginConfigParseFunc);
 
         $this->addEnabledPluginsToPluginsManager();
@@ -74,7 +75,8 @@ class PluginsFinder
         $pluginsInitFilePattern,
         /*callable*/
         $pluginConfigParseFunc
-    ) {
+    )
+    {
         $cacheKey = self::CACHE_KEY . '-' . md5($rootPath);
 
         if ($this->cache->contains($cacheKey)) {

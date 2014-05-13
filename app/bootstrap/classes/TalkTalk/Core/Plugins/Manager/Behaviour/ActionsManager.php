@@ -115,7 +115,8 @@ class ActionsManager extends BehaviourBase
         Plugin $plugin,
         Controller $controller,
         array $actionData
-    ) {
+    )
+    {
         $app = $this->app;
 
         // Whole Plugin "general/actionsBefore" middlewares goes first
@@ -142,7 +143,8 @@ class ActionsManager extends BehaviourBase
         Plugin $plugin,
         Controller $controller,
         array $actionData
-    ) {
+    )
+    {
         if (isset($actionData['requirements'])) {
             foreach ($actionData['requirements'] as $argName => $pattern) {
                 $controller->assert($argName, $pattern);

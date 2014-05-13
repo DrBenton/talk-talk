@@ -18,9 +18,9 @@ $action = function (Application $app, Request $request) {
     } catch (\PDOException $e) {
         $errMsg = array(
             'message' => $app['translator']->trans(
-                'core-plugins.phpbb.start.db-error',
-                array('%pdo_message%' => $app['html.escape']($e->getMessage()))
-            ),
+                    'core-plugins.phpbb.start.db-error',
+                    array('%pdo_message%' => $app['html.escape']($e->getMessage()))
+                ),
             'secured' => true
         );
         $app['session.flash.add']($errMsg, 'error');
@@ -37,7 +37,7 @@ $action = function (Application $app, Request $request) {
         $app['session']->set('phpbb.db-settings', $dbSettings);
         // Let's display a "success" notification
         $app['session.flash.add.translated'](
-            'core-plugins.phpbb.start.db-success',
+            'core-plugins.import.phpbb.start.db-success',
             array(),
             'success'
         );

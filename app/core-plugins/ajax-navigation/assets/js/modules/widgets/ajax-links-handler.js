@@ -10,7 +10,7 @@ define(function (require, exports, module) {
   var ajaxData = require("app-modules/ajax-nav/ajax-data");
   var dataStore = require("app-modules/core/data-store");
   var ajaxFormsHandler = require("app-modules/ajax-nav/ajax-forms-handler");
-  //var notifyService = require("js/services/notify-srv");
+  var alertsService = require("app-modules/utils/services/alerts-service");
   var widgetsFactory = require("app-modules/core/widgets-factory");
 
   var myDebug = !false;
@@ -64,7 +64,10 @@ define(function (require, exports, module) {
 
       showAjaxLoading(true);
 
-      $.get(contentUrl)
+      $.ajax({
+        url: contentUrl,
+        dataType: 'text'
+      })
         .done(function (data, textStatus, jqXHR) {
 
           myDebug && logger.debug(module.id, "Ajax link n°" + ajaxCounterForThisLoading +
@@ -86,10 +89,12 @@ define(function (require, exports, module) {
 
         })
         .fail(function (jqXHR, textStatus, err) {
-
           myDebug && logger.debug(module.id, "Ajax link '" + contentUrl + "' loading failed!");
-          //notifyService.notify("Error while ajax-loading '" + contentUrl + "' ! (" + err + ")", "error");
-
+          alertsService.addAlert(
+            "core-plugins.ajax-navigation.alerts.loading-error",
+            {'%contentUrl%': contentUrl},
+            "error"
+          );
         });
 
     })(++ajaxLoadingsCounter, (new Date()).getTime());
@@ -154,8 +159,8 @@ define(function (require, exports, module) {
 
   }
 
-  function removeNotifications() {
-    $('#notifications-container').text('');
+  function clearAlerts() {
+    alertsService.clearAlerts();
   }
 
   function normalizeUrl(rawUrl) {
@@ -177,8 +182,8 @@ define(function (require, exports, module) {
     myDebug && logger.debug(module.id, "Ajax link clicked :", $clickedLink);
     var targetUrl = $clickedLink.attr('href');
 
-    // Let's remove previous page Notifications
-    removeNotifications();
+    // Let's remove previous page Alerts
+    clearAlerts();
 
     myDebug && logger.debug(module.id, "History.pushState(" + targetUrl + ")");
     History.pushState(null, null, targetUrl);

@@ -1,7 +1,7 @@
 <div class="ajax-loaded-content">
 
     {# Notifications display through JavaScript (if any) #}
-    {% include 'core/common/alerts-display.twig' %}
+    {% include 'core/common/alerts-display.twig' with {alerts: get_flashes()} %}
 
     {% block content %}
     {% endblock %}

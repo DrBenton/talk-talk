@@ -19,7 +19,11 @@ $app->before(
 
         // Let's check CSRF token!!
         $tokenName = (string) $app['config']['security']['csrf.token_name'];
-        $receivedToken = $request->request->get($tokenName);
+        if ($request->headers->has('X-CSRF-Token')) {
+            $receivedToken = $request->headers->get('X-CSRF-Token');
+        } else {
+            $receivedToken = $request->request->get($tokenName);
+        }
         $sessionToken = $app['session']->get($tokenName, '**no CSRF token in session**');
 
         if (!StringUtils::equals($sessionToken, $receivedToken)) {

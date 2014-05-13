@@ -7,6 +7,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <meta name="csrf-param" content="{{ app['csrf.token_name'] }}"/>
+    <meta name="csrf-token" content="{{ app['csrf.token_value'] }}"/>
+
     {{ enable_html_hooks('app_stylesheets') }}
     {% for stylesheet in get_plugins_stylesheets() %}
         <link rel="stylesheet" href="{{ stylesheet }}">
@@ -26,7 +29,7 @@
         {% include '/core/common/header.twig' %}
     {% endblock %}
 
-    {% include 'core/common/alerts-display.twig' %}
+    {% include 'core/common/alerts-display.twig' with {alerts: get_flashes()} %}
 
     {{ enable_html_hooks('main_content_container') }}
     <div id="main-content-container" class="clearfix">

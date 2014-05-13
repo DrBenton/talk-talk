@@ -6,7 +6,8 @@ define(function (require, exports, module) {
   var purl = require("purl");
   var varsRegistry = require("app-modules/core/vars-registry");
   var ajaxData = require("app-modules/ajax-nav/ajax-data");
-  //var notifyService = require("js/services/notify-srv");
+  var alertsService = require("app-modules/utils/services/alerts-service");
+
   require("jquery-form");
 
   var myDebug = !false;
@@ -50,7 +51,11 @@ define(function (require, exports, module) {
 
   function onFormSendingError(jqXHR, textStatus, err) {
     myDebug && logger.debug(module.id, "Ajax form loading failed!");
-    //notifyService.notify("Error while ajax-loading this form! (" + err + ")", "error");
+    alertsService.addAlert(
+      "core-plugins.ajax-navigation.alerts.form-error",
+      {},
+      "error"
+    );
   }
 
   function unbindPreviousAjaxForms($formsContainer) {
