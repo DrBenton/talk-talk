@@ -18,3 +18,4 @@
   - html.form
   - html.alerts_display
   - html.user_profile_display
+  - html.forums_display

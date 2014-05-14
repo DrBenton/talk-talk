@@ -37,7 +37,7 @@ $action = function (Application $app, Request $request) {
         $app['session']->set('phpbb.db-settings', $dbSettings);
         // Let's display a "success" notification
         $app['session.flash.add.translated'](
-            'core-plugins.import.phpbb.start.db-success',
+            'core-plugins.phpbb.import.start.db-success',
             array(),
             'success'
         );

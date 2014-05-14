@@ -40,8 +40,8 @@ $app['phpbb.import.forums.trigger_batch'] = $app->protect(
 
             $talkTalkForum = new TalkTalkForum();
             $talkTalkForum->parent_id = $talkTalkParentId;
-            $talkTalkForum->name = $phpBbForum->forum_name;
-            $talkTalkForum->desc = $phpBbForum->forum_desc;
+            $talkTalkForum->name = html_entity_decode($phpBbForum->forum_name);
+            $talkTalkForum->desc = html_entity_decode($phpBbForum->forum_desc);
             $talkTalkForum->nb_posts = $phpBbForum->forum_posts;
             $talkTalkForum->nb_topics = $phpBbForum->forum_topics;
             $talkTalkForum->save();

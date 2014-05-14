@@ -1,4 +1,6 @@
 
+@import "../components/bootstrap/less/variables.less";
+
 #site-container {
   max-width: 940px;
   margin: 0 auto;
@@ -9,3 +11,11 @@
   margin: 0 auto; 
 }
 
+
+.forums-display-container {
+  .forums-display {
+    .forum-container {
+      margin: @grid-gutter-width/2 @grid-gutter-width;
+    }
+  }
+}

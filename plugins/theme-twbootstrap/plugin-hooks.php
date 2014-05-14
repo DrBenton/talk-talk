@@ -65,3 +65,14 @@ $hooks['html.user_profile_display'] = function (\QueryPath\DOMQuery $html) {
         ->prepend('<span class="glyphicon glyphicon-user"></span>');
 };
 
+$hooks['html.forums_display'] = function (\QueryPath\DOMQuery $html) {
+    $rootForums = $html->find('.forum-container.level-0');
+    $rootForums->addClass('col-sm-5');
+    $rootForums->find('.forum')->addClass('panel panel-default');
+    $rootForums->even()->after('<div class="clearfix"></div>');
+    $rootForumsTitles = $rootForums->find('.title');
+    $rootForumsTitles->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
+    $rootForumsContent = $rootForums->find('.content');
+    $rootForumsContent->addClass('panel-body');
+};
+
