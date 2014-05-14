@@ -5,6 +5,7 @@ namespace TalkTalk\Core\Plugins\Manager;
 use Doctrine\Common\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use Silex\Application;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
 use TalkTalk\Core\Plugins\Plugin;
 
@@ -58,8 +59,14 @@ class PluginsManager implements PluginsManagerInterface
     public function includeFileInIsolatedClosure($filePath)
     {
         $app = $this->getApp();
-        $__includedFilePath = $filePath;
 
+        // A small security check: we only allow files inside the app
+        $filePath = realpath($filePath);
+        if (0 !== strpos($filePath, $app['app.path'])) {
+            throw new DisabledException(sprintf('File path "%s" is not inside app directory!', $filePath));
+        }
+
+        $__includedFilePath = $filePath;
         return call_user_func(
             function () use (&$app, $__includedFilePath) {
                 return include_once $__includedFilePath;
@@ -101,7 +108,7 @@ class PluginsManager implements PluginsManagerInterface
     public function __call($name, array $arguments)
     {
         foreach ($this->behaviours as $behaviour) {
-            if (method_exists($behaviour, $name)) {
+            if (is_callable(array($behaviour, $name))) {
                 return call_user_func_array(array($behaviour, $name), $arguments);
             }
         }

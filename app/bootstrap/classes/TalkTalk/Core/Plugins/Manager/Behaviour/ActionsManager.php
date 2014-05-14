@@ -14,6 +14,8 @@ class ActionsManager extends BehaviourBase
     public function registerActions()
     {
         $app = $this->app;
+        $appActions = array();
+
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
             if (!isset($plugin->data['@actions'])) {
                 continue;
@@ -23,12 +25,38 @@ class ActionsManager extends BehaviourBase
                 if (isset($actionData['onlyForDebug']) && !$app['debug']) {
                     continue;
                 }
-                $this->registerAction($plugin, $actionData);
+
+                $appActions[] = array(
+                    'plugin' => $plugin,
+                    'actionData' => $actionData,
+                );
             }
+        }
+
+        // All right, we now have all our app Plugins actions in an array.
+        // 1) Let's sort them by priority (higher priorities comes first)...
+        usort($appActions, array($this, 'sortPluginsActions'));
+
+        // 2) ...and register them!
+        foreach ($appActions as $action) {
+            $this->registerAction($action['plugin'], $action['actionData']);
         }
     }
 
-    protected function registerAction(Plugin $plugin, array $actionData)
+    protected function sortPluginsActions(array $actionA, array $actionB)
+    {
+        $priorityA = isset($actionA['actionData']['priority']) ? $actionA['actionData']['priority'] : 0 ;
+        $priorityB = isset($actionB['actionData']['priority']) ? $actionB['actionData']['priority'] : 0 ;
+        if ($priorityA < $priorityB) {
+            return -1;
+        } elseif ($priorityA > $priorityB) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    protected function registerAction(Plugin $plugin, array &$actionData)
     {
         $actionData['method'] = isset($actionData['method'])
             ? $actionData['method']
@@ -129,7 +157,7 @@ class ActionsManager extends BehaviourBase
         // A small security check: we only allow action files inside the app
         $actionPath = realpath($actionPath);
         if (0 !== strpos($actionPath, $this->app['app.path'])) {
-            throw new DisabledException(sprintf('Action path "%s" does not belong to app files!', $actionPath));
+            throw new DisabledException(sprintf('Action path "%s" is not inside app directory!', $actionPath));
         }
 
         return $actionPath;
