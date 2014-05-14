@@ -1,13 +1,14 @@
 <?php
 
 use TalkTalk\Model\User;
+use Symfony\Component\Security\Core\Exception\AuthenticationServiceException;
 
 $app['user'] = $app->share(
     function () use ($app) {
         if ($app['isAnonymous']) {
-            return null;
+            throw new AuthenticationServiceException('No authenticated User found!');
         }
 
-        return User::find($app['session']->get('userId'));
+        return User::findOrFail($app['session']->get('userId'));
     }
 );

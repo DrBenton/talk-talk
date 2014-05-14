@@ -18,7 +18,7 @@
 @services:
   - session
   - db
-  - crypt
+  - crypto
   - url-generator
   - twig
   - translator

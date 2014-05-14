@@ -9,7 +9,7 @@ $hooks['auth.user.check-signin-credentials'] = function ($submittedUserData, Use
         return false;
     }
 
-    return $app['crypt.password.verify']($submittedUserData['password'], $dbUser->password);
+    return $app['crypto.password.verify']($submittedUserData['password'], $dbUser->password);
 };
 
 $hooks['html.header'] = function (\QueryPath\DOMQuery $html) use ($app) {

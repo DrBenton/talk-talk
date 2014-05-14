@@ -3,6 +3,7 @@
 namespace TalkTalk\Core\Plugins\Manager\Behaviour;
 
 use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use TalkTalk\Core\Plugins\Plugin;
 use TalkTalk\Core\Utils\ArrayUtils;
 use Silex\Controller;
@@ -29,29 +30,23 @@ class ActionsManager extends BehaviourBase
 
     protected function registerAction(Plugin $plugin, array $actionData)
     {
+        $actionData['method'] = isset($actionData['method'])
+            ? $actionData['method']
+            : 'GET';
+        $urlsPrefix = isset($plugin->data['@general']['actionsUrlsPrefix'])
+            ? $plugin->data['@general']['actionsUrlsPrefix']
+            : '';
+
         $that = & $this; //PHP 5.3: old school JS "this" scope management, yeah ^^
-        $app = $this->app;
-        $pluginsManager = $this->pluginsManager;
-        $actionData['method'] = isset($actionData['method']) ? $actionData['method'] : 'GET';
-        $urlsPrefix = isset($plugin->data['@general']['actionsUrlsPrefix']) ? $plugin->data['@general']['actionsUrlsPrefix'] : '';
-
-        $controller = $app->match(
+        $controller = $this->app->match(
             $urlsPrefix . $actionData['url'],
-            function () use ($app, &$that, $pluginsManager, $plugin, $actionData) {
-                // We resolve this action controller file path...
-                $actionPath = $that->getActionPath($plugin, $actionData);
-                // ...we include it in an isolated context, with only "$app" access...
-                $actionFunc = $pluginsManager->includeFileInIsolatedClosure($actionPath);
-                // ...we trigger the Dependencies Injector on the returned Closure...
-                $actionArgs = $app['resolver']->getArguments(
-                    $app['request'],
-                    $actionFunc
-                );
-
-                // ...and we finally trigger the Closure!
-                return call_user_func_array($actionFunc, $actionArgs);
+            function () use (&$that, $plugin, $actionData) {
+                return $that->runAction($plugin, $actionData);
             }
-        )->method($actionData['method']);
+        );
+
+        // HTTP method management
+        $controller->method($actionData['method']);
 
         // Route name management
         if (isset($actionData['name'])) {
@@ -78,9 +73,32 @@ class ActionsManager extends BehaviourBase
      * @private
      * @param  Plugin $plugin
      * @param  array  $actionData
+     * @return mixed
+     */
+    public function runAction(Plugin $plugin, array $actionData)
+    {
+        // We resolve this action controller (i.e. a Closure) file path...
+        $actionPath = $this->getActionPath($plugin, $actionData);
+
+        // ...we include it in an isolated context, with only "$app" access...
+        $actionFunc = $this->pluginsManager->includeFileInIsolatedClosure($actionPath);
+
+        // ...we trigger the Dependencies Injector on the returned Closure...
+        $actionArgs = $this->app['resolver']->getArguments(
+            $this->app['request'],
+            $actionFunc
+        );
+
+        // ...and we finally trigger the action Closure!
+        return call_user_func_array($actionFunc, $actionArgs);
+    }
+
+    /**
+     * @param  Plugin $plugin
+     * @param  array  $actionData
      * @return string
      */
-    public function getActionPath(Plugin $plugin, array $actionData)
+    protected function getActionPath(Plugin $plugin, array $actionData)
     {
         $app = $this->app;
 
@@ -107,6 +125,12 @@ class ActionsManager extends BehaviourBase
         );
 
         $actionPath = $plugin->path . '/actions/' . $targetFile . '.php';
+
+        // A small security check: we only allow action files inside the app
+        $actionPath = realpath($actionPath);
+        if (0 !== strpos($actionPath, $this->app['app.path'])) {
+            throw new DisabledException(sprintf('Action path "%s" does not belong to app files!', $actionPath));
+        }
 
         return $actionPath;
     }

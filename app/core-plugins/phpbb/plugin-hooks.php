@@ -23,7 +23,7 @@ $hooks['auth.user.check-signin-credentials'] = function ($submittedUserData, Use
         case (strpos($dbUserPassword, '$2a$') === 0 || strpos($dbUserPassword, '$2y$') === 0):
             // @see https://github.com/phpbb/phpbb/blob/develop-ascraeus/phpBB/phpbb/passwords/driver/bcrypt.php
             // @see https://github.com/phpbb/phpbb/blob/develop-ascraeus/phpBB/phpbb/passwords/driver/bcrypt_2y.php
-            return $app['crypt.password.verify']($submittedPassword, $dbUserPassword);
+            return $app['crypto.password.verify']($submittedPassword, $dbUserPassword);
 
         case (strpos($dbUserPassword, '$H$') === 0):
             // @see https://github.com/phpbb/phpbb/blob/develop-ascraeus/phpBB/phpbb/passwords/driver/salted_md5.php

@@ -26,7 +26,7 @@ $action = function (Application $app, Request $request) use (&$getFormValidator)
     }
 
     // This is why we need PHP 5.3.7+ ...
-    $userData['password'] = $app['crypt.password.hash']($userData['password']);
+    $userData['password'] = $app['crypto.password.hash']($userData['password']);
 
     // Model setup
     $user = new User();
