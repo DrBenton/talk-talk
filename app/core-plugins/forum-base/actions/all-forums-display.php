@@ -1,7 +1,9 @@
 <?php
 
+use TalkTalk\Model\Forum;
+
 $action = function (\Silex\Application $app) {
-    $forumsTree = $app['forum.forums-data.tree'];
+    $forumsTree = Forum::getTree();
     $breadcrumb = array($app['utils.html.breadcrumb.home']);
 
     return $app['twig']->render('forum-base/all-forums-display.twig',

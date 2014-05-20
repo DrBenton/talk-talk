@@ -2,10 +2,7 @@
 
 core-plugins:
   forum-base:
+    breadcrumb:
+      forum: Forum "%name%"
     all-forums-display:
-      breadcrumb:
-        - Home
     forum-display:
-      breadcrumb:
-        - Home
-        - Forum "%name%"
