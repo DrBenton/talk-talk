@@ -3,6 +3,7 @@
 namespace TalkTalk\CorePlugins\Core\PluginsManagerBehaviour;
 
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourBase;
+use TalkTalk\Core\Utils\ArrayUtils;
 
 class AssetsManager extends BehaviourBase
 {
@@ -13,7 +14,7 @@ class AssetsManager extends BehaviourBase
         $pluginsManager = $this->pluginsManager;
 
         $pluginsAssetsCss = array();
-        $pluginsAssetsJs = array();
+        $pluginsAssetsJs = array('head' => array(), 'endOfBody' => array());
 
         foreach ($this->pluginsManager->getPlugins() as $plugin) {
             if (!isset($plugin->data['@assets'])) {
@@ -22,20 +23,24 @@ class AssetsManager extends BehaviourBase
 
             $assets = & $plugin->data['@assets'];
             if (isset($assets['stylesheets'])) {
-                foreach ($assets['stylesheets'] as $jsAssetPath) {
-                    $pluginsAssetsCss[] = $pluginsManager->handlePluginRelatedString($plugin, $jsAssetPath);
+                foreach ($assets['stylesheets'] as $cssAssetPath) {
+                    $pluginsAssetsCss[] = $pluginsManager->handlePluginRelatedString($plugin, $cssAssetPath);
                 }
             }
 
             if (isset($assets['javascripts'])) {
-                foreach ($assets['javascripts'] as $jsAssetPath) {
-                    $pluginsAssetsJs[] = $pluginsManager->handlePluginRelatedString($plugin, $jsAssetPath);
+                foreach ($assets['javascripts'] as $jsAsset) {
+                    $jsAsset = ArrayUtils::getArray($jsAsset, 'url');
+                    $jsAsset['url'] = $pluginsManager->handlePluginRelatedString($plugin, $jsAsset['url']);
+                    $target = (isset($jsAsset['head']) && true === $jsAsset['head']) ? 'head' : 'endOfBody';
+                    $pluginsAssetsJs[$target][] = $jsAsset;
                 }
             }
         }
 
         $app['plugins.assets.css'] = $pluginsAssetsCss;
-        $app['plugins.assets.js'] = $pluginsAssetsJs;
+        $app['plugins.assets.js.head'] = $pluginsAssetsJs['head'];
+        $app['plugins.assets.js.endOfBody'] = $pluginsAssetsJs['endOfBody'];
 
         /*
         $this->logger->addDebug(

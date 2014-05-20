@@ -1,4 +1,4 @@
-;<?php die(Unauthorized access);__halt_compiler(); //PHP security: dont remove this line!
+;<?php die('Unauthorized access');__halt_compiler(); //PHP security: dont remove this line!
 
 [general]
 debug = true

@@ -15,6 +15,10 @@
         <link rel="stylesheet" href="{{ stylesheet }}">
     {% endfor %}
 
+    {# Do we have "HEAD" JavaScript files? Let's include them now! #}
+    {% include 'core/common/javascripts-inclusion.twig'
+        with { javascripts: get_plugins_javascripts('head') } %}
+
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -47,11 +51,8 @@
 </div>{# end #site-container #}
 
 {# JavaScript, it's up to you now! #}
-{{ enable_html_hooks('app_javascripts') }}
-{% for javascript in get_plugins_javascripts() %}
-    <script src="{{ javascript }}"></script>
-{% endfor %}
-
+{% include 'core/common/javascripts-inclusion.twig'
+with { javascripts: get_plugins_javascripts('endOfBody') } %}
 
 </body>
 </html>

@@ -42,6 +42,10 @@
     - ${vendorsUrl}/requirejs/require.js
     - ${pluginUrl}/assets/js/requirejs-config.js
     - ${pluginUrl}/assets/js/main.js
+    -
+      url: ${vendorsUrl}/html5shiv/dist/html5shiv.min.js
+      head: true
+      ieCondition: lt IE 9
 
 @twig-extensions:
   - func.get-flashes

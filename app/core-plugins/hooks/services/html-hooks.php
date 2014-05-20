@@ -32,6 +32,7 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
 
         libxml_use_internal_errors(true); //disable warnings...
         $domView = QueryPath::withHTML($rawView);
+        $html_hooks = array_unique($html_hooks);
         foreach ($html_hooks as $hookName) {
             $app['plugins.trigger_hook']($hookName, array(&$domView));
         }

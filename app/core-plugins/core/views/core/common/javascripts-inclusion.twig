@@ -1,0 +1,6 @@
+{{ enable_html_hooks('app_javascripts') }}
+{% for javascript in javascripts %}
+    {% if javascript.ieCondition is defined %}<!--[if {{ javascript.ieCondition|raw }}]>{% endif %}
+    <script src="{{ javascript.url }}"></script>
+    {% if javascript.ieCondition is defined %}<![endif]-->{% endif %}
+{% endfor %}
