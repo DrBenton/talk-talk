@@ -24,3 +24,10 @@ $app['utils.html.get_page_header_links'] = $app->protect(
         return $headerLinks;
     }
 );
+
+$app['utils.html.breadcrumb.home'] = function () use ($app) {
+    return array(
+        'url' => $app['url_generator']->generate('core/home'),
+        'label' => 'core-plugins.utils.breadcrumb.home',
+    );
+};

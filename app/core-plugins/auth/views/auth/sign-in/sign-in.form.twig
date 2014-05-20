@@ -3,6 +3,8 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
+    {% include 'core/common/breadcrumb.twig' %}
+
     {{ enable_html_hooks('form', 'signin_form') }}
     <form id="signin-form" role="form"
           action="{{ path('auth/sign-in/target') }}"

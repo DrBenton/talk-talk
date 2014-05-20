@@ -1,21 +1,22 @@
 <?php
 
 $hooks['html.site_container'] = function (\QueryPath\DOMQuery $html) {
-    // Just the standard TB container class...
+    // Just the standard TWitter Bootstrap ("TWB") container class...
     $html->find('#site-container')
         ->addClass('container');
 };
 
 $hooks['html.main_content_container'] = function (\QueryPath\DOMQuery $html) {
-    // A simple TB container class...
-    $html->find('#main-content-container')
-        ->addClass('well');
+    // A simple TWB "panel" class...
+    $mainContentContainer = $html->find('#main-content-container');
+    $mainContentContainer->addClass('panel panel-default');
+    $mainContentContainer->find('#main-content')->addClass('panel-body');
 };
 
 $hooks['html.header'] = function (\QueryPath\DOMQuery $html) {
     // We're going to work on the <header>...
     $header = $html->find('header');
-    // General header TB styles
+    // General header TWB styles
     $header->addClass('page-header');
 
     // Nav stuff
@@ -25,17 +26,17 @@ $hooks['html.header'] = function (\QueryPath\DOMQuery $html) {
 };
 
 $hooks['html.form'] = function (\QueryPath\DOMQuery $html) {
-    // We're going to work on the #signup-form...
+    // We're going to work on <form>s...
     $forms = $html->find('form');
-    // General form TB styles
+    // General form TWB styles
     $forms->addClass('form-horizontal');
-    // Labels with + TB dedicated attributes
+    // Labels with + TWB dedicated attributes
     $forms->find('label')
         ->addClass('col-sm-4 control-label');
     // Inputs containers with
     $forms->find('.input-container')
         ->addClass('col-sm-8');
-    // Inputs TB dedicated attributes
+    // Inputs TWB dedicated attributes
     $forms->find('.input')
         ->addClass('form-control');
     // Submit button specific stuff
@@ -65,13 +66,18 @@ $hooks['html.user_profile_display'] = function (\QueryPath\DOMQuery $html) {
         ->prepend('<span class="glyphicon glyphicon-user"></span>');
 };
 
-$hooks['html.forums_display'] = function (\QueryPath\DOMQuery $html) {
-    $rootForums = $html->find('.forum-container.level-0');
+$hooks['html.all_forums_display'] = function (\QueryPath\DOMQuery $html) {
+    $allForumsDisplayContainer = $html->find('.all-forums-display-container');
+    // "root" forums styling
+    $rootForums = $allForumsDisplayContainer->find('.forum-container.level-0');
     $rootForums->addClass('col-sm-5');
     $rootForums->find('.forum')->addClass('panel panel-default');
+    // We want these forums to be displayed 2 on a row: let's add a "clearfix" every 2 forums
     $rootForums->even()->after('<div class="clearfix"></div>');
+    // Forums title: we wrap them in a <div> with the TWB "panel-heading" class, and add a "panel-title" class
     $rootForumsTitles = $rootForums->find('.title');
     $rootForumsTitles->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
+    // Forums content: we add a TWB "panel-body" class
     $rootForumsContent = $rootForums->find('.content');
     $rootForumsContent->addClass('panel-body');
 };

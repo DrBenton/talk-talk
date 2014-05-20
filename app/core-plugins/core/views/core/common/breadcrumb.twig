@@ -1,0 +1,13 @@
+{% if breadcrumb is defined %}
+    {{ enable_html_hooks('breadcrumb') }}
+    <ul class="breadcrumb">
+        {% for index, breadcrumbPart in breadcrumb %}
+            <li class="breadcrumb-item level-{{ index }}">
+                <a href="{{ breadcrumbPart.url }}"
+                   class="breadcrumb-link ajax-link">
+                    {{ app.translator.trans(breadcrumbPart.label, breadcrumbPart.labelParams|default([])) }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

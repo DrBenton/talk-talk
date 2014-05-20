@@ -104,10 +104,10 @@ define(function (require, exports, module) {
   function handleAjaxLoadedMainContent(htmlContent, loadedUrl, loadingDuration) {
 
     // Main content container update!
-    varsRegistry.$mainContentContainer.html(htmlContent);
+    varsRegistry.$mainContent.html(htmlContent);
 
     // ...and widgets update in the main container area!
-    widgetsFactory.findAndTriggerWidgets(varsRegistry.$mainContentContainer);
+    widgetsFactory.findAndTriggerWidgets(varsRegistry.$mainContent);
 
     // Ajax forms?
     ajaxFormsHandler.findAndHandleAjaxForms();
@@ -123,7 +123,7 @@ define(function (require, exports, module) {
       return;
     }
 
-    var $ajaxLoadingDataPlaceholder = varsRegistry.$mainContentContainer.find('.ajax-loading-data');
+    var $ajaxLoadingDataPlaceholder = varsRegistry.$mainContent.find('.ajax-loading-data');
     if ($ajaxLoadingDataPlaceholder.length === 0)
       return;//no loading data cache
 
@@ -137,7 +137,7 @@ define(function (require, exports, module) {
 
       dataStore.addCacheData(
         getAjaxMainContentCacheKey(loadedUrl),
-        varsRegistry.$mainContentContainer.html(),
+        varsRegistry.$mainContent.html(),
         ajaxCacheInstructions.duration
       );
 

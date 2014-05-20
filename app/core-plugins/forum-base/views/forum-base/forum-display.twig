@@ -1,0 +1,15 @@
+{% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
+
+{% block content %}
+    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
+
+    {% include 'core/common/breadcrumb.twig' %}
+
+    {{ enable_html_hooks('forum_display') }}
+    <div class="forum-display-container">
+    <div class="forum-display">
+
+    </div>{# end .forum-display #}
+    </div>{# end .forum-display-container #}
+
+{% endblock %}

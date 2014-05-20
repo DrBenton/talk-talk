@@ -31,5 +31,8 @@
     priority: -10
   - html.site_container
 
+@locales:
+  - en
+
 @twig-extensions:
   - func.display-app-debug-info

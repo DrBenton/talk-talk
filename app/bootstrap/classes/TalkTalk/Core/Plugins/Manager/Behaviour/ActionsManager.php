@@ -45,8 +45,8 @@ class ActionsManager extends BehaviourBase
 
     protected function sortPluginsActions(array $actionA, array $actionB)
     {
-        $priorityA = isset($actionA['actionData']['priority']) ? $actionA['actionData']['priority'] : 0 ;
-        $priorityB = isset($actionB['actionData']['priority']) ? $actionB['actionData']['priority'] : 0 ;
+        $priorityA = isset($actionA['actionData']['priority']) ? $actionA['actionData']['priority'] : 0;
+        $priorityB = isset($actionB['actionData']['priority']) ? $actionB['actionData']['priority'] : 0;
         if ($priorityA < $priorityB) {
             return -1;
         } elseif ($priorityA > $priorityB) {

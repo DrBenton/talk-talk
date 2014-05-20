@@ -9,6 +9,7 @@ $app['twig'] = $app->share(
                     if (!in_array($type, array('endOfBody', 'head'))) {
                         throw new \RuntimeException(sprintf('Invalid JavaScript type "%s"!', $type));
                     }
+
                     return $app['plugins.assets.js.' . $type];
                 }
             );

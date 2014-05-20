@@ -9,6 +9,7 @@ define(function (require, exports, module) {
   registry.$head = $("head");
   registry.$body = $("body");
   registry.$mainContentContainer = $("#main-content-container");
+  registry.$mainContent = $("#main-content");
   registry.$debugInfoContainer = $("#debug-info-container");
 
 

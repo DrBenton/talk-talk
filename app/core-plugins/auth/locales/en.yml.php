@@ -7,6 +7,8 @@ core-plugins:
       sign-in: Sign in
       sign-out: Sign out
     sign-up:
+      breadcrumb:
+        - Sign up
       form:
         login: Login
         email: Email address
@@ -16,6 +18,8 @@ core-plugins:
       notifications:
         success: Welcome %login%!
     sign-in:
+      breadcrumb:
+        - Sign in
       form:
         login: Login
         password: Password

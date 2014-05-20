@@ -67,6 +67,7 @@ class PluginsManager implements PluginsManagerInterface
         }
 
         $__includedFilePath = $filePath;
+
         return call_user_func(
             function () use (&$app, $__includedFilePath) {
                 return include_once $__includedFilePath;

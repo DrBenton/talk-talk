@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Forum extends Model
 {
 
-    static protected $instances = array();
+    protected static $instances = array();
     protected $children = array();
     protected $parent = null;
     protected $hasChild = false;
@@ -16,7 +16,7 @@ class Forum extends Model
     /**
      * @return array
      */
-    static public function getInstances()
+    public static function getInstances()
     {
         return self::$instances;
     }
@@ -25,7 +25,7 @@ class Forum extends Model
      * @param $id
      * @return \TalkTalk\Model\Forum|null
      */
-    static public function getInstance($id)
+    public static function getInstance($id)
     {
         foreach (self::$instances as $instance) {
             if ($instance->id === $id) {
@@ -36,35 +36,42 @@ class Forum extends Model
         return null;
     }
 
-    public function __construct(array $attributes = array()) {
+    public function __construct(array $attributes = array())
+    {
         parent::__construct($attributes);
 
-        self::$instances[] = &$this;
+        self::$instances[] = & $this;
     }
 
-    public function addChild(Forum $childForum) {
+    public function addChild(Forum $childForum)
+    {
         $this->children[] = $childForum;
         $this->hasChild = true;
     }
 
-    public function getChildren() {
+    public function getChildren()
+    {
         return $this->children;
     }
 
-    public function hasChild() {
+    public function hasChild()
+    {
         return $this->hasChild;
     }
 
-    public function setParent(Forum $parentForum) {
+    public function setParent(Forum $parentForum)
+    {
         $this->parent = $parentForum;
         $this->hasParent = true;
     }
 
-    public function getParent() {
+    public function getParent()
+    {
         return $this->parent;
     }
 
-    public function hasParent() {
+    public function hasParent()
+    {
         return $this->hasParent;
     }
 

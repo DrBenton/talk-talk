@@ -24,7 +24,7 @@ define(function (require, exports, module) {
       dataType: 'text'
     })
       .done(function (alertsJavascriptManagementCode) {
-        varsRegistry.$mainContentContainer.append(alertsJavascriptManagementCode);
+        varsRegistry.$mainContent.append(alertsJavascriptManagementCode);
       });
   };
 

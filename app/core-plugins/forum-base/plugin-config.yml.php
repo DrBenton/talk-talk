@@ -5,12 +5,19 @@
 
 @actions:
   -
-    # GET / => actions/forums-display.php
+    # GET / => actions/all-forums-display.php
     url: /
-    target: forums-display
+    target: all-forums-display
     # we override the default homepage!
     name: core/home
     priority: 10
+  -
+    # GET /forum/ID => actions/forum-display.php
+    url: /forum/{forumId}
+    target: forum-display
+    name: forum-base/forum
+    requirements:
+      forumId: \d+ #{forumId} must be an integer
 
 @classes:
   -
@@ -19,3 +26,6 @@
 
 @services:
   - forums-data
+
+@locales:
+  - en

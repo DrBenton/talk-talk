@@ -36,7 +36,7 @@ define(function (require, exports, module) {
 
   function onFormSendingSuccess(response, status, xhr, loadingStartDate) {
     myDebug && console.log('onFormSendingSuccess() ; args=', arguments);
-    varsRegistry.$mainContentContainer.html(response);
+    varsRegistry.$mainContent.html(response);
 
     if (logStats) {
       var url = purl(xhr.url).attr('path');
