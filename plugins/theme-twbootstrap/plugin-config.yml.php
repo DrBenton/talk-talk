@@ -19,3 +19,5 @@
   - html.alerts_display
   - html.user_profile_display
   - html.all_forums_display
+  - html.topic_display
+  - html.pagination

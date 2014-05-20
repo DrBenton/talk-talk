@@ -1,0 +1,16 @@
+{% if nbPages > 0 %}
+    {{ enable_html_hooks('pagination') }}
+    <ul class="pagination">
+        <li class="first-page {{ currentPageNum == 1 ? 'disabled' : '' }}">
+            <a href="{{ baseUrl|replace({'${page}': 1}) }}">&laquo;</a>
+        </li>
+        {% for pageNum in range(1, nbPages) %}
+            <li class="page-num {{ currentPageNum == pageNum ? 'disabled' : '' }}">
+                <a href="{{ baseUrl|replace({'${page}': pageNum}) }}">{{ pageNum }}</a>
+            </li>
+        {% endfor %}
+        <li class="last-page {{ currentPageNum == nbPages ? 'disabled' : '' }}">
+            <a href="{{ baseUrl|replace({'${page}': nbPages}) }}">&raquo;</a>
+        </li>
+    </ul>
+{% endif %}

@@ -154,6 +154,11 @@ class Forum extends Model
         return static::$treeInstances;
     }
 
+    public function topics()
+    {
+        return $this->hasMany('TalkTalk\Model\Topic', 'forum_id');
+    }
+
     public function addChild(Forum $childForum)
     {
         $this->children[] = $childForum;

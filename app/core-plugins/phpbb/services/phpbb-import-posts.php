@@ -69,8 +69,8 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
             $talkTalkPost->setCreatedAt($phpBbPost->post_time);
             $talkTalkPost->setUpdatedAt(
                 0 === $phpBbPost->post_edit_time
-                ? $phpBbPost->post_time
-                : $phpBbPost->post_edit_time
+                    ? $phpBbPost->post_time
+                    : $phpBbPost->post_edit_time
             );
             $talkTalkPost->save();
 

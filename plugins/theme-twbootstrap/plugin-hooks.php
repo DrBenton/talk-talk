@@ -82,3 +82,16 @@ $hooks['html.all_forums_display'] = function (\QueryPath\DOMQuery $html) {
     $rootForumsContent->addClass('panel-body');
 };
 
+$hooks['html.topic_display'] = function (\QueryPath\DOMQuery $html) {
+    $topicsDisplays = $html->find('.topic-display');
+    $topicsDisplays->addClass('panel panel-default');
+    $topicsDisplays->find('.topic-name')->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
+    $topicsDisplays->find('.topic-info')->addClass('panel-body');
+};
+
+$hooks['html.pagination'] = function (\QueryPath\DOMQuery $html) {
+    $pagination = $html->find('.pagination');
+    $pagination->addClass('pull-right');
+    $pagination->after('<div class="clearfix"></div>');
+};
+
