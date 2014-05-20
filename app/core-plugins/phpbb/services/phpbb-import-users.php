@@ -23,7 +23,10 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
             PhpBbUser::realUsers()
                 ->orderBy('user_id')
                 ->skip($from)->take($nbToImport)
-                ->get(array('user_id', 'username', 'user_password', 'user_email'));
+                ->get(array(
+                    'user_id', 'username', 'user_password', 'user_email',
+                    'user_regdate', 'user_lastmark'
+                ));
 
         // This array will allow us to map phpBb users ids to our new Talk-Talk users ids
         // This is a heavy var to store in Session, it will be useful for next imports processes
@@ -39,6 +42,8 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
             $talkTalkUser->email = $phpBbUser->user_email;
             $talkTalkUser->password = $phpBbUser->user_password;
             $talkTalkUser->provider = 'phpbb-import';
+            $talkTalkUser->setCreatedAt($phpBbUser->user_regdate);
+            $talkTalkUser->setUpdatedAt($phpBbUser->user_lastmark);
             $talkTalkUser->save();
 
             $idsMapping[$phpBbUser->user_id] = $talkTalkUser->id;

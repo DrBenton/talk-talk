@@ -23,7 +23,10 @@ $app['phpbb.import.topics.trigger_batch'] = $app->protect(
             PhpBbTopic::query()
                 ->orderBy('topic_id')
                 ->skip($from)->take($nbToImport)
-                ->get(array('topic_id', 'forum_id', 'topic_title', 'topic_poster', 'topic_replies'));
+                ->get(array(
+                    'topic_id', 'forum_id', 'topic_title', 'topic_poster', 'topic_replies',
+                    'topic_time', 'topic_last_post_time'
+                ));
 
         // This array will allow us to map phpBb topics ids to our new Talk-Talk topics ids
         // This may be useful for next imports processes
@@ -57,6 +60,8 @@ $app['phpbb.import.topics.trigger_batch'] = $app->protect(
             $talkTalkTopic->author_id = $talkTalkAuthorId;
             $talkTalkTopic->name = $phpBbTopic->topic_title;
             $talkTalkTopic->nb_replies = $phpBbTopic->topic_replies;
+            $talkTalkTopic->setCreatedAt($phpBbTopic->topic_time);
+            $talkTalkTopic->setUpdatedAt($phpBbTopic->topic_last_post_time);
             $talkTalkTopic->save();
 
             $idsMapping[$phpBbTopic->topic_id] = $talkTalkTopic->id;

@@ -23,7 +23,10 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
             PhpBbPost::query()
                 ->orderBy('post_id')
                 ->skip($from)->take($nbToImport)
-                ->get(array('post_id', 'forum_id', 'topic_id', 'poster_id', 'post_subject', 'post_text'));
+                ->get(array(
+                    'post_id', 'forum_id', 'topic_id', 'poster_id', 'post_subject', 'post_text',
+                    'post_time', 'post_edit_time'
+                ));
 
         // This array allow us to map phpBb forums ids to our new Talk-Talk forums ids...
         $usersIdsMapping = $app['session']->get('phpbb.import.users.ids_mapping');
@@ -63,6 +66,12 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
             $talkTalkPost->author_id = $talkTalkAuthorId;
             $talkTalkPost->title = $phpBbPost->post_subject;
             $talkTalkPost->content = $phpBbPost->post_text;
+            $talkTalkPost->setCreatedAt($phpBbPost->post_time);
+            $talkTalkPost->setUpdatedAt(
+                0 === $phpBbPost->post_edit_time
+                ? $phpBbPost->post_time
+                : $phpBbPost->post_edit_time
+            );
             $talkTalkPost->save();
 
             $nbPostsCreated++;

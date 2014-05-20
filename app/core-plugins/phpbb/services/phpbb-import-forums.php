@@ -23,7 +23,10 @@ $app['phpbb.import.forums.trigger_batch'] = $app->protect(
             PhpBbForum::query()
                 ->orderBy('parent_id')
                 ->skip($from)->take($nbToImport)
-                ->get(array('forum_id', 'parent_id', 'forum_name', 'forum_desc', 'forum_posts', 'forum_topics'));
+                ->get(array(
+                    'forum_id', 'parent_id', 'forum_name', 'forum_desc', 'forum_posts', 'forum_topics',
+                    'forum_last_post_time'
+                ));
 
         // This array will allow us to map phpBb forums ids to our new Talk-Talk forums ids
         $idsMapping = $app['session']->get('phpbb.import.forums.ids_mapping', array());
@@ -44,6 +47,9 @@ $app['phpbb.import.forums.trigger_batch'] = $app->protect(
             $talkTalkForum->desc = html_entity_decode($phpBbForum->forum_desc);
             $talkTalkForum->nb_posts = $phpBbForum->forum_posts;
             $talkTalkForum->nb_topics = $phpBbForum->forum_topics;
+            // No creation date for Forums in phpBb... :-/
+            // We just have the following "last post time":
+            $talkTalkForum->setUpdatedAt($phpBbForum->forum_last_post_time);
             $talkTalkForum->save();
 
             $idsMapping[$phpBbForum->forum_id] = $talkTalkForum->id;
