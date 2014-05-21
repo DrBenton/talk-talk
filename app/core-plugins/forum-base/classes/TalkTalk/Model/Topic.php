@@ -12,4 +12,9 @@ class Topic extends Model
         return $this->belongsTo('TalkTalk\Model\Forum');
     }
 
+    public function posts()
+    {
+        return $this->hasMany('TalkTalk\Model\Post');
+    }
+
 }

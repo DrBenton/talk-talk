@@ -10,33 +10,42 @@
         <div class="forum-display">
             <h2 class="forum-title">{{ forum.name }}</h2>
 
+            {% if subForums|length > 0 %}
+                <b>{{ subForums|length }} sub-forums</b>
+                {% include 'forum-base/inc/forums-display.twig' with {forums: subForums} %}
+            {% endif %}
+
             {% include 'utils/common/pagination.twig' with paginationData %}
 
-            {{ enable_html_hooks('topics_display', 'topic_display') }}
-            <div class="topics-display-container">
-                <div class="topics-display">
-                    {{ nbTopicsTotal }} topics - page {{ paginationData.currentPageNum }} - {{ topics|length }} topics on this
-                    page
-                    {% for topic in topics %}
-                        <div class="topic-display-container">
-                            <div class="topic-display">
-                                <h4 class="topic-name">
-                                    <a href="{{ path('forum-base/topic', {topicId: topic.id}) }}"
-                                        class="ajax-link">
-                                        {{ topic.name }} - {{ topic.nb_replies }} replies
-                                    </a>
-                                </h4>
-
-                                <div class="topic-info">
-                                    Created on {{ topic.created_at|date('Y-m-d H:i:s') }}
-                                    Last modified on {{ topic.updated_at|date('Y-m-d H:i:s') }}
+            {% if topics|length > 0 %}
+                {{ enable_html_hooks('topics_display', 'topic_display') }}
+                <div class="topics-display-container">
+                    <div class="topics-display">
+                        <b>
+                            {{ nbTopicsTotal }} topics - page {{ paginationData.currentPageNum }} -
+                            {{ topics|length }} topics on this page
+                        </b>
+                        {% for topic in topics %}
+                            <div class="topic-display-container">
+                                <div class="topic-display">
+                                    <h4 class="topic-name">
+                                        <a href="{{ path('forum-base/topic', {topicId: topic.id}) }}"
+                                            class="ajax-link">
+                                            {{ topic.name }} - {{ topic.nb_replies }} replies
+                                        </a>
+                                    </h4>
+    
+                                    <div class="topic-info">
+                                        Created on {{ topic.created_at|date('Y-m-d H:i:s') }}
+                                        Last modified on {{ topic.updated_at|date('Y-m-d H:i:s') }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>{# end .topics-display #}
-            </div>{# end .topics-display-container #}
-
+                        {% endfor %}
+                    </div>{# end .topics-display #}
+                </div>{# end .topics-display-container #}
+            {% endif %}
+    
             {% include 'utils/common/pagination.twig' with paginationData %}
 
         </div>{# end .forum-display #}

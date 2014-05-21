@@ -9,6 +9,9 @@ $action = function (Application $app, Request $request, $forumId) {
 
     $forum = Forum::findOrFail($forumId);
 
+    // Sub-forums retrieval
+    $subForums = $forum->getChildren();
+    
     // Topics retrieval (only those of the current page)
     $pageNum = $request->query->getInt('page', 1);
     $topics = $forum->topics();
@@ -18,7 +21,8 @@ $action = function (Application $app, Request $request, $forumId) {
             $pageNum,
             $app['forum-base.pagination.topics.nb_per_page']
         )
-        ->get();
+        ->get()
+        ->all();
 
     // Total number of topics retrieval
     $nbTopicsTotal = Topic::where('forum_id', '=', $forum->id)->count();
@@ -29,7 +33,7 @@ $action = function (Application $app, Request $request, $forumId) {
         'nbPages' => ceil($nbTopicsTotal / $app['forum-base.pagination.topics.nb_per_page']),
         'baseUrl' => $app['url_generator']->generate(
                 'forum-base/forum', array('forumId' => $forum->id)
-            ) . '?page=${page}'
+            ) . '?page=%page%'
     );
 
     // Breadcrumb management
@@ -39,6 +43,7 @@ $action = function (Application $app, Request $request, $forumId) {
     return $app['twig']->render('forum-base/forum-display.twig',
         array(
             'forum' => $forum,
+            'subForums' => $subForums,
             'topics' => $topicsToDisplay,
             'nbTopicsTotal' => $nbTopicsTotal,
             'paginationData' => $paginationData,

@@ -13,7 +13,7 @@
 @classes:
   -
     prefix: TalkTalk\CorePlugins\Core\
-    paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Core
+    paths: %pluginPath%/classes/TalkTalk/CorePlugins/Core
 
 @services:
   - session
@@ -39,11 +39,11 @@
 @assets:
   stylesheets:
   javascripts:
-    - ${vendorsUrl}/requirejs/require.js
-    - ${pluginUrl}/assets/js/requirejs-config.js
-    - ${pluginUrl}/assets/js/main.js
+    - %vendorsUrl%/requirejs/require.js
+    - %pluginUrl%/assets/js/requirejs-config.js
+    - %pluginUrl%/assets/js/main.js
     -
-      url: ${vendorsUrl}/html5shiv/dist/html5shiv.min.js
+      url: %vendorsUrl%/html5shiv/dist/html5shiv.min.js
       head: true
       ieCondition: lt IE 9
 

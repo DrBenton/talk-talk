@@ -3,6 +3,7 @@
 use TalkTalk\Model\Forum;
 
 $app['forum-base.pagination.topics.nb_per_page'] = 20;
+$app['forum-base.pagination.posts.nb_per_page'] = 20;
 
 $app['forum-base.html.breadcrumb.get_single_forum'] = $app->protect(
     function (Forum $forum) use ($app) {

@@ -7,8 +7,8 @@
 
 @assets:
   stylesheets:
-    - "${pluginUrl}/assets/components/bootstrap/dist/css/bootstrap.css"
-    - "${pluginUrl}/assets/css/theme-twbootstrap.css"
+    - "%pluginUrl%/assets/components/bootstrap/dist/css/bootstrap.css"
+    - "%pluginUrl%/assets/css/theme-twbootstrap.css"
   javascripts:
 
 @hooks:
@@ -18,6 +18,6 @@
   - html.form
   - html.alerts_display
   - html.user_profile_display
-  - html.all_forums_display
+  - html.forums_display
   - html.topic_display
   - html.pagination

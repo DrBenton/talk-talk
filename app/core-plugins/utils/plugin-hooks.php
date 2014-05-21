@@ -1,9 +1,10 @@
 <?php
 
+// We have to use <![CDATA[ ... ]]> because of QueryPath rather strict HTML rules...
 $LIVERELOAD_SCRIPT_TAG = <<<'END'
 <script><![CDATA[document.write('<script src="http://'
     + (location.host || 'localhost').split(':')[0]
-    + ':${livereload_port}/livereload.js"></'
+    + ':%livereload_port%/livereload.js"></'
     + 'script>')]]></script>
 END;
 
@@ -14,7 +15,7 @@ $hooks['html.site_container'] = function (\QueryPath\DOMQuery $html) use ($app, 
 
     $port = (int) $app['config']['development']['livereload.port'];
     $html->find('body')->append(
-        str_replace('${livereload_port}', $port, $LIVERELOAD_SCRIPT_TAG)
+        str_replace('%livereload_port%', $port, $LIVERELOAD_SCRIPT_TAG)
     );
 };
 

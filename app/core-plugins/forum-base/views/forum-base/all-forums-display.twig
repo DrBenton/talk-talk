@@ -6,38 +6,6 @@
     {% include 'core/common/breadcrumb.twig' %}
 
     {{ enable_html_hooks('all_forums_display') }}
-    <div class="all-forums-display-container">
-        <div class="all-forums-display">
-            {% for forum in forumsTree %}
-                <div class="forum-container level-0">
-                    <div class="forum">
-                        <h3 class="title">
-                            <a href="{{ path('forum-base/forum', {forumId: forum.id}) }}"
-                               class="forum-link root-forum-link ajax-link">
-                                {{ forum.name }}
-                            </a>
-                            <span class="badge">{{ forum.nb_posts }}</span>
-                        </h3>
-                        <div class="content">
-                            <div class="description">{{ forum.desc }}</div>
-                            {% if forum.hasChild %}
-                                <div class="children">
-                                    {% for childForum in forum.children %}
-                                        <h5>
-                                            <a href="{{ path('forum-base/forum', {forumId: childForum.id}) }}"
-                                               class="forum-link child-forum-link ajax-link">
-                                                {{ childForum.name }}
-                                            </a>
-                                            <span class="badge">{{ childForum.nb_posts }}</span>
-                                        </h5>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>{# end .content #}
-                    </div>{# end .forum #}
-                </div>{# end .forum-container #}
-            {% endfor %}
-        </div>{# end .all-forums-display #}
-    </div>{# end .all-forums-display-container #}
+    {% include 'forum-base/inc/forums-display.twig' with {forums: forumsTree} %}
 
 {% endblock %}

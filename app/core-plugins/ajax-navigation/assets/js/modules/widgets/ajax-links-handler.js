@@ -199,10 +199,12 @@ define(function (require, exports, module) {
   }
 
   function showAjaxLoading(showItOrNot) {
-    if (showItOrNot)
+    if (showItOrNot) {
       $("header h1 a").addClass("ajax-loader");
-    else
+      $('.breadcrumb').html('<span class="loading">Loading, please wait...</span>');//TODO: make it cleaner and internationalized :-)
+    } else {
       $("header h1 a").removeClass("ajax-loader");
+    }
   }
 
   function handleInitialMainContentCache() {

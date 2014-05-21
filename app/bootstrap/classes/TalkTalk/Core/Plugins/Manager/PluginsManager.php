@@ -80,7 +80,7 @@ class PluginsManager implements PluginsManagerInterface
         $app = $this->getApp();
 
         return str_replace(
-            array('${pluginPath}', '${pluginUrl}', '${vendorsUrl}'),
+            array('%pluginPath%', '%pluginUrl%', '%vendorsUrl%'),
             array(
                 $plugin->path,
                 str_replace($app['app.path'], $app['app.base_url'], $plugin->path),

@@ -66,8 +66,8 @@ $hooks['html.user_profile_display'] = function (\QueryPath\DOMQuery $html) {
         ->prepend('<span class="glyphicon glyphicon-user"></span>');
 };
 
-$hooks['html.all_forums_display'] = function (\QueryPath\DOMQuery $html) {
-    $allForumsDisplayContainer = $html->find('.all-forums-display-container');
+$hooks['html.forums_display'] = function (\QueryPath\DOMQuery $html) {
+    $allForumsDisplayContainer = $html->find('.forums-display-container');
     // "root" forums styling
     $rootForums = $allForumsDisplayContainer->find('.forum-container.level-0');
     $rootForums->addClass('col-sm-5');

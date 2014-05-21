@@ -25,7 +25,7 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
                 ->skip($from)->take($nbToImport)
                 ->get(array(
                     'post_id', 'forum_id', 'topic_id', 'poster_id', 'post_subject', 'post_text',
-                    'post_time', 'post_edit_time'
+                    'bbcode_uid', 'post_time', 'post_edit_time'
                 ));
 
         // This array allow us to map phpBb forums ids to our new Talk-Talk forums ids...
@@ -66,6 +66,12 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
             $talkTalkPost->author_id = $talkTalkAuthorId;
             $talkTalkPost->title = html_entity_decode($phpBbPost->post_subject);
             $talkTalkPost->content = html_entity_decode($phpBbPost->post_text);
+            // Let's get rid of the "bbcode_uid" of phpBb content:
+            $talkTalkPost->content = str_replace(
+                ':'.$phpBbPost->bbcode_uid,
+                '',
+                $talkTalkPost->content
+            );
             $talkTalkPost->setCreatedAt($phpBbPost->post_time);
             $talkTalkPost->setUpdatedAt(
                 0 === $phpBbPost->post_edit_time

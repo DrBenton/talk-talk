@@ -29,10 +29,14 @@
 @classes:
   -
     prefix: TalkTalk\Model\
-    paths: ${pluginPath}/classes/TalkTalk/Model
+    paths: %pluginPath%/classes/TalkTalk/Model
 
 @services:
   - forums-data
+  - forum-markup-manager
 
 @locales:
   - en
+  
+@hooks:
+  - post.handle_content

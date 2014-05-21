@@ -18,7 +18,7 @@
 @classes:
   -
     prefix: TalkTalk\CorePlugins\Utils\
-    paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Utils
+    paths: %pluginPath%/classes/TalkTalk/CorePlugins/Utils
 
 @services:
   - utils-html

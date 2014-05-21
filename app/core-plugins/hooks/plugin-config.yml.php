@@ -6,7 +6,7 @@
 @classes:
   -
     prefix: TalkTalk\CorePlugins\Hooks\
-    paths: ${pluginPath}/classes/TalkTalk/CorePlugins/Hooks
+    paths: %pluginPath%/classes/TalkTalk/CorePlugins/Hooks
 
 @services:
   - hooks

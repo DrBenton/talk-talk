@@ -66,7 +66,7 @@
 @classes:
   -
     prefix: TalkTalk\CorePlugins\PhpBb\
-    paths: ${pluginPath}/classes/TalkTalk/CorePlugins/PhpBb
+    paths: %pluginPath%/classes/TalkTalk/CorePlugins/PhpBb
 
 @services:
   - before-middlewares

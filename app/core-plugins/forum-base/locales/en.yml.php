@@ -4,5 +4,6 @@ core-plugins:
   forum-base:
     breadcrumb:
       forum: Forum "%name%"
+      topic: Topic "%name%"
     all-forums-display:
     forum-display:

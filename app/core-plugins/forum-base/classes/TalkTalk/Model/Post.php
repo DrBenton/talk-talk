@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
 
+    public function topic()
+    {
+        return $this->belongsTo('TalkTalk\Model\Topic');
+    }
+    
 }

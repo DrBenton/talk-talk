@@ -1,0 +1,46 @@
+{% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
+
+{% block content %}
+    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
+
+    {% include 'core/common/breadcrumb.twig' %}
+
+    {{ enable_html_hooks('topic_display') }}
+    <div class="topic-display-container">
+        <div class="topic-display">
+            <h2 class="topic-title">{{ topic.name }}</h2>
+
+            {% include 'utils/common/pagination.twig' with paginationData %}
+
+            {% if posts|length > 0 %}
+                {{ enable_html_hooks('posts_display', 'post_display') }}
+                <div class="posts-display-container">
+                    <div class="posts-display">
+                        {{ nbPostsTotal }} posts - page {{ paginationData.currentPageNum }} -
+                        {{ posts|length }} posts on this page
+                        {% for post in posts %}
+                            <div class="post-display-container">
+                                <div class="post-display">
+                                    <h4 class="post-title">
+                                        {{ post.title }} ({{ post.id }})
+                                    </h4>
+                                    <div class="post-content">
+                                        {{ post.content|raw }}
+                                    </div>
+                                    <div class="post-info">
+                                        Created on {{ post.created_at|date('Y-m-d H:i:s') }}
+                                        Last modified on {{ post.updated_at|date('Y-m-d H:i:s') }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>{# end .topics-display #}
+                </div>{# end .topics-display-container #}
+            {% endif %}
+    
+            {% include 'utils/common/pagination.twig' with paginationData %}
+
+        </div>{# end .topic-display #}
+    </div>{# end .topic-display-container #}
+
+{% endblock %}

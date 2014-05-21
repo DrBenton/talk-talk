@@ -35,7 +35,7 @@
 @classes:
   -
     prefix: TalkTalk\Model\
-    paths: ${pluginPath}/classes/TalkTalk/Model
+    paths: %pluginPath%/classes/TalkTalk/Model
 
 @services:
   - is-authenticated
