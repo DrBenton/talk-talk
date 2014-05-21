@@ -20,4 +20,7 @@
   - html.user_profile_display
   - html.forums_display
   - html.topic_display
+  - html.topics_display
+  - html.post_display
+  - html.posts_display
   - html.pagination

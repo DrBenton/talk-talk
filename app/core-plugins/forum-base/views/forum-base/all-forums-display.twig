@@ -6,6 +6,6 @@
     {% include 'core/common/breadcrumb.twig' %}
 
     {{ enable_html_hooks('all_forums_display') }}
-    {% include 'forum-base/inc/forums-display.twig' with {forums: forumsTree} %}
+    {% include 'forum-base/inc/forums-display-container.twig' with {forums: forumsTree} %}
 
 {% endblock %}

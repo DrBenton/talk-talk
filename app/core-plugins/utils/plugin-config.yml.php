@@ -24,6 +24,9 @@
   - utils-html
   - perfs
 
+@events:
+  - after.perfs-info-headers
+
 @hooks:
   -
     name: html.header
@@ -36,3 +39,4 @@
 
 @twig-extensions:
   - func.display-app-debug-info
+  - filter.from-now

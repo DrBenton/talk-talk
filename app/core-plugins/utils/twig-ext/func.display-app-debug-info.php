@@ -5,7 +5,8 @@ $app['twig'] = $app->share(
         'twig',
         function ($twig, $app) {
             $function = new Twig_SimpleFunction(
-                'display_app_debug_info', function () use ($app) {
+                'display_app_debug_info',
+                function () use ($app) {
 
                     $debugInfo = array();
 

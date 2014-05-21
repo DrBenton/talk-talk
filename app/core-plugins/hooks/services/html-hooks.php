@@ -30,6 +30,8 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
             return;
         }
 
+        $startTime = microtime(true);
+
         libxml_use_internal_errors(true); //disable warnings...
         $domView = QueryPath::withHTML($rawView);
         $html_hooks = array_unique($html_hooks);
@@ -37,6 +39,8 @@ $app['plugins.html_hooks.trigger_hooks'] = $app->protect(
             $app['plugins.trigger_hook']($hookName, array(&$domView));
         }
         libxml_use_internal_errors(false); //...and enable it again!
+
+        $app['perfs.querypath.duration'] = round(microtime(true) - $startTime, 3);
 
         if ($app['isAjax']) {
             // Notifications are handled in the Ajax Layout.

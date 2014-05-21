@@ -12,32 +12,8 @@
 
             {% include 'utils/common/pagination.twig' with paginationData %}
 
-            {% if posts|length > 0 %}
-                {{ enable_html_hooks('posts_display', 'post_display') }}
-                <div class="posts-display-container">
-                    <div class="posts-display">
-                        {{ nbPostsTotal }} posts - page {{ paginationData.currentPageNum }} -
-                        {{ posts|length }} posts on this page
-                        {% for post in posts %}
-                            <div class="post-display-container">
-                                <div class="post-display">
-                                    <h4 class="post-title">
-                                        {{ post.title }} ({{ post.id }})
-                                    </h4>
-                                    <div class="post-content">
-                                        {{ post.content|raw }}
-                                    </div>
-                                    <div class="post-info">
-                                        Created on {{ post.created_at|date('Y-m-d H:i:s') }}
-                                        Last modified on {{ post.updated_at|date('Y-m-d H:i:s') }}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>{# end .topics-display #}
-                </div>{# end .topics-display-container #}
-            {% endif %}
-    
+            {% include 'forum-base/inc/posts-display-container.twig' with {posts: posts} %}
+
             {% include 'utils/common/pagination.twig' with paginationData %}
 
         </div>{# end .topic-display #}

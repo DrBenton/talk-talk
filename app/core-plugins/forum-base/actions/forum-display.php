@@ -22,6 +22,7 @@ $action = function (Application $app, Request $request, $forumId) {
             $app['forum-base.pagination.topics.nb_per_page']
         )
         ->get()
+        ->load('author') /* "author" eager loading */
         ->all();
 
     // Total number of topics retrieval

@@ -34,7 +34,7 @@ $app['forum-base.markup-manager.handle_forum_markup.smilies'] = $app->protect(
 $app['forum-base.markup-manager.handle_forum_markup.links'] = $app->protect(
     function ($forumContent) use ($app) {
         $forumContent = preg_replace(
-            '~<!-- m --><a[^>]+href="([^"]+)"[^>]*>([^<>]+)</a><!-- m -->~i',
+            '~<!-- [ml] --><a\s+[^>]*href="([^"]+)"[^>]*>([^<>]+)</a><!-- [ml] -->~i',
             '[url="$1"]$2[/url]',
             $forumContent
         );
@@ -43,12 +43,25 @@ $app['forum-base.markup-manager.handle_forum_markup.links'] = $app->protect(
     }  
 );
 
+$app['forum-base.markup-manager.handle_forum_markup.add_blank_targets'] = $app->protect(
+    function ($forumContent) use ($app) {
+        $forumContent = preg_replace(
+            '~<a\s+([^>]*href="[^"]+"[^>]*)>~i',
+            '<a $1 target="_blank">',
+            $forumContent
+        );
+
+        return $forumContent;
+    }
+);
+
 $app['forum-base.markup-manager.handle_forum_markup.all'] = $app->protect(
     function ($forumContent) use ($app) {
         $forumContent = $app['forum-base.markup-manager.handle_forum_markup.smilies']($forumContent);
         $forumContent = $app['forum-base.markup-manager.handle_forum_markup.links']($forumContent);
         $forumContent = $app['forum-base.markup-manager.handle_forum_markup.bbcode']($forumContent);
-        
+        $forumContent = $app['forum-base.markup-manager.handle_forum_markup.add_blank_targets']($forumContent);
+
         return $forumContent;
     }  
 );

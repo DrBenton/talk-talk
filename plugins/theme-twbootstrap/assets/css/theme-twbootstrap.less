@@ -12,10 +12,96 @@
 }
 
 
-.all-forums-display-container {
-  .all-forums-display {
+.forums-display-container {
+  .forums-display {
     .forum-container {
       margin: @grid-gutter-width/2 @grid-gutter-width;
     }
   }
+}
+
+.topic-display-container {
+  .topic-display {
+    margin-bottom: 3em;
+  }
+}
+
+.posts-display-container {
+
+  position: relative;
+  margin-bottom: 3em;
+
+  @post-bubble-background-color: #FFFFFF;
+  @post-bubble-border-color: #E0E0E0;
+  .post-display-container {
+
+    // Thanks @ilikepixels for the "bubble" CSS effect! :-)
+    // @see http://www.ilikepixels.co.uk/drop/bubbler/
+
+    position: relative;
+    background: @post-bubble-background-color;
+    border-radius: 10px;
+    border: @post-bubble-border-color solid 7px;
+    margin: 2em 1em;
+
+    &:after {// this is the bubble tail...
+      content: '';
+      position: absolute;
+      border-style: solid;
+      border-width: 18px 16px 0;
+      border-color: @panel-footer-bg transparent;
+      display: block;
+      width: 0;
+      z-index: 1;
+      margin-left: -16px;
+      bottom: -18px;
+      right: 7%;
+    }
+
+    &:before {//...and this is the bubble tail border
+      content: '';
+      position: absolute;
+      border-style: solid;
+      border-width: 24px 22px 0;
+      border-color: @post-bubble-border-color transparent;
+      display: block;
+      width: 0;
+      z-index: 0;
+      margin-left: -22px;
+      bottom: -31px;
+      right: 6%;
+    }
+
+    &.topic-author:after {
+      left: 7%;
+    }
+    &.topic-author:before {
+      left: 7%;
+    }
+
+    .post-display {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    blockquote {
+      font-size: inherit;
+      font-style: italic;
+    }
+
+  }
+
+  .post-author {
+    position: absolute;
+    right: 7%;
+    &.topic-author {
+      left: 7%;
+      color: @brand-primary;
+    }
+  }
+
+}
+
+.pagination {
+  margin: 2em 1em;
 }

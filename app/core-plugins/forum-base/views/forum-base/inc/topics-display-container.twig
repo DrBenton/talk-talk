@@ -1,0 +1,28 @@
+{% if topics|length > 0 %}
+    {{ enable_html_hooks('topics_display', 'topic_display') }}
+    <div class="topics-display-container">
+        <div class="topics-display">
+        <b>
+            {{ nbTopicsTotal }} topics - page {{ paginationData.currentPageNum }} -
+            {{ topics|length }} topics on this page
+        </b>
+        {% for topic in topics %}
+            <div class="topic-display-container">
+                <div class="topic-display">
+                    <h4 class="topic-name">
+                        <a href="{{ path('forum-base/topic', {topicId: topic.id}) }}"
+                           class="ajax-link">
+                            {{ topic.name }} - {{ topic.nb_replies }} replies
+                        </a>
+                    </h4>
+
+                    <div class="topic-info">
+                        Created {{ topic.created_at|from_now }} by <b>{{ topic.author.login }}</b><br>
+                        Last modified {{ topic.updated_at|from_now }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>{# end .topics-display #}
+    </div>{# end .topics-display-container #}
+{% endif %}

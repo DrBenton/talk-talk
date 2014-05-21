@@ -3,13 +3,19 @@
 namespace TalkTalk\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use TalkTalk\Model\Forum;
 
 class Topic extends Model
 {
 
     public function forum()
     {
-        return $this->belongsTo('TalkTalk\Model\Forum');
+        return Forum::find($this->forum_id);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo('TalkTalk\Model\User');
     }
 
     public function posts()

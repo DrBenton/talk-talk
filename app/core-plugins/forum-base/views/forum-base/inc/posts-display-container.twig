@@ -1,0 +1,32 @@
+{% if posts|length > 0 %}
+    {{ enable_html_hooks('posts_display', 'post_display') }}
+    <div class="posts-display-container">
+        <div class="posts-display">
+            {{ nbPostsTotal }} posts - page {{ paginationData.currentPageNum }} -
+            {{ posts|length }} posts on this page
+            {% for post in posts %}
+                <div class="post-display-container {{ post.author.id == topic.author.id ? 'topic-author' : '' }}">
+                    <div class="post-display">
+                        <h4 class="post-title">
+                            {{ post.title|raw }} <i>({{ post.id }})</i>
+                        </h4>
+                        <div class="post-content">
+                            {{ post.content|raw }}
+                        </div>
+                        <div class="post-info">
+                            <i>
+                                Posted {{ post.created_at|from_now }}<br>
+                                {% if post.created_at != post.updated_at %}
+                                    Last edited {{ post.updated_at|from_now }}
+                                {% endif %}
+                            </i>
+                        </div>
+                        <div class="post-author">
+                            by <b>{{ post.author.login }}</b>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>{# end .posts-display #}
+    </div>{# end .posts-display-container #}
+{% endif %}
