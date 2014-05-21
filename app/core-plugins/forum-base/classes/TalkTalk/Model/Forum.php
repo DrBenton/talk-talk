@@ -156,7 +156,7 @@ class Forum extends Model
 
     public function topics()
     {
-        return $this->hasMany('TalkTalk\Model\Topic', 'forum_id');
+        return $this->hasMany('TalkTalk\Model\Topic');
     }
 
     public function addChild(Forum $childForum)

@@ -30,6 +30,22 @@ define(function (require, exports, module) {
   // Exports
   exports.createWidget = createWidget;
 
+  function clearPreviousImports() {
+    myDebug && logger.debug(module.id, "clearPreviousImports()");
+
+    var serviceUrl = '/phpbb/import/importing/clear-previous-imports';
+
+    return Q($.ajax({
+      url: serviceUrl,
+      dataType: 'json',
+      type: 'POST' //more REST-y, and gives us CSRF protection :-)
+    }))
+      .fail(function (e) {
+        displayImportError(e, serviceUrl);
+        resetState();
+      });
+  }
+
   function startNextItemsTypeImport() {
     currentItemsImport.type = itemsToImportTypes[currentImportedItemTypeIndex];
     myDebug && logger.debug(module.id, "startNextItemsTypeImport() ; currentItemsImport.type=", currentItemsImport.type);
@@ -130,7 +146,7 @@ define(function (require, exports, module) {
       type: 'POST' //more REST-y, and gives us CSRF protection :-)
     }))
       .then(function () {
-
+        $importsContainer.find('.please-wait').hide();
       })
       .fail(function (e) {
         displayImportError(e, serviceUrl);
@@ -153,7 +169,13 @@ define(function (require, exports, module) {
   function startImport() {
     $startImportButton.hide();
     $importsContainer.find('.please-wait').removeClass('hidden').show();
-    startNextItemsTypeImport();
+    clearPreviousImports()
+      .then(
+        startNextItemsTypeImport,
+        function(e) {
+          myDebug && console.log('Previous imports deletion failed!');
+        }
+      );
   }
 
   function resetState() {

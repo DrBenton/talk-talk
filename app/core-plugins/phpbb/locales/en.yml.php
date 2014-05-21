@@ -28,7 +28,10 @@ core-plugins:
         db-success: >
           PhpBB database access is successful!
       importing:
-        intro: >
+        intro: |
+          Be aware that *ALL PREVIOUSLY IMPORTED PHPBB ENTITIES WILL BE DEFINITELY REMOVED* from your Forum.
+          Of course, your phpBb database will remain untouched.
+        please-wait: >
           We are importing your phpBb data, please wait...
       alerts:
         import-error: There has been a error while loading '%importUrl%' through AJAX! Please try again.

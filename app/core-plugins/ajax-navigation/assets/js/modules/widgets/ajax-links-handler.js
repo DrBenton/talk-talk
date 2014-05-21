@@ -38,6 +38,9 @@ define(function (require, exports, module) {
     var requestedUrl = state.url;
     requestedUrl = normalizeUrl(requestedUrl);
 
+    // Scroll to top
+    $('html, body').animate({scrollTop:0}, 'fast');
+
     // Do we have cached data for this Ajax main content URL?
     var ajaxContentCachedData = getCachedAjaxMainContent(requestedUrl);
     if (ajaxContentCachedData !== null) {
@@ -164,7 +167,11 @@ define(function (require, exports, module) {
   }
 
   function normalizeUrl(rawUrl) {
-    return purl(rawUrl).attr('path');
+    var url = purl(rawUrl);
+    var returnedUrl = url.attr('path');
+    var query = url.attr('query');
+    returnedUrl += query ? '?' + query : '' ;
+    return returnedUrl;
   }
 
   function getAjaxMainContentCacheKey(url) {

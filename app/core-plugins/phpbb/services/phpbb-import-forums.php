@@ -50,6 +50,7 @@ $app['phpbb.import.forums.trigger_batch'] = $app->protect(
             // No creation date for Forums in phpBb... :-/
             // We just have the following "last post time":
             $talkTalkForum->setUpdatedAt($phpBbForum->forum_last_post_time);
+            $app['phpbb.import.add_provider_data']($talkTalkForum);
             $talkTalkForum->save();
 
             $idsMapping[$phpBbForum->forum_id] = $talkTalkForum->id;

@@ -6,6 +6,10 @@
          data-widget="app-modules/phpbb/widgets/imports-handler"
          data-items-types="{{ itemsTypes|json_encode() }}">
 
+        <div class="intro">
+            {{ 'core-plugins.phpbb.import.importing.intro'|trans|nl2br }}
+        </div>
+
         {% for itemType, itemLabel in itemsTypes %}
             <div id="phpbb-{{ itemType }}-import-display">
                 <h4>{{ itemLabel }}</h4>
@@ -23,7 +27,7 @@
         {% endfor %}
 
         <div class="please-wait hidden">
-            {{ 'core-plugins.phpbb.import.importing.intro'|trans }}
+            {{ 'core-plugins.phpbb.import.importing.please-wait'|trans }}
         </div>
         <button class="start-import">Start import</button>
     </div>

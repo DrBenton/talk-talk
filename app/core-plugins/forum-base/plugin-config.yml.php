@@ -18,6 +18,13 @@
     name: forum-base/forum
     requirements:
       forumId: \d+ #{forumId} must be an integer
+  -
+    # GET /topic/ID => actions/topic-display.php
+    url: /topic/{topicId}
+    target: topic-display
+    name: forum-base/topic
+    requirements:
+      topicId: \d+ #{topicId} must be an integer
 
 @classes:
   -

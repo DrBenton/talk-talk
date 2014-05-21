@@ -58,10 +58,11 @@ $app['phpbb.import.topics.trigger_batch'] = $app->protect(
             $talkTalkTopic = new TalkTalkTopic();
             $talkTalkTopic->forum_id = $talkTalkForumId;
             $talkTalkTopic->author_id = $talkTalkAuthorId;
-            $talkTalkTopic->name = $phpBbTopic->topic_title;
+            $talkTalkTopic->name = html_entity_decode($phpBbTopic->topic_title);
             $talkTalkTopic->nb_replies = $phpBbTopic->topic_replies;
             $talkTalkTopic->setCreatedAt($phpBbTopic->topic_time);
             $talkTalkTopic->setUpdatedAt($phpBbTopic->topic_last_post_time);
+            $app['phpbb.import.add_provider_data']($talkTalkTopic);
             $talkTalkTopic->save();
 
             $idsMapping[$phpBbTopic->topic_id] = $talkTalkTopic->id;

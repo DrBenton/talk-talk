@@ -64,14 +64,15 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
             $talkTalkPost->forum_id = $talkTalkForumId;
             $talkTalkPost->topic_id = $talkTalkTopicId;
             $talkTalkPost->author_id = $talkTalkAuthorId;
-            $talkTalkPost->title = $phpBbPost->post_subject;
-            $talkTalkPost->content = $phpBbPost->post_text;
+            $talkTalkPost->title = html_entity_decode($phpBbPost->post_subject);
+            $talkTalkPost->content = html_entity_decode($phpBbPost->post_text);
             $talkTalkPost->setCreatedAt($phpBbPost->post_time);
             $talkTalkPost->setUpdatedAt(
                 0 === $phpBbPost->post_edit_time
                     ? $phpBbPost->post_time
                     : $phpBbPost->post_edit_time
             );
+            $app['phpbb.import.add_provider_data']($talkTalkPost);
             $talkTalkPost->save();
 
             $nbPostsCreated++;

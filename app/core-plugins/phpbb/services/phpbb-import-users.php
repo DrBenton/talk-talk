@@ -41,9 +41,9 @@ $app['phpbb.import.users.trigger_batch'] = $app->protect(
             $talkTalkUser->login = $phpBbUser->username;
             $talkTalkUser->email = $phpBbUser->user_email;
             $talkTalkUser->password = $phpBbUser->user_password;
-            $talkTalkUser->provider = 'phpbb-import';
             $talkTalkUser->setCreatedAt($phpBbUser->user_regdate);
             $talkTalkUser->setUpdatedAt($phpBbUser->user_lastmark);
+            $app['phpbb.import.add_provider_data']($talkTalkUser);
             $talkTalkUser->save();
 
             $idsMapping[$phpBbUser->user_id] = $talkTalkUser->id;

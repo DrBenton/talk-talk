@@ -39,6 +39,13 @@
     requirements:
      itemType: (users|forums|topics|posts)
   -
+    # POST /phpbb/import/importing/clear-previous-imports => actions/data-import/clear-previous-imports.php
+    # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
+    url: /import/importing/clear-previous-imports
+    method: POST
+    target: data-import/clear-previous-imports
+    before: phpbb.middleware.require-phpbb-connection-settings
+  -
     # POST /phpbb/import/importing/import-XXX/batch/N => actions/data-import/XXX-import-batch.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
     url: /import/importing/import-{itemType}/batch/{batchIndex}
@@ -64,6 +71,7 @@
 @services:
   - before-middlewares
   - phpbb-db
+  - phpbb-data
   - phpbb-import-users
   - phpbb-import-forums
   - phpbb-import-topics
