@@ -19,8 +19,10 @@
   - html.alerts_display
   - html.user_profile_display
   - html.forums_display
-  - html.topic_display
+  - html.forum_display
   - html.topics_display
-  - html.post_display
+  - html.topic_display
   - html.posts_display
+  - html.post_display
   - html.pagination
+  - html.authentication_required_msg

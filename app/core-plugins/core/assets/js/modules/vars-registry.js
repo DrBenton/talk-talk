@@ -10,6 +10,7 @@ define(function (require, exports, module) {
   registry.$body = $("body");
   registry.$mainContentContainer = $("#main-content-container");
   registry.$mainContent = $("#main-content");
+  registry.$breadcrumb = $("#breadcrumb");
   registry.$debugInfoContainer = $("#debug-info-container");
 
 

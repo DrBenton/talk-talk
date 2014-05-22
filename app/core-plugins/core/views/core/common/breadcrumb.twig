@@ -1,6 +1,16 @@
-{% if breadcrumb is defined %}
-    {{ enable_html_hooks('breadcrumb') }}
-    <ul class="breadcrumb">
+{% if app.isAjax %}
+    {# We use a temporary container when in an Ajax context #}
+    {% set tmpNotificationsContainerId = app.uuid %}
+    {% set breadcrumbContainerId = "breacrumb-" ~ tmpNotificationsContainerId %}
+{% else %}
+    {# We use a real, permanent container when not in an Ajax context #}
+    {% set breadcrumbContainerId = "breadcrumb" %}
+{% endif %}
+
+{{ enable_html_hooks('breadcrumb') }}
+<ul id="{{ breadcrumbContainerId }}"
+    class="breadcrumb {{ app.isAjax ? 'hidden' : '' }}">
+    {% if breadcrumb is defined %}
         {% for index, breadcrumbPart in breadcrumb %}
             <li class="breadcrumb-item level-{{ index }}">
                 <a href="{{ breadcrumbPart.url }}"
@@ -9,5 +19,16 @@
                 </a>
             </li>
         {% endfor %}
-    </ul>
+    {% endif %}
+</ul>
+
+{% if app.isAjax %}
+    <script>
+        require(['jquery', 'app-modules/core/vars-registry'], function ($, varsRegistry) {
+            // This breadcrumb is displayed in the layout #breadcrumb
+            var $breadcrumbToDisplay = $("#{{ breadcrumbContainerId }}");
+            varsRegistry.$breadcrumb.html($breadcrumbToDisplay.html());
+            $breadcrumbToDisplay.remove();
+        });
+    </script>
 {% endif %}

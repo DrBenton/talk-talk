@@ -85,6 +85,19 @@ $hooks['html.forums_display'] = function (DOMQuery $html) {
     $rootForumsContent->addClass('panel-body');
 };
 
+$hooks['html.forum_display'] = function (DOMQuery $html) {
+    // We move the Forum title in a TWB "jumbotron"...
+    $forumTitle = $html->find('.forum-title');
+    $forumTitle->before('<div class="jumbotron forum-heading"></div>');
+    $jumbotron = $html->find('.jumbotron.forum-heading');
+    $jumbotron->append($forumTitle);
+    $forumTitle->remove();
+    // ...and move the forum description in this jumbotron too
+    $forumDesc = $html->find('.forum-desc');
+    $jumbotron->append($forumDesc);
+    $forumDesc->remove();
+};
+
 $hooks['html.topics_display'] = function (DOMQuery $html) {
     $topicsDisplaysContainers = $html->find('.topics-display-container');
     $topicsDisplaysContainers->addClass('clearfix');
@@ -137,5 +150,10 @@ $hooks['html.pagination'] = function (DOMQuery $html) {
     $pagination = $html->find('.pagination');
     $pagination->addClass('pull-right');
     $pagination->after('<div class="clearfix"></div>');
+};
+
+$hooks['html.authentication_required_msg'] = function (DOMQuery $html) {
+    $msg = $html->find('.authentication-required-msg');
+    $msg->addClass('help-block');
 };
 

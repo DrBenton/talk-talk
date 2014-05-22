@@ -3,6 +3,9 @@
     {# Notifications display through JavaScript (if any) #}
     {% include 'core/common/alerts-display.twig' with {alerts: get_flashes()} %}
 
+    {% block breadcrumb %}
+    {% endblock %}
+
     {% block content %}
     {% endblock %}
 

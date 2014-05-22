@@ -20,6 +20,8 @@ define(function (require, exports, module) {
 
   var ajaxLoadingsCounter = 0;
 
+  var firstPageUrl;
+
   myDebug && logger.debug(module.id, "on the bridge, captain!");
 
   // Exports
@@ -117,6 +119,11 @@ define(function (require, exports, module) {
 
     // Does this main content expose ajax loading data?
     checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration);
+
+    // If this is the first page content, we restore its breadcrumb content
+    if (loadedUrl === firstPageUrl) {
+      varsRegistry.$breadcrumb.html(varsRegistry.firstPageBreadcumb);
+    }
   }
 
   function checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration) {
@@ -209,7 +216,9 @@ define(function (require, exports, module) {
 
   function handleInitialMainContentCache() {
     myDebug && logger.debug(module.id, "Let's check if the initial content has cache information...");
-    checkForAjaxLoadingDataOnAjaxLoadedMainContent(purl().attr('path'));
+    firstPageUrl = normalizeUrl(document.location);
+    checkForAjaxLoadingDataOnAjaxLoadedMainContent(firstPageUrl);
+    varsRegistry.firstPageBreadcumb = varsRegistry.$breadcrumb.html();
   }
 
   function createWidget($widgetNode) {

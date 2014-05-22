@@ -1,4 +1,4 @@
-{% if topics|length > 0 %}
+{% if topics is not empty %}
     {{ enable_html_hooks('topics_display', 'topic_display') }}
     <div class="topics-display-container">
         <div class="topics-display">

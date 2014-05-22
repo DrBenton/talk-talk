@@ -1,9 +1,11 @@
 {% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
 
+{% block breadcrumb %}
+    {% include 'core/common/breadcrumb.twig' %}
+{% endblock %}
+
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 60} |json_encode() }}"></span>
-
-    {% include 'core/common/breadcrumb.twig' %}
 
     {{ enable_html_hooks('all_forums_display') }}
     {% include 'forum-base/inc/forums-display-container.twig' with {forums: forumsTree} %}

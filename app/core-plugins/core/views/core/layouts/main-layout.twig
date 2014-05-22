@@ -35,6 +35,10 @@
 
     {% include 'core/common/alerts-display.twig' with {alerts: get_flashes()} %}
 
+    {% block breadcrumb %}
+        {% include '/core/common/breadcrumb.twig' %}
+    {% endblock %}
+
     {{ enable_html_hooks('main_content_container') }}
     <div id="main-content-container">
         <div id="main-content" class="clearfix">

@@ -34,7 +34,7 @@ $app['forum-base.markup-manager.handle_forum_markup.smilies'] = $app->protect(
 $app['forum-base.markup-manager.handle_forum_markup.links'] = $app->protect(
     function ($forumContent) use ($app) {
         $forumContent = preg_replace(
-            '~<!-- [ml] --><a\s+[^>]*href="([^"]+)"[^>]*>([^<>]+)</a><!-- [ml] -->~i',
+            '~<!-- [a-z] --><a\s+[^>]*href="([^"]+)"[^>]*>([^<>]+)</a><!-- [a-z] -->~i',
             '[url="$1"]$2[/url]',
             $forumContent
         );
