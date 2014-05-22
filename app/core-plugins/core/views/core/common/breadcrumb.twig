@@ -12,7 +12,7 @@
     class="breadcrumb {{ app.isAjax ? 'hidden' : '' }}">
     {% if breadcrumb is defined %}
         {% for index, breadcrumbPart in breadcrumb %}
-            <li class="breadcrumb-item level-{{ index }}">
+            <li class="breadcrumb-item level-{{ index }} {{ breadcrumbPart.class|default('') }}">
                 <a href="{{ breadcrumbPart.url }}"
                    class="breadcrumb-link ajax-link">
                     {{ app.translator.trans(breadcrumbPart.label, breadcrumbPart.labelParams|default([])) }}

@@ -10,6 +10,9 @@ core-plugins:
       breadcrumb:
         - Sign up
       form:
+        already-have-account: >
+          Already have an account?
+          <a href="%sign-in-url%" class="sign-in-link">Sign in</a> instead.
         login: Login
         email: Email address
         password: Password

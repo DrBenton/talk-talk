@@ -8,7 +8,7 @@
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
     {{ enable_html_hooks('form', 'signin_form') }}
-    <form id="signin-form" role="form"
+    <form id="sign-in-form" role="form"
           action="{{ path('auth/sign-in/target') }}"
           method="post"
           class="sign-form ajax-form">

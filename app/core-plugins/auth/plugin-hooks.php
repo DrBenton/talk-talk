@@ -1,5 +1,6 @@
 <?php
 
+use QueryPath\DOMQuery;
 use TalkTalk\Model\User;
 
 $hooks['auth.user.check-signin-credentials'] = function ($submittedUserData, User $dbUser) use ($app) {
@@ -12,7 +13,7 @@ $hooks['auth.user.check-signin-credentials'] = function ($submittedUserData, Use
     return $app['crypto.password.verify']($submittedUserData['password'], $dbUser->password);
 };
 
-$hooks['html.header'] = function (\QueryPath\DOMQuery $html) use ($app) {
+$hooks['html.header'] = function (DOMQuery $html) use ($app) {
     // Some vars setup...
     $urlGenerator = $app['url_generator'];
     $translationKeyBase = 'core-plugins.auth.header_links.';

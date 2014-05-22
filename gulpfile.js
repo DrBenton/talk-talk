@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload');
 
 gulp.task('watch', function() {
-  var livereloadPort = parseInt(appConfig.development['livereload.port']);
+  var livereloadPort = parseInt(appConfig.debug['livereload.port']);
   var server = livereload(livereloadPort);
   gulp.watch([
     'app/**',

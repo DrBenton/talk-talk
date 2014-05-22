@@ -45,8 +45,13 @@ $action = function (Application $app, Request $request) use (&$showFormOnError) 
             array('user' => $dbUser)
         );
     } else {
-        // Redirection to home, with flashed notification
-        return $app->redirect($app['url_generator']->generate('core/home'));
+        // Redirection to home / intended URL, with flashed notification
+        $targetUrl = $app['session']->get(
+            'url.intended',
+            $app['url_generator']->generate('core/home')
+        );
+        $app['session']->remove('url.intended');
+        return $app->redirect($targetUrl);
     }
 };
 

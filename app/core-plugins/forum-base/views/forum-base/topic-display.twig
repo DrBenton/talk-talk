@@ -7,10 +7,20 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
 
-    {{ enable_html_hooks('topic_display') }}
+    {{ enable_html_hooks('page.topic') }}
     <div class="topic-display-container">
         <div class="topic-display">
             <h2 class="topic-title">{{ topic.name }}</h2>
+            <div class="topic-desc">
+                Created {{ topic.created_at|from_now }} by
+                <span class="topic-author">{{ topic.author.login }}</span><br>
+                {% if topic.lastReply.id != posts[0].id %}
+                    Last reply {{ topic.lastReply.created_at|from_now }} by
+                    <span class="topic-last-participant">{{ topic.lastReply.author.login }}</span>
+                {% else %}
+                    No reply.
+                {% endif %}
+            </div>
 
             {% include 'utils/common/pagination.twig' with paginationData %}
 

@@ -117,7 +117,7 @@ class Forum extends Model
 
         $cachedData = $cacheManager->get(static::CACHE_KEY);
 
-        if (false !== $cachedData) {
+        if (null !== $cachedData) {
 
             // We restore all this data from cache!
             $allForumsRaw = & $cachedData;

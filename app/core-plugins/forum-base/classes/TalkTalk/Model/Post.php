@@ -14,7 +14,7 @@ class Post extends Model
 
     public function author()
     {
-        return $this->belongsTo('TalkTalk\Model\User');
+        return $this->belongsTo('TalkTalk\Model\User', 'author_id');
     }
 
 }

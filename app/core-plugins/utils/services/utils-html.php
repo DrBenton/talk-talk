@@ -29,5 +29,6 @@ $app['utils.html.breadcrumb.home'] = function () use ($app) {
     return array(
         'url' => $app['url_generator']->generate('core/home'),
         'label' => 'core-plugins.utils.breadcrumb.home',
+        'class' => 'home',
     );
 };

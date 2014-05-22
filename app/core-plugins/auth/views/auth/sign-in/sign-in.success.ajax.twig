@@ -10,7 +10,7 @@
     </div>
 
     <script>
-        require(['jquery'], function ($) {
+        require(['jquery', 'locache'], function ($, locache) {
             // The user profile must be displayed in the #logged-user-container
             var $userProfile = $("#user-profile-{{ temporaryUserProfileContainerId }}");
             $('#logged-user-container').html($userProfile.html());
@@ -21,9 +21,13 @@
             // ...but we show the "signout" link
             $("header .sign-out").removeClass("hidden");
 
+            // Our pages data cache is flushed: since our status has changed,
+            // pages content may change!
+            locache.flush();
+
             // Back to intended page or home, please!
-            History.pushState(null, null, '{{ app.session.get('url.intended', '/') }}');
-            {% set dummy = app.session.remove('url.intended') %}
+            History.pushState(null, null, '{{ app.session.get('url.intended', path('core/home')) }}');
+            {% do app.session.remove('url.intended') %}
 
         });
     </script>

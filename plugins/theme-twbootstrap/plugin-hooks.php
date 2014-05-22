@@ -25,6 +25,18 @@ $hooks['html.header'] = function (DOMQuery $html) {
     $nav = $header->find('nav');
     $nav->find('ul')
         ->addClass('nav nav-pills');
+    $nav->find('.sign-up a')
+        ->prepend('<span class="glyphicon glyphicon-asterisk"></span> ');
+    $nav->find('.sign-in a')
+        ->prepend('<span class="glyphicon glyphicon-log-in"></span> ');
+    $nav->find('.sign-out a')
+        ->prepend('<span class="glyphicon glyphicon-log-out"></span> ');
+};
+
+$hooks['html.breadcrumb'] = function (DOMQuery $html) {
+    $breadcrumb = $html->find('#breadcrumb');
+    $breadcrumb->find('li.home a')
+        ->prepend('<span class="glyphicon glyphicon-home"></span>');
 };
 
 $hooks['html.form'] = function (DOMQuery $html) {
@@ -51,6 +63,11 @@ $hooks['html.form'] = function (DOMQuery $html) {
         ->addClass('has-error');
 };
 
+$hooks['html.signup_form'] = function (DOMQuery $html) {
+    $html->find('.already-have-account')
+        ->addClass('help-block');
+};
+
 $hooks['html.alerts_display'] = function (DOMQuery $html) {
     $transforms = array(
         'info' => 'info',
@@ -65,7 +82,9 @@ $hooks['html.alerts_display'] = function (DOMQuery $html) {
 
 $hooks['html.user_profile_display'] = function (DOMQuery $html) {
     $html->find('.logged-user-display')
-        ->prepend('<span class="glyphicon glyphicon-user"></span>');
+        ->addClass('pull-right')
+        ->prepend('<span class="glyphicon glyphicon-user"></span>')
+        ->after('<div class="clearfix"></div>');
 };
 
 $hooks['html.forums_display'] = function (DOMQuery $html) {
@@ -73,7 +92,7 @@ $hooks['html.forums_display'] = function (DOMQuery $html) {
     $allForumsDisplayContainer->addClass('clearfix');
     // "root" forums styling
     $rootForums = $allForumsDisplayContainer->find('.forum-container.level-0');
-    $rootForums->addClass('col-sm-5');
+    $rootForums->addClass('col-sm-6');
     $rootForums->find('.forum')->addClass('panel panel-default');
     // We want these forums to be displayed 2 on a row: let's add a "clearfix" every 2 forums
     $rootForums->even()->after('<div class="clearfix"></div>');
@@ -85,7 +104,7 @@ $hooks['html.forums_display'] = function (DOMQuery $html) {
     $rootForumsContent->addClass('panel-body');
 };
 
-$hooks['html.forum_display'] = function (DOMQuery $html) {
+$hooks['html.page.forum'] = function (DOMQuery $html) {
     // We move the Forum title in a TWB "jumbotron"...
     $forumTitle = $html->find('.forum-title');
     $forumTitle->before('<div class="jumbotron forum-heading"></div>');
@@ -108,6 +127,19 @@ $hooks['html.topic_display'] = function (DOMQuery $html) {
     $topicsDisplays->addClass('panel panel-default clearfix');
     $topicsDisplays->find('.topic-name')->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
     $topicsDisplays->find('.topic-info')->addClass('panel-body');
+};
+
+$hooks['html.page.topic'] = function (DOMQuery $html) {
+    // We move the Topic title in a TWB "jumbotron"...
+    $topicTitle = $html->find('.topic-title');
+    $topicTitle->before('<div class="jumbotron topic-heading"></div>');
+    $jumbotron = $html->find('.jumbotron.topic-heading');
+    $jumbotron->append($topicTitle);
+    $topicTitle->remove();
+    // ...and move the topic description in this jumbotron too
+    $topicDesc = $html->find('.topic-desc');
+    $jumbotron->append($topicDesc);
+    $topicDesc->remove();
 };
 
 $hooks['html.posts_display'] = function (DOMQuery $html) {
@@ -155,5 +187,13 @@ $hooks['html.pagination'] = function (DOMQuery $html) {
 $hooks['html.authentication_required_msg'] = function (DOMQuery $html) {
     $msg = $html->find('.authentication-required-msg');
     $msg->addClass('help-block');
+};
+
+$hooks['html.post_new_topic_link'] = function (DOMQuery $html) {
+    $postNewTopicLink = $html->find('.post-new-topic-link');
+    $postNewTopicLink
+        ->prepend('<span class="glyphicon glyphicon-comment"></span>')
+        ->addClass('btn btn-primary')
+        ->attr('role', 'button');
 };
 

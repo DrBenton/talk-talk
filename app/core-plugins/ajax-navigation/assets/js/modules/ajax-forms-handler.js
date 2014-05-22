@@ -31,6 +31,9 @@ define(function (require, exports, module) {
       error: onFormSendingError
     });
 
+    // Let's remove previous page Alerts
+    alertsService.clearAlerts();
+
     return false;
   }
 

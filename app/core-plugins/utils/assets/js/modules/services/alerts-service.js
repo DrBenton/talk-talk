@@ -3,13 +3,20 @@ define(function (require, exports, module) {
   var $ = require("jquery");
   var varsRegistry = require("app-modules/core/vars-registry");
 
-  var $notificationsContainer = varsRegistry.$document.find("#notifications-container");
+  // Exports
+  exports.clearAlerts = clearAlerts;
+  exports.addAlert = addAlert;
 
-  exports.clearAlerts = function () {
-    $notificationsContainer.empty();
-  };
 
-  exports.addAlert = function (msgTranslationKey, msgVars, type) {
+  function getAlertsContainer() {
+    return varsRegistry.$document.find("#alerts-container");
+  }
+
+  function clearAlerts() {
+    getAlertsContainer().empty();
+  }
+
+  function addAlert(msgTranslationKey, msgVars, type) {
     msgVars = msgVars || {};
     type = type || 'info';
 
@@ -24,8 +31,8 @@ define(function (require, exports, module) {
       dataType: 'text'
     })
       .done(function (alertsJavascriptManagementCode) {
-        varsRegistry.$mainContent.append(alertsJavascriptManagementCode);
+        getAlertsContainer().replaceWith(alertsJavascriptManagementCode);
       });
-  };
+  }
 
 });

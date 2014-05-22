@@ -1,4 +1,27 @@
+{% macro new_topic_link() %}
+    {% if app.isAnonymous %}
+        {{ enable_html_hooks('authentication_required_msg') }}
+        <div class="authentication-required-msg">
+            {{ 'core-plugins.forum-base.acl.must_be_authenticated.for_new_topic'|trans({
+            '%sign-in-url%': path('auth/sign-in', {'return-url': current_path() }),
+            '%sign-up-url%': path('auth/sign-up', {'return-url': current_path() })
+            })|raw }}
+        </div>
+    {% else %}
+        {{ enable_html_hooks('post_new_topic_link') }}
+        <a href="#"class="post-new-topic-link">
+            {{ 'core-plugins.forum-base.topics-display.post-new-topic'|trans }}
+        </a>
+        <code>[TODO]</code>
+    {% endif %}
+{% endmacro %}
+
+{% import _self as my_macros %}
+
 {% if topics is not empty %}
+
+    {{ my_macros.new_topic_link() }}
+
     {{ enable_html_hooks('topics_display', 'topic_display') }}
     <div class="topics-display-container">
         <div class="topics-display">
@@ -25,4 +48,15 @@
         {% endfor %}
         </div>{# end .topics-display #}
     </div>{# end .topics-display-container #}
+
+    {{ my_macros.new_topic_link() }}
+
+{% else %}
+
+    {{ 'core-plugins.forum-base.topics-display.no-topic'|trans }}
+
+    {% if app.isAnonymous %}
+        {{ my_macros.new_topic_link() }}
+    {% endif %}
+
 {% endif %}

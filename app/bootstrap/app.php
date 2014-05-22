@@ -53,7 +53,7 @@ return function (Request $request) {
     $loadBootstrapService('config');
 
     // ...and start using it right now!
-    $app['debug'] = $app['config']['general']['debug'];
+    $app['debug'] = $app['config']['debug']['debug'];
     ErrorHandler::register();
     ExceptionHandler::register($app['debug']);
 

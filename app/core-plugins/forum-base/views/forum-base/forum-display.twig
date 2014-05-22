@@ -1,17 +1,5 @@
 {% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
 
-{% macro authentication_required_msg() %}
-    {{ enable_html_hooks('authentication_required_msg') }}
-    <div class="authentication-required-msg">
-        {{ 'core-plugins.forum-base.acl.must_be_authenticated.for_new_topic'|trans({
-        '%sign-in-url%': app.url_generator.generate('auth/sign-in'),
-        '%sign-up-url%': app.url_generator.generate('auth/sign-up')
-        })|raw }}
-    </div>
-{% endmacro %}
-
-{% import _self as my_macros %}
-
 {% block breadcrumb %}
     {% include 'core/common/breadcrumb.twig' %}
 {% endblock %}
@@ -19,7 +7,7 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
 
-    {{ enable_html_hooks('forum_display') }}
+    {{ enable_html_hooks('page.forum') }}
     <div class="forum-display-container">
         <div class="forum-display">
             <h2 class="forum-title">{{ forum.name }}</h2>
@@ -30,19 +18,11 @@
                 {% include 'forum-base/inc/forums-display-container.twig' with {forums: subForums} %}
             {% endif %}
 
-            {% if app.isAnonymous %}
-                {{ my_macros.authentication_required_msg() }}
-            {% endif %}
-
             {% include 'utils/common/pagination.twig' with paginationData %}
 
             {% include 'forum-base/inc/topics-display-container.twig' with {topics: topics} %}
 
             {% include 'utils/common/pagination.twig' with paginationData %}
-
-            {% if app.isAnonymous %}
-                {{ my_macros.authentication_required_msg() }}
-            {% endif %}
 
         </div>{# end .forum-display #}
     </div>{# end .forum-display-container #}

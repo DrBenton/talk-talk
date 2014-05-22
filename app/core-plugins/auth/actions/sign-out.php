@@ -6,7 +6,7 @@ use TalkTalk\Model\User;
 
 $action = function (Application $app, Request $request) {
 
-    $app['session']->remove('user');
+    $app['session']->remove('userId');
 
     $app['session.flash.add.translated']('core-plugins.auth.sign-out.notifications.success', array(), 'info');
 

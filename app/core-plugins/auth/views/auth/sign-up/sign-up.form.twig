@@ -7,8 +7,14 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 600} |json_encode() }}"></span>
 
+    <div class="already-have-account">
+        {{ 'core-plugins.auth.sign-up.form.already-have-account'|trans({
+            '%sign-in-url%': path('auth/sign-in')
+        })|raw }}
+    </div>
+
     {{ enable_html_hooks('form', 'signup_form') }}
-    <form id="signup-form" role="form"
+    <form id="sign-up-form" role="form"
           action="{{ path('auth/sign-up/target') }}"
           method="post"
           class="sign-form ajax-form">

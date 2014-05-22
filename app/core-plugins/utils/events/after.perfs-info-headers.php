@@ -5,6 +5,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 $app->after(
     function (Request $request, Response $response) use ($app) {
+
+        if (!isset($app['perfs.querypath.duration'])) {
+            return;
+        }
+        
         $response->headers->add(array(
             'X-QueryPath-Duration' => $app['perfs.querypath.duration']
         ));

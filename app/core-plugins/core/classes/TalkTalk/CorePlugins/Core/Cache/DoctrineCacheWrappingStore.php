@@ -25,7 +25,10 @@ class DoctrineCacheWrappingStore implements StoreInterface
      */
     public function get($key)
     {
-        return $this->getDoctrineCache()->fetch($key);
+        $value = $this->getDoctrineCache()->fetch($key);
+        if ($value !== false){
+			return $value;
+		}
     }
 
     /**

@@ -13,6 +13,10 @@ $action = function (Application $app, Request $request) {
         ),
     );
 
+    if ($request->query->has('return-url')) {
+        $app['session']->set('url.intended', $request->query->get('return-url'));
+    }
+
     return $app['twig']->render(
         'auth/sign-in/sign-in.form.twig',
         array(
