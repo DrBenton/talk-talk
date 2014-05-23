@@ -1,10 +1,12 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 $app['auth.middleware.is-authenticated'] = $app->protect(
     function () use ($app) {
         if ($app['isAnonymous']) {
+
             // We store this URL: if the User successfully authenticates afterwards,
             // we will redirect him/her to this URL
             if ('GET' === $app['request']->getMethod()) {
@@ -12,10 +14,19 @@ $app['auth.middleware.is-authenticated'] = $app->protect(
                 $app['session']->set('url.intended', $currentUrl);
             }
 
-            return $app->redirect(
-                $app['url_generator']->generate('auth/sign-in')
+            $app['session.flash.add.translated'](
+                'core-plugins.auth.middlewares.authentication-required',
+                array(),
+                'info'
             );
-            //throw new AuthenticationException('You must be authenticated to access this resource!');
+
+            // Let's display the "sign in" form in place of the required page,
+            // with a HTTP "Forbidden" status!
+            $signInFormHtml = $app['plugins.manager']->runActionFile(
+                'app/core-plugins/auth/actions/sign-in-form'
+            );
+
+            return new Response($signInFormHtml, 401);
         }
     }
 );
