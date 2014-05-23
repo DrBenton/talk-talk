@@ -6,7 +6,7 @@
                 <div class="forum-container level-{{ forum.depth }}">
                     <div class="forum">
                         <h3 class="forum-title">
-                            <a href="{{ path('forum-base/forum', {forumId: forum.id}) }}"
+                            <a href="{{ path('forum-base/forum', {forum: forum.id}) }}"
                                class="forum-link root-forum-link ajax-link">
                                 {{ forum.name }}
                             </a>
@@ -20,7 +20,7 @@
                                 <div class="forum-children">
                                     {% for childForum in forum.children %}
                                         <h5>
-                                            <a href="{{ path('forum-base/forum', {forumId: childForum.id}) }}"
+                                            <a href="{{ path('forum-base/forum', {forum: childForum.id}) }}"
                                                class="forum-link child-forum-link ajax-link">
                                                 {{ childForum.name }}
                                             </a>

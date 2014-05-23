@@ -247,10 +247,23 @@ $hooks['html.authentication_required_msg'] = function (DOMQuery $html) {
 };
 
 $hooks['html.create_new_topic_link'] = function (DOMQuery $html) {
-    $postNewTopicLink = $html->find('.post-new-topic-link');
-    $postNewTopicLink
+    $createNewTopicLink = $html->find('.create-new-topic-link');
+    $createNewTopicLink
         ->prepend('<span class="glyphicon glyphicon-comment"></span>')
         ->addClass('btn btn-primary')
         ->attr('role', 'button');
+};
+
+$hooks['html.create_new_post_link'] = function (DOMQuery $html) {
+    $createNewPostLink = $html->find('.create-new-post-link');
+    $createNewPostLink
+        ->prepend('<span class="glyphicon glyphicon-comment"></span>')
+        ->addClass('btn btn-primary')
+        ->attr('role', 'button');
+};
+
+$hooks['html.page.new_post_form'] = function (DOMQuery $html) {
+    // List desc
+    $html->find('.list-desc')->addClass('lead');
 };
 

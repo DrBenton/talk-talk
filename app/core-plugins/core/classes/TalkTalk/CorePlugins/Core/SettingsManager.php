@@ -24,15 +24,16 @@ class SettingsManager
         }
 
         $data = SettingModel::find($key);
-        $this->lightDataCache[$key] = $data;
 
         if (null === $data) {
+            $this->lightDataCache[$key] = null;
             return $default;
         }
 
         if (null !== $data->value && StringUtils::isJsonish($data->value)) {
             $data->value = json_decode($data->value, true);
         }
+        $this->lightDataCache[$key] = $data->value;
 
         return $data->value;
     }

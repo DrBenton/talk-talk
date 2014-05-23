@@ -5,9 +5,7 @@ use TalkTalk\Model\Topic;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-$action = function (Application $app, Request $request, $forumId) {
-
-    $forum = Forum::findOrFail($forumId);
+$action = function (Application $app, Request $request, Forum $forum) {
 
     // Forum children retrieval
     $forumChildren = $forum->getChildren();
@@ -33,7 +31,7 @@ $action = function (Application $app, Request $request, $forumId) {
         'currentPageNum' => $pageNum,
         'nbPages' => ceil($nbTopicsTotal / $app['forum-base.pagination.topics.nb_per_page']),
         'baseUrl' => $app['url_generator']->generate(
-                'forum-base/forum', array('forumId' => $forum->id)
+                'forum-base/forum', array('forum' => $forum->id)
             ) . '?page=%page%'
     );
 

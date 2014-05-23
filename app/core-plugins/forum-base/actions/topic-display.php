@@ -5,13 +5,21 @@ use TalkTalk\Model\Post;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-$action = function (Application $app, Request $request, $topicId) {
+$action = function (Application $app, Request $request, Topic $topic) {
 
-    $topic = Topic::findOrFail($topicId);
     $topic->load('author');
 
+    // Total number of posts retrieval
+    $nbPostsTotal = Post::where('topic_id', '=', $topic->id)->count();
+
     // Posts retrieval (only those of the current page)
-    $pageNum = $request->query->getInt('page', 1);
+    $pageNum = $request->query->get('page', 1);
+    if ('last' === $pageNum) {
+        $pageNum = ceil($nbPostsTotal / $app['forum-base.pagination.posts.nb_per_page']);
+    } else if (!is_numeric($pageNum)) {
+        $pageNum = 1;
+    }
+
     $posts = $topic->posts();
     $postsToDisplay = $posts->getQuery()
         ->orderBy('created_at', 'ASC')
@@ -28,21 +36,9 @@ $action = function (Application $app, Request $request, $topicId) {
      * @see http://stackoverflow.com/questions/650238/how-to-show-the-last-queries-executed-on-mysql
      */
 
-    // We run the "post.handle_content" hook for each Post!
-    // This will convert our Posts bbcode and specific markups to good ol' HTML
-    array_walk(
-        $postsToDisplay,
-        function (Post &$post) use ($app) {
-            $app['plugins.trigger_hook']('post.handle_content', array(&$post));
-        }
-    );
-
-    // Total number of posts retrieval
-    $nbPostsTotal = Post::where('topic_id', '=', $topic->id)->count();
-
     // Pagination stuff
     $topicUrl = $app['url_generator']->generate(
-        'forum-base/topic', array('topicId' => $topic->id)
+        'forum-base/topic', array('topic' => $topic->id)
     );
     $paginationData = array(
         'currentPageNum' => $pageNum,

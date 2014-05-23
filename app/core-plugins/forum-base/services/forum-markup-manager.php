@@ -24,7 +24,7 @@ $app['forum-base.markup-manager.handle_forum_markup.smilies'] = $app->protect(
         );
         $forumContent = str_replace(
             '{SMILIES_PATH}',
-            $app['settings']->get('app.smilies.location'),
+            $app['settings']->get('app.smilies.location', 'upload/smilies/'),
             $forumContent
         );
 

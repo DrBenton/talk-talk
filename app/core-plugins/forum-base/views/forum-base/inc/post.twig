@@ -1,0 +1,22 @@
+{{ enable_html_hooks('post') }}
+<div class="post-container {{ post.author.id == topic.author.id ? 'topic-author' : '' }}">
+    <div id="post-{{ post.id }}" class="post">
+        <h4 class="post-title">
+            {{ post.title|bbcode_to_html|raw }} <i>({{ post.id }})</i>
+        </h4>
+        <div class="post-content">
+            {{ post.content|bbcode_to_html|raw }}
+        </div>
+        <div class="post-info">
+            <i>
+                Posted {{ post.created_at|from_now }}<br>
+                {% if post.created_at != post.updated_at %}
+                    Last edited {{ post.updated_at|from_now }}
+                {% endif %}
+            </i>
+        </div>
+        <div class="post-author">
+            by <b>{{ post.author.login }}</b>
+        </div>
+    </div>
+</div>

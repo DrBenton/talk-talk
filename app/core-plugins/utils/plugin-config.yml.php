@@ -10,9 +10,9 @@
     target: phpinfo
     onlyForDebug: true
   -
-    # POST /utils/get-alerts-display => actions/get-alerts-display.php
-    url: /get-alerts-display
-    target: get-alerts-display
+    # POST /utils/get-ajax-alerts-display => actions/get-alerts-display.php
+    url: /get-ajax-alerts-display
+    target: ajax-alerts-display
     method: POST
 
 @classes:

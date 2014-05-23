@@ -1,5 +1,26 @@
 {% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
 
+{% macro new_topic_link() %}
+    {% if app.isAnonymous %}
+        {{ enable_html_hooks('authentication_required_msg') }}
+        <div class="authentication-required-msg">
+            {{ 'core-plugins.forum-base.acl.must_be_authenticated.for-new-topic'|trans({
+            '%sign-in-url%': path('auth/sign-in', {'return-url': current_path() }),
+            '%sign-up-url%': path('auth/sign-up', {'return-url': current_path() })
+            })|raw }}
+        </div>
+    {% else %}
+        {{ enable_html_hooks('create_new_topic_link') }}
+        <a href="#"
+           class="create-new-topic-link ajax-link">
+            {{ 'core-plugins.forum-base.topics-list.create-new-topic'|trans }}
+        </a>
+        <code>[TODO]</code>
+    {% endif %}
+{% endmacro %}
+
+{% import _self as my_macros %}
+
 {% block breadcrumb %}
     {% include 'core/common/breadcrumb.twig' %}
 {% endblock %}
@@ -27,7 +48,13 @@
 
     {% include 'utils/common/pagination.twig' with paginationData %}
 
+    {{ my_macros.new_topic_link() }}
+
     {% include 'forum-base/inc/topics-list.twig' with {topics: topics} %}
+
+    {% if topics is not empty %}
+        {{ my_macros.new_topic_link() }}
+    {% endif %}
 
     {% include 'utils/common/pagination.twig' with paginationData %}
 

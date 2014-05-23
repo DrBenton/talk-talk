@@ -1,5 +1,25 @@
 {% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
 
+{% macro new_post_link(topicId) %}
+    {% if app.isAnonymous %}
+        {{ enable_html_hooks('authentication_required_msg') }}
+        <div class="authentication-required-msg">
+            {{ 'core-plugins.forum-base.acl.must_be_authenticated.for-new-post'|trans({
+            '%sign-in-url%': path('auth/sign-in', {'return-url': current_path() }),
+            '%sign-up-url%': path('auth/sign-up', {'return-url': current_path() })
+            })|raw }}
+        </div>
+    {% else %}
+        {{ enable_html_hooks('create_new_post_link') }}
+        <a href="{{ path('forum-base/new-post-form', {topic: topicId}) }}"
+           class="create-new-post-link ajax-link">
+            {{ 'core-plugins.forum-base.posts-list.create-new-post'|trans }}
+        </a>
+    {% endif %}
+{% endmacro %}
+
+{% import _self as my_macros %}
+
 {% block breadcrumb %}
     {% include 'core/common/breadcrumb.twig' %}
 {% endblock %}
@@ -14,9 +34,9 @@
             <div class="topic-desc">
                 Created {{ topic.created_at|from_now }} by
                 <span class="topic-author">{{ topic.author.login }}</span><br>
-                {% if topic.lastReply.id != posts[0].id %}
-                    Last reply {{ topic.lastReply.created_at|from_now }} by
-                    <span class="topic-last-participant">{{ topic.lastReply.author.login }}</span>
+                {% if topic.lastPost.id != posts[0].id %}
+                    Last reply {{ topic.lastPost.created_at|from_now }} by
+                    <span class="topic-last-participant">{{ topic.lastPost.author.login }}</span>
                 {% else %}
                     No reply.
                 {% endif %}
@@ -24,7 +44,13 @@
 
             {% include 'utils/common/pagination.twig' with paginationData %}
 
-            {% include 'forum-base/inc/posts-list.twig' with {posts: posts} %}
+            {{ my_macros.new_post_link(topic.id) }}
+
+            {% include 'forum-base/inc/posts-list.twig' with {posts: posts, topicId: topic.id} %}
+
+            {% if posts is not empty %}
+                {{ my_macros.new_post_link(topic.id) }}
+            {% endif %}
 
             {% include 'utils/common/pagination.twig' with paginationData %}
 

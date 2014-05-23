@@ -25,13 +25,13 @@ define(function (require, exports, module) {
     ];
 
     $.ajax({
-      url: '/utils/get-alerts-display',
+      url: '/utils/get-ajax-alerts-display',
       data: { alerts: sentAlertsData },
       type: 'POST',
       dataType: 'text'
     })
       .done(function (alertsJavascriptManagementCode) {
-        getAlertsContainer().replaceWith(alertsJavascriptManagementCode);
+        getAlertsContainer().after(alertsJavascriptManagementCode);
       });
   }
 

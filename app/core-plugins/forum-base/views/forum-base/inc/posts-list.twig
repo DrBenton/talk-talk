@@ -1,5 +1,6 @@
 {% if posts is not empty %}
-    {{ enable_html_hooks('posts_list', 'post') }}
+
+    {{ enable_html_hooks('posts_list') }}
     <div class="posts-list-container">
         <div class="posts-list">
             <div class="posts-list-desc list-desc">
@@ -7,30 +8,11 @@
                 {{ posts|length }} posts on this page
             </div>
             {% for post in posts %}
-                <div class="post-container {{ post.author.id == topic.author.id ? 'topic-author' : '' }}">
-                    <div class="post">
-                        <h4 class="post-title">
-                            {{ post.title|raw }} <i>({{ post.id }})</i>
-                        </h4>
-                        <div class="post-content">
-                            {{ post.content|raw }}
-                        </div>
-                        <div class="post-info">
-                            <i>
-                                Posted {{ post.created_at|from_now }}<br>
-                                {% if post.created_at != post.updated_at %}
-                                    Last edited {{ post.updated_at|from_now }}
-                                {% endif %}
-                            </i>
-                        </div>
-                        <div class="post-author">
-                            by <b>{{ post.author.login }}</b>
-                        </div>
-                    </div>
-                </div>
+                {% include 'forum-base/inc/post.twig' with {post: post, topic: topic} %}
             {% endfor %}
         </div>{# end .posts-list #}
     </div>{# end .posts-list-container #}
+
 {% else %}
     <div class="empty-list-msg">
         {{ 'core-plugins.forum-base.posts-list.no-post'|trans }}

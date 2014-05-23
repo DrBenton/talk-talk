@@ -31,3 +31,5 @@
   - html.pagination
   - html.authentication_required_msg
   - html.create_new_topic_link
+  - html.create_new_post_link
+  - html.page.new_post_form

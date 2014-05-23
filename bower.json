@@ -18,7 +18,10 @@
     "momentjs": "~2.5.1",
     "jquery-form": "~3.46.0",
     "q": "1.0.1",
-    "html5shiv": "~3.7.2"
+    "html5shiv": "~3.7.2",
+    "jqjquery-wysibb": "~1.5.1",
+    "require-css": "~0.1.2",
+    "markitup-markitup": "~1.1.14"
   },
   "keywords": [
     "forum",

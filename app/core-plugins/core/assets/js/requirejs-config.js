@@ -6,8 +6,9 @@
       // App core Plugins assets paths aliases
       "app-modules/core": "app/core-plugins/core/assets/js/modules",
       "app-modules/ajax-nav": "app/core-plugins/ajax-navigation/assets/js/modules",
-      "app-modules/phpbb": "app/core-plugins/phpbb/assets/js/modules",
       "app-modules/utils": "app/core-plugins/utils/assets/js/modules",
+      "app-modules/forum-base": "app/core-plugins/forum-base/assets/js/modules",
+      "app-modules/phpbb": "app/core-plugins/phpbb/assets/js/modules",
       // Third-party libraries aliases
       "jquery": "vendor/js/jquery/dist/jquery.min",
       "lodash": "vendor/js/lodash/dist/lodash.min",
@@ -28,6 +29,11 @@
       },
       "locache": {
         exports: "locache"
+      }
+    },
+    map: {
+      '*': {
+        'css': 'vendor/js/require-css/css'
       }
     },
     waitSeconds: 1,

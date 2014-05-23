@@ -1,9 +1,9 @@
 <?php
 
-use TalkTalk\Model\Post;
+use QueryPath\DOMQuery;
 
-$hooks['post.handle_content'] = function (Post &$post) use ($app) {
-    // Let's handle the Post "content" field with our "markup manager"!
-    $post->title = $app['forum-base.markup-manager.handle_forum_markup.all']($post->title);
-    $post->content = $app['forum-base.markup-manager.handle_forum_markup.all']($post->content);
+$hooks['html.new_post_form'] = function (DOMQuery $html) use ($app) {
+    $html->find('#new-post-form #new-post-input-content')
+        ->addClass('requirejs-widget')
+        ->attr('data-widget', 'app-modules/forum-base/widgets/post-content-editor');
 };

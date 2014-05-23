@@ -27,7 +27,7 @@ RUN echo "[ -s \"//.nvm/nvm.sh\" ] && . \"//.nvm/nvm.sh\"  # This loads nvm" >> 
 RUN source /.bash_profile
 RUN nvm install 0.10  
 RUN nvm alias default 0.10
-RUN npm install -g grunt-cli gulp
+RUN npm install -g grunt-cli gulp bower
 
 # Webmin install
 RUN wget http://prdownloads.sourceforge.net/webadmin/webmin_1.650_all.deb

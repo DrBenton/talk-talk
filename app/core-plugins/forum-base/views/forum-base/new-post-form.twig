@@ -1,0 +1,97 @@
+{% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
+
+{% block breadcrumb %}
+    {% include 'core/common/breadcrumb.twig' %}
+{% endblock %}
+
+{% block content %}
+    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
+
+    {{ enable_html_hooks('page.new_post_form') }}
+
+    {{ enable_html_hooks('form', 'new_post_form') }}
+    <form id="new-post-form" role="form"
+          action="{{ path('forum-base/new-post-form/target', {topic: topic.id}) }}"
+          method="post"
+          class="new-post-form ajax-form">
+
+        <input type="hidden" name="{{ app['csrf.token_name'] }}"
+               value="{{ app['csrf.token_value'] }}">
+
+        <fieldset id="core-inputs">
+
+            <div class="form-group title">
+                <label for="new-post-input-title">
+                    {{ 'core-plugins.forum-base.new-post.form.title'|trans }}
+                </label>
+
+                <div class="input-container">
+                    <input type="text" name="newPost[title]"
+                           id="new-post-input-title"
+                           class="input input-text title"
+                           value="{{ post.title }}"
+                           required>
+                </div>
+            </div>
+
+            <div class="form-group content">
+                <label for="new-post-input-content">
+                    {{ 'core-plugins.forum-base.new-post.form.content'|trans }}
+                </label>
+
+                <div class="input-container">
+                    <textarea type="text" name="post[content]"
+                           id="new-post-input-content"
+                           class="input input-text content"
+                           required>{{ post.content }}</textarea>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="form-group submit">
+            <div class="input-container">
+                <input type="submit" class="submit-button"
+                       value="{{ 'core-plugins.forum-base.new-post.form.submit'|trans }}">
+            </div>
+        </div>
+
+        <div class="topic-posts-summary-container">
+            <div class="topic-posts-summary posts-list">
+                <div class="intro list-desc">
+                    {{ 'core-plugins.forum-base.new-post.topic-posts-summary.intro'|trans }}
+                </div>
+                <div class="topic-first-post-container">
+                    <div class="intro">
+                        {{ 'core-plugins.forum-base.new-post.topic-posts-summary.first-post'|trans }}
+                    </div>
+                    <div class="posts-list-container">
+                        <div class="posts-list">
+                            {% include 'forum-base/inc/post.twig' with {post: firstPost, topic: topic} %}
+                        </div>
+                    </div>
+                </div>
+                {% if topic.firstPost.id != topic.lastPost.id %}
+                    <div class="topic-last-posts-container">
+                        <div class="intro">
+                            {{ 'core-plugins.forum-base.new-post.topic-posts-summary.last-posts'|trans }}
+                        </div>
+                        {{ enable_html_hooks('posts_list') }}
+                        <div class="posts-list-container">
+                            <div class="posts-list">
+                                {% for post in lastPosts %}
+                                    {% include 'forum-base/inc/post.twig' with {post: post, topic: topic} %}
+                                {% endfor %}
+                            </div>{# end .posts-list #}
+                        </div>{# end .posts-list-container #}
+                    </div>
+                {% else %}
+                    <div class="empty-list-msg">
+                        {{ 'core-plugins.forum-base.new-post.topic-posts-summary.single-post-only'|trans }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

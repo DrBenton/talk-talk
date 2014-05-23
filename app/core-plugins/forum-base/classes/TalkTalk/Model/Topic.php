@@ -20,19 +20,54 @@ class Topic extends ModelWithMetadata
         return $this->hasMany('TalkTalk\Model\Post');
     }
 
-    public function lastReply()
+    /**
+     * @return \TalkTalk\Model\Post
+     */
+    public function firstPost()
     {
-        static $lastReply;
+        static $firstPost;
 
-        if (!isset($lastReply)) {
-            $lastReply = Post::where('topic_id', '=', $this->id)
+        if (!isset($firstPost)) {
+            $firstPost = Post::where('topic_id', '=', $this->id)
+                ->orderBy('created_at', 'ASC')
+                ->take(1)
+                ->first()
+                ->load('author');
+        }
+
+        return $firstPost;
+    }
+
+    /**
+     * @return \TalkTalk\Model\Post
+     */
+    public function lastPost()
+    {
+        static $lastPost;
+
+        if (!isset($lastPost)) {
+            $lastPost = Post::where('topic_id', '=', $this->id)
                 ->orderBy('created_at', 'DESC')
                 ->take(1)
                 ->first()
                 ->load('author');
         }
 
-        return $lastReply;
+        return $lastPost;
+    }
+
+    /**
+     * @param int $nbPosts
+     * @return array an array of \TalkTalk\Model\Post instances
+     */
+    public function lastPosts($nbPosts)
+    {
+        return Post::with('author')
+            ->where('topic_id', '=', $this->id)
+            ->orderBy('created_at', 'DESC')
+            ->take($nbPosts)
+            ->get()
+            ->all();
     }
 
 }
