@@ -39,6 +39,40 @@ $hooks['html.breadcrumb'] = function (DOMQuery $html) {
         ->prepend('<span class="glyphicon glyphicon-home"></span>');
 };
 
+$hooks['html.page.home'] = function (DOMQuery $html) use ($app) {
+    $homeHeading = $html->find('#home-heading');
+    $homeHeadingTitle = $homeHeading->find('h1');
+    $homeHeading->addClass('jumbotron');
+
+    // Site settings
+    $siteTitleFontSize = $app['settings']->get('app.site-title.font-size');
+    if (null !== $siteTitleFontSize) {
+        $homeHeadingTitle->attr('style', $homeHeadingTitle->attr('style') . "font-size: ${siteTitleFontSize};");
+    }
+    $siteTitleColor = $app['settings']->get('app.site-title.color');
+    if (null !== $siteTitleColor) {
+        $homeHeadingTitle->attr('style', $homeHeadingTitle->attr('style') . "color: ${siteTitleColor};");
+    }
+    $siteTitleShadow = $app['settings']->get('app.site-title.shadow');
+    if (null !== $siteTitleShadow) {
+        $homeHeadingTitle->attr('style', $homeHeadingTitle->attr('style') . "text-shadow: ${siteTitleShadow};");
+    }
+    $siteImageUrl = $app['settings']->get('app.site-image.url');
+    if (null !== $siteImageUrl) {
+        $homeHeading->addClass('with-image');
+        $homeHeading->attr('style', "background-image: url(\"$siteImageUrl\");");
+        $siteImageBgColor = $app['settings']->get('app.site-image.bgcolor');
+        if (null !== $siteImageBgColor) {
+            $homeHeading->attr('style', $homeHeading->attr('style') . "background-color: ${siteImageBgColor};");
+        }
+        $siteImageSize = $app['settings']->get('app.site-image.size');
+        if (null !== $siteImageSize) {
+            list($width, $height) = explode('x', $siteImageSize);
+            $homeHeading->attr('style', $homeHeading->attr('style') . "height: ${height}px;");
+        }
+    }
+};
+
 $hooks['html.form'] = function (DOMQuery $html) {
     // We're going to work on <form>s...
     $forms = $html->find('form');
@@ -115,6 +149,18 @@ $hooks['html.page.forum'] = function (DOMQuery $html) {
     $forumDesc = $html->find('.forum-desc');
     $jumbotron->append($forumDesc);
     $forumDesc->remove();
+    // Forum bg image management
+    $forumDisplayContainer = $html->find('.forum-display-container');
+    $forumId = (int) $forumDisplayContainer->attr('data-forum-id');
+    $forum = \TalkTalk\Model\Forum::find($forumId);
+    $forumBgImg = isset($forum->metadata) && isset($forum->metadata['bgImg'])
+        ? $forum->metadata['bgImg']
+        : null ;
+    if (null !== $forumBgImg) {
+        $jumbotron
+            ->addClass('with-image')
+            ->attr('style', "background-image: url(\"$forumBgImg\");");
+    }
 };
 
 $hooks['html.topics_display'] = function (DOMQuery $html) {

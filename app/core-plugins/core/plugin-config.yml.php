@@ -14,11 +14,15 @@
   -
     prefix: TalkTalk\CorePlugins\Core\
     paths: %pluginPath%/classes/TalkTalk/CorePlugins/Core
+  -
+    prefix: TalkTalk\Model\
+    paths: %pluginPath%/classes/TalkTalk/Model
 
 @services:
   - session
   - db
   - crypto
+  - settings
   - url-generator
   - twig
   - translator

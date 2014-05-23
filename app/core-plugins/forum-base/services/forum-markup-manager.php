@@ -10,8 +10,9 @@ $app['forum-base.markup-manager.handle_forum_markup.bbcode'] = $app->protect(
             'escapeHtml' => true
         ));
         $bbDecoder->defaults();
+
         return $bbDecoder->parse();
-    }  
+    }
 );
 
 $app['forum-base.markup-manager.handle_forum_markup.smilies'] = $app->protect(
@@ -23,12 +24,12 @@ $app['forum-base.markup-manager.handle_forum_markup.smilies'] = $app->protect(
         );
         $forumContent = str_replace(
             '{SMILIES_PATH}',
-            'http://www.japafigs.com/images/smilies/',//our guinea pig forum URL :-)
+            $app['settings']->get('app.smilies.location'),
             $forumContent
         );
-        
+
         return $forumContent;
-    }  
+    }
 );
 
 $app['forum-base.markup-manager.handle_forum_markup.links'] = $app->protect(
@@ -38,9 +39,9 @@ $app['forum-base.markup-manager.handle_forum_markup.links'] = $app->protect(
             '[url="$1"]$2[/url]',
             $forumContent
         );
-        
+
         return $forumContent;
-    }  
+    }
 );
 
 $app['forum-base.markup-manager.handle_forum_markup.add_blank_targets'] = $app->protect(
@@ -63,5 +64,5 @@ $app['forum-base.markup-manager.handle_forum_markup.all'] = $app->protect(
         $forumContent = $app['forum-base.markup-manager.handle_forum_markup.add_blank_targets']($forumContent);
 
         return $forumContent;
-    }  
+    }
 );

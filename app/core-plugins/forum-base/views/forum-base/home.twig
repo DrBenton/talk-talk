@@ -1,0 +1,10 @@
+{% extends "forum-base/all-forums-display.twig" %}
+
+{% block content %}
+    {{ enable_html_hooks('page.home') }}
+    <div id="home-heading">
+        <h1>{{ 'core-plugins.forum-base.home.title'|trans({'%site-title%': siteTitle})|raw }}</h1>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

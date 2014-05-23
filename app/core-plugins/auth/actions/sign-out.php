@@ -2,7 +2,6 @@
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
-use TalkTalk\Model\User;
 
 $action = function (Application $app, Request $request) {
 

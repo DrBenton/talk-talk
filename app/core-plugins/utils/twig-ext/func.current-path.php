@@ -7,7 +7,6 @@ $app['twig'] = $app->share(
             $function = new Twig_SimpleFunction(
                 'current_path',
                 function () use ($app) {
-
                     return $app['url_generator']->generate(
                         $app['request']->attributes->get('_route'),
                         $app['request']->attributes->get('_route_params')

@@ -3,7 +3,6 @@
 namespace TalkTalk\Model;
 
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -17,7 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  *
  * @package TalkTalk\Model
  */
-class Forum extends Model
+class Forum extends ModelWithMetadata
 {
 
     const CACHE_KEY = 'talk-talk/forum-base/model/forum';

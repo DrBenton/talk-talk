@@ -59,7 +59,7 @@ $action = function (Application $app, Request $request, $topicId) {
         'label' => 'core-plugins.forum-base.breadcrumb.topic',
         'labelParams' => array('%name%' => $topic->name),
     );
-    
+
     return $app['twig']->render('forum-base/topic-display.twig',
         array(
             'topic' => $topic,

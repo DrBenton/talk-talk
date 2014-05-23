@@ -2,9 +2,7 @@
 
 namespace TalkTalk\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Post extends Model
+class Post extends ModelWithMetadata
 {
 
     public function topic()

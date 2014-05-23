@@ -5,6 +5,8 @@ core-plugins:
     breadcrumb:
       forum: Forum "%name%"
       topic: Topic "%name%"
+    home:
+      title: Welcome to <span class="site-title">%site-title%</span>
     topics-display:
       no-topic: There is not topic here for the moment.
       post-new-topic: Post a new topic

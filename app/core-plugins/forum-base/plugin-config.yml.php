@@ -5,9 +5,9 @@
 
 @actions:
   -
-    # GET / => actions/all-forums-display.php
+    # GET / => actions/home.php
     url: /
-    target: all-forums-display
+    target: home
     # we override the default homepage!
     name: core/home
     priority: 10
@@ -37,6 +37,6 @@
 
 @locales:
   - en
-  
+
 @hooks:
   - post.handle_content

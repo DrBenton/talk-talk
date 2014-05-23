@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 60} |json_encode() }}"></span>
+    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 120} |json_encode() }}"></span>
 
     {{ enable_html_hooks('page.forums') }}
     {% include 'forum-base/inc/forums-display-container.twig' with {forums: forumsTree} %}

@@ -16,6 +16,7 @@
   - html.main_content_container 
   - html.header
   - html.breadcrumb
+  - html.page.home
   - html.form
   - html.signup_form
   - html.alerts_display

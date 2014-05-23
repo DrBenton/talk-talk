@@ -9,7 +9,7 @@ $app->after(
         if (!isset($app['perfs.querypath.duration'])) {
             return;
         }
-        
+
         $response->headers->add(array(
             'X-QueryPath-Duration' => $app['perfs.querypath.duration']
         ));

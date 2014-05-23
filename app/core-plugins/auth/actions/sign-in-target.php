@@ -51,6 +51,7 @@ $action = function (Application $app, Request $request) use (&$showFormOnError) 
             $app['url_generator']->generate('core/home')
         );
         $app['session']->remove('url.intended');
+
         return $app->redirect($targetUrl);
     }
 };

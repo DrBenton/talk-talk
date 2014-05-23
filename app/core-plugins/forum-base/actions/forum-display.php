@@ -11,7 +11,7 @@ $action = function (Application $app, Request $request, $forumId) {
 
     // Sub-forums retrieval
     $subForums = $forum->getChildren();
-    
+
     // Topics retrieval (only those of the current page)
     $pageNum = $request->query->getInt('page', 1);
     $topics = $forum->topics();

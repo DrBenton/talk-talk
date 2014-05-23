@@ -8,7 +8,7 @@
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
 
     {{ enable_html_hooks('page.forum') }}
-    <div class="forum-display-container">
+    <div class="forum-display-container" data-forum-id="{{ forum.id }}">
         <div class="forum-display">
             <h2 class="forum-title">{{ forum.name }}</h2>
             <div class="forum-desc">{{ forum.desc }}</div>
