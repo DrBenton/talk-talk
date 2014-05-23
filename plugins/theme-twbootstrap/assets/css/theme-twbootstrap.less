@@ -25,9 +25,14 @@ form {
   margin: 0 auto; 
 }
 
+.list-desc {
+  color: @gray;
+}
 
-.forum-display-container {
-  .forum-display {
+
+// Forum display
+.forum-container {
+  .forum {
     .forum-heading {
       &.with-image {
         background-position: center center;
@@ -36,6 +41,7 @@ form {
   }
 }
 
+// Topics list
 .topic-display-container {
   .topic-display {
     margin-bottom: 3em;
@@ -48,14 +54,28 @@ form {
   }
 }
 
-.posts-display-container {
+// Topic display
+.topic-container {
+  .topic {
+    margin-bottom: 3em;
+    .topic-desc {
+      .topic-author {
+        font-weight: bold;
+        color: @brand-primary;
+      }
+    }
+  }
+}
+
+// Posts list
+.posts-list-container {
 
   position: relative;
   margin-bottom: 3em;
 
   @post-bubble-background-color: #FFFFFF;
   @post-bubble-border-color: #E0E0E0;
-  .post-display-container {
+  .post-container {
 
     // Thanks @ilikepixels for the "bubble" CSS effect! :-)
     // @see http://www.ilikepixels.co.uk/drop/bubbler/
@@ -64,7 +84,7 @@ form {
     background: @post-bubble-background-color;
     border-radius: 10px;
     border: @post-bubble-border-color solid 7px;
-    margin: 2em 1em;
+    margin: 2em 0;
 
     &:after {// this is the bubble tail...
       content: '';
@@ -101,14 +121,15 @@ form {
       left: 7%;
     }
 
-    .post-display {
+    .post {
       margin-bottom: 0;
       border-bottom: none;
-    }
 
-    blockquote {
-      font-size: inherit;
-      font-style: italic;
+      blockquote {
+        font-size: inherit;
+        font-style: italic;
+      }
+
     }
 
   }

@@ -1,0 +1,64 @@
+{% macro new_topic_link() %}
+    {% if app.isAnonymous %}
+        {{ enable_html_hooks('authentication_required_msg') }}
+        <div class="authentication-required-msg">
+            {{ 'core-plugins.forum-base.acl.must_be_authenticated.for_new_topic'|trans({
+            '%sign-in-url%': path('auth/sign-in', {'return-url': current_path() }),
+            '%sign-up-url%': path('auth/sign-up', {'return-url': current_path() })
+            })|raw }}
+        </div>
+    {% else %}
+        {{ enable_html_hooks('create_new_topic_link') }}
+        <a href="#"class="post-new-topic-link">
+            {{ 'core-plugins.forum-base.topics-list.create-new-topic'|trans }}
+        </a>
+        <code>[TODO]</code>
+    {% endif %}
+{% endmacro %}
+
+{% import _self as my_macros %}
+
+{% if topics is not empty %}
+
+    {{ my_macros.new_topic_link() }}
+
+    {{ enable_html_hooks('topics_list', 'topic') }}
+    <div class="topics-list-container">
+        <div class="topics-list">
+            <div class="topics-list-desc list-desc">
+                {{ nbTopicsTotal }} topics - page {{ paginationData.currentPageNum }} -
+                {{ topics|length }} topics on this page
+            </div>
+            {% for topic in topics %}
+                <div class="topic-container">
+                    <div class="topic">
+                        <h4 class="topic-name">
+                            <a href="{{ path('forum-base/topic', {topicId: topic.id}) }}"
+                               class="ajax-link">
+                                {{ topic.name }} - {{ topic.nb_replies }} replies
+                            </a>
+                        </h4>
+
+                        <div class="topic-info">
+                            Created {{ topic.created_at|from_now }} by <b>{{ topic.author.login }}</b><br>
+                            Last modified {{ topic.updated_at|from_now }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>{# end .topics-display #}
+    </div>{# end .topics-display-container #}
+
+    {{ my_macros.new_topic_link() }}
+
+{% else %}
+
+    <div class="empty-list-msg">
+        {{ 'core-plugins.forum-base.topics-list.no-topic'|trans }}
+    </div>
+
+    {% if app.isAnonymous %}
+        {{ my_macros.new_topic_link() }}
+    {% endif %}
+
+{% endif %}

@@ -9,8 +9,8 @@ $action = function (Application $app, Request $request, $forumId) {
 
     $forum = Forum::findOrFail($forumId);
 
-    // Sub-forums retrieval
-    $subForums = $forum->getChildren();
+    // Forum children retrieval
+    $forumChildren = $forum->getChildren();
 
     // Topics retrieval (only those of the current page)
     $pageNum = $request->query->getInt('page', 1);
@@ -44,7 +44,7 @@ $action = function (Application $app, Request $request, $forumId) {
     return $app['twig']->render('forum-base/forum-display.twig',
         array(
             'forum' => $forum,
-            'subForums' => $subForums,
+            'forumChildren' => $forumChildren,
             'topics' => $topicsToDisplay,
             'nbTopicsTotal' => $nbTopicsTotal,
             'paginationData' => $paginationData,

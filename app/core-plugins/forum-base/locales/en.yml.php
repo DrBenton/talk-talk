@@ -7,9 +7,12 @@ core-plugins:
       topic: Topic "%name%"
     home:
       title: Welcome to <span class="site-title">%site-title%</span>
-    topics-display:
+    topics-list:
       no-topic: There is not topic here for the moment.
-      post-new-topic: Post a new topic
+      create-new-topic: Create a new topic
+    posts-list:
+      no-post: There is not post here for the moment.
+      create-new-post: Create a new post
     acl:
       must_be_authenticated:
         for_new_topic: >

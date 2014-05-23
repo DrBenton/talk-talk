@@ -102,7 +102,7 @@ $hooks['html.signup_form'] = function (DOMQuery $html) {
         ->addClass('help-block');
 };
 
-$hooks['html.alerts_display'] = function (DOMQuery $html) {
+$hooks['html.alerts'] = function (DOMQuery $html) {
     $transforms = array(
         'info' => 'info',
         'success' => 'success',
@@ -114,44 +114,48 @@ $hooks['html.alerts_display'] = function (DOMQuery $html) {
     }
 };
 
-$hooks['html.user_profile_display'] = function (DOMQuery $html) {
+$hooks['html.user_profile'] = function (DOMQuery $html) {
     $html->find('.logged-user-display')
         ->addClass('pull-right')
         ->prepend('<span class="glyphicon glyphicon-user"></span>')
         ->after('<div class="clearfix"></div>');
 };
 
-$hooks['html.forums_display'] = function (DOMQuery $html) {
-    $allForumsDisplayContainer = $html->find('.forums-display-container');
+$hooks['html.forums_list'] = function (DOMQuery $html) {
+    $allForumsDisplayContainer = $html->find('.forums-list-container');
     $allForumsDisplayContainer->addClass('clearfix');
     // "root" forums styling
-    $rootForums = $allForumsDisplayContainer->find('.forum-container.level-0');
+    $rootForums = $allForumsDisplayContainer->find('> .forum-container');
     $rootForums->addClass('col-sm-6');
     $rootForums->find('.forum')->addClass('panel panel-default');
     // We want these forums to be displayed 2 on a row: let's add a "clearfix" every 2 forums
     $rootForums->even()->after('<div class="clearfix"></div>');
     // Forums title: we wrap them in a <div> with the TWB "panel-heading" class, and add a "panel-title" class
-    $rootForumsTitles = $rootForums->find('.title');
-    $rootForumsTitles->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
+    $rootForumsTitles = $rootForums->find('.forum-title');
+    $rootForumsTitles
+        ->wrap('<div class="panel-heading"></div>')
+        ->addClass('panel-title');
     // Forums content: we add a TWB "panel-body" class
     $rootForumsContent = $rootForums->find('.content');
     $rootForumsContent->addClass('panel-body');
+    // List desc
+    $html->find('.list-desc')->addClass('lead');
 };
 
 $hooks['html.page.forum'] = function (DOMQuery $html) {
+    $parentForum = $html->find('.parent-forum');
     // We move the Forum title in a TWB "jumbotron"...
-    $forumTitle = $html->find('.forum-title');
+    $forumTitle = $parentForum->find('.forum-title');
     $forumTitle->before('<div class="jumbotron forum-heading"></div>');
-    $jumbotron = $html->find('.jumbotron.forum-heading');
+    $jumbotron = $parentForum->find('.jumbotron.forum-heading');
     $jumbotron->append($forumTitle);
     $forumTitle->remove();
     // ...and move the forum description in this jumbotron too
-    $forumDesc = $html->find('.forum-desc');
+    $forumDesc = $parentForum->find('.forum-desc');
     $jumbotron->append($forumDesc);
     $forumDesc->remove();
     // Forum bg image management
-    $forumDisplayContainer = $html->find('.forum-display-container');
-    $forumId = (int) $forumDisplayContainer->attr('data-forum-id');
+    $forumId = (int) $parentForum->attr('data-forum-id');
     $forum = \TalkTalk\Model\Forum::find($forumId);
     $forumBgImg = isset($forum->metadata) && isset($forum->metadata['bgImg'])
         ? $forum->metadata['bgImg']
@@ -163,16 +167,21 @@ $hooks['html.page.forum'] = function (DOMQuery $html) {
     }
 };
 
-$hooks['html.topics_display'] = function (DOMQuery $html) {
-    $topicsDisplaysContainers = $html->find('.topics-display-container');
-    $topicsDisplaysContainers->addClass('clearfix');
+$hooks['html.topics_list'] = function (DOMQuery $html) {
+    $topicsListContainers = $html->find('.topics-list-container');
+    $topicsListContainers->addClass('clearfix');
+    // Topics styling
+    $topics = $html->find('.topic');
+    $topics->addClass('panel panel-default clearfix');
+    $topics->find('.topic-name')
+        ->wrap('<div class="panel-heading"></div>')
+        ->addClass('panel-title');
+    $topics->find('.topic-info')->addClass('panel-body');
+    // List desc
+    $html->find('.list-desc')->addClass('lead');
 };
 
-$hooks['html.topic_display'] = function (DOMQuery $html) {
-    $topicsDisplays = $html->find('.topic-display');
-    $topicsDisplays->addClass('panel panel-default clearfix');
-    $topicsDisplays->find('.topic-name')->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
-    $topicsDisplays->find('.topic-info')->addClass('panel-body');
+$hooks['html.topic'] = function (DOMQuery $html) {
 };
 
 $hooks['html.page.topic'] = function (DOMQuery $html) {
@@ -188,17 +197,17 @@ $hooks['html.page.topic'] = function (DOMQuery $html) {
     $topicDesc->remove();
 };
 
-$hooks['html.posts_display'] = function (DOMQuery $html) {
-    $postsDisplaysContainers = $html->find('.posts-display-container');
-    $postsDisplaysContainers->addClass('clearfix');
+$hooks['html.posts_list'] = function (DOMQuery $html) {
+    $postsListContainers = $html->find('.posts-list-container');
+    $postsListContainers->addClass('clearfix');
 };
 
-$hooks['html.post_display'] = function (DOMQuery $html) {
+$hooks['html.post'] = function (DOMQuery $html) {
 
-    $postsDisplaysContainers = $html->find('.post-display-container');
+    $postsContainers = $html->find('.post-container');
 
     // "post-author" management: we have to extract it from each Post display
-    $postsDisplaysContainers->each(
+    $postsContainers->each(
         function ($i, \DOMElement $postDisplayContainerElement) {
             $postDisplayContainerHtml = new DOMQuery($postDisplayContainerElement);
             $authorDisplay = $postDisplayContainerHtml->find('.post-author');
@@ -216,11 +225,13 @@ $hooks['html.post_display'] = function (DOMQuery $html) {
     );
 
     // Standard TWB "panel" styling
-    $postsDisplays = $postsDisplaysContainers->find('.post-display');
-    $postsDisplays->addClass('panel panel-default');
-    $postsDisplays->find('.post-title')->wrap('<div class="panel-heading"></div>')->addClass('panel-title');
-    $postsDisplays->find('.post-content')->addClass('panel-body');
-    $postsDisplays->find('.post-info')->addClass('panel-footer');
+    $postsList = $postsContainers->find('.post');
+    $postsList->addClass('panel panel-default');
+    $postsList->find('.post-title')
+        ->wrap('<div class="panel-heading"></div>')
+        ->addClass('panel-title');
+    $postsList->find('.post-content')->addClass('panel-body');
+    $postsList->find('.post-info')->addClass('panel-footer');
 
 };
 
@@ -235,7 +246,7 @@ $hooks['html.authentication_required_msg'] = function (DOMQuery $html) {
     $msg->addClass('help-block');
 };
 
-$hooks['html.post_new_topic_link'] = function (DOMQuery $html) {
+$hooks['html.create_new_topic_link'] = function (DOMQuery $html) {
     $postNewTopicLink = $html->find('.post-new-topic-link');
     $postNewTopicLink
         ->prepend('<span class="glyphicon glyphicon-comment"></span>')

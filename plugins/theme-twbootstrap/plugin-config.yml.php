@@ -19,16 +19,15 @@
   - html.page.home
   - html.form
   - html.signup_form
-  - html.alerts_display
-  - html.user_profile_display
+  - html.alerts
+  - html.user_profile
   - html.page.forum
-  - html.forums_display
-  - html.forum_display
+  - html.forums_list
   - html.page.topic
-  - html.topics_display
-  - html.topic_display
-  - html.posts_display
-  - html.post_display
+  - html.topics_list
+  - html.topic
+  - html.posts_list
+  - html.post
   - html.pagination
   - html.authentication_required_msg
-  - html.post_new_topic_link
+  - html.create_new_topic_link

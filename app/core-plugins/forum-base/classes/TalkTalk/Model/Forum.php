@@ -208,4 +208,9 @@ class Forum extends ModelWithMetadata
         return $this->hasParent;
     }
 
+    public function depth()
+    {
+        return count($this->getParents());
+    }
+
 }

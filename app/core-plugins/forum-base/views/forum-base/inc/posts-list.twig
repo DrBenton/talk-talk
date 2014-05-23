@@ -1,12 +1,14 @@
 {% if posts is not empty %}
-    {{ enable_html_hooks('posts_display', 'post_display') }}
-    <div class="posts-display-container">
-        <div class="posts-display">
-            {{ nbPostsTotal }} posts - page {{ paginationData.currentPageNum }} -
-            {{ posts|length }} posts on this page
+    {{ enable_html_hooks('posts_list', 'post') }}
+    <div class="posts-list-container">
+        <div class="posts-list">
+            <div class="posts-list-desc list-desc">
+                {{ nbPostsTotal }} posts - page {{ paginationData.currentPageNum }} -
+                {{ posts|length }} posts on this page
+            </div>
             {% for post in posts %}
-                <div class="post-display-container {{ post.author.id == topic.author.id ? 'topic-author' : '' }}">
-                    <div class="post-display">
+                <div class="post-container {{ post.author.id == topic.author.id ? 'topic-author' : '' }}">
+                    <div class="post">
                         <h4 class="post-title">
                             {{ post.title|raw }} <i>({{ post.id }})</i>
                         </h4>
@@ -27,6 +29,10 @@
                     </div>
                 </div>
             {% endfor %}
-        </div>{# end .posts-display #}
-    </div>{# end .posts-display-container #}
+        </div>{# end .posts-list #}
+    </div>{# end .posts-list-container #}
+{% else %}
+    <div class="empty-list-msg">
+        {{ 'core-plugins.forum-base.posts-list.no-post'|trans }}
+    </div>
 {% endif %}

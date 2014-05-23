@@ -8,6 +8,6 @@
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 120} |json_encode() }}"></span>
 
     {{ enable_html_hooks('page.forums') }}
-    {% include 'forum-base/inc/forums-display-container.twig' with {forums: forumsTree} %}
+    {% include 'forum-base/inc/forums-list.twig' with {forums: forumsTree} %}
 
 {% endblock %}

@@ -7,24 +7,28 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
 
-    {{ enable_html_hooks('page.forum') }}
-    <div class="forum-display-container" data-forum-id="{{ forum.id }}">
-        <div class="forum-display">
+    {{ enable_html_hooks('page.forum', 'forum') }}
+    <div class="forum-container parent-forum level-{{ forum.depth }}"
+        data-forum-id="{{ forum.id }}">
+        <div class="forum">
             <h2 class="forum-title">{{ forum.name }}</h2>
             <div class="forum-desc">{{ forum.desc }}</div>
+        </div>{# end .forum #}
+    </div>{# end .forum-container #}
 
-            {% if subForums is not empty %}
-                <b>{{ subForums|length }} sub-forums</b>
-                {% include 'forum-base/inc/forums-display-container.twig' with {forums: subForums} %}
-            {% endif %}
+    {% if forumChildren is defined and forumChildren is not empty %}
+        <div class="forum-children">
+            <div class="forums-list-desc list-desc">
+                {{ forumChildren|length }} sub-forums
+            </div>
+            {% include 'forum-base/inc/forums-list.twig' with {forums: forumChildren} %}
+        </div>
+    {% endif %}
 
-            {% include 'utils/common/pagination.twig' with paginationData %}
+    {% include 'utils/common/pagination.twig' with paginationData %}
 
-            {% include 'forum-base/inc/topics-display-container.twig' with {topics: topics} %}
+    {% include 'forum-base/inc/topics-list.twig' with {topics: topics} %}
 
-            {% include 'utils/common/pagination.twig' with paginationData %}
-
-        </div>{# end .forum-display #}
-    </div>{# end .forum-display-container #}
+    {% include 'utils/common/pagination.twig' with paginationData %}
 
 {% endblock %}

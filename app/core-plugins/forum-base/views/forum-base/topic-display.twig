@@ -7,9 +7,9 @@
 {% block content %}
     <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
 
-    {{ enable_html_hooks('page.topic') }}
-    <div class="topic-display-container">
-        <div class="topic-display">
+    {{ enable_html_hooks('page.topic', 'topic') }}
+    <div class="topic-container">
+        <div class="topic">
             <h2 class="topic-title">{{ topic.name }}</h2>
             <div class="topic-desc">
                 Created {{ topic.created_at|from_now }} by
@@ -24,7 +24,7 @@
 
             {% include 'utils/common/pagination.twig' with paginationData %}
 
-            {% include 'forum-base/inc/posts-display-container.twig' with {posts: posts} %}
+            {% include 'forum-base/inc/posts-list.twig' with {posts: posts} %}
 
             {% include 'utils/common/pagination.twig' with paginationData %}
 
