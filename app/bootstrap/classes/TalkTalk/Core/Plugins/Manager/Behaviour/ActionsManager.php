@@ -87,12 +87,43 @@ class ActionsManager extends BehaviourBase
         // Route requirements management
         $this->handleActionRequirements($plugin, $controller, $actionData);
 
+        // Route variables converters management
+        $this->handleActionVariablesConverters($plugin, $controller, $actionData);
+
         /*
          * TODO: add a optional "verbose" mode to Behaviours
         $app['monolog']->addDebug(
             sprintf('Route "%s" (method %s) registered.', $actionData['url'], $actionData['method'])
         );
         */
+    }
+
+    /**
+     * @param  string $actionFilePath the file path, without the ".php" extension (will be appended automatically)
+     * @throws \Symfony\Component\Security\Core\Exception\DisabledException
+     * @return mixed
+     */
+    public function runActionFile($actionFilePath)
+    {
+        $actionFilePath .= '.php';
+
+        // A small security check: we only allow action files inside the app
+        $actionFilePath = realpath($actionFilePath);
+        if (0 !== strpos($actionFilePath, $this->app['app.path'])) {
+            throw new DisabledException(sprintf('Action file path "%s" is not inside app directory!', $actionFilePath));
+        }
+
+        // We include the file in an isolated context, with only "$app" access...
+        $actionFunc = $this->pluginsManager->includeFileInIsolatedClosure($actionFilePath);
+
+        // ...we trigger the Dependencies Injector on the returned Closure...
+        $actionArgs = $this->app['resolver']->getArguments(
+            $this->app['request'],
+            $actionFunc
+        );
+
+        // ...and we finally trigger the action Closure!
+        return call_user_func_array($actionFunc, $actionArgs);
     }
 
     /**
@@ -106,19 +137,10 @@ class ActionsManager extends BehaviourBase
     public function runAction(Plugin $plugin, array $actionData)
     {
         // We resolve this action controller (i.e. a Closure) file path...
-        $actionPath = $this->getActionPath($plugin, $actionData);
+        $actionFilePath = $this->getActionPath($plugin, $actionData);
 
-        // ...we include it in an isolated context, with only "$app" access...
-        $actionFunc = $this->pluginsManager->includeFileInIsolatedClosure($actionPath);
-
-        // ...we trigger the Dependencies Injector on the returned Closure...
-        $actionArgs = $this->app['resolver']->getArguments(
-            $this->app['request'],
-            $actionFunc
-        );
-
-        // ...and we finally trigger the action Closure!
-        return call_user_func_array($actionFunc, $actionArgs);
+        // ...and we run it!
+        return $this->runActionFile($actionFilePath);
     }
 
     /**
@@ -131,6 +153,7 @@ class ActionsManager extends BehaviourBase
         $app = $this->app;
 
         $targetFile = $actionData['target'];
+
         // We may have dynamic params in the target file; let's handle them!
         $targetFile = preg_replace_callback(
             '/\{([a-z]+)\}/i',
@@ -152,13 +175,7 @@ class ActionsManager extends BehaviourBase
             $targetFile
         );
 
-        $actionPath = $plugin->path . '/actions/' . $targetFile . '.php';
-
-        // A small security check: we only allow action files inside the app
-        $actionPath = realpath($actionPath);
-        if (0 !== strpos($actionPath, $this->app['app.path'])) {
-            throw new DisabledException(sprintf('Action path "%s" is not inside app directory!', $actionPath));
-        }
+        $actionPath = $plugin->path . '/actions/' . $targetFile;
 
         return $actionPath;
     }
@@ -200,6 +217,22 @@ class ActionsManager extends BehaviourBase
         if (isset($actionData['requirements'])) {
             foreach ($actionData['requirements'] as $argName => $pattern) {
                 $controller->assert($argName, $pattern);
+            }
+        }
+    }
+
+    protected function handleActionVariablesConverters(
+        Plugin $plugin,
+        Controller $controller,
+        array $actionData
+    )
+    {
+        if (isset($actionData['converters'])) {
+            foreach ($actionData['converters'] as $argName => $converterName) {
+                $controller->convert(
+                    $argName,
+                    $this->pluginsManager->getActionVariableConverter($converterName)
+                );
             }
         }
     }

@@ -1,5 +1,6 @@
 <?php
 
+use TalkTalk\Core\Plugins\Manager\Behaviour\ActionsVariablesConvertersManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ActionsManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\ClassesManager;
 use TalkTalk\Core\Plugins\Manager\Behaviour\EventsManager;
@@ -24,6 +25,10 @@ call_user_func(
         // Plugins services init
         $app['plugins.manager']->addBehaviour(new ServicesManager());
         $app['plugins.manager']->registerPluginsServices();
+
+        // Plugins actions variables converters init (map URLs params to objects)
+        $app['plugins.manager']->addBehaviour(new ActionsVariablesConvertersManager());
+        $app['plugins.manager']->registerPluginsActionsVariablesConverters();
 
         // Plugins actions init (map URLs to functions)
         $app['plugins.manager']->addBehaviour(new ActionsManager());

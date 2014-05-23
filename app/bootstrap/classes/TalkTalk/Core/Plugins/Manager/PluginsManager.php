@@ -54,6 +54,7 @@ class PluginsManager implements PluginsManagerInterface
      * The file PHP core will only have access to a "$app" variable.
      *
      * @param  string $filePath
+     * @throws \Symfony\Component\Security\Core\Exception\DisabledException
      * @return mixed
      */
     public function includeFileInIsolatedClosure($filePath)
