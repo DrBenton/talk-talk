@@ -8,6 +8,7 @@ $hooks['html.site_container'] = function (DOMQuery $html) use ($app)  {
     $components = array(
         'app-modules/ajax-nav/components/data/ajax-links-handler',
         'app-modules/ajax-nav/components/data/ajax-content-loader',
+        'app-modules/ajax-nav/components/data/ajax-forms-handler',
         'app-modules/ajax-nav/components/data/ajax-history',
     );
     $app['html-components.add_component']($siteContainer, $components);

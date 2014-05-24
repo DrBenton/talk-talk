@@ -3,6 +3,7 @@ define(function (require, exports, module) {
 
   var defineComponent = require('flight').component;
   var withUrlNormalization = require("app-modules/core/mixins/data/with-url-normalization");
+  var withAlertsCapabilities = require("app-modules/core/mixins/data/with-alerts-capabilities");
   var History = require("history");
   var _ = require("lodash");
   var logger = require("logger");
@@ -10,7 +11,7 @@ define(function (require, exports, module) {
   var myDebug = !false;
 
   // Exports: component definition
-  module.exports = defineComponent(ajaxHistory, withUrlNormalization);
+  module.exports = defineComponent(ajaxHistory, withUrlNormalization, withAlertsCapabilities);
 
   myDebug && logger.debug(module.id, "Component on the bridge, captain!");
 
@@ -24,25 +25,20 @@ define(function (require, exports, module) {
     };
 
     this.onHistoryStateRequested = function (ev, data) {
+      myDebug && logger.debug(module.id, "this.onHistoryStateRequested() : url=", data.url);
       this.setHistoryUrl(data.url);
     };
 
     this.setHistoryUrl = function (url) {
       url = this.normalizeUrl(url);
       History.pushState(null, null, url);
-    };
-
-    this.triggerHistoryUrl = function (url) {
-      url = this.normalizeUrl(url);
       this.trigger(document, 'historyState', {url: url});
-      // Let's remove previous page Alerts on History change
-      this.trigger(document, 'alertsClearingRequested');
     };
 
     this.onHistoryStateChange = function() {
       var state = History.getState();
       myDebug && logger.debug(module.id, "state=", state);
-      this.triggerHistoryUrl(state.url);
+      this.setHistoryUrl(state.url);
     };
 
     // Component initialization

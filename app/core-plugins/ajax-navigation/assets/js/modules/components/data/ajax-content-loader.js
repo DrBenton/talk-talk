@@ -7,13 +7,17 @@ define(function (require, exports, module) {
   var withAjax = require("app-modules/core/mixins/data/with-ajax");
   var withUrlNormalization = require("app-modules/core/mixins/data/with-url-normalization");
   var withHttpStatusManagement = require("app-modules/core/mixins/data/with-http-status-management");
+  var withAlertsCapabilities = require("app-modules/core/mixins/data/with-alerts-capabilities");
   var purl = require("purl");
   var logger = require("logger");
 
   var myDebug = !false;
 
   // Exports: component definition
-  module.exports = defineComponent(ajaxContentLoader, withAjax, withUrlNormalization, withHttpStatusManagement);
+  module.exports = defineComponent(
+    ajaxContentLoader,
+    withAjax, withUrlNormalization, withHttpStatusManagement, withAlertsCapabilities
+  );
 
   var AJAX_CONTENT_CACHE_KEYS_PREFIX = "ajax-content-data---";
 
@@ -117,11 +121,11 @@ define(function (require, exports, module) {
       myDebug && logger.debug(module.id, "Ajax link '" + url + "' loading failed!");
       this.trigger('ajaxContentLoadingFailed');
       // Let's display a error alert
-      this.trigger(document, 'alertDisplayRequested', {
-        msgTranslationKey: "core-plugins.ajax-navigation.alerts.loading-error",
-        msgVars: {"%contentUrl%": url},
-        type: "error"
-      });
+      this.displayAlert(
+        "core-plugins.ajax-navigation.alerts.loading-error",
+        {"%contentUrl%": url},
+        "error"
+      );
     };
 
 

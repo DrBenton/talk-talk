@@ -60,6 +60,7 @@ define(function (require, exports, module) {
     this.after('initialize', function() {
       this.on(document, 'alertDisplayRequested', this.loadAlertDisplay);
       this.on(document, 'alertsClearingRequested', this.clearAlerts);
+      this.on(document, 'mainContentUpdate', this.clearAlerts);
     });
   }
 

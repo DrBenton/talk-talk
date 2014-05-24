@@ -34,7 +34,7 @@ $hooks['html.header'] = function (DOMQuery $html) {
 };
 
 $hooks['html.breadcrumb'] = function (DOMQuery $html) {
-    $breadcrumb = $html->find('#breadcrumb');
+    $breadcrumb = $html->find('.breadcrumb');
     $breadcrumb->find('li.home a')
         ->prepend('<span class="glyphicon glyphicon-home"></span>');
 };
