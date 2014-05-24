@@ -14,6 +14,9 @@ $app['auth.middleware.is-authenticated'] = $app->protect(
                 $app['session']->set('url.intended', $currentUrl);
             }
 
+            $httpStatusCode = 401;
+            $app['app.http_status_code'] = $httpStatusCode;
+
             $app['session.flash.add.translated'](
                 'core-plugins.auth.middlewares.authentication-required',
                 array(),
@@ -26,7 +29,7 @@ $app['auth.middleware.is-authenticated'] = $app->protect(
                 'app/core-plugins/auth/actions/sign-in-form'
             );
 
-            return new Response($signInFormHtml, 401);
+            return new Response($signInFormHtml, $httpStatusCode);
         }
     }
 );

@@ -51,6 +51,8 @@
         {% include '/core/common/footer.twig' %}
     {% endblock %}
 
+    <span id="app-http-status-code" data-code="{{ app['app.http_status_code'] }}"></span>
+
     <div id="debug-info-container"></div>
     {% if app.debug %}{{ display_app_debug_info() }}{% endif %}
 

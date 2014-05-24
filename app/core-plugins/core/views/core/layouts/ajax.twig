@@ -1,5 +1,12 @@
 <div class="ajax-loaded-content">
 
+    <script>
+        (function () {
+            document.getElementById("app-http-status-code")
+                    .setAttribute("data-code", "{{ app['app.http_status_code'] }}");
+        })();
+    </script>
+
     {# Notifications display through JavaScript (if any) #}
     {% include 'core/common/alerts-display.twig' with {alerts: get_flashes()} %}
 

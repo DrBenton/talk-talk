@@ -118,12 +118,18 @@ define(function (require, exports, module) {
     ajaxFormsHandler.findAndHandleAjaxForms();
 
     // Does this main content expose ajax loading data?
-    checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration);
+    if (200 === getCurrentHttpStatusCode()) {
+      checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration);
+    }
 
     // If this is the first page content, we restore its breadcrumb content
     if (loadedUrl === firstPageUrl) {
       varsRegistry.$breadcrumb.html(varsRegistry.firstPageBreadcumb);
     }
+  }
+
+  function getCurrentHttpStatusCode() {
+    return parseInt($('#app-http-status-code').data('code'));
   }
 
   function checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration) {
@@ -218,7 +224,9 @@ define(function (require, exports, module) {
     myDebug && logger.debug(module.id, "Let's check if the initial content has cache information...");
     firstPageUrl = normalizeUrl(document.location);
     checkForAjaxLoadingDataOnAjaxLoadedMainContent(firstPageUrl);
-    varsRegistry.firstPageBreadcumb = varsRegistry.$breadcrumb.html();
+    if (200 === getCurrentHttpStatusCode()) {
+      varsRegistry.firstPageBreadcumb = varsRegistry.$breadcrumb.html();
+    }
   }
 
   function createWidget($widgetNode) {

@@ -23,6 +23,7 @@ return function (Request $request) {
     $app['app.vendors.php.path'] = $app['app.vendors.path'] . '/php';
     $app['app.vendors.js.path'] = $app['app.vendors.path'] . '/js';
     $app['app.error'] = null;
+    $app['app.http_status_code'] = 200;//until now, everything is fine :-)
     $app['perfs.start-time'] = microtime(true);
     // Some of our Plugins may need a "request" very soon, before the Silex "#handle()"
     // method is triggered.
