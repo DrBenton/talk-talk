@@ -5,7 +5,9 @@
     <script>
         (function () {
             // Redirection through JS History, please!
-            History.pushState(null, null, '{{ targetUrl }}');
+            $(document).trigger("historyStateRequested", {
+                url: "{{ targetUrl }}"
+            });
         })();
     </script>
 

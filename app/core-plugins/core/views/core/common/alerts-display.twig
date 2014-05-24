@@ -11,6 +11,7 @@ alerts is not empty %}
         {% set alertsContainerId = "alerts-container" %}
     {% endif %}
 
+    {{ enable_html_hooks('alerts_container') }}
     <div id="{{ alertsContainerId }}"
          class="alerts-to-display {{ app.isAjax ? 'hidden' : '' }}">
 

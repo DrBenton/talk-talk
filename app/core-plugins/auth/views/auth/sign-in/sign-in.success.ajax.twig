@@ -26,7 +26,9 @@
             locache.flush();
 
             // Back to intended page or home, please!
-            History.pushState(null, null, '{{ app.session.get('url.intended', path('core/home')) }}');
+            $(document).trigger("historyStateRequested", {
+                url: "{{ app.session.get('url.intended', path('core/home')) }}"
+            });
             {% do app.session.remove('url.intended') %}
 
         });

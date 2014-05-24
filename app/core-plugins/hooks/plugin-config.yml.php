@@ -11,6 +11,7 @@
 @services:
   - hooks
   - html-hooks
+  - html-components
 
 @events:
   - before.init-hooks-manager

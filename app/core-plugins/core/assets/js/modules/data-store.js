@@ -9,7 +9,7 @@ define(function (require, exports, module) {
     return locache.get(key);
   };
 
-  exports.addCacheData = function (key, data, duration) {
+  exports.setCacheData = function (key, data, duration) {
     locache.set(
       key,
       data,

@@ -2,9 +2,13 @@
 
 use QueryPath\DOMQuery;
 
-$hooks['html.site_container'] = function (DOMQuery $html) {
+$hooks['html.site_container'] = function (DOMQuery $html) use ($app)  {
     // Add the "Ajax links handler" JS behaviour to #site-container
-    $html->find('#site-container')
-        ->addClass('requirejs-widget')
-        ->attr('data-widget', 'app-modules/ajax-nav/widgets/ajax-links-handler');
+    $siteContainer = $html->find('#site-container');
+    $components = array(
+        'app-modules/ajax-nav/components/data/ajax-links-handler',
+        'app-modules/ajax-nav/components/data/ajax-content-loader',
+        'app-modules/ajax-nav/components/data/ajax-history',
+    );
+    $app['html-components.add_component']($siteContainer, $components);
 };

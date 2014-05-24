@@ -12,7 +12,9 @@
             $("header .sign-out").addClass("hidden");
 
             // Back to home, please!
-            History.pushState(null, null, '/');
+            $(document).trigger("historyStateRequested", {
+                url: "/"
+            });
         });
     </script>
 

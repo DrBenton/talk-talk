@@ -12,6 +12,7 @@
       // Third-party libraries aliases
       "jquery": "vendor/js/jquery/dist/jquery.min",
       "lodash": "vendor/js/lodash/dist/lodash.min",
+      "flight": "app/core-plugins/core/assets/js/modules/flight-wrapper",
       "logger": "vendor/js/console-polyfill/index",
       "history": "vendor/js/history.js/scripts/bundled/html4+html5/native.history",
       "locache": "vendor/js/locache/build/locache.min",
