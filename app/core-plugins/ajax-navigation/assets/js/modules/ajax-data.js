@@ -46,7 +46,7 @@ define(function (require, exports, module) {
   }
 
   function displayStat(url) {
-    myDebug && logger.log('statsData=', statsData);
+    myDebug && logger.log("statsData=", statsData);
     var urlStats = getStat(url);
 
     if (!urlStats) {
@@ -91,7 +91,7 @@ define(function (require, exports, module) {
       averageDuration: parseFloat((loadingsDurationsSum / nbStatsToCompute).toPrecision(3)),
       nbRequests: nbRequests
     };
-    myDebug && logger.log('computeAjaxStats ; computedData=', computedData);
+    myDebug && logger.log("computeAjaxStats ; computedData=", computedData);
 
     return computedData;
   }

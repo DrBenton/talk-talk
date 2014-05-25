@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
   "use strict";
 
-  var defineComponent = require('flight').component;
+  var defineComponent = require("flight").component;
   var varsRegistry = require("app-modules/core/vars-registry");
   var dataStore = require("app-modules/core/data-store");
   var withAjax = require("app-modules/core/mixins/data/with-ajax");
@@ -48,10 +48,10 @@ define(function (require, exports, module) {
 
     this.loadAjaxContent = function (contentUrl) {
       var url = this.normalizeUrl(contentUrl);
-      this.trigger('ajaxContentLoadingStart', {url: url});
+      this.trigger("ajaxContentLoadingStart", {url: url});
       this.ajax({
         url: url,
-        dataType: 'text'
+        dataType: "text"
       }).then(
         _.partial(this.onAjaxLoadSuccess, url),
         _.partial(this.onAjaxLoadError, url)
@@ -64,7 +64,7 @@ define(function (require, exports, module) {
 
     this.displayAjaxContent = function(url, htmlContent) {
       this.attr.$ajaxContentContainer.html(htmlContent);
-      this.trigger('mainContentUpdate');
+      this.trigger("mainContentUpdate");
       // If this is the first page content, we restore its breadcrumb content
       if (this.firstPageUrl && this.firstPageBreadcumb && url === this.firstPageUrl) {
         varsRegistry.$breadcrumb.html(this.firstPageBreadcumb);
@@ -80,7 +80,7 @@ define(function (require, exports, module) {
     };
 
     this.onAjaxLoadSuccess = function (url, content) {
-      this.trigger('ajaxContentLoadingDone', {url: url});
+      this.trigger("ajaxContentLoadingDone", {url: url});
       this.displayAjaxContent(url, content);
       this.checkForAjaxDataInstructionsInContent(url);
     };
@@ -119,7 +119,7 @@ define(function (require, exports, module) {
 
     this.onAjaxLoadError = function (url, jqXHR, textStatus, err) {
       myDebug && logger.debug(module.id, "Ajax link '" + url + "' loading failed!");
-      this.trigger('ajaxContentLoadingFailed');
+      this.trigger("ajaxContentLoadingFailed");
       // Let's display a error alert
       this.displayAlert(
         "core-plugins.ajax-navigation.alerts.loading-error",
@@ -142,10 +142,10 @@ define(function (require, exports, module) {
     };
 
     // Component initialization
-    this.after('initialize', function() {
+    this.after("initialize", function() {
       this.handleInitialMainContentCache();
-      this.on(document, 'ajaxContentLoadRequested', this.onAjaxContentLoadRequest);
-      this.on(document, 'historyState', this.onHistoryState);
+      this.on(document, "ajaxContentLoadRequested", this.onAjaxContentLoadRequest);
+      this.on(document, "historyState", this.onHistoryState);
     });
   }
 

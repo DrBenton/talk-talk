@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
   "use strict";
 
-  var defineComponent = require('flight').component;
+  var defineComponent = require("flight").component;
   var withUrlNormalization = require("app-modules/core/mixins/data/with-url-normalization");
   var withAlertsCapabilities = require("app-modules/core/mixins/data/with-alerts-capabilities");
   var History = require("history");
@@ -21,7 +21,7 @@ define(function (require, exports, module) {
     this.data = {};
 
     this.initHistory = function() {
-      History.Adapter.bind(window, 'statechange', _.bind(this.onHistoryStateChange, this));
+      History.Adapter.bind(window, "statechange", _.bind(this.onHistoryStateChange, this));
     };
 
     this.onHistoryStateRequested = function (ev, data) {
@@ -32,7 +32,7 @@ define(function (require, exports, module) {
     this.setHistoryUrl = function (url) {
       url = this.normalizeUrl(url);
       History.pushState(null, null, url);
-      this.trigger(document, 'historyState', {url: url});
+      this.trigger(document, "historyState", {url: url});
     };
 
     this.onHistoryStateChange = function() {
@@ -42,9 +42,9 @@ define(function (require, exports, module) {
     };
 
     // Component initialization
-    this.after('initialize', function() {
+    this.after("initialize", function() {
       this.initHistory();
-      this.on(document, 'historyStateRequested', this.onHistoryStateRequested);
+      this.on(document, "historyStateRequested", this.onHistoryStateRequested);
     });
   }
 

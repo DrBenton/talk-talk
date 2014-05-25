@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
 
   function initHistory() {
-    History.Adapter.bind(window, 'statechange', onHistoryStateChange);
+    History.Adapter.bind(window, "statechange", onHistoryStateChange);
   }
 
   function onHistoryStateChange() {
@@ -41,7 +41,7 @@ define(function (require, exports, module) {
     requestedUrl = normalizeUrl(requestedUrl);
 
     // Scroll to top
-    $('html, body').animate({scrollTop:0}, 'fast');
+    $('html, body').animate({scrollTop:0}, "fast");
 
     // Do we have cached data for this Ajax main content URL?
     var ajaxContentCachedData = getCachedAjaxMainContent(requestedUrl);
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
 
       $.ajax({
         url: contentUrl,
-        dataType: 'text'
+        dataType: "text"
       })
         .done(function (data, textStatus, jqXHR) {
 
@@ -129,7 +129,7 @@ define(function (require, exports, module) {
   }
 
   function getCurrentHttpStatusCode() {
-    return parseInt($('#app-http-status-code').data('code'));
+    return parseInt($('#app-http-status-code').data("code"));
   }
 
   function checkForAjaxLoadingDataOnAjaxLoadedMainContent(loadedUrl, loadingDuration) {
@@ -181,8 +181,8 @@ define(function (require, exports, module) {
 
   function normalizeUrl(rawUrl) {
     var url = purl(rawUrl);
-    var returnedUrl = url.attr('path');
-    var query = url.attr('query');
+    var returnedUrl = url.attr("path");
+    var query = url.attr("query");
     returnedUrl += query ? '?' + query : '' ;
     return returnedUrl;
   }
@@ -200,7 +200,7 @@ define(function (require, exports, module) {
 
     var $clickedLink = $(this);
     myDebug && logger.debug(module.id, "Ajax link clicked :", $clickedLink);
-    var targetUrl = $clickedLink.attr('href');
+    var targetUrl = $clickedLink.attr("href");
 
     // Let's remove previous page Alerts
     clearAlerts();
@@ -232,7 +232,7 @@ define(function (require, exports, module) {
   function createWidget($widgetNode) {
     myDebug && logger.debug(module.id, "#createWidget() ; $widgetNode=", $widgetNode);
 
-    varsRegistry.$document.on('click', 'a.ajax-link', onAjaxLinkClick);
+    varsRegistry.$document.on("click", 'a.ajax-link', onAjaxLinkClick);
 
     myDebug && logger.debug(module.id, "Initializing HTML5 History binding...");
     initHistory();

@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
   "use strict";
 
-  var defineComponent = require('flight').component;
+  var defineComponent = require("flight").component;
   var $ = require("jquery");
   var logger = require("logger");
 
@@ -17,7 +17,7 @@ define(function (require, exports, module) {
 
     this.loadAlertDisplay = function (ev, data) {
       data.msgVars = data.msgVars || {};
-      data.type = data.type || 'info';
+      data.type = data.type || "info";
 
       var sentAlertsData = [
         {transKey: data.msgTranslationKey, vars: data.msgVars, type: data.type}
@@ -26,8 +26,8 @@ define(function (require, exports, module) {
       $.ajax({
         url: '/utils/get-ajax-alerts-display',
         data: { alerts: sentAlertsData },
-        type: 'POST',
-        dataType: 'text'
+        type: "POST",
+        dataType: "text"
       })
         .then(
           _.bind(this.onAlertDisplayLoadSuccess, this),
@@ -57,10 +57,10 @@ define(function (require, exports, module) {
     };
 
     // Component initialization
-    this.after('initialize', function() {
-      this.on(document, 'alertDisplayRequested', this.loadAlertDisplay);
-      this.on(document, 'alertsClearingRequested', this.clearAlerts);
-      this.on(document, 'mainContentUpdate', this.clearAlerts);
+    this.after("initialize", function() {
+      this.on(document, "alertDisplayRequested", this.loadAlertDisplay);
+      this.on(document, "alertsClearingRequested", this.clearAlerts);
+      this.on(document, "mainContentUpdate", this.clearAlerts);
     });
   }
 

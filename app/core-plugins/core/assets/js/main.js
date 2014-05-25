@@ -26,6 +26,6 @@ require([
   componentsFactory.attachTo(document);
 
   // Widgets creation request!
-  $(document).trigger('widgetsSearchRequested');
+  $(document).trigger("widgetsSearchRequested");
 
 });

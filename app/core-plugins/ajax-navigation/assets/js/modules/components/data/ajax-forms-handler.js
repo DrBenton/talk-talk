@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
   "use strict";
 
-  var defineComponent = require('flight').component;
+  var defineComponent = require("flight").component;
   var withAlertsCapabilities = require("app-modules/core/mixins/data/with-alerts-capabilities");
   var varsRegistry = require("app-modules/core/vars-registry");
   var _ = require("lodash");
@@ -36,7 +36,7 @@ define(function (require, exports, module) {
       var $form = $(ev.currentTarget);
 
       $form.ajaxSubmit({
-        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        headers: {'X-Requested-With': "XMLHttpRequest"},
         success: _.bind(this.onFormSendingSuccess, this, new Date),
         error: _.bind(this.onFormSendingError, this)
       });
@@ -50,7 +50,7 @@ define(function (require, exports, module) {
     this.onFormSendingSuccess = function(loadingStartDate, response, status, xhr) {
       myDebug && console.log('onFormSendingSuccess() ; args=', arguments);
       varsRegistry.$mainContent.html(response);
-      this.trigger('mainContentUpdate');
+      this.trigger("mainContentUpdate");
     };
 
     this.onFormSendingError = function(jqXHR, textStatus, err) {
@@ -67,7 +67,7 @@ define(function (require, exports, module) {
 
       myDebug && logger.debug(module.id, this.$currentAjaxForms.length + " Ajax forms.");
 
-      this.on(this.$currentAjaxForms, 'submit', this.onFormSubmit);
+      this.on(this.$currentAjaxForms, "submit", this.onFormSubmit);
     };
 
     this.unbindPreviousAjaxForms = function () {
@@ -95,9 +95,9 @@ define(function (require, exports, module) {
     };
 
     // Component initialization
-    this.after('initialize', function() {
+    this.after("initialize", function() {
       this.searchAndHandleAjaxForms();
-      this.on(document, 'mainContentUpdate', this.onMainContentUpdate);
+      this.on(document, "mainContentUpdate", this.onMainContentUpdate);
     });
   }
 

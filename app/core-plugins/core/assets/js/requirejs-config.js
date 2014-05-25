@@ -34,7 +34,7 @@
     },
     map: {
       '*': {
-        'css': 'vendor/js/require-css/css'
+        "css": 'vendor/js/require-css/css'
       }
     },
     waitSeconds: 1,

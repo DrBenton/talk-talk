@@ -1,7 +1,7 @@
 define(function (require, exports, module) {
   "use strict";
 
-  var defineComponent = require('flight').component;
+  var defineComponent = require("flight").component;
   var _ = require("lodash");
   var logger = require("logger");
 
@@ -43,8 +43,8 @@ define(function (require, exports, module) {
     };
 
     // Component initialization
-    this.after('initialize', function() {
-      this.on('widgetsSearchRequested', this.searchAndTriggerWidgets);
+    this.after("initialize", function() {
+      this.on("widgetsSearchRequested", this.searchAndTriggerWidgets);
     });
   }
 

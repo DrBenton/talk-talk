@@ -10,7 +10,7 @@ define(function (require, exports, module) {
   function withAlertsCapabilities() {
 
     this.displayAlert = function(msgTranslationKey, msgVars, type) {
-      this.trigger(document, 'alertDisplayRequested', {
+      this.trigger(document, "alertDisplayRequested", {
         msgTranslationKey: msgTranslationKey,
         msgVars: msgVars,
         type: type
@@ -18,7 +18,7 @@ define(function (require, exports, module) {
     };
 
     this.clearAlerts = function() {
-      this.trigger(document, 'alertsClearingRequested');
+      this.trigger(document, "alertsClearingRequested");
     };
 
   }

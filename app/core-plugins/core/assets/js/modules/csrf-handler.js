@@ -12,7 +12,7 @@ define(function (require, exports, module) {
   myDebug && logger.debug(module.id, "on the bridge, captain!");
 
   function getToken() {
-    return varsRegistry.$head.find("meta[name='csrf-token']").attr('content');
+    return varsRegistry.$head.find("meta[name='csrf-token']").attr("content");
   }
 
   function onjQueryAjaxSend(event, jqXHR, ajaxOptions) {
