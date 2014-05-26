@@ -1,8 +1,13 @@
 {% extends "core/layouts/ajax.twig" %}
 
 {% block content %}
+
+    <div class="ajax-redirecting">
+        {{ 'core-plugins.ajax-navigation.redirecting'|trans }}
+    </div>
+
     <script>
-        require(['jquery'], function ($) {
+        require(["jquery"], function ($) {
             // The user profile must be removed
             $('#logged-user-container').text('');
 
@@ -11,9 +16,14 @@
             // ...but we hide the "signout" link
             $("header .sign-out").addClass("hidden");
 
+            // Our pages data cache is flushed: since our status has changed,
+            // pages content may change!
+            $(document).trigger("uiNeedsContentAjaxLoadingCacheClearing");
+
             // Back to home, please!
-            $(document).trigger("historyStateRequested", {
-                url: "/"
+            $(document).trigger("uiNeedsContentAjaxLoading", {
+                url: "{{ path('core/home') }}",
+                target: "#main-content"
             });
         });
     </script>

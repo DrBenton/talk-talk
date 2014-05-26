@@ -4,9 +4,10 @@
 
     <script>
         (function () {
-            // Redirection through JS History, please!
-            $(document).trigger("historyStateRequested", {
-                url: "{{ targetUrl }}"
+            // Redirection through JS Ajax content loading, please!
+            $(document).trigger("uiNeedsContentAjaxLoading", {
+                url: "{{ targetUrl }}",
+                target: "#main-content"
             });
         })();
     </script>

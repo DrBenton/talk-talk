@@ -3,12 +3,14 @@ define(function (require, exports, module) {
 
   var defineComponent = require("flight").component;
   var varsRegistry = require("app-modules/core/vars-registry");
-  var dataStore = require("app-modules/core/data-store");
-  var withAjax = require("app-modules/core/mixins/data/with-ajax");
-  var withUrlNormalization = require("app-modules/core/mixins/data/with-url-normalization");
-  var withHttpStatusManagement = require("app-modules/core/mixins/data/with-http-status-management");
-  var withAlertsCapabilities = require("app-modules/core/mixins/data/with-alerts-capabilities");
+  var withAjax = require("app-modules/utils/mixins/data/with-ajax");
+  var withDataCache = require("app-modules/utils/mixins/data/with-data-cache");
+  var withUrlNormalization = require("app-modules/utils/mixins/data/with-url-normalization");
+  var withHttpStatusManagement = require("app-modules/utils/mixins/data/with-http-status-management");
+  var withAlertsCapabilities = require("app-modules/utils/mixins/ui/with-alerts-capabilities");
+  var withDateUtils = require("app-modules/utils/mixins/data/with-date-utils");
   var purl = require("purl");
+  var $ = require("jquery");
   var logger = require("logger");
 
   var myDebug = !false;
@@ -16,7 +18,8 @@ define(function (require, exports, module) {
   // Exports: component definition
   module.exports = defineComponent(
     ajaxContentLoader,
-    withAjax, withUrlNormalization, withHttpStatusManagement, withAlertsCapabilities
+    withAjax, withDataCache, withUrlNormalization,
+    withHttpStatusManagement, withAlertsCapabilities, withDateUtils
   );
 
   var AJAX_CONTENT_CACHE_KEYS_PREFIX = "ajax-content-data---";
@@ -26,49 +29,58 @@ define(function (require, exports, module) {
   function ajaxContentLoader() {
 
     this.defaultAttrs({
-      $ajaxContentContainer: varsRegistry.$mainContent
     });
 
     this.onAjaxContentLoadRequest = function (ev, data) {
-      this.getAjaxContent(data.url);
+      this.getAjaxContent(data.url, data.target);
     };
 
-    this.getAjaxContent = function (contentUrl) {
+    this.onCheckForAjaxDataInstructionsInContentRequest = function(ev, data) {
+      this.checkForAjaxDataInstructionsInContent(data.url, data.target);
+    };
+
+    this.onAjaxContentCacheClearingRequest = function(ev, data) {
+      this.clearPreviousSessionCache();
+    };
+
+    this.getAjaxContent = function (contentUrl, targetSelector) {
       var url = this.normalizeUrl(contentUrl);
-      var contentFromCache = dataStore.getCacheData(this.getAjaxContentCacheKey(url));
-      if (null === contentFromCache) {
+      var contentFromCache = this.getCacheData(this.getAjaxContentCacheKey(url));
+      var hasContentFromCache = (null !== contentFromCache);
+      myDebug && logger.debug(module.id, "We "+(hasContentFromCache ? "do" : "don't")+" have content in cache for this URL.");
+      if (!hasContentFromCache) {
         // No content in the data store for this URL:
         // --> let's load it!
-        this.loadAjaxContent(contentUrl);
+        this.loadAjaxContent(contentUrl, targetSelector);
       } else {
         // Easy-peasy, we already have this content in the data store
-        this.displayAjaxContent(contentUrl, contentFromCache);
+        this.displayAjaxContent(contentUrl, targetSelector, contentFromCache);
       }
     };
 
-    this.loadAjaxContent = function (contentUrl) {
+    this.loadAjaxContent = function (contentUrl, targetSelector) {
       var url = this.normalizeUrl(contentUrl);
-      this.trigger("ajaxContentLoadingStart", {url: url});
+      this.trigger("ajaxContentLoadingStart", {
+        url: url,
+        target: targetSelector
+      });
+
       this.ajax({
         url: url,
         dataType: "text"
       }).then(
-        _.partial(this.onAjaxLoadSuccess, url),
-        _.partial(this.onAjaxLoadError, url)
+        _.partial(this.onAjaxLoadSuccess, url, targetSelector, new Date),
+        _.partial(this.onAjaxLoadError, url, targetSelector)
       );
     };
 
-    this.onHistoryState = function(ev, data) {
-      this.getAjaxContent(data.url);
-    };
-
-    this.displayAjaxContent = function(url, htmlContent) {
-      this.attr.$ajaxContentContainer.html(htmlContent);
-      this.trigger("mainContentUpdate");
-      // If this is the first page content, we restore its breadcrumb content
-      if (this.firstPageUrl && this.firstPageBreadcumb && url === this.firstPageUrl) {
-        varsRegistry.$breadcrumb.html(this.firstPageBreadcumb);
-      }
+    this.displayAjaxContent = function(url, targetSelector, htmlContent) {
+      var eventPayload = {
+        fromUrl: url,
+        target: targetSelector,
+        content: htmlContent
+      };
+      this.trigger("uiNeedsContentUpdate", eventPayload);
     };
 
     this.getAjaxContentCacheKey = function(url) {
@@ -76,28 +88,51 @@ define(function (require, exports, module) {
     };
 
     this.getCachedAjaxContent = function(url) {
-      return dataStore.getCacheData(this.getAjaxContentCacheKey(url));
+      return this.getCacheData(this.getAjaxContentCacheKey(url));
     };
 
-    this.onAjaxLoadSuccess = function (url, content) {
-      this.trigger("ajaxContentLoadingDone", {url: url});
-      this.displayAjaxContent(url, content);
-      this.checkForAjaxDataInstructionsInContent(url);
+    this.onAjaxLoadSuccess = function (url, targetSelector, loadingStartDate, content) {
+      this.trigger("ajaxContentLoadingDone", {
+        url: url,
+        target: targetSelector,
+        duration: this.getDuration(loadingStartDate)
+      });
+      this.displayAjaxContent(url, targetSelector, content);
+      this.checkForAjaxDataInstructionsInContent(url, targetSelector);
     };
 
-    this.checkForAjaxDataInstructionsInContent = function(contentSourceUrl) {
+    this.onAjaxLoadError = function (url, targetSelector, jqXHR, textStatus, err) {
+      myDebug && logger.debug(module.id, "Ajax link '" + url + "' loading failed!");
+      this.trigger("ajaxContentLoadingError", {
+        url: url,
+        target: targetSelector
+      });
+      this.displayAlert(
+        "core-plugins.ajax-navigation.alerts.loading-error",
+        {"%contentUrl%": url},
+        "error"
+      );
+    };
+
+    this.clearPreviousSessionCache = function () {
+      this.clearCacheDataForPrefix(AJAX_CONTENT_CACHE_KEYS_PREFIX);
+    };
+
+    this.checkForAjaxDataInstructionsInContent = function(contentSourceUrl, targetSelector) {
 
       if (this.isCurrentPageAnError()) {
         // Don't handle anything if the current page is a error page
         return;
       }
 
-      if (this.getCachedAjaxContent(contentSourceUrl) !== null) {
+      if (null !== this.getCachedAjaxContent(contentSourceUrl)) {
         // We already have cached content for this URL. We have to wait for its expiration...
         return;
       }
 
-      var $ajaxLoadingDataPlaceholder = this.attr.$ajaxContentContainer.find('.ajax-loading-data');
+      var $target = $(targetSelector);
+
+      var $ajaxLoadingDataPlaceholder = $target.find('.ajax-loading-data');
       if ($ajaxLoadingDataPlaceholder.length === 0)
         return;//no loading data cache
 
@@ -109,43 +144,22 @@ define(function (require, exports, module) {
         myDebug && logger.debug(module.id, "Ajax content will be kept in cache " +
           "during " + ajaxCacheInstructions.duration + " seconds.");
 
-        dataStore.setCacheData(
+        this.setCacheData(
           this.getAjaxContentCacheKey(contentSourceUrl),
-          this.attr.$ajaxContentContainer.html(),
+          $target.html(),
           ajaxCacheInstructions.duration
         );
       }
     };
 
-    this.onAjaxLoadError = function (url, jqXHR, textStatus, err) {
-      myDebug && logger.debug(module.id, "Ajax link '" + url + "' loading failed!");
-      this.trigger("ajaxContentLoadingFailed");
-      // Let's display a error alert
-      this.displayAlert(
-        "core-plugins.ajax-navigation.alerts.loading-error",
-        {"%contentUrl%": url},
-        "error"
-      );
-    };
-
-
-    this.handleInitialMainContentCache = function() {
-      myDebug && logger.debug(module.id, "Let's check if the initial content has cache information...");
-      if (this.isCurrentPageAnError()) {
-        // Don't handle anything if the current page is a error page
-        return;
-      }
-
-      this.firstPageUrl = this.normalizeUrl(document.location);
-      this.checkForAjaxDataInstructionsInContent(this.firstPageUrl);
-      this.firstPageBreadcumb = varsRegistry.$breadcrumb.html();
-    };
-
     // Component initialization
     this.after("initialize", function() {
-      this.handleInitialMainContentCache();
-      this.on(document, "ajaxContentLoadRequested", this.onAjaxContentLoadRequest);
-      this.on(document, "historyState", this.onHistoryState);
+      // Let"s start with an empty data cache for the moment...
+      this.clearPreviousSessionCache();
+      // All right, let's track some events, now...
+      this.on("uiNeedsContentAjaxLoading", this.onAjaxContentLoadRequest);
+      this.on("uiNeedsContentAjaxInstructionsCheck", this.onCheckForAjaxDataInstructionsInContentRequest);
+      this.on("uiNeedsContentAjaxLoadingCacheClearing", this.onAjaxContentCacheClearingRequest);
     });
   }
 

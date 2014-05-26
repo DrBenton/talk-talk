@@ -2,6 +2,10 @@
 
 {% block content %}
 
+    <div class="ajax-redirecting">
+        {{ 'core-plugins.ajax-navigation.redirecting'|trans }}
+    </div>
+
     {% set temporaryUserProfileContainerId = app.uuid %}
 
     <!-- temporary HTML container for our user profile display -->
@@ -10,7 +14,7 @@
     </div>
 
     <script>
-        require(['jquery', 'locache'], function ($, locache) {
+        require(["jquery"], function ($) {
             // The user profile must be displayed in the #logged-user-container
             var $userProfile = $("#user-profile-{{ temporaryUserProfileContainerId }}");
             $('#logged-user-container').html($userProfile.html());
@@ -23,11 +27,12 @@
 
             // Our pages data cache is flushed: since our status has changed,
             // pages content may change!
-            locache.flush();
+            $(document).trigger("uiNeedsContentAjaxLoadingCacheClearing");
 
             // Back to intended page or home, please!
-            $(document).trigger("historyStateRequested", {
-                url: "{{ app.session.get('url.intended', path('core/home')) }}"
+            $(document).trigger("uiNeedsContentAjaxLoading", {
+                url: "{{ app.session.get('url.intended', path('core/home')) }}",
+                target: "#main-content"
             });
             {% do app.session.remove('url.intended') %}
 
