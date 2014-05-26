@@ -55,6 +55,10 @@ define(function (require, exports, module) {
       } else {
         // Easy-peasy, we already have this content in the data store
         this.displayAjaxContent(contentUrl, targetSelector, contentFromCache, eventPayload);
+        this.trigger("ajaxContentDisplayFromCache", {
+          url: url,
+          target: targetSelector
+        });
       }
     };
 

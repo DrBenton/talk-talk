@@ -39,6 +39,6 @@
   - en
 
 @twig-extensions:
-  - func.display-app-debug-info
+  - func.display-app-perfs-info
   - func.current-path
   - filter.from-now

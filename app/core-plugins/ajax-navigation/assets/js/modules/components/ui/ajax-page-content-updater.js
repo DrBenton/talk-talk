@@ -21,11 +21,12 @@ define(function (require, exports, module) {
       var $targetContentContainer = $(data.target);
       $targetContentContainer.html(data.content);
 
-      // Scroll to top
-      $("html, body").animate({scrollTop:0}, "fast");
 
       this.trigger(document, "uiContentUpdated", data);
 
+      if (!data.dontScrollToTop) {
+        $("html, body").animate({scrollTop:0}, "fast");
+      }
       if (!data.keepAlerts) {
         this.clearAlerts();
       }

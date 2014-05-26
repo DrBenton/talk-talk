@@ -10,12 +10,12 @@ define(function (require, exports, module) {
   var varsRegistry = require("app-modules/core/vars-registry");
   var logger = require("logger");
   // Sub components
-  var ajaxLinksHandler =      require("./ui/ajax-links-handler");
-  var ajaxFormsHandler =      require("./ui/ajax-forms-handler");
-  var ajaxContentUpdater =    require("./ui/ajax-page-content-updater");
-  var ajaxBreadcrumbHandler =    require("./ui/ajax-breadcrumb-handler");
-  var ajaxContentLoader =     require("./data/ajax-content-loader");
-  var ajaxHistory =           require("./data/ajax-history");
+  var ajaxLinksHandler = require("./ui/ajax-links-handler");
+  var ajaxFormsHandler = require("./ui/ajax-forms-handler");
+  var ajaxContentUpdater = require("./ui/ajax-page-content-updater");
+  var ajaxBreadcrumbHandler = require("./ui/ajax-breadcrumb-handler");
+  var ajaxContentLoader = require("./data/ajax-content-loader");
+  var ajaxHistory = require("./data/ajax-history");
 
   var myDebug = !false;
 
