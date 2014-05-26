@@ -23,15 +23,16 @@ define(function (require, exports, module) {
     });
 
     this.initHistory = function() {
+      this.loadAjaxContentOnHistoryChange = true;
       History.Adapter.bind(window, "statechange", _.bind(this.onHistoryStateChange, this));
     };
 
-    this.onAjaxContentLoaded = function (ev, data) {
-      myDebug && logger.debug(module.id, "this.onAjaxContentLoaded() : url=", data.url);
+    this.onContentUpdated = function (ev, data) {
+      myDebug && logger.debug(module.id, "this.onContentUpdated() : fromUrl=", data.fromUrl);
       if (data.target === this.attr.contentContainerToListenSelector) {
         // Hey, it seems that the container we are listening to has been
         // updated via Ajax! Let's update the History accordingly...
-        this.setHistoryUrl(data.url, "ajaxContentUpdate");
+        this.setHistoryUrl(data.fromUrl, "ajaxContentUpdate");
       }
     };
 
@@ -39,35 +40,37 @@ define(function (require, exports, module) {
 
       url = this.normalizeUrl(url);
 
-      // Browser history update
-      History.pushState(null, null, url);
+      // Browser history manual update
+      // We don't want to trigger any ajax content loading through this history update.
+      this.loadAjaxContentOnHistoryChange = false;
+      History.pushState({source: source}, null, url);
+      // Ok, back to normal behaviour
+      this.loadAjaxContentOnHistoryChange = true;
 
       // Components event broadcasting
       this.trigger(document, "historyState", {
         url: url,
         source: source
       });
-
-      // Request a Ajax content loading if the event source is a user action with the browser
-      if ("browserHistory" === source) {
-        $(document).trigger("uiNeedsContentAjaxLoading", {
-          url: url,
-          target: this.attr.contentContainerToListenSelector
-        });
-      }
-
     };
 
     this.onHistoryStateChange = function() {
       var state = History.getState();
       myDebug && logger.debug(module.id, "state=", state);
-      this.setHistoryUrl(state.url, "browserHistory");
+
+      // Request a Ajax content loading, unless explicitly requested not to do so
+      if (this.loadAjaxContentOnHistoryChange) {
+        $(document).trigger("uiNeedsContentAjaxLoading", {
+          url: state.url,
+          target: this.attr.contentContainerToListenSelector
+        });
+      }
     };
 
     // Component initialization
     this.after("initialize", function() {
       this.initHistory();
-      this.on(document, "ajaxContentLoadingDone", this.onAjaxContentLoaded);
+      this.on(document, "uiContentUpdated", this.onContentUpdated);
     });
   }
 

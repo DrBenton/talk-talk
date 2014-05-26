@@ -84,7 +84,7 @@ define(function (require, exports, module) {
         url: url,
         target: this.attr.targetContentContainerSelector
       });
-      this.displayAlert(
+      this.displayTranslatedAlert(
         "core-plugins.ajax-navigation.alerts.form-error",
         {},
         "error"

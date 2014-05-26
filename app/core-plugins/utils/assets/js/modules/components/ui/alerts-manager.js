@@ -15,12 +15,32 @@ define(function (require, exports, module) {
 
   function alertsManager() {
 
-    this.loadAlertDisplay = function (ev, data) {
-      data.msgVars = data.msgVars || {};
-      data.type = data.type || "info";
+    this.onAlertDisplayToTranslateRequest = function (ev, data) {
+      var msgTranslationKey = data.msgTranslationKey;
+      var msgVars = data.msgVars || {};
+      var type = data.type || "info";
+
+      this.loadTranslatedAlertDisplay(msgTranslationKey, msgVars, type);
+    };
+
+    this.onAlertsDisplayFromHtmlRequest = function (ev, data) {
+      var newAlertsContent;
+
+      if (data.fromSelector) {
+        var $newAlertsContainer = $(data.fromSelector);
+        newAlertsContent = $newAlertsContainer.html();
+        $newAlertsContainer.remove();
+      } else if (data.content) {
+        newAlertsContent = data.content;
+      }
+
+      this.$node.html(newAlertsContent);
+    };
+
+    this.loadTranslatedAlertDisplay = function (msgTranslationKey, msgVars, type) {
 
       var sentAlertsData = [
-        {transKey: data.msgTranslationKey, vars: data.msgVars, type: data.type}
+        {transKey: msgTranslationKey, vars: msgVars, type: type}
       ];
 
       $.ajax({
@@ -58,9 +78,9 @@ define(function (require, exports, module) {
 
     // Component initialization
     this.after("initialize", function() {
-      this.on(document, "alertDisplayRequested", this.loadAlertDisplay);
-      this.on(document, "alertsClearingRequested", this.clearAlerts);
-      this.on(document, "mainContentUpdate", this.clearAlerts);
+      this.on(document, "uiNeedsTranslatedAlertDisplay", this.onAlertDisplayToTranslateRequest);
+      this.on(document, "uiNeedsAlertClearing", this.clearAlerts);
+      this.on(document, "uiNeedsAlertDisplayFromHtml", this.onAlertsDisplayFromHtmlRequest);
     });
   }
 

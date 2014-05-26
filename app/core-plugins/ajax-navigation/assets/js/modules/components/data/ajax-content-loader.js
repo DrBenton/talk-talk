@@ -2,14 +2,12 @@ define(function (require, exports, module) {
   "use strict";
 
   var defineComponent = require("flight").component;
-  var varsRegistry = require("app-modules/core/vars-registry");
   var withAjax = require("app-modules/utils/mixins/data/with-ajax");
   var withDataCache = require("app-modules/utils/mixins/data/with-data-cache");
   var withUrlNormalization = require("app-modules/utils/mixins/data/with-url-normalization");
   var withHttpStatusManagement = require("app-modules/utils/mixins/data/with-http-status-management");
   var withAlertsCapabilities = require("app-modules/utils/mixins/ui/with-alerts-capabilities");
   var withDateUtils = require("app-modules/utils/mixins/data/with-date-utils");
-  var purl = require("purl");
   var $ = require("jquery");
   var logger = require("logger");
 
@@ -28,11 +26,13 @@ define(function (require, exports, module) {
 
   function ajaxContentLoader() {
 
+    this.loadingsCounter = 0;
+
     this.defaultAttrs({
     });
 
     this.onAjaxContentLoadRequest = function (ev, data) {
-      this.getAjaxContent(data.url, data.target);
+      this.getAjaxContent(data.url, data.target, data);
     };
 
     this.onCheckForAjaxDataInstructionsInContentRequest = function(ev, data) {
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
       this.clearPreviousSessionCache();
     };
 
-    this.getAjaxContent = function (contentUrl, targetSelector) {
+    this.getAjaxContent = function (contentUrl, targetSelector, eventPayload) {
       var url = this.normalizeUrl(contentUrl);
       var contentFromCache = this.getCacheData(this.getAjaxContentCacheKey(url));
       var hasContentFromCache = (null !== contentFromCache);
@@ -51,36 +51,38 @@ define(function (require, exports, module) {
       if (!hasContentFromCache) {
         // No content in the data store for this URL:
         // --> let's load it!
-        this.loadAjaxContent(contentUrl, targetSelector);
+        this.loadAjaxContent(contentUrl, targetSelector, eventPayload);
       } else {
         // Easy-peasy, we already have this content in the data store
-        this.displayAjaxContent(contentUrl, targetSelector, contentFromCache);
+        this.displayAjaxContent(contentUrl, targetSelector, contentFromCache, eventPayload);
       }
     };
 
-    this.loadAjaxContent = function (contentUrl, targetSelector) {
+    this.loadAjaxContent = function (contentUrl, targetSelector, eventPayload) {
       var url = this.normalizeUrl(contentUrl);
       this.trigger("ajaxContentLoadingStart", {
         url: url,
         target: targetSelector
       });
 
+      this.loadingsCounter++;
+
       this.ajax({
         url: url,
         dataType: "text"
       }).then(
-        _.partial(this.onAjaxLoadSuccess, url, targetSelector, new Date),
-        _.partial(this.onAjaxLoadError, url, targetSelector)
+        _.partial(this.onAjaxLoadSuccess, url, targetSelector, this.loadingsCounter, eventPayload, new Date),
+        _.partial(this.onAjaxLoadError, url, targetSelector, this.loadingsCounter, eventPayload)
       );
     };
 
-    this.displayAjaxContent = function(url, targetSelector, htmlContent) {
-      var eventPayload = {
+    this.displayAjaxContent = function(url, targetSelector, htmlContent, eventPayload) {
+      this.trigger("uiNeedsContentUpdate", {
         fromUrl: url,
         target: targetSelector,
-        content: htmlContent
-      };
-      this.trigger("uiNeedsContentUpdate", eventPayload);
+        content: htmlContent,
+        keepAlerts: (eventPayload.keepAlerts) ? true : false
+      });
     };
 
     this.getAjaxContentCacheKey = function(url) {
@@ -91,23 +93,36 @@ define(function (require, exports, module) {
       return this.getCacheData(this.getAjaxContentCacheKey(url));
     };
 
-    this.onAjaxLoadSuccess = function (url, targetSelector, loadingStartDate, content) {
+    this.onAjaxLoadSuccess = function (url, targetSelector, loadingIndex, eventPayload, loadingStartDate, content) {
+
+      if (this.loadingsCounter > loadingIndex) {
+        // Hum, it seems that other Ajax loadings have been triggered while we were loading this URL...
+        // Let's ignore that Ajax load, and only take in account the last Ajax loading!
+        return;
+      }
+
       this.trigger("ajaxContentLoadingDone", {
         url: url,
         target: targetSelector,
         duration: this.getDuration(loadingStartDate)
       });
-      this.displayAjaxContent(url, targetSelector, content);
+      this.displayAjaxContent(url, targetSelector, content, eventPayload);
       this.checkForAjaxDataInstructionsInContent(url, targetSelector);
     };
 
-    this.onAjaxLoadError = function (url, targetSelector, jqXHR, textStatus, err) {
+    this.onAjaxLoadError = function (url, targetSelector, loadingIndex, jqXHR, textStatus, err) {
+
+      if (this.loadingsCounter > loadingIndex) {
+        // @see "onAjaxLoadSuccess()"
+        return;
+      }
+
       myDebug && logger.debug(module.id, "Ajax link '" + url + "' loading failed!");
       this.trigger("ajaxContentLoadingError", {
         url: url,
         target: targetSelector
       });
-      this.displayAlert(
+      this.displayTranslatedAlert(
         "core-plugins.ajax-navigation.alerts.loading-error",
         {"%contentUrl%": url},
         "error"

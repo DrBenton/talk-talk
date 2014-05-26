@@ -7,13 +7,13 @@ define(function (require, exports, module) {
   var defineComponent = require("flight").component;
   var withUrlNormalization = require("app-modules/utils/mixins/data/with-url-normalization");
   var withHttpStatusManagement = require("app-modules/utils/mixins/data/with-http-status-management");
-  var _ = require("lodash");
   var varsRegistry = require("app-modules/core/vars-registry");
   var logger = require("logger");
   // Sub components
   var ajaxLinksHandler =      require("./ui/ajax-links-handler");
   var ajaxFormsHandler =      require("./ui/ajax-forms-handler");
-  var ajaxContentUpdater =    require("./ui/page-content-updater");
+  var ajaxContentUpdater =    require("./ui/ajax-page-content-updater");
+  var ajaxBreadcrumbHandler =    require("./ui/ajax-breadcrumb-handler");
   var ajaxContentLoader =     require("./data/ajax-content-loader");
   var ajaxHistory =           require("./data/ajax-history");
 
@@ -26,14 +26,6 @@ define(function (require, exports, module) {
 
 
   function ajaxNavigation() {
-
-    this.onUiContentUpdated = function (ev, data) {
-      // If this is the first page content, we restore its breadcrumb content
-      if (this.firstPageUrl && this.firstPageBreadcumb && data.url === this.firstPageUrl) {
-        varsRegistry.$breadcrumb.html(this.firstPageBreadcumb);
-        myDebug && logger.debug(module.id, "First page breadcrumb restored.");
-      }
-    };
 
     this.createSubComponents = function() {
 
@@ -48,6 +40,9 @@ define(function (require, exports, module) {
       ajaxFormsHandler.attachTo(varsRegistry.$siteContainer, {
         targetContentContainerSelector: this.mainContentContainerSelector
       });
+
+      // The "Ajax breadcrumb handler" will just update the breadcrumb when it is requested.
+      ajaxBreadcrumbHandler.attachTo(varsRegistry.$breadcrumb);
 
       // The "Ajax content updater" is "node agnostic", so we attach it to the document.
       // It will update page content parts following the events "target" instructions.
@@ -73,24 +68,17 @@ define(function (require, exports, module) {
         return;
       }
 
-      this.firstPageUrl = this.normalizeUrl(document.location);
       this.trigger("uiNeedsContentAjaxInstructionsCheck", {
-        url: this.firstPageUrl,
+        url: this.normalizeUrl(document.location),
         target: this.mainContentContainerSelector
       });
-
-      myDebug && logger.debug(module.id, "First page breadcrumb is stored for later use.");
-      this.firstPageBreadcrumb = varsRegistry.$breadcrumb.html();
     };
 
     // Component initialization
     this.after("initialize", function() {
-
       this.mainContentContainerSelector = "#" + varsRegistry.$mainContent.attr("id");
       this.createSubComponents();
       this.handleInitialMainContent();
-
-      this.on(varsRegistry.$document, "uiContentUpdated", this.onUiContentUpdated);
     });
   }
 

@@ -1,4 +1,4 @@
-{% extends "core/layouts/ajax.twig" %}
+{% extends "ajax-navigation/layouts/ajax-layout.twig" %}
 
 {% block content %}
 
@@ -23,7 +23,8 @@
             // Back to home, please!
             $(document).trigger("uiNeedsContentAjaxLoading", {
                 url: "{{ path('core/home') }}",
-                target: "#main-content"
+                target: "#main-content",
+                keepAlerts: true
             });
         });
     </script>

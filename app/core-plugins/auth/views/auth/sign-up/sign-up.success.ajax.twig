@@ -1,4 +1,4 @@
-{% extends "core/layouts/ajax.twig" %}
+{% extends "ajax-navigation/layouts/ajax-layout.twig" %}
 
 {% block content %}
 
@@ -32,7 +32,8 @@
             // Back to intended page or home, please!
             $(document).trigger("uiNeedsContentAjaxLoading", {
                 url: "{{ app.session.get('url.intended', path('core/home')) }}",
-                target: "#main-content"
+                target: "#main-content",
+                keepAlerts: true
             });
             {% do app.session.remove('url.intended') %}
 

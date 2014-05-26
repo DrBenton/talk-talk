@@ -42,11 +42,12 @@ alerts is not empty %}
 
     {% if app.isAjax %}
         <script>
-            require(['jquery'], function ($) {
+            require(["jquery"], function ($) {
                 // These alerts are displayed in the layout #alerts-container
-                var $alertToDisplay = $("#{{ alertsContainerId }}");
-                $('#alerts-container').html($alertToDisplay.html());
-                $alertToDisplay.remove();
+                var alertToDisplayContainerSelector = "#{{ alertsContainerId }}";
+                $(document).trigger("uiNeedsAlertDisplayFromHtml", {
+                    fromSelector: alertToDisplayContainerSelector
+                });
             });
         </script>
     {% endif %}

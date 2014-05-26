@@ -9,18 +9,26 @@ define(function (require, exports, module) {
   var myDebug = !false;
 
   // Exports: component definition
-  module.exports = defineComponent(pageContentUpdater, withAlertsCapabilities);
+  module.exports = defineComponent(ajaxPageContentUpdater, withAlertsCapabilities);
 
   myDebug && logger.debug(module.id, "Component on the bridge, captain!");
 
 
-  function pageContentUpdater() {
+  function ajaxPageContentUpdater() {
 
     this.onContentUpdateRequest = function (ev, data) {
+
       var $targetContentContainer = $(data.target);
       $targetContentContainer.html(data.content);
-      this.trigger("uiContentUpdated", data);
-      this.clearAlerts();
+
+      // Scroll to top
+      $("html, body").animate({scrollTop:0}, "fast");
+
+      this.trigger(document, "uiContentUpdated", data);
+
+      if (!data.keepAlerts) {
+        this.clearAlerts();
+      }
     };
 
     // Component initialization
