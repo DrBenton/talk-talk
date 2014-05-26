@@ -1,11 +1,14 @@
-{% extends "core/layouts/ajax.twig" %}
+{% extends "ajax-navigation/layouts/ajax-layout.twig" %}
 
 {% block content %}
 
     <script>
         (function () {
-            // Redirection through JS History, please!
-            History.pushState(null, null, '{{ targetUrl }}');
+            // Redirection through JS Ajax content loading, please!
+            $(document).trigger("uiNeedsContentAjaxLoading", {
+                url: "{{ targetUrl }}",
+                target: "#main-content"
+            });
         })();
     </script>
 

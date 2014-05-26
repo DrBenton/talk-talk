@@ -37,8 +37,8 @@ define(function (require, exports, module) {
 
     return Q($.ajax({
       url: serviceUrl,
-      dataType: 'json',
-      type: 'POST' //more REST-y, and gives us CSRF protection :-)
+      dataType: "json",
+      type: "POST" //more REST-y, and gives us CSRF protection :-)
     }))
       .fail(function (e) {
         displayImportError(e, serviceUrl);
@@ -63,8 +63,8 @@ define(function (require, exports, module) {
 
     return Q($.ajax({
       url: serviceUrl,
-      dataType: 'json',
-      type: 'POST' //more REST-y, and gives us CSRF protection :-)
+      dataType: "json",
+      type: "POST" //more REST-y, and gives us CSRF protection :-)
     }))
       .then(function (currentItemTypeMetada) {
         myDebug && logger.debug(module.id, "-> currentItemTypeMetada=", currentItemTypeMetada);
@@ -77,7 +77,7 @@ define(function (require, exports, module) {
         var $phpBbItemsImportDisplay = getCurrentItemTypeDisplay();
         var $nbItemsToImportDisplay = $phpBbItemsImportDisplay.find('.nb-items-to-import');
         $nbItemsToImportDisplay.find('.number').text(currentItemsImport.nbItemsToImport);
-        $nbItemsToImportDisplay.removeClass('hidden').show();
+        $nbItemsToImportDisplay.removeClass("hidden").show();
       })
       .fail(function (e) {
         displayImportError(e, serviceUrl);
@@ -92,8 +92,8 @@ define(function (require, exports, module) {
 
     Q($.ajax({
       url: serviceUrl,
-      dataType: 'json',
-      type: 'POST' //more REST-y, and gives us CSRF protection :-)
+      dataType: "json",
+      type: "POST" //more REST-y, and gives us CSRF protection :-)
     }))
       .then(onBatchEnd)
       .fail(function (e) {
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
     // Progress display
     var percentageDone = parseInt(currentItemsImport.nbItemsImported / currentItemsImport.nbItemsToImport * 100);
     var $phpBbItemsImportDisplay = getCurrentItemTypeDisplay();
-    $phpBbItemsImportDisplay.find('progress').attr('value', percentageDone);
+    $phpBbItemsImportDisplay.find("progress").attr("value", percentageDone);
     $phpBbItemsImportDisplay.find('.percentage').text(percentageDone);
 
     if (!createdItemsData.done) {
@@ -121,8 +121,8 @@ define(function (require, exports, module) {
 
       // Duration display
       var $doneDisplay = $phpBbItemsImportDisplay.find('.done');
-      $doneDisplay.find('.duration').text(moment().diff(currentItemsImport.startTime, 'seconds'));
-      $doneDisplay.removeClass('hidden').show();
+      $doneDisplay.find('.duration').text(moment().diff(currentItemsImport.startTime, "seconds"));
+      $doneDisplay.removeClass("hidden").show();
 
       currentImportedItemTypeIndex++;
       if (currentImportedItemTypeIndex === itemsToImportTypes.length) {
@@ -142,8 +142,8 @@ define(function (require, exports, module) {
 
     Q($.ajax({
       url: serviceUrl,
-      dataType: 'json',
-      type: 'POST' //more REST-y, and gives us CSRF protection :-)
+      dataType: "json",
+      type: "POST" //more REST-y, and gives us CSRF protection :-)
     }))
       .then(function () {
         $importsContainer.find('.please-wait').hide();
@@ -168,7 +168,7 @@ define(function (require, exports, module) {
 
   function startImport() {
     $startImportButton.hide();
-    $importsContainer.find('.please-wait').removeClass('hidden').show();
+    $importsContainer.find('.please-wait').removeClass("hidden").show();
     clearPreviousImports()
       .then(
         startNextItemsTypeImport,

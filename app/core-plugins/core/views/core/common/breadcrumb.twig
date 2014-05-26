@@ -24,11 +24,12 @@
 
 {% if app.isAjax %}
     <script>
-        require(['jquery', 'app-modules/core/vars-registry'], function ($, varsRegistry) {
+        require(["jquery"], function ($) {
             // This breadcrumb is displayed in the layout #breadcrumb
-            var $breadcrumbToDisplay = $("#{{ breadcrumbContainerId }}");
-            varsRegistry.$breadcrumb.html($breadcrumbToDisplay.html());
-            $breadcrumbToDisplay.remove();
+            var breadcrumbToDisplaySelector = "#{{ breadcrumbContainerId }}";
+            $(document).trigger("uiNeedsBreadcrumbUpdate", {
+                fromSelector: breadcrumbToDisplaySelector
+            });
         });
     </script>
 {% endif %}

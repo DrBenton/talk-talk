@@ -1,4 +1,4 @@
-{% extends app.isAjax ? "core/layouts/ajax.twig" : "core/layouts/main-layout.twig" %}
+{% extends app.isAjax ? "ajax-navigation/layouts/ajax-layout.twig" : "core/layouts/main-layout.twig" %}
 
 {% macro new_post_link(topicId) %}
     {% if app.isAnonymous %}

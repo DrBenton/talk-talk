@@ -21,7 +21,8 @@
     "html5shiv": "~3.7.2",
     "jqjquery-wysibb": "~1.5.1",
     "require-css": "~0.1.2",
-    "markitup-markitup": "~1.1.14"
+    "markitup-markitup": "~1.1.14",
+    "flight": "~1.1.4"
   },
   "keywords": [
     "forum",

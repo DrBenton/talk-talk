@@ -53,8 +53,7 @@
 
     <span id="app-http-status-code" data-code="{{ app['app.http_status_code'] }}"></span>
 
-    <div id="debug-info-container"></div>
-    {% if app.debug %}{{ display_app_debug_info() }}{% endif %}
+    {% if app['config']['debug']['perfs.tracking'] %}{{ display_app_perfs_info() }}{% endif %}
 
 </div>{# end #site-container #}
 

@@ -29,3 +29,10 @@ $hooks['html.header'] = function (DOMQuery $html) use ($app) {
     $headerNavList
         ->append(implode('', $headerLinks));
 };
+
+$hooks['html.alerts_container'] = function (DOMQuery $html) {
+    // Add the alerts JS manager component
+    $html->find('#alerts-container')
+        ->addClass('flight-component')
+        ->attr('data-component', 'app-modules/utils/components/ui/alerts-manager');
+};

@@ -11,3 +11,4 @@
 
 @hooks:
   - html.site_container
+  - html.perfs_info
