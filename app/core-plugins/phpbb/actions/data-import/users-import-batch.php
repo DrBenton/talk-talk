@@ -20,7 +20,7 @@ $action = function (Application $app, Request $request, $batchIndex) {
         array(
             'batchIndex' => $batchIndex,
             'created' => $nbUsersCreated,
-            'duration' => $app['perfs.script.duration'],
+            'duration' => $app['perfs.now.time_elapsed'],
             'done' => $importDone,
         )
     );

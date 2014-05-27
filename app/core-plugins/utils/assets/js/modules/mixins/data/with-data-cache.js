@@ -26,11 +26,11 @@ define(function (require, exports, module) {
     };
 
     this.clearAllCacheData = function () {
-      locache.flush()
+      locache.flush();
     };
 
     this.clearExpiredData = function () {
-      locache.cleanup()
+      locache.cleanup();
     };
 
     this.setCacheData = function (key, data, duration) {

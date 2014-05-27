@@ -19,7 +19,7 @@
   - html.page.home
   - html.form
   - html.signup_form
-  - html.alerts
+  - html.component.alert
   - html.user_profile
   - html.page.forum
   - html.forums_list
@@ -28,8 +28,9 @@
   - html.topic
   - html.posts_list
   - html.post
-  - html.pagination
+  - html.component.pagination
   - html.authentication_required_msg
   - html.create_new_topic_link
   - html.create_new_post_link
   - html.page.new_post_form
+  - html.component.progress

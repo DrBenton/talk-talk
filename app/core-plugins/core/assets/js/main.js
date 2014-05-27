@@ -1,9 +1,10 @@
 require([
+  "jquery",
   "logger",
   "flight",
   "app-modules/core/components/data/components-factory",
   "app-modules/core/csrf-handler"
-], function (logger, flight, componentsFactory, csrfHandler) {
+], function ($, logger, flight, componentsFactory, csrfHandler) {
   "use strict";
 
   logger.debug("App Main loaded!");
@@ -11,8 +12,8 @@ require([
   if (true) {//to be replaced with a "debug" flag
     require(["vendor/js/flight/lib/debug"], function (flightDebug) {
       flightDebug.enable(true);
-      DEBUG.events.logAll();
-    })
+      window.DEBUG && window.DEBUG.events.logAll();
+    });
   }
 
   // CSRF token global management

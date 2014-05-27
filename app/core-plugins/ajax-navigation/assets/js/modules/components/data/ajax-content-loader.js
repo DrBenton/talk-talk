@@ -9,6 +9,7 @@ define(function (require, exports, module) {
   var withAlertsCapabilities = require("app-modules/utils/mixins/ui/with-alerts-capabilities");
   var withDateUtils = require("app-modules/utils/mixins/data/with-date-utils");
   var $ = require("jquery");
+  var _ = require("lodash");
   var logger = require("logger");
 
   var myDebug = !false;
@@ -151,7 +152,7 @@ define(function (require, exports, module) {
 
       var $target = $(targetSelector);
 
-      var $ajaxLoadingDataPlaceholder = $target.find('.ajax-loading-data');
+      var $ajaxLoadingDataPlaceholder = $target.find(".ajax-loading-data");
       if ($ajaxLoadingDataPlaceholder.length === 0)
         return;//no loading data cache
 

@@ -2,6 +2,7 @@ define(function (require, exports, module) {
   "use strict";
 
   var $ = require("jquery");
+  var Q = require("q");
 
   // Exports: mixin definition
   module.exports = withAjax;
@@ -12,6 +13,10 @@ define(function (require, exports, module) {
     this.ajax = function (settings) {
       settings.context = this;
       return $.ajax(settings);
+    };
+
+    this.ajaxPromise = function (settings) {
+      return Q(this.ajax(settings));
     };
 
   }

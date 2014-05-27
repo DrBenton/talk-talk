@@ -1,4 +1,5 @@
 (function () {
+  "use strict";
 
   var debug = true;//TODO: handle it cleanly somewhere else
   var minExt = (debug) ? "" : ".min" ;
@@ -36,8 +37,8 @@
       }
     },
     map: {
-      '*': {
-        "css": 'vendor/js/require-css/css'
+      "*": {
+        "css": "vendor/js/require-css/css"
       }
     },
     waitSeconds: 1,

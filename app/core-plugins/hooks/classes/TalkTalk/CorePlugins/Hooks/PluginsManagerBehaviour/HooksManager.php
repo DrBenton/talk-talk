@@ -141,6 +141,9 @@ class HooksManager extends BehaviourBase
 
         // Vars injected in the hooks implementation Closure
         $app = $this->app;
+        $myPluginPath = $plugin->path;
+        $myPluginUrl = str_replace($app['app.path'], $app['app.base_url'], $plugin->path);
+        $myComponentsUrl = substr($myPluginUrl, 1) . '/assets/js/modules/components/';
         $__pluginHooksImplementationsFilePath = $plugin->path . '/plugin-hooks.php';
 
         if (!file_exists($__pluginHooksImplementationsFilePath)) {
@@ -151,7 +154,10 @@ class HooksManager extends BehaviourBase
 
         // Go! We include the "plugins-hooks.php" file: we expect it to fill our $hooks array
         call_user_func(
-            function () use (&$hooks, $app, $plugin, $__pluginHooksImplementationsFilePath) {
+            function () use (
+                &$hooks, $app, $plugin, $myPluginPath, $myPluginUrl, $myComponentsUrl,
+                $__pluginHooksImplementationsFilePath
+            ) {
                 require_once $__pluginHooksImplementationsFilePath;
             }
         );

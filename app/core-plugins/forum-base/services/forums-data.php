@@ -2,6 +2,12 @@
 
 use TalkTalk\Model\Forum;
 
+$app['forum-base.title'] = $app->share(
+    function () use ($app) {
+        return $app['settings']->get('app.site-title', 'Talk-Talk');
+    }
+);
+
 $app['forum-base.pagination.topics.nb_per_page'] = 20;
 $app['forum-base.pagination.posts.nb_per_page'] = 20;
 

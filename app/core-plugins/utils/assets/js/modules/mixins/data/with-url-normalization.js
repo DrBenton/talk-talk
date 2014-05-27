@@ -13,7 +13,7 @@ define(function (require, exports, module) {
       var url = purl(rawUrl);
       var returnedUrl = url.attr("path");
       var query = url.attr("query");
-      returnedUrl += query ? '?' + query : '' ;
+      returnedUrl += query ? "?" + query : "" ;
       return returnedUrl;
     };
 

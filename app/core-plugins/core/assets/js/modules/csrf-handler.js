@@ -1,4 +1,5 @@
 define(function (require, exports, module) {
+  "use strict";
 
   var varsRegistry = require("app-modules/core/vars-registry");
   var logger = require("logger");

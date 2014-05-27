@@ -1,5 +1,5 @@
 {% if nbPages > 1 %}
-    {{ enable_html_hooks('pagination') }}
+    {{ enable_html_hooks('component.pagination') }}
     <ul class="pagination">
         <li class="first-page {{ currentPageNum == 1 ? 'disabled' : '' }}">
             <a href="{{ baseUrl|replace({'%page%': 1}) }}" class="ajax-link">&laquo;</a>

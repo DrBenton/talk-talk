@@ -34,7 +34,7 @@ define(function (require, exports, module) {
 
     // Component initialization
     this.after("initialize", function() {
-      this.on(document, "uiNeedsContentUpdate", this.onContentUpdateRequest)
+      this.on(document, "uiNeedsContentUpdate", this.onContentUpdateRequest);
     });
   }
 

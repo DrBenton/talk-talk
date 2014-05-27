@@ -15,17 +15,16 @@ define(function (require, exports, module) {
 
   function ajaxAdvancedPerfsDebugInfo() {
 
-    this.onAjaxContentLoadingDone = function(ev, data) {
-      this.$node.find(".current-action-url").text(data.url);
-    };
+    this.onjQueryAjaxSuccess = function(ev, data, jqXHR) {
 
-    this.onjQueryAjaxSuccess = function(ev, data) {
+      this.$node.find(".current-action-url").text(jqXHR.type + " " + jqXHR.url);
+
       // Lets handle our specific "X-Perfs-*" headers!
 
       var headersDomSelectorsMaping = {
         "X-Perfs-Elapsed-Time-Now": ".perfs-elapsed-time-now",
         "X-Perfs-Elapsed-Time-Bootstrap": ".perfs-elapsed-time-bootstrap",
-        "X-Perfs-Elapsed-Time-Plugins": ".perfs-elapsed-time-plugins-init",
+        "X-Perfs-Elapsed-Time-Plugins-Init": ".perfs-elapsed-time-plugins-init",
         "X-Perfs-Nb-Included-Files-Now": ".perfs-nb-included-files-now",
         "X-Perfs-Nb-Included-Files-Bootstrap": ".perfs-nb-included-files-bootstrap",
         "X-Perfs-Nb-Included-Files-Plugins-Init": ".perfs-nb-included-files-plugins-init",
@@ -53,7 +52,6 @@ define(function (require, exports, module) {
 
     // Component initialization
     this.after("initialize", function() {
-      this.on(document, "ajaxContentLoadingDone", this.onAjaxContentLoadingDone);
       this.on(document, "ajaxSuccess", this.onjQueryAjaxSuccess);
     });
   }

@@ -102,7 +102,7 @@ $hooks['html.signup_form'] = function (DOMQuery $html) {
         ->addClass('help-block');
 };
 
-$hooks['html.alerts'] = function (DOMQuery $html) {
+$hooks['html.component.alert'] = function (DOMQuery $html) {
     $transforms = array(
         'info' => 'info',
         'success' => 'success',
@@ -235,7 +235,7 @@ $hooks['html.post'] = function (DOMQuery $html) {
 
 };
 
-$hooks['html.pagination'] = function (DOMQuery $html) {
+$hooks['html.component.pagination'] = function (DOMQuery $html) {
     $pagination = $html->find('.pagination');
     $pagination->addClass('pull-right');
     $pagination->after('<div class="clearfix"></div>');
@@ -265,5 +265,24 @@ $hooks['html.create_new_post_link'] = function (DOMQuery $html) {
 $hooks['html.page.new_post_form'] = function (DOMQuery $html) {
     // List desc
     $html->find('.list-desc')->addClass('lead');
+};
+
+$hooks['html.component.progress'] = function (DOMQuery $html) use ($app, $myComponentsUrl) {
+    // Let's replace our <progress> markups with a TWB "progress bar" CSS component
+    $html->find('.progress-component')
+        ->replaceWith('
+        <div class="progress-component progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            0%
+          </div>
+        </div>
+        ');
+    // Now that we have replaced all the <progress> with our custom TWB components, let's add
+    // a JS behaviour on them!
+    $twbProgressComponents = $html->find('.progress-component');
+    $app['html-components.add_component'](
+        $twbProgressComponents,
+        $myComponentsUrl . 'ui/twb-progress'
+    );
 };
 

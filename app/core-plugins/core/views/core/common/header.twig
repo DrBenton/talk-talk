@@ -1,9 +1,10 @@
 {{ enable_html_hooks('header') }}
 <header>
-    <h1><a href="{{ path('core/home') }}" class="ajax-link">Talk-Talk</a></h1>
+    <h1><a href="{{ path('core/home') }}" class="ajax-link">{{ app['forum-base.title'] }}</a></h1>
 
     <nav>
         <ul>
+            {# will be filled by Plugins #}
         </ul>
     </nav>
 

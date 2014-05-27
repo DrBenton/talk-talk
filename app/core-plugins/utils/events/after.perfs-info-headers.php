@@ -23,8 +23,16 @@ $app->after(
             'X-Perfs-Nb-Actions-Registered' => $perfsInfo['nbActionsRegistered'],
             'X-Perfs-Nb-Plugins-Permanently-Disabled' => $perfsInfo['nbPluginsPermanentlyDisabled'],
             'X-Perfs-Nb-Plugins-Disabled-For-Current-URL' => $perfsInfo['nbPluginsDisabledForCurrentUrl'],
-            'X-Perfs-Session-Content' => json_encode($app['session']->all()),
         ));
+
+        // We add session content too, but avoid to overkill Ajax requests payload
+        // if we have a lot of data in session
+        $sessionContent = json_encode($app['session']->all());
+        $sessionContentStrMaxLength = 250;
+        $sessionContent = (strlen($sessionContent) > $sessionContentStrMaxLength)
+            ? substr($sessionContent, 0, $sessionContentStrMaxLength) . ' ... [truncated] }'
+            : $sessionContent;
+        $response->headers->set('X-Perfs-Session-Content', $sessionContent);
 
         if (isset($app['perfs.querypath.duration'])) {
             $response->headers->set(

@@ -6,7 +6,7 @@ $action = function (\Silex\Application $app) {
     $forumsTree = Forum::getTree();
     $breadcrumb = array($app['utils.html.breadcrumb.home']);
 
-    $siteTitle = $app['settings']->get('site-title', 'Talk-Talk');
+    $siteTitle = $app['forum-base.title'];
 
     return $app['twig']->render('forum-base/home.twig',
         array(

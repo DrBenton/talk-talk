@@ -3,6 +3,7 @@ define(function (require, exports, module) {
 
   var defineComponent = require("flight").component;
   var _ = require("lodash");
+  var $ = require("jquery");
   var logger = require("logger");
 
   var myDebug = !false;
@@ -34,7 +35,7 @@ define(function (require, exports, module) {
     this.after("initialize", function() {
       // Let's use jQuery events proxy mechanism!
       // This way, we won't have to unbind/bind events for each Ajax page content update
-      this.$node.on("click", 'a.ajax-link', _.bind(this.onAjaxLinkClick, this));
+      this.$node.on("click", "a.ajax-link", _.bind(this.onAjaxLinkClick, this));
     });
   }
 

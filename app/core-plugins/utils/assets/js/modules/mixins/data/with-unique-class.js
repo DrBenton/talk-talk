@@ -10,7 +10,7 @@ define(function (require, exports, module) {
   function withUniqueClass() {
 
     this.addUniqueClass = function ($jqElement) {
-      var uuid = _.uniqueId('uclass-');
+      var uuid = _.uniqueId("uclass-");
       $jqElement.addClass(uuid);
       return uuid;
     };

@@ -2,23 +2,36 @@
 
 {% block content %}
 
-    <div class="imports-container requirejs-widget"
-         data-widget="app-modules/phpbb/widgets/imports-handler"
+    <div class="imports-container flight-component"
+         data-component="{{ [
+            'app-modules/phpbb/components/ui/phpbb-imports-gui',
+            'app-modules/phpbb/components/data/phpbb-imports-handler',
+         ]|join(',') }}"
          data-items-types="{{ itemsTypes|json_encode() }}">
 
         <div class="intro">
             {{ 'core-plugins.phpbb.import.importing.intro'|trans|nl2br }}
         </div>
 
+        {{ enable_html_hooks('component.progress') }}
         {% for itemType, itemLabel in itemsTypes %}
-            <div id="phpbb-{{ itemType }}-import-display">
+            <div id="phpbb-{{ itemType }}-import-container">
                 <h4>{{ itemLabel }}</h4>
+
+                <p class="import-preparation hidden">
+                    {{ 'core-plugins.phpbb.import.importing.item-type-import-preparation'|trans }}
+                </p>
+                <p class="import-in-progress hidden">
+                    {{ 'core-plugins.phpbb.import.importing.item-type-import-in-progress'|trans }}
+                </p>
 
                 <p class="nb-items-to-import hidden">
                     <b class="number">0</b> items to import
                 </p>
-                <progress value="0" max="100"></progress>
-                <span class="percentage">0</span>%
+
+                <progress value="0" max="100" class="progress-component"></progress>
+
+                <span class="progress-percentage">0</span>%
 
                 <div class="done hidden">
                     Done! (<span class="duration"></span> seconds)

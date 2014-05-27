@@ -16,10 +16,10 @@ define(function (require, exports, module) {
   function componentsFactory() {
 
     this.loadComponents = function ($jqElement) {
-      var componentsName = $jqElement.data("component")
+      var componentsName = $jqElement.data("component");
 
       myDebug && logger.debug(module.id, "loadComponents(" + componentsName + ")");
-      var componentsToAttach = componentsName.split(',');
+      var componentsToAttach = componentsName.split(",");
       require(componentsToAttach, function () {
         _.forEach(arguments, function (component, i) {
           if (!component || !component.attachTo) {
@@ -27,12 +27,14 @@ define(function (require, exports, module) {
             return;
           }
           component.attachTo($jqElement);
+          $jqElement.addClass("flight-component-attached");
         });
       });
     };
 
     this.searchAndTriggerWidgets = function () {
-      var $dataModules = this.$node.find(".flight-component");
+      var $dataModules = this.$node.find(".flight-component")
+        .not(".flight-component-attached");
       var nbDataModules = $dataModules.length;
 
       myDebug && logger.debug(module.id, nbDataModules + " pending Flight components found.");
@@ -45,6 +47,7 @@ define(function (require, exports, module) {
     // Component initialization
     this.after("initialize", function() {
       this.on("widgetsSearchRequested", this.searchAndTriggerWidgets);
+      this.on("uiContentUpdated", this.searchAndTriggerWidgets);
     });
   }
 

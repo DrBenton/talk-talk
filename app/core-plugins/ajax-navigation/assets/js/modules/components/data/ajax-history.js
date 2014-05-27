@@ -6,6 +6,7 @@ define(function (require, exports, module) {
   var withAlertsCapabilities = require("app-modules/utils/mixins/ui/with-alerts-capabilities");
   var History = require("history");
   var _ = require("lodash");
+  var $ = require("jquery");
   var logger = require("logger");
 
   var myDebug = !false;
@@ -61,7 +62,7 @@ define(function (require, exports, module) {
       // Request a Ajax content loading, unless explicitly requested not to do so
       if (this.loadAjaxContentOnHistoryChange) {
         $(document).trigger("uiNeedsContentAjaxLoading", {
-          url: state.url,
+          url: this.normalizeUrl(state.url),
           target: this.attr.contentContainerToListenSelector
         });
       }

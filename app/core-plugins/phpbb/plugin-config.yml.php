@@ -5,8 +5,8 @@
   actionsUrlsPrefix: /phpbb
   enabledOnlyForUrl:
     - ^/phpbb
-    - ^/sign-in
-    - ^/utils/get-alerts-display
+    - ^/sign-in$
+    - ^/utils/get-ajax-alerts-display$
   actionsBefore:
    - auth.middleware.is-authenticated
 

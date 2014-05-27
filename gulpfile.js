@@ -1,10 +1,17 @@
-var fs = require('fs'),
-    ini = require('ini');
+var fs = require('fs');
+var ini = require('ini');
+// Gulp stuff
+var gulp = require('gulp');
+var livereload = require('gulp-livereload');
+var jshint = require('gulp-jshint');
 
 var appConfig = ini.parse(fs.readFileSync('./app/config/main.ini.php', 'utf-8'));
 
-var gulp = require('gulp'),
-    livereload = require('gulp-livereload');
+gulp.task('jshint', function() {
+  return gulp.src('./app/**/assets/js/**/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
 
 gulp.task('watch', function() {
   var livereloadPort = parseInt(appConfig.debug['livereload.port']);

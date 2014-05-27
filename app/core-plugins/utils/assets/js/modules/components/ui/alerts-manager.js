@@ -3,6 +3,7 @@ define(function (require, exports, module) {
 
   var defineComponent = require("flight").component;
   var $ = require("jquery");
+  var _ = require("lodash");
   var logger = require("logger");
 
   var myDebug = !false;
@@ -44,7 +45,7 @@ define(function (require, exports, module) {
       ];
 
       $.ajax({
-        url: '/utils/get-ajax-alerts-display',
+        url: "/utils/get-ajax-alerts-display",
         data: { alerts: sentAlertsData },
         type: "POST",
         dataType: "text"

@@ -5,6 +5,7 @@ define(function (require, exports, module) {
   var withAlertsCapabilities = require("app-modules/utils/mixins/ui/with-alerts-capabilities");
   var withDateUtils = require("app-modules/utils/mixins/data/with-date-utils");
   var _ = require("lodash");
+  var $ = require("jquery");
   var logger = require("logger");
 
   require("jquery-form");
@@ -60,7 +61,7 @@ define(function (require, exports, module) {
     };
 
     this.onFormSendingSuccess = function(url, loadingStartDate, response, status, xhr) {
-      myDebug && console.log('onFormSendingSuccess() ; args=', arguments);
+      myDebug && logger.log("onFormSendingSuccess() ; args=", arguments);
 
       // "ajaxContentLoadingDone" event dispatch...
       this.trigger("ajaxContentLoadingDone", {

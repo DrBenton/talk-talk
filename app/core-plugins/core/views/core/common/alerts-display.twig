@@ -16,7 +16,7 @@ alerts is not empty %}
          class="alerts-to-display {{ app.isAjax ? 'hidden' : '' }}">
 
         {% if alerts is not empty %}
-            {{ enable_html_hooks('alerts') }}
+            {{ enable_html_hooks('component.alert') }}
             {% for type in ['error', 'success', 'info'] %}
                 {% if alerts[type] is defined %}
                     <div class="alert alert-{{ type }}">
