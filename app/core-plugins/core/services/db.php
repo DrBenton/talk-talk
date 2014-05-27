@@ -36,11 +36,16 @@ $app['db.connection.add'] = $app->protect(
         $DEFAULT_DB_CONNECTION_NAME
     ) {
         $capsule->addConnection($connectionSettings, $connectionName);
+        $connexion = $capsule->getConnection($connectionName);
+
+        if ($app['config']['debug']['perfs.tracking']) {
+            $connexion->enableQueryLog();
+        }
 
         if ($DEFAULT_DB_CONNECTION_NAME !== $connectionName) {
             // We only add the connection if this is not the default one
             // (default connection is already initialized at the end of this file)
-            $connectionResolver->addConnection($connectionName, $capsule->getConnection($connectionName));
+            $connectionResolver->addConnection($connectionName, $connexion);
         }
     }
 );

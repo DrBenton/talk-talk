@@ -23,6 +23,7 @@ $app->after(
             'X-Perfs-Nb-Actions-Registered' => $perfsInfo['nbActionsRegistered'],
             'X-Perfs-Nb-Plugins-Permanently-Disabled' => $perfsInfo['nbPluginsPermanentlyDisabled'],
             'X-Perfs-Nb-Plugins-Disabled-For-Current-URL' => $perfsInfo['nbPluginsDisabledForCurrentUrl'],
+            'X-Perfs-SQL-Nb-Queries' => $perfsInfo['nbSqlQueries'],
         ));
 
         // We add session content too, but avoid to overkill Ajax requests payload

@@ -26,6 +26,9 @@ $app['perfs.perfs_info'] = function () use ($app) {
     $perfsInfo['nbPluginsDisabledForCurrentUrl'] = $pluginsFinder->getNbPluginsDisabledForCurrentUrl();
     // Silex-related info
     $perfsInfo['nbActionsRegistered'] = $app['routes']->count();
+    // SQL stuff
+    $queriesLog = $app['db']->getConnection()->getQueryLog();
+    $perfsInfo['nbSqlQueries'] = count($queriesLog);
 
     return $perfsInfo;
 };

@@ -32,7 +32,8 @@ define(function (require, exports, module) {
         "X-Perfs-Nb-Plugins-Permanently-Disabled": ".nb-plugins-permanently-disabled",
         "X-Perfs-Nb-Plugins-Disabled-For-Current-URL": ".nb-plugins-disabled-for-current-url",
         "X-Perfs-Nb-Actions-Registered": ".nb-actions-registered",
-        "X-Perfs-Session-Content": ".session-content"
+        "X-Perfs-Session-Content": ".session-content",
+        "X-Perfs-SQL-Nb-Queries": ".nb-sql-queries"
       };
 
       _.forEach(headersDomSelectorsMaping, _.bind(function(domSelector, headerName) {
