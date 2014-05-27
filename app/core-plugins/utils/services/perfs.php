@@ -1,23 +1,31 @@
 <?php
 
-$app['perfs.script.duration'] = function () use ($app) {
+$app['perfs.now.time_elapsed'] = function () use ($app) {
     return round(microtime(true) - $app['perfs.start-time'], 3);
 };
 
-$app['perfs.script.nb-included-files'] = function () use ($app) {
+$app['perfs.now.nb_included_files'] = function () use ($app) {
     return count(get_included_files());
 };
 
-$app['perfs.debug-info'] = function () use ($app) {
-    $debugInfo = array();
+$app['perfs.perfs_info'] = function () use ($app) {
+    $perfsInfo = array();
 
+    // Time elapsed, for different app phases
+    $perfsInfo['elapsedTimeNow'] = $app['perfs.now.time_elapsed'];
+    $perfsInfo['elapsedTimeAtBootstrap'] = $app['perfs.bootstrap.time_elapsed'];
+    $perfsInfo['elapsedTimeAtPluginsInit'] = $app['perfs.plugins-init.time_elapsed'];
+    // Number of included files, for different app phases
+    $perfsInfo['nbIncludedFilesNow'] = $app['perfs.now.nb_included_files'];
+    $perfsInfo['nbIncludedFilesAtBootstrap'] = $app['perfs.bootstrap.nb_included_files'];
+    $perfsInfo['nbIncludedFilesAtPluginsInit'] = $app['perfs.plugins-init.nb_included_files'];
     // Plugins-related info
     $pluginsFinder = $app['plugins.finder'];
-    $debugInfo['nbPlugins'] = $pluginsFinder->getNbPlugins();
-    $debugInfo['nbPluginsPermanentlyDisabled'] = $pluginsFinder->getNbPluginsPermanentlyDisabled();
-    $debugInfo['nbPluginsDisabledForCurrentUrl'] = $pluginsFinder->getNbPluginsDisabledForCurrentUrl();
+    $perfsInfo['nbPlugins'] = $pluginsFinder->getNbPlugins();
+    $perfsInfo['nbPluginsPermanentlyDisabled'] = $pluginsFinder->getNbPluginsPermanentlyDisabled();
+    $perfsInfo['nbPluginsDisabledForCurrentUrl'] = $pluginsFinder->getNbPluginsDisabledForCurrentUrl();
     // Silex-related info
-    $debugInfo['nbActionsRegistered'] = $app['routes']->count();
+    $perfsInfo['nbActionsRegistered'] = $app['routes']->count();
 
-    return $debugInfo;
+    return $perfsInfo;
 };

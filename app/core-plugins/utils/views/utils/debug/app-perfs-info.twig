@@ -10,17 +10,17 @@
                 Total number of plugins: <b class="nb-plugins">{{ nbPlugins }}</b>
             </li>
             <li>
-                Time elapsed until this display: <b class="perfs-script-duration">{{ app['perfs.script.duration'] }}</b>s.<br>
-                - time elapsed at bootstrap (before plugins initialization): <b class="perfs-bootstrap-duration">{{ app['perfs.bootstrap.duration'] }}</b>s.<br>
-                - time elapsed at "app ready" (before <code>$app->run()</code>): <b class="perfs-plugins-init.duration">{{ app['perfs.plugins-init.duration'] }}</b>s.
+                Time elapsed until this display: <b class="perfs-elapsed-time-now">{{ elapsedTimeNow }}</b>s.<br>
+                - time elapsed at bootstrap (before plugins initialization): <b class="perfs-elapsed-time-bootstrap">{{ elapsedTimeAtBootstrap }}</b>s.<br>
+                - time elapsed at "app ready" (after Plugins init, just before <code>$app->run()</code>): <b class="perfs-elapsed-time-plugins-init">{{ elapsedTimeAtPluginsInit }}</b>s.
             </li>
             <li class="hidden">
-                QueryPath phase duration: <b class="query-path-duration">N/A</b>
+                QueryPath phase duration: <b class="query-path-duration">N/A</b>s.
             </li>
             <li>
-                Included files: <b class="perfs-script-nb-included-files">{{ app['perfs.script.nb-included-files'] }}</b><br>
-                - at bootstrap phase: <b class="perfs-bootstrap-nb-included-files">{{ app['perfs.bootstrap.nb-included-files'] }}</b><br>
-                - at "app ready" phase : <b class="perfs-plugins-init-nb-included-files">{{ app['perfs.plugins-init.nb-included-files'] }}</b>
+                Included files: <b class="perfs-nb-included-files-now">{{ nbIncludedFilesNow }}</b><br>
+                - at bootstrap phase: <b class="perfs-nb-included-files-bootstrap">{{ nbIncludedFilesAtBootstrap }}</b><br>
+                - at "app ready" phase : <b class="perfs-nb-included-files-plugins-init">{{ nbIncludedFilesAtPluginsInit }}</b>
             </li>
             <li>
                 Permanently disabled plugins: <b class="nb-plugins-permanently-disabled">{{ nbPluginsPermanentlyDisabled }}</b>

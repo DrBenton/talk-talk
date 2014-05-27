@@ -9,7 +9,7 @@ $app['twig'] = $app->share(
                 function () use ($app) {
                     return $app['twig']->render(
                         'utils/debug/app-perfs-info.twig',
-                        $app['perfs.debug-info']
+                        $app['perfs.perfs_info']
                     );
                 },
                 array('is_safe' => array('all'))

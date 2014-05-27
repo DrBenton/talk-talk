@@ -10,20 +10,20 @@ $app->after(
             return;
         }
 
-        $debugInfo = $app['perfs.debug-info'];
+        $perfsInfo = $app['perfs.perfs_info'];
 
         $response->headers->add(array(
-            'X-Perfs-Duration' => $app['perfs.script.duration'],
-            'X-Perfs-Bootstrap-Duration' => $app['perfs.bootstrap.duration'],
-            'X-Perfs-Plugins-Init-Duration' => $app['perfs.plugins-init.duration'],
-            'X-Perfs-Script-Nb-Included-Files' => $app['perfs.script.nb-included-files'],
-            'X-Perfs-Bootstrap-Nb-Included-Files' => $app['perfs.bootstrap.nb-included-files'],
-            'X-Perfs-Plugins-Init-Nb-Included-Files' => $app['perfs.plugins-init.nb-included-files'],
+            'X-Perfs-Elapsed-Time-Now' => $perfsInfo['elapsedTimeNow'],
+            'X-Perfs-Elapsed-Time-Bootstrap' => $perfsInfo['elapsedTimeAtBootstrap'],
+            'X-Perfs-Elapsed-Time-Plugins-Init' => $perfsInfo['elapsedTimeAtPluginsInit'],
+            'X-Perfs-Nb-Included-Files-Now' => $perfsInfo['nbIncludedFilesNow'],
+            'X-Perfs-Nb-Included-Files-Bootstrap' => $perfsInfo['nbIncludedFilesAtBootstrap'],
+            'X-Perfs-Nb-Included-Files-Plugins-Init' => $perfsInfo['nbIncludedFilesAtPluginsInit'],
+            'X-Perfs-Nb-Plugins' => $perfsInfo['nbPlugins'],
+            'X-Perfs-Nb-Actions-Registered' => $perfsInfo['nbActionsRegistered'],
+            'X-Perfs-Nb-Plugins-Permanently-Disabled' => $perfsInfo['nbPluginsPermanentlyDisabled'],
+            'X-Perfs-Nb-Plugins-Disabled-For-Current-URL' => $perfsInfo['nbPluginsDisabledForCurrentUrl'],
             'X-Perfs-Session-Content' => json_encode($app['session']->all()),
-            'X-Perfs-Nb-Plugins' => $debugInfo['nbPlugins'],
-            'X-Perfs-Nb-Actions-Registered' => $debugInfo['nbActionsRegistered'],
-            'X-Perfs-Nb-Plugins-Permanently-Disabled' => $debugInfo['nbPluginsPermanentlyDisabled'],
-            'X-Perfs-Nb-Plugins-Disabled-For-Current-URL' => $debugInfo['nbPluginsDisabledForCurrentUrl'],
         ));
 
         if (isset($app['perfs.querypath.duration'])) {

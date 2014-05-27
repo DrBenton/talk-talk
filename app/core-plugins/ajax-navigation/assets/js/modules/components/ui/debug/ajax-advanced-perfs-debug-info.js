@@ -23,17 +23,17 @@ define(function (require, exports, module) {
       // Lets handle our specific "X-Perfs-*" headers!
 
       var headersDomSelectorsMaping = {
-        "X-Perfs-Duration": ".perfs-script-duration",
-        "X-Perfs-Bootstrap-Duration": ".perfs-bootstrap-duration",
-        "X-Perfs-Plugins-Init-Duration": ".perfs-plugins-init.duration",
-        "X-Perfs-Script-Nb-Included-Files": ".perfs-script-nb-included-files",
-        "X-Perfs-Bootstrap-Nb-Included-Files": ".perfs-bootstrap-nb-included-files",
-        "X-Perfs-Plugins-Init-Nb-Included-Files": ".perfs-plugins-init-nb-included-files",
-        "X-Perfs-Session-Content": ".session-content",
+        "X-Perfs-Elapsed-Time-Now": ".perfs-elapsed-time-now",
+        "X-Perfs-Elapsed-Time-Bootstrap": ".perfs-elapsed-time-bootstrap",
+        "X-Perfs-Elapsed-Time-Plugins": ".perfs-elapsed-time-plugins-init",
+        "X-Perfs-Nb-Included-Files-Now": ".perfs-nb-included-files-now",
+        "X-Perfs-Nb-Included-Files-Bootstrap": ".perfs-nb-included-files-bootstrap",
+        "X-Perfs-Nb-Included-Files-Plugins-Init": ".perfs-nb-included-files-plugins-init",
         "X-Perfs-Nb-Plugins": ".nb-plugins",
         "X-Perfs-Nb-Plugins-Permanently-Disabled": ".nb-plugins-permanently-disabled",
         "X-Perfs-Nb-Plugins-Disabled-For-Current-URL": ".nb-plugins-disabled-for-current-url",
-        "X-Perfs-Nb-Actions-Registered": ".nb-actions-registered"
+        "X-Perfs-Nb-Actions-Registered": ".nb-actions-registered",
+        "X-Perfs-Session-Content": ".session-content"
       };
 
       _.forEach(headersDomSelectorsMaping, _.bind(function(domSelector, headerName) {

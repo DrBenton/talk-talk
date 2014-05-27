@@ -68,14 +68,18 @@ return function (Request $request) {
     $loadBootstrapService('cache');
 
     // Some performances-related stats
-    $app['perfs.bootstrap.duration'] = round(microtime(true) - $app['perfs.start-time'], 3);
-    $app['perfs.bootstrap.nb-included-files'] = count(get_included_files());
+    if ($app['config']['debug']['perfs.tracking']) {
+        $app['perfs.bootstrap.time_elapsed'] = round(microtime(true) - $app['perfs.start-time'], 3);
+        $app['perfs.bootstrap.nb_included_files'] = count(get_included_files());
+    }
 
     // Plugins init!
     require_once __DIR__ . '/plugins-init.php';
 
-    $app['perfs.plugins-init.duration'] = round(microtime(true) - $app['perfs.start-time'], 3);
-    $app['perfs.plugins-init.nb-included-files'] = count(get_included_files());
+    if ($app['config']['debug']['perfs.tracking']) {
+        $app['perfs.plugins-init.time_elapsed'] = round(microtime(true) - $app['perfs.start-time'], 3);
+        $app['perfs.plugins-init.nb_included_files'] = count(get_included_files());
+    }
 
     return $app;
 };
