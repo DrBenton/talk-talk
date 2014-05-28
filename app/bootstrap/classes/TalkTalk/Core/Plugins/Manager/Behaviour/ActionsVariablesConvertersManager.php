@@ -21,7 +21,7 @@ class ActionsVariablesConvertersManager extends BehaviourBase
     }
 
     /**
-     * @param string $converterName
+     * @param  string   $converterName
      * @return \Closure
      */
     public function getActionVariableConverter($converterName)
@@ -37,6 +37,7 @@ class ActionsVariablesConvertersManager extends BehaviourBase
         $__converterFilePath = $this->converters[$converterName];
         $converterWrapper = function ($paramValue) use ($__pluginsManager, $__converterFilePath) {
             $converterClosure = $__pluginsManager->includeFileInIsolatedClosure($__converterFilePath);
+
             return $converterClosure($paramValue);
         };
 

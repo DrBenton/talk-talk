@@ -16,7 +16,7 @@ $action = function (Application $app, Request $request, Topic $topic) {
     $pageNum = $request->query->get('page', 1);
     if ('last' === $pageNum) {
         $pageNum = ceil($nbPostsTotal / $app['forum-base.pagination.posts.nb_per_page']);
-    } else if (!is_numeric($pageNum)) {
+    } elseif (!is_numeric($pageNum)) {
         $pageNum = 1;
     }
 

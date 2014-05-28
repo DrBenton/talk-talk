@@ -68,7 +68,7 @@ return function (Request $request) {
     $loadBootstrapService('cache');
 
     // Some performances-related stats
-    if ($app['config']['debug']['perfs.tracking']) {
+    if ($app['config']['debug']['perfs.tracking.enabled']) {
         $app['perfs.bootstrap.time_elapsed'] = round(microtime(true) - $app['perfs.start-time'], 3);
         $app['perfs.bootstrap.nb_included_files'] = count(get_included_files());
     }
@@ -76,7 +76,7 @@ return function (Request $request) {
     // Plugins init!
     require_once __DIR__ . '/plugins-init.php';
 
-    if ($app['config']['debug']['perfs.tracking']) {
+    if ($app['config']['debug']['perfs.tracking.enabled']) {
         $app['perfs.plugins-init.time_elapsed'] = round(microtime(true) - $app['perfs.start-time'], 3);
         $app['perfs.plugins-init.nb_included_files'] = count(get_included_files());
     }

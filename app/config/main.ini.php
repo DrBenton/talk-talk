@@ -6,8 +6,10 @@
 debug = true
 livereload = false
 livereload.port = 35729
-perfs.tracking = true
-perfs.tracking.display_sql_queries = true
+perfs.tracking.enabled = true
+perfs.tracking.session_content.max_length = 250
+perfs.tracking.sql_queries.enabled = true
+perfs.tracking.sql_queries.max_length = 20
 
 [data-cache]
 enabled = false

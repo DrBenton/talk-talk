@@ -2,6 +2,7 @@
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use TalkTalk\CorePlugins\PhpBb\Model\Forum as PhpBbForum;
 
 $action = function (Application $app, Request $request) {
 
@@ -13,8 +14,10 @@ $action = function (Application $app, Request $request) {
     // Let's check these DB connection settings!
     try {
         $app['phpbb.db.init']($dbSettings);
-        $phpBbDbConnection = $app['db']->getConnection($app['phpbb.db.connection.name']);
-        $success = true;
+        $randomForum = PhpBbForum::query()->take(1)->get()->first();
+        if (null !== $randomForum) {
+            $success = true;
+        }
     } catch (\PDOException $e) {
         $errMsg = array(
             'message' => $app['translator']->trans(

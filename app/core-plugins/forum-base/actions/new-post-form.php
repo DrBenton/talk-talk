@@ -5,8 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use TalkTalk\Model\Post;
 use TalkTalk\Model\Topic;
 
-$action = function (Application $app, Request $request, Topic $topic)
-{
+$action = function (Application $app, Request $request, Topic $topic) {
 
     $topic->load('author');
 
@@ -17,7 +16,7 @@ $action = function (Application $app, Request $request, Topic $topic)
     // First & Last Posts
     $firstPost = $topic->firstPost();
     $lastPosts = $topic->lastPosts(3);
-    $lastPosts = array_filter($lastPosts, function(Post $post) use($firstPost) {
+    $lastPosts = array_filter($lastPosts, function (Post $post) use ($firstPost) {
         return $firstPost->id != $post->id;
     });
 

@@ -53,7 +53,7 @@ class PluginsManager implements PluginsManagerInterface
      * Includes a file within an isolated Closure, and returns its result (if any).
      * The file PHP core will only have access to a "$app" variable.
      *
-     * @param  string $filePath
+     * @param  string                                                       $filePath
      * @throws \Symfony\Component\Security\Core\Exception\DisabledException
      * @return mixed
      */
@@ -61,13 +61,17 @@ class PluginsManager implements PluginsManagerInterface
     {
         $app = $this->getApp();
 
+        if (!file_exists($filePath)) {
+            throw new \RuntimeException(sprintf('File path "%s" not found!', $filePath));
+        }
+
         // A small security check: we only allow files inside the app
-        $filePath = realpath($filePath);
-        if (0 !== strpos($filePath, $app['app.path'])) {
+        $fileRealPath = realpath($filePath);
+        if (0 !== strpos($fileRealPath, $app['app.path'])) {
             throw new DisabledException(sprintf('File path "%s" is not inside app directory!', $filePath));
         }
 
-        $__includedFilePath = $filePath;
+        $__includedFilePath = $fileRealPath;
 
         return call_user_func(
             function () use (&$app, $__includedFilePath) {

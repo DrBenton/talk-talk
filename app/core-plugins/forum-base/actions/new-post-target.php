@@ -5,8 +5,7 @@ use Symfony\Component\HttpFoundation\Request;
 use TalkTalk\Model\Post;
 use TalkTalk\Model\Topic;
 
-$action = function (Application $app, Request $request, Topic $topic)
-{
+$action = function (Application $app, Request $request, Topic $topic) {
 
     //TODO: validation
 

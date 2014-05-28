@@ -27,6 +27,7 @@ class SettingsManager
 
         if (null === $data) {
             $this->lightDataCache[$key] = null;
+
             return $default;
         }
 

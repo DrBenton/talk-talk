@@ -99,7 +99,7 @@ class ActionsManager extends BehaviourBase
     }
 
     /**
-     * @param  string $actionFilePath the file path, without the ".php" extension (will be appended automatically)
+     * @param  string                                                       $actionFilePath the file path, without the ".php" extension (will be appended automatically)
      * @throws \Symfony\Component\Security\Core\Exception\DisabledException
      * @return mixed
      */

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 $app->after(
     function (Request $request, Response $response) use ($app) {
 
-        if (!$app['config']['debug']['perfs.tracking']) {
+        if (!$app['config']['debug']['perfs.tracking.enabled']) {
             return;
         }
 
@@ -29,7 +29,7 @@ $app->after(
         // We add session content too, but avoid to overkill Ajax requests payload
         // if we have a lot of data in session
         $sessionContent = json_encode($app['session']->all());
-        $sessionContentStrMaxLength = 250;
+        $sessionContentStrMaxLength = $app['config']['debug']['perfs.tracking.session_content.max_length'];
         $sessionContent = (strlen($sessionContent) > $sessionContentStrMaxLength)
             ? substr($sessionContent, 0, $sessionContentStrMaxLength) . ' ... [truncated] }'
             : $sessionContent;
@@ -37,7 +37,8 @@ $app->after(
 
         // Do we send SQL queries detail?
         if (isset($perfsInfo['sqlQueries'])) {
-            $response->headers->set('X-Perfs-SQL-Queries', json_encode($perfsInfo['sqlQueries']));
+            $sqlQueries = array_slice($perfsInfo['sqlQueries'], 0, $app['config']['debug']['perfs.tracking.sql_queries.max_length']);
+            $response->headers->set('X-Perfs-SQL-Queries', json_encode($sqlQueries));
         }
 
         if (isset($app['perfs.querypath.duration'])) {

@@ -38,7 +38,10 @@ $app['db.connection.add'] = $app->protect(
         $capsule->addConnection($connectionSettings, $connectionName);
         $connexion = $capsule->getConnection($connectionName);
 
-        if ($app['config']['debug']['perfs.tracking']) {
+        if (
+            $app['config']['debug']['perfs.tracking.enabled'] &&
+            $app['config']['debug']['perfs.tracking.sql_queries.enabled']
+        ) {
             $connexion->enableQueryLog();
         }
 

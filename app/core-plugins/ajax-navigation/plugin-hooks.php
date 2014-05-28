@@ -2,14 +2,14 @@
 
 use QueryPath\DOMQuery;
 
-$hooks['html.site_container'] = function (DOMQuery $html) use ($app)  {
+$hooks['html.site_container'] = function (DOMQuery $html) use ($app) {
     // Add the "Ajax links handler" JS behaviour to #site-container
     $siteContainer = $html->find('#site-container');
     $component = 'app-modules/ajax-nav/components/ajax-navigation';
     $app['html-components.add_component']($siteContainer, $component);
 };
 
-$hooks['html.perfs_info'] = function (DOMQuery $html) use ($app)  {
+$hooks['html.perfs_info'] = function (DOMQuery $html) use ($app) {
     $debugInfo = $html->find('#perfs-info');
 
     // 1) "Advanced perfs" debug info Component

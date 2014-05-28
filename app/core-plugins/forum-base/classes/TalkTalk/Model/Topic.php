@@ -57,7 +57,7 @@ class Topic extends ModelWithMetadata
     }
 
     /**
-     * @param int $nbPosts
+     * @param  int   $nbPosts
      * @return array an array of \TalkTalk\Model\Post instances
      */
     public function lastPosts($nbPosts)
