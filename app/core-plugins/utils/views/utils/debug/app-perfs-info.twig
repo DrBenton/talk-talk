@@ -34,8 +34,22 @@
             <li>
                 Actions registered: <b class="nb-actions-registered">{{ nbActionsRegistered }}</b>
             </li>
+            {% if sqlQueries is defined  %}
+                <li>
+                    <span class="nb-sql-queries">{{ nbSqlQueries }}</span> SQL queries:
+                    <ul class="sql-queries">
+                        {% for query in sqlQueries %}
+                            <li>
+                                <b>{{ query.time }}</b>ms. :
+                                <i>{{ query.query }}</i>
+                                - bindings: <i>{{ query.bindings|json_encode }}</i>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endif %}
             <li>
-                Session content: <pre class="session-content">{{ app.session.all|json_encode() }}</pre>
+                Session content: <pre class="session-content">{{ app.session.all|json_encode }}</pre>
             </li>
         </ul>
     </fieldset>

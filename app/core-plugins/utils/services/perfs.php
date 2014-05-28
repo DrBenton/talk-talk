@@ -29,6 +29,10 @@ $app['perfs.perfs_info'] = function () use ($app) {
     // SQL stuff
     $queriesLog = $app['db']->getConnection()->getQueryLog();
     $perfsInfo['nbSqlQueries'] = count($queriesLog);
+    // Do we add SQL queries detail?
+    if ($app['config']['debug']['perfs.tracking.display_sql_queries']) {
+        $perfsInfo['sqlQueries'] = $queriesLog;
+    }
 
     return $perfsInfo;
 };

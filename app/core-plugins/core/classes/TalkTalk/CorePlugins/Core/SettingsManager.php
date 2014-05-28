@@ -23,7 +23,7 @@ class SettingsManager
             return $this->lightDataCache[$key];
         }
 
-        $data = SettingModel::find($key);
+        $data = SettingModel::find($key, array('value'));
 
         if (null === $data) {
             $this->lightDataCache[$key] = null;

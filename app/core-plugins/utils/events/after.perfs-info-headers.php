@@ -35,6 +35,11 @@ $app->after(
             : $sessionContent;
         $response->headers->set('X-Perfs-Session-Content', $sessionContent);
 
+        // Do we send SQL queries detail?
+        if (isset($perfsInfo['sqlQueries'])) {
+            $response->headers->set('X-Perfs-SQL-Queries', json_encode($perfsInfo['sqlQueries']));
+        }
+
         if (isset($app['perfs.querypath.duration'])) {
             $response->headers->set(
                 'X-Perfs-QueryPath-Duration',

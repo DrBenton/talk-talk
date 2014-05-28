@@ -7,6 +7,7 @@ debug = true
 livereload = false
 livereload.port = 35729
 perfs.tracking = true
+perfs.tracking.display_sql_queries = true
 
 [data-cache]
 enabled = false

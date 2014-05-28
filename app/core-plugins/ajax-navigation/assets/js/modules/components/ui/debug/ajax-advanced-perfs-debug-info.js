@@ -49,6 +49,23 @@ define(function (require, exports, module) {
           .text(queryPathDuration)
           .closest("li").removeClass("hidden");
       }
+
+      // X-Perfs-SQL-Queries
+      var sqlQueries = data.getResponseHeader("X-Perfs-SQL-Queries");
+      if (sqlQueries) {
+        sqlQueries = JSON.parse(sqlQueries);
+        var sqlQueriesHtml = "";
+        _.forEach(sqlQueries, function(query) {
+          sqlQueriesHtml += "\
+          <li>\
+            <b>"+query.time+"</b>ms. :\
+            <i>"+query.query+"</i>\
+          - bindings: <i>"+JSON.stringify(query.bindings)+"</i>\
+          </li>";
+        });
+        this.$node.find(".sql-queries")
+          .html(sqlQueriesHtml);
+      }
     };
 
     // Component initialization
