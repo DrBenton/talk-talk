@@ -16,6 +16,7 @@ define(function (require, exports, module) {
   var ajaxBreadcrumbHandler = require("./ui/ajax-breadcrumb-handler");
   var ajaxContentLoader = require("./data/ajax-content-loader");
   var ajaxHistory = require("./data/ajax-history");
+  var ajaxContentLoadingDisplay = require("./ui/ajax-content-loading-display");
 
   var myDebug = !false;
 
@@ -57,6 +58,8 @@ define(function (require, exports, module) {
         contentContainerToListenSelector: this.mainContentContainerSelector
       });
 
+      // The "Ajax content loading display" "node agnostic" too.
+      ajaxContentLoadingDisplay.attachTo(varsRegistry.$document);
     };
 
     this.handleInitialMainContent = function() {

@@ -13,6 +13,8 @@ $hooks['html.main_content_container'] = function (DOMQuery $html) {
     $mainContentContainer = $html->find('#main-content-container');
     $mainContentContainer->addClass('panel panel-default');
     $mainContentContainer->find('#main-content')->addClass('panel-body');
+    // Let's append a "loading Ajax content..." area
+    $mainContentContainer->append('<div class="loading-ajax-content-area"></div>');
 };
 
 $hooks['html.header'] = function (DOMQuery $html) {
