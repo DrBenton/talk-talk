@@ -5,9 +5,11 @@
     "Olivier Philippon <olivier@rougemine.com>"
   ],
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-less": "~0.9.0",
-    "grunt-contrib-watch": "~0.5.3"
+    "gulp": "^3.6.2",
+    "gulp-changed": "^0.3.0",
+    "gulp-less": "^1.2.3",
+    "gulp-livereload": "^1.5.0",
+    "gulp-watch": "^0.6.5"
   },
   "license": "GPL v2",
   "private": true
