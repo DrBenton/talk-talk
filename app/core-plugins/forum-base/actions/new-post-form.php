@@ -13,9 +13,11 @@ $action = function (Application $app, Request $request, Topic $topic) {
         'forum-base/topic', array('topic' => $topic->id)
     );
 
-    // First & Last Posts
+    // First & last Posts
     $firstPost = $topic->firstPost();
     $lastPosts = $topic->lastPosts(3);
+
+    // Don't display the first Post in the last Posts list
     $lastPosts = array_filter($lastPosts, function (Post $post) use ($firstPost) {
         return $firstPost->id != $post->id;
     });
@@ -27,18 +29,28 @@ $action = function (Application $app, Request $request, Topic $topic) {
     $breadcrumb[] = array(
         'url' => $topicUrl,
         'label' => 'core-plugins.forum-base.breadcrumb.topic',
-        'labelParams' => array('%name%' => $topic->name),
+        'labelParams' => array('%title%' => $topic->title),
     );
     $breadcrumb[] = array(
         'url' => $app['url_generator']->generate('forum-base/new-post-form', array('topic' => $topic->id)),
         'label' => 'core-plugins.forum-base.breadcrumb.new_post'
     );
 
+    $post = $request->get('post');
+    if (null === $post) {
+        $post = new Post(array(
+            'title' => $app['translator']->trans(
+                'core-plugins.forum-base.new-post.form.title-default-content',
+                array('%topic-title%' => $topic->title)
+            )
+        ));
+    }
+
     return $app['twig']->render(
         'forum-base/new-post-form.twig',
         array(
             'topic' => $topic,
-            'post' => $request->get('post', new Post(array('title' => $topic->name))),
+            'post' => $post,
             'firstPost' => $firstPost,
             'lastPosts' => $lastPosts,
             'breadcrumb' => $breadcrumb,

@@ -16,6 +16,7 @@ node_modules/
 
 # App specific
 /app/var/**/*
+/app/data/db/migrations-populated.sql
 
 # Plugins specific
 /plugins/*/assets/components/

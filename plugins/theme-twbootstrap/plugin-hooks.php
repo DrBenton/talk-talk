@@ -262,9 +262,12 @@ $hooks['html.create_new_post_link'] = function (DOMQuery $html) {
         ->attr('role', 'button');
 };
 
-$hooks['html.page.new_post_form'] = function (DOMQuery $html) {
+$hooks['html.page.new_topic_form'] = $hooks['html.page.new_post_form'] = function (DOMQuery $html) {
     // List desc
     $html->find('.list-desc')->addClass('lead');
+    // A small icon on the "submit" button
+    $html->find('form.post-content-form .submit-button')
+        ->prepend('<span class="glyphicon glyphicon-send"></span>');
 };
 
 $hooks['html.component.progress'] = function (DOMQuery $html) use ($app, $myComponentsUrl) {
@@ -286,3 +289,8 @@ $hooks['html.component.progress'] = function (DOMQuery $html) use ($app, $myComp
     );
 };
 
+$hooks['html.phpbb_db_settings_form'] = function (DOMQuery $html) {
+    // A small icon on the "submit" button
+    $html->find('form#phpbb-import-start-form .submit-button')
+        ->prepend('<span class="glyphicon glyphicon-wrench"></span>');
+};

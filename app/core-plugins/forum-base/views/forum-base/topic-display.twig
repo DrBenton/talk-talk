@@ -30,7 +30,7 @@
     {{ enable_html_hooks('page.topic', 'topic') }}
     <div class="topic-container">
         <div class="topic">
-            <h2 class="topic-title">{{ topic.name }}</h2>
+            <h2 class="topic-title">{{ topic.title }}</h2>
             <div class="topic-desc">
                 Created {{ topic.created_at|from_now }} by
                 <span class="topic-author">{{ topic.author.login }}</span><br>

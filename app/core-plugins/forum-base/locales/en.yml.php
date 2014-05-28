@@ -3,8 +3,9 @@
 core-plugins:
   forum-base:
     breadcrumb:
-      forum: Forum "%name%"
-      topic: Topic "%name%"
+      forum: Forum "%title%"
+      topic: Topic "%title%"
+      new_topic: New Topic
       new_post: New Post
     home:
       title: Welcome to <span class="site-title">%site-title%</span>
@@ -14,11 +15,19 @@ core-plugins:
     posts-list:
       no-post: There is no Post here for the moment.
       create-new-post: Answer to this Topic
+    new-topic:
+      form:
+        title: Title
+        content: Topic message content
+        submit: Post this new Topic!
+      alerts:
+        new-topic-successful: Your Topic has been successfully created!
     new-post:
       form:
         title: Title
         content: Message content
         submit: Post this!
+        title-default-content: Re: %topic-title%
       topic-posts-summary:
         intro: >
           Topic summary:

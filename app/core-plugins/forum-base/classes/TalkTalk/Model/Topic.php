@@ -5,6 +5,25 @@ namespace TalkTalk\Model;
 class Topic extends ModelWithMetadata
 {
 
+    protected $fillable = array('title', 'content');
+
+    protected $attributes = array(
+        'title' => '',
+        'content' => '',
+    );
+
+    /**
+     * @inheritdoc
+     */
+    public function save(array $options = array())
+    {
+        // Our "content" attribute is virtual: in fact, it is used to create a new Post.
+        // --> let's unset this attribute before save!
+        unset($this->attributes['content']);
+
+        parent::save($options);
+    }
+
     public function forum()
     {
         return Forum::find($this->forum_id);
@@ -28,11 +47,11 @@ class Topic extends ModelWithMetadata
         static $firstPost;
 
         if (!isset($firstPost)) {
-            $firstPost = Post::where('topic_id', '=', $this->id)
+            $firstPost = Post::with('author')
+                ->where('topic_id', '=', $this->id)
                 ->orderBy('created_at', 'ASC')
                 ->take(1)
-                ->first()
-                ->load('author');
+                ->first();
         }
 
         return $firstPost;
@@ -46,11 +65,11 @@ class Topic extends ModelWithMetadata
         static $lastPost;
 
         if (!isset($lastPost)) {
-            $lastPost = Post::where('topic_id', '=', $this->id)
+            $lastPost = Post::with('author')
+                ->where('topic_id', '=', $this->id)
                 ->orderBy('created_at', 'DESC')
                 ->take(1)
-                ->first()
-                ->load('author');
+                ->first();
         }
 
         return $lastPost;

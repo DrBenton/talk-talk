@@ -19,6 +19,27 @@
     converters:
       forum: forum-id
   -
+    # GET /forum/ID/topics/new => actions/new-topic-form.php
+    # (authentication required)
+    url: /forum/{forum}/topics/new
+    target: new-topic-form
+    name: forum-base/new-topic-form
+    converters:
+      forum: forum-id
+    before:
+      - auth.middleware.is-authenticated
+  -
+    # POST /forum/ID/topics => actions/new-topic-target.php
+    # (authentication required)
+    url: /topic/{forum}/topics
+    target: new-topic-target
+    name: forum-base/new-topic-form/target
+    method: POST
+    converters:
+      forum: forum-id
+    before:
+      - auth.middleware.is-authenticated
+  -
     # GET /topic/ID => actions/topic-display.php
     url: /topic/{topic}
     target: topic-display
@@ -67,4 +88,5 @@
   - filter.bbcode-to-html
 
 @hooks:
+  - html.new_topic_form
   - html.new_post_form

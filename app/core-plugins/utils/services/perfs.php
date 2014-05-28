@@ -49,7 +49,7 @@ $app['perfs.perfs_info'] = $app->share(
             $perfsInfo['sqlQueries'] = $defaultConnectionLog['sqlQueries'];
         }
         // Do we have a active phpBb connection?
-        if (isset($app['phpbb.db.connection.name'])) {
+        if (isset($app['phpbb.db.initialized']) && $app['phpbb.db.initialized']) {
             // It seems we do! Let's add its SQL queries log
             $phpbbConnectionLog = $app['perfs.perfs_info.sql.get_connection_log']($app['phpbb.db.connection.name']);
             $perfsInfo['nbSqlQueries'] += $phpbbConnectionLog['nbSqlQueries'];

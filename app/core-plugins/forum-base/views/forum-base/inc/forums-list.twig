@@ -8,7 +8,7 @@
                         <h3 class="forum-title">
                             <a href="{{ path('forum-base/forum', {forum: forum.id}) }}"
                                class="forum-link root-forum-link ajax-link">
-                                {{ forum.name }}
+                                {{ forum.title }}
                             </a>
                             <span class="badge">{{ forum.nb_posts }}</span>
                         </h3>
@@ -22,7 +22,7 @@
                                         <h5>
                                             <a href="{{ path('forum-base/forum', {forum: childForum.id}) }}"
                                                class="forum-link child-forum-link ajax-link">
-                                                {{ childForum.name }}
+                                                {{ childForum.title }}
                                             </a>
                                             <span class="badge">{{ childForum.nb_posts }}</span>
                                         </h5>

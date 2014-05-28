@@ -1,6 +1,6 @@
 {% extends app.isAjax ? "ajax-navigation/layouts/ajax-layout.twig" : "core/layouts/main-layout.twig" %}
 
-{% macro new_topic_link() %}
+{% macro new_topic_link(forumId) %}
     {% if app.isAnonymous %}
         {{ enable_html_hooks('authentication_required_msg') }}
         <div class="authentication-required-msg">
@@ -11,11 +11,10 @@
         </div>
     {% else %}
         {{ enable_html_hooks('create_new_topic_link') }}
-        <a href="#"
+        <a href="{{ path('forum-base/new-topic-form', {forum: forumId}) }}"
            class="create-new-topic-link ajax-link">
             {{ 'core-plugins.forum-base.topics-list.create-new-topic'|trans }}
         </a>
-        <code>[TODO]</code>
     {% endif %}
 {% endmacro %}
 
@@ -32,7 +31,7 @@
     <div class="forum-container parent-forum level-{{ forum.depth }}"
         data-forum-id="{{ forum.id }}">
         <div class="forum">
-            <h2 class="forum-title">{{ forum.name }}</h2>
+            <h2 class="forum-title">{{ forum.title }}</h2>
             <div class="forum-desc">{{ forum.desc }}</div>
         </div>{# end .forum #}
     </div>{# end .forum-container #}
@@ -48,12 +47,12 @@
 
     {% include 'utils/common/pagination.twig' with paginationData %}
 
-    {{ my_macros.new_topic_link() }}
+    {{ my_macros.new_topic_link(forum.id) }}
 
     {% include 'forum-base/inc/topics-list.twig' with {topics: topics} %}
 
     {% if topics is not empty %}
-        {{ my_macros.new_topic_link() }}
+        {{ my_macros.new_topic_link(forum.id) }}
     {% endif %}
 
     {% include 'utils/common/pagination.twig' with paginationData %}

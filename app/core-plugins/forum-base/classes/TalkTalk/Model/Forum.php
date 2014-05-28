@@ -132,7 +132,7 @@ class Forum extends ModelWithMetadata
                 ->orderBy('id')
                 ->get();
 
-            // Cache management
+            // Cache management: we won't have to do all this stuff again
             $allForumsRaw = array();
             foreach ($allForums as $forum) {
                 $allForumsRaw[] = $forum->attributesToArray();

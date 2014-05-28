@@ -78,7 +78,7 @@ define(function (require, exports, module) {
       return this.ajaxPromise({
         url: serviceUrl,
         dataType: "json",
-        type: "POST"
+        type: "GET"
       })
         .then(
           _.bind(this.onItemsTypeImportMetadataSuccess, this, itemsType)

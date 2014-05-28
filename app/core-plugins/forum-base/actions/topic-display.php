@@ -53,7 +53,7 @@ $action = function (Application $app, Request $request, Topic $topic) {
     $breadcrumb[] = array(
         'url' => $topicUrl,
         'label' => 'core-plugins.forum-base.breadcrumb.topic',
-        'labelParams' => array('%name%' => $topic->name),
+        'labelParams' => array('%title%' => $topic->title),
     );
 
     return $app['twig']->render('forum-base/topic-display.twig',

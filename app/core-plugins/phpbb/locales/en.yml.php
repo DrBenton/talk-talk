@@ -20,6 +20,7 @@ core-plugins:
           charset.help: If you don't know what to put here, just leave the default value.
           collation: Database characters collation
           collation.help: If you don't know what to put here, just leave the default value.
+          submit: Connect to phpBb database
         db-error: >
           Humm... It seems that the phpBb database access you provided
           are not correct.<br>

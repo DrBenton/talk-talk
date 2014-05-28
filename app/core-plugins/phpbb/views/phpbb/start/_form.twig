@@ -1,11 +1,10 @@
-{{ enable_html_hooks('form', 'dataimport_phpbb_form') }}
-<form id="dataimport-phpbb-start-form" role="form"
+{{ enable_html_hooks('form', 'phpbb_db_settings_form') }}
+<form id="phpbb-import-start-form" role="form"
       action="{{ path('phpbb/import/start/target') }}"
       method="post"
       class="ajax-form">
 
-    <input type="hidden" name="{{ app['csrf.token_name'] }}"
-           value="{{ app['csrf.token_value'] }}">
+    {% include 'core/common/csrf-hidden-input.twig' %}
 
     <fieldset id="core-inputs">
 
@@ -156,7 +155,9 @@
 
     <div class="form-group submit">
         <div class="input-container">
-            <input type="submit" class="submit-button">
+            <button type="submit" class="submit-button">
+                {{ 'core-plugins.phpbb.import.start.form.submit'|trans }}
+            </button>
         </div>
     </div>
 

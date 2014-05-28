@@ -1,0 +1,60 @@
+{% extends app.isAjax ? "ajax-navigation/layouts/ajax-layout.twig" : "core/layouts/main-layout.twig" %}
+
+{% block breadcrumb %}
+    {% include 'core/common/breadcrumb.twig' %}
+{% endblock %}
+
+{% block content %}
+    <span class="ajax-loading-data" data-ajax-cache="{{ {duration: 30} |json_encode() }}"></span>
+
+    {{ enable_html_hooks('page.new_topic_form') }}
+
+    {{ enable_html_hooks('form', 'new_topic_form') }}
+    <form id="new-topic-form" role="form"
+          action="{{ path('forum-base/new-topic-form/target', {forum: forum.id}) }}"
+          method="post"
+          class="new-topic-form post-content-form ajax-form">
+
+        {% include 'core/common/csrf-hidden-input.twig' %}
+
+        <fieldset id="core-inputs">
+
+            <div class="form-group title">
+                <label for="new-topic-input-title">
+                    {{ 'core-plugins.forum-base.new-topic.form.title'|trans }}
+                </label>
+
+                <div class="input-container">
+                    <input type="text" name="topic[title]"
+                           id="new-topic-input-title"
+                           class="input input-text title"
+                           value="{{ topic.title }}"
+                           required>
+                </div>
+            </div>
+
+            <div class="form-group content">
+                <label for="new-topic-input-content">
+                    {{ 'core-plugins.forum-base.new-topic.form.content'|trans }}
+                </label>
+
+                <div class="input-container">
+                    <textarea type="text" name="topic[content]"
+                           id="new-topic-input-content"
+                           class="input input-text content"
+                           required>{{ topic.content }}</textarea>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="form-group submit">
+            <div class="input-container">
+                <button type="submit" class="submit-button">
+                    {{ 'core-plugins.forum-base.new-topic.form.submit'|trans }}
+                </button>
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

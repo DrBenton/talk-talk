@@ -30,10 +30,9 @@
     name: phpbb/import/importing
     before: phpbb.middleware.require-phpbb-connection-settings
   -
-    # POST /phpbb/import/importing/import-XXX/metadata => actions/data-import/XXX-import-metadata.php
+    # GET /phpbb/import/importing/import-XXX/metadata => actions/data-import/XXX-import-metadata.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
     url: /import/importing/import-{itemType}/metadata
-    method: POST
     target: data-import/{itemType}-import-metadata
     before: phpbb.middleware.require-phpbb-connection-settings
     requirements:

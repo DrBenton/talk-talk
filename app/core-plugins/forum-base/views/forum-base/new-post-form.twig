@@ -13,10 +13,9 @@
     <form id="new-post-form" role="form"
           action="{{ path('forum-base/new-post-form/target', {topic: topic.id}) }}"
           method="post"
-          class="new-post-form ajax-form">
+          class="new-post-form post-content-form ajax-form">
 
-        <input type="hidden" name="{{ app['csrf.token_name'] }}"
-               value="{{ app['csrf.token_value'] }}">
+        {% include 'core/common/csrf-hidden-input.twig' %}
 
         <fieldset id="core-inputs">
 
@@ -26,7 +25,7 @@
                 </label>
 
                 <div class="input-container">
-                    <input type="text" name="newPost[title]"
+                    <input type="text" name="post[title]"
                            id="new-post-input-title"
                            class="input input-text title"
                            value="{{ post.title }}"
@@ -51,8 +50,9 @@
 
         <div class="form-group submit">
             <div class="input-container">
-                <input type="submit" class="submit-button"
-                       value="{{ 'core-plugins.forum-base.new-post.form.submit'|trans }}">
+                <button type="submit" class="submit-button">
+                       {{ 'core-plugins.forum-base.new-post.form.submit'|trans }}
+                </button>
             </div>
         </div>
 

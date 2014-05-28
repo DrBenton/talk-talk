@@ -16,7 +16,7 @@ $app['forum-base.html.breadcrumb.get_single_forum'] = $app->protect(
         return array(
             'url' => $app['url_generator']->generate('forum-base/forum', array('forum' => $forum->id)),
             'label' => 'core-plugins.forum-base.breadcrumb.forum',
-            'labelParams' => array('%name%' => $forum->name),
+            'labelParams' => array('%title%' => $forum->title),
         );
     }
 );

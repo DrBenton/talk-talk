@@ -10,10 +10,10 @@
             {% for topic in topics %}
                 <div class="topic-container">
                     <div class="topic">
-                        <h4 class="topic-name">
+                        <h4 class="topic-title">
                             <a href="{{ path('forum-base/topic', {topic: topic.id}) }}"
                                class="ajax-link">
-                                {{ topic.name }} - {{ topic.nb_replies }} replies
+                                {{ topic.title }} - {{ topic.nb_replies }} replies
                             </a>
                         </h4>
 
