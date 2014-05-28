@@ -1,11 +1,15 @@
 (function () {
   "use strict";
 
-  var debug = true;//TODO: handle it cleanly somewhere else
+  var appConfigData = JSON.parse(
+    document.getElementById("app-config-data").getAttribute("data-config")
+  );
+
+  var debug = appConfigData['debug'];
   var minExt = (debug) ? "" : ".min" ;
 
   require.config({
-    baseUrl: "/",
+    baseUrl: appConfigData['base_url'] + "/",
     paths: {
       // App core Plugins assets paths aliases
       "app-modules/core": "app/core-plugins/core/assets/js/modules",

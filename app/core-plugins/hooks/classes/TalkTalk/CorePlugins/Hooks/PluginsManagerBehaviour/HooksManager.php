@@ -142,7 +142,7 @@ class HooksManager extends BehaviourBase
         // Vars injected in the hooks implementation Closure
         $app = $this->app;
         $myPluginPath = $plugin->path;
-        $myPluginUrl = str_replace($app['app.path'], $app['app.base_url'], $plugin->path);
+        $myPluginUrl = str_replace($app['app.path'], '', $plugin->path);
         $myComponentsUrl = substr($myPluginUrl, 1) . '/assets/js/modules/components/';
         $__pluginHooksImplementationsFilePath = $plugin->path . '/plugin-hooks.php';
 

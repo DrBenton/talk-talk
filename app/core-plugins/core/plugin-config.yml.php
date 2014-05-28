@@ -40,6 +40,9 @@
     file: validation-en
     language: en
 
+@hooks:
+  - define_javascript_app_config
+
 @assets:
   stylesheets:
   javascripts:
@@ -53,3 +56,4 @@
 
 @twig-extensions:
   - func.get-flashes
+  - func.get-app-javascript-config

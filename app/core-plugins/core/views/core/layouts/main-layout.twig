@@ -30,13 +30,13 @@
 <div id="site-container">
 
     {% block header %}
-        {% include '/core/common/header.twig' %}
+        {% include 'core/common/header.twig' %}
     {% endblock %}
 
     {% include 'core/common/alerts-display.twig' with {alerts: get_flashes()} %}
 
     {% block breadcrumb %}
-        {% include '/core/common/breadcrumb.twig' %}
+        {% include 'core/common/breadcrumb.twig' %}
     {% endblock %}
 
     {{ enable_html_hooks('main_content_container') }}
@@ -48,12 +48,12 @@
     </div>
 
     {% block footer %}
-        {% include '/core/common/footer.twig' %}
+        {% include 'core/common/footer.twig' %}
     {% endblock %}
 
-    <span id="app-http-status-code" data-code="{{ app['app.http_status_code'] }}"></span>
+    {% include 'core/common/js-data.twig' %}
 
-    {% if app['config']['debug']['perfs.tracking'] %}{{ display_app_perfs_info() }}{% endif %}
+    {% include 'utils/debug/app-perfs-info.twig' %}
 
 </div>{# end #site-container #}
 

@@ -10,7 +10,7 @@ $app['auth.middleware.is-authenticated'] = $app->protect(
             // We store this URL: if the User successfully authenticates afterwards,
             // we will redirect him/her to this URL
             if ('GET' === $app['request']->getMethod()) {
-                $currentUrl = $app['request']->getPathInfo();
+                $currentUrl = $app['app.base_url'] . $app['request']->getPathInfo();
                 $app['session']->set('url.intended', $currentUrl);
             }
 

@@ -1,56 +1,65 @@
-{{ enable_html_hooks('perfs_info') }}
-<div id="perfs-info">
-    <fieldset>
-        <legend>App performance</legend>
-        <ul>
-            <li>
-                For URL: <code class="current-action-url">{{ current_path() }}</code>
-            </li>
-            <li>
-                Number of SQL queries: <b class="nb-sql-queries">{{ nbSqlQueries }}</b>
-            </li>
-            <li>
-                Total number of plugins: <b class="nb-plugins">{{ nbPlugins }}</b>
-            </li>
-            <li>
-                Time elapsed until this display: <b class="perfs-elapsed-time-now">{{ elapsedTimeNow }}</b>s.<br>
-                - time elapsed at bootstrap (before plugins initialization): <b class="perfs-elapsed-time-bootstrap">{{ elapsedTimeAtBootstrap }}</b>s.<br>
-                - time elapsed at "app ready" (after Plugins init, just before <code>$app->run()</code>): <b class="perfs-elapsed-time-plugins-init">{{ elapsedTimeAtPluginsInit }}</b>s.
-            </li>
-            <li class="hidden">
-                QueryPath phase duration: <b class="query-path-duration">N/A</b>s.
-            </li>
-            <li>
-                Included files: <b class="perfs-nb-included-files-now">{{ nbIncludedFilesNow }}</b><br>
-                - at bootstrap phase: <b class="perfs-nb-included-files-bootstrap">{{ nbIncludedFilesAtBootstrap }}</b><br>
-                - at "app ready" phase : <b class="perfs-nb-included-files-plugins-init">{{ nbIncludedFilesAtPluginsInit }}</b>
-            </li>
-            <li>
-                Permanently disabled plugins: <b class="nb-plugins-permanently-disabled">{{ nbPluginsPermanentlyDisabled }}</b>
-            </li>
-            <li>
-                Plugins disabled for current URL: <b class="nb-plugins-disabled-for-current-url">{{ nbPluginsDisabledForCurrentUrl }}</b>
-            </li>
-            <li>
-                Actions registered: <b class="nb-actions-registered">{{ nbActionsRegistered }}</b>
-            </li>
-            {% if sqlQueries is defined  %}
+{% if app['config']['debug']['perfs.tracking'] %}
+
+    {% set perfsInfo = app['perfs.perfs_info'] %}
+
+    {{ enable_html_hooks('perfs_info') }}
+    <div id="perfs-info">
+        <fieldset>
+            <legend>App performance</legend>
+            <ul>
                 <li>
-                    <span class="nb-sql-queries">{{ nbSqlQueries }}</span> SQL queries:
-                    <ul class="sql-queries">
-                        {% for query in sqlQueries %}
-                            <li>
-                                <b>{{ query.time }}</b>ms. :
-                                <i>{{ query.query }}</i>
-                                - bindings: <i>{{ query.bindings|json_encode }}</i>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    For URL: <code class="current-action-url">{{ current_path() }}</code>
                 </li>
-            {% endif %}
-            <li>
-                Session content: <pre class="session-content">{{ app.session.all|json_encode }}</pre>
-            </li>
-        </ul>
-    </fieldset>
-</div>
+                <li>
+                    Number of SQL queries: <b class="nb-sql-queries">{{ perfsInfo.nbSqlQueries }}</b>
+                </li>
+                <li>
+                    Total number of plugins: <b class="nb-plugins">{{ perfsInfo.nbPlugins }}</b>
+                </li>
+                <li>
+                    Time elapsed until this display: <b class="perfs-elapsed-time-now">{{ perfsInfo.elapsedTimeNow }}</b>s.<br>
+                    - time elapsed at bootstrap (before plugins initialization): <b class="perfs-elapsed-time-bootstrap">{{ perfsInfo.elapsedTimeAtBootstrap }}</b>s.<br>
+                    - time elapsed at "app ready" (after Plugins init, just before <code>$app->run()</code>): <b class="perfs-elapsed-time-plugins-init">{{ perfsInfo.elapsedTimeAtPluginsInit }}</b>s.
+                </li>
+                <li class="hidden">
+                    {#
+                    We can't display this data, since QueryPath hooks run *after* the page content has been rendered.
+                    --> but we will display it when we will receive the data from Ajax Responses HTTP headers!
+                    #}
+                    QueryPath phase duration: <b class="query-path-duration">N/A</b>s.
+                </li>
+                <li>
+                    Included files: <b class="perfs-nb-included-files-now">{{ perfsInfo.nbIncludedFilesNow }}</b><br>
+                    - at bootstrap phase: <b class="perfs-nb-included-files-bootstrap">{{ perfsInfo.nbIncludedFilesAtBootstrap }}</b><br>
+                    - at "app ready" phase : <b class="perfs-nb-included-files-plugins-init">{{ perfsInfo.nbIncludedFilesAtPluginsInit }}</b>
+                </li>
+                <li>
+                    Permanently disabled plugins: <b class="nb-plugins-permanently-disabled">{{ perfsInfo.nbPluginsPermanentlyDisabled }}</b>
+                </li>
+                <li>
+                    Plugins disabled for current URL: <b class="nb-plugins-disabled-for-current-url">{{ perfsInfo.nbPluginsDisabledForCurrentUrl }}</b>
+                </li>
+                <li>
+                    Actions registered: <b class="nb-actions-registered">{{ perfsInfo.nbActionsRegistered }}</b>
+                </li>
+                {% if perfsInfo.sqlQueries is defined  %}
+                    <li>
+                        <span class="nb-sql-queries">{{ perfsInfo.nbSqlQueries }}</span> SQL queries:
+                        <ul class="sql-queries">
+                            {% for query in perfsInfo.sqlQueries %}
+                                <li>
+                                    <b>{{ query.time }}</b>ms. :
+                                    <i>{{ query.query }}</i>
+                                    - bindings: <i>{{ query.bindings|json_encode }}</i>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
+                <li>
+                    Session content: <pre class="session-content">{{ app.session.all|json_encode }}</pre>
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+{% endif %}
