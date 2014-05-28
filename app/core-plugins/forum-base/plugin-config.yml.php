@@ -76,6 +76,9 @@
   -
     prefix: TalkTalk\Model\
     paths: %pluginPath%/classes/TalkTalk/Model
+  -
+    prefix: TalkTalk\Decoda\
+    paths: %pluginPath%/classes/TalkTalk/Decoda
 
 @services:
   - forums-data

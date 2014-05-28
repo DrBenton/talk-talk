@@ -1,6 +1,7 @@
 <?php
 
 use Decoda\Decoda;
+use TalkTalk\Decoda\Filter\ImageFilter as CustomImageFilter;
 
 $app['forum-base.markup-manager.handle_forum_markup.bbcode'] = $app->protect(
     function ($forumContent) use ($app) {
@@ -10,6 +11,15 @@ $app['forum-base.markup-manager.handle_forum_markup.bbcode'] = $app->protect(
             'escapeHtml' => true
         ));
         $bbDecoder->defaults();
+
+        /*
+        $imgFilter = $bbDecoder->getFilterByTag('img');
+        $imgFiltersTags = &$imgFilter->getTag('img');
+        $imgFiltersTags['contentPattern'] =
+            '/^((?:https?:\/)?(?:\.){0,2}\/)((?:.*?)\.(jpg|jpeg|png|gif|bmp|php))(\?[^#]+)?(#[\-\w]+)?$/is';
+        */
+        $bbDecoder->removeFilter('Image');
+        $bbDecoder->addFilter(new CustomImageFilter());
 
         return $bbDecoder->parse();
     }
