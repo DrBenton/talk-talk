@@ -82,7 +82,7 @@ define(function (require, exports, module) {
       }
     };
 
-    this.onItemsTypeImportDone= function (ev, data) {
+    this.onItemsTypeImportDone = function (ev, data) {
       myDebug && logger.debug(module.id, "onItemsTypeImportDone() ; data=", data);
 
       var $phpBbItemsImportDisplay = this.getItemsTypeDisplay(data.itemsType);
@@ -95,6 +95,15 @@ define(function (require, exports, module) {
         "core-plugins.phpbb.import.alerts.import-error",
         {"%importUrl%": data.serviceUrl},
         "error"
+      );
+    };
+
+    this.onImportProcessDone = function(ev, data) {
+      this.$node.find(".please-wait").hide();
+      this.displayTranslatedAlert(
+        "core-plugins.phpbb.import.alerts.import-success",
+        {},
+        "success"
       );
     };
 
@@ -116,6 +125,7 @@ define(function (require, exports, module) {
       this.on(document, "dataPhpBbImportBatchDone", this.onItemsTypeImportBatchDone);
       this.on(document, "dataPhpBbItemsTypeImportDone", this.onItemsTypeImportDone);
       this.on(document, "dataPhpBbImportServiceError", this.onServiceError);
+      this.on(document, "dataPhpBbImportProcessDone", this.onImportProcessDone);
     });
   }
 

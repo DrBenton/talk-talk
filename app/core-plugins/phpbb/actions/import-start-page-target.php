@@ -21,7 +21,7 @@ $action = function (Application $app, Request $request) {
     } catch (\PDOException $e) {
         $errMsg = array(
             'message' => $app['translator']->trans(
-                    'core-plugins.phpbb.start.db-error',
+                    'core-plugins.phpbb.import.start.db-error',
                     array('%pdo_message%' => $app['html.escape']($e->getMessage()))
                 ),
             'secured' => true

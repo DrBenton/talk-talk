@@ -38,3 +38,4 @@ core-plugins:
         item-type-import-in-progress: Items import in progress...
       alerts:
         import-error: There has been a error while loading '%importUrl%' through AJAX! Please try again.
+        import-success: Your phpBb forum content has been imported! You can now go to the homepage and see your shiny new content :-)

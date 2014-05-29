@@ -35,7 +35,7 @@ $app['phpbb.import.forums.trigger_batch'] = $app->protect(
 
         foreach ($phpBbForums as $phpBbForum) {
 
-            if (0 === $phpBbForum->parent_id) {
+            if (!$phpBbForum->parent_id) {
                 $talkTalkParentId = null;
             } else {
                 $talkTalkParentId = $idsMapping[$phpBbForum->parent_id];

@@ -7,6 +7,11 @@ $action = function (Application $app, Request $request, $batchIndex) {
 
     $nbTopicsToCreate = $app['phpbb.import.topics.nb_items_per_batch'];
     $from = $batchIndex * $nbTopicsToCreate;
+
+    // Disable SQL queries: that would be too much! :-)
+    $app['config.set']('debug/perfs.tracking.sql_queries.enabled', false);
+
+    // Import!
     $nbTopicsCreated = $app['phpbb.import.topics.trigger_batch']($nbTopicsToCreate, $from);
 
     if ($nbTopicsCreated === $nbTopicsToCreate) {
