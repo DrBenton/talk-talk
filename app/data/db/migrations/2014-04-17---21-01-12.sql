@@ -1,4 +1,4 @@
-ALTER TABLE `talk-talk`.`user` 
+ALTER TABLE `talk-talk`.`users`
 CHANGE COLUMN `login` `login` VARCHAR(45) NOT NULL ,
 CHANGE COLUMN `email` `email` VARCHAR(255) NOT NULL ,
 CHANGE COLUMN `password` `password` VARCHAR(255) NOT NULL ,

@@ -3,7 +3,7 @@
 
 // Config
 $migrationsFilesPattern = __DIR__ . '/migrations/*.sql';
-$targetFilePath = __DIR__ . '/migrations-populated.sql';
+$targetFilePath = __DIR__ . '/migrations-concatenated.sql';
 
 // Go!
 $timeStart = microtime(true);
