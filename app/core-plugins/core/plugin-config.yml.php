@@ -22,6 +22,7 @@
   - session
   - db
   - crypto
+  - config
   - settings
   - url-generator
   - twig
