@@ -9,6 +9,8 @@ core-plugins:
       new_post: New Post
     home:
       title: Welcome to <span class="site-title">%site-title%</span>
+    forums-list:
+      no-forum: There is no Forum for the moment.
     topics-list:
       no-topic: There is no Topic here for the moment.
       create-new-topic: Create a new Topic

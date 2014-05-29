@@ -175,7 +175,8 @@ $hooks['html.topics_list'] = function (DOMQuery $html) {
     // Topics styling
     $topics = $html->find('.topic');
     $topics->addClass('panel panel-default clearfix');
-    $topics->find('.topic-name')
+    $topics->find('.topic-title')
+        ->prepend('<span class="glyphicon glyphicon-comment"></span>')
         ->wrap('<div class="panel-heading"></div>')
         ->addClass('panel-title');
     $topics->find('.topic-info')->addClass('panel-body');
@@ -213,7 +214,7 @@ $hooks['html.post'] = function (DOMQuery $html) {
         function ($i, \DOMElement $postDisplayContainerElement) {
             $postDisplayContainerHtml = new DOMQuery($postDisplayContainerElement);
             $authorDisplay = $postDisplayContainerHtml->find('.post-author');
-            // If this is a Post of the Topic'author, we add this same CSS class to the author display
+            // If this is a Post of the Topic's author, we add this same CSS class to the author display
             if ($postDisplayContainerHtml->hasClass('topic-author')) {
                 $authorDisplay->addClass('topic-author');
             }

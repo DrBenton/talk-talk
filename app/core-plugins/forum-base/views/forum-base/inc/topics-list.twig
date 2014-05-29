@@ -18,7 +18,7 @@
                         </h4>
 
                         <div class="topic-info">
-                            Created {{ topic.created_at|from_now }} by <b>{{ topic.author.login }}</b><br>
+                            Created {{ topic.created_at|from_now }} by <span class="topic-author-name">{{ topic.author.login }}</span><br>
                             Last modified {{ topic.updated_at|from_now }}
                         </div>
                     </div>

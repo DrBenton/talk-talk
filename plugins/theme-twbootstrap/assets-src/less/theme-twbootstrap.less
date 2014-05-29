@@ -68,28 +68,15 @@ form {
   }
 }
 
-// Topics list
-.topic-display-container {
-  .topic-display {
-    margin-bottom: 3em;
-    .topic-desc {
-      .topic-author {
-        font-weight: bold;
-        color: @brand-primary;
-      }
-    }
-  }
-}
-
 // Topic display
 .topic-container {
   .topic {
     margin-bottom: 3em;
     .topic-desc {
-      .topic-author {
-        font-weight: bold;
-        color: @brand-primary;
-      }
+    }
+    .topic-author-name {
+      font-weight: bold;
+      color: @brand-primary;
     }
   }
 }
@@ -168,9 +155,14 @@ form {
   .post-author {
     position: absolute;
     right: 7%;
+    .post-author-name {
+      font-weight: bold;
+    }
     &.topic-author {
       left: 7%;
-      color: @brand-primary;
+      .post-author-name {
+        color: @brand-primary;
+      }
     }
   }
 
