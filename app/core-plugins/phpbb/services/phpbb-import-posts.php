@@ -60,6 +60,11 @@ $app['phpbb.import.posts.trigger_batch'] = $app->protect(
                 ? $usersIdsMapping[$phpBbPost->poster_id]
                 : null;
 
+            if (null === $talkTalkForumId || null === $talkTalkTopicId || null === $talkTalkAuthorId) {
+                $nbPostsCreated++;
+                continue;
+            }
+
             $talkTalkPost = new TalkTalkPost();
             $talkTalkPost->forum_id = $talkTalkForumId;
             $talkTalkPost->topic_id = $talkTalkTopicId;

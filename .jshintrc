@@ -7,6 +7,7 @@
   "validthis": true,
   "newcap": false,
   "es3": true,
+  "sub": true,
   "undef": true,
   "trailing": true,
   "-W058": true,

@@ -30,11 +30,13 @@ define(function (require, exports, module) {
       switch (this.attr.wysiwygLibrary) {
 
         case "wysibb":
-          this.$node.focus();
+          //this.$node.focus();
           this.$node.wysibb(settings);
+          break;
 
         case "markitup":
           this.$node.markItUp(settings);
+          break;
 
       }
     };

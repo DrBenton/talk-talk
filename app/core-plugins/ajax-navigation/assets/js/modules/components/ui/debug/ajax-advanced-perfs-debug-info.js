@@ -1,6 +1,8 @@
 define(function (require, exports, module) {
   "use strict";
 
+  /* jshint multistr:true */
+
   var defineComponent = require("flight").component;
   var _ = require("lodash");
   var logger = require("logger");

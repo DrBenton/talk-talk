@@ -5,11 +5,11 @@
     document.getElementById("app-config-data").getAttribute("data-config")
   );
 
-  var debug = appConfigData['debug'];
+  var debug = appConfigData["debug"];
   var minExt = (debug) ? "" : ".min" ;
 
   require.config({
-    baseUrl: appConfigData['base_url'] + "/",
+    baseUrl: appConfigData["base_url"] + "/",
     paths: {
       // App core Plugins assets paths aliases
       "app-modules/core": "app/core-plugins/core/assets/js/modules",

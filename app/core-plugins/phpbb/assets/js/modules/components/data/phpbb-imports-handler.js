@@ -36,7 +36,7 @@ define(function (require, exports, module) {
       this.trigger(document, "dataPhpBbImportProcessStart");
 
       this.currentItemsImport = {
-        type: '',
+        type: "",
         nbBatchesRequired: 0,
         nbItemsPerBatch: 0,
         nbItemsToImport: 0,
