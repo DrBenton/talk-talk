@@ -11,10 +11,7 @@
   ],
   "require": {
     "php": ">=5.3.3",
-    "silex/silex": "~1.2",
-    "twig/twig": ">=1.8,<2.0-dev",
-    "symfony/twig-bridge": "~2.3",
-    "monolog/monolog": ">=1.0.0",
+    "slim/slim": "2.*",
     "symfony/yaml": "~2.3",
     "querypath/QueryPath": ">=3.0.0",
     "illuminate/database": "4.0.x",

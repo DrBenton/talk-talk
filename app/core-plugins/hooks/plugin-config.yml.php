@@ -2,6 +2,7 @@
 
 @general:
   id: hooks
+  disabled: true
 
 @classes:
   -

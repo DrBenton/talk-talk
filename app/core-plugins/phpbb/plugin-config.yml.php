@@ -2,6 +2,7 @@
 
 @general:
   id: phpbb
+  disabled: true
   actionsUrlsPrefix: /phpbb
   enabledOnlyForUrl:
     - ^/phpbb

@@ -26,14 +26,14 @@ class ClassesManager extends BehaviourBase
                 }
                 foreach ($paths as $index => $path) {
                     $paths[$index] = str_replace(
-                        $app['app.path'] . '/',
+                        $app->vars['app.path'] . '/',
                         '',
                         $pluginsManager->handlePluginRelatedString($plugin, $path)
                     );
                 }
 
                 // Go! Classes prefixes are mapped to theses paths, in PSR4 mode
-                $app['autoloader']->addPsr4(
+                $app->autoloader->addPsr4(
                     $serviceClassMapScheme['prefix'],
                     $paths
                 );

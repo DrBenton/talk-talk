@@ -3,8 +3,8 @@
 namespace TalkTalk\Core\Plugins\Manager;
 
 use Doctrine\Common\Cache\Cache;
-use Psr\Log\LoggerInterface;
-use Silex\Application;
+use Slim\Log;
+use TalkTalk\Core\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
 use TalkTalk\Core\Plugins\Plugin;
 
@@ -36,7 +36,7 @@ interface PluginsManagerInterface
 
     public function handlePluginRelatedString(Plugin $plugin, $pluginRelatedString);
 
-    public function setLogger(LoggerInterface $logger);
+    public function setLogger(Log $logger);
 
     public function setCache(Cache $cache);
 }

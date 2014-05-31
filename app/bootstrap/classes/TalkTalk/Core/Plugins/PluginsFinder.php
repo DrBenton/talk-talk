@@ -133,7 +133,7 @@ class PluginsFinder
         // have a "only enable me for some type of URL" policy.
         // We now have to handle this!
         $app = $this->pluginsManager->getApp();
-        $requestPath = $app['request']->getPathInfo();
+        $requestPath = $app->request->getResourceUri();
 
         foreach ($this->enabledPlugins as $pluginData) {
 

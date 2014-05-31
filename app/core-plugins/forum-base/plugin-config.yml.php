@@ -2,6 +2,7 @@
 
 @general:
   id: forum-base
+  disabled: true
 
 @actions:
   -

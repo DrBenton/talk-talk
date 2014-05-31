@@ -9,26 +9,22 @@ use Doctrine\Common\Cache\PhpFileCache;
 //use Doctrine\Common\Cache\ApcCache;
 //use Doctrine\Common\Cache\RedisCache;
 
-$app['cache.prefix'] = 'talk-talk';
+$app->vars['cache.prefix'] = 'talk-talk';
 
-$app['cache.file.path'] = $app->share(
-    function ($app) {
-        return $app['app.var.cache.path'] . '/data-cache';
-    }
-);
+$app->vars['cache.file.path'] = $app->vars['app.var.cache.path'] . '/data-cache';
 
-$app['cache'] = $app->share(
-    function ($app) {
-
+$app->container->singleton(
+    'cache',
+    function ($c) use ($app) {
         if (
-            isset($app['config']['data-cache']['enabled']) &&
-            false == $app['config']['data-cache']['enabled']
+            isset($app->vars['config']['data-cache']['enabled']) &&
+            false == $app->vars['config']['data-cache']['enabled']
         ) {
             // The app data cache is disabled: let's use the ArrayCache!
             return new ArrayCache();
         }
 
         //TODO: allow full data cache customization through the app "main.ini.php" file
-        return new PhpFileCache($app['cache.file.path']);
+        return new PhpFileCache($app->vars['cache.file.path']);
     }
 );

@@ -1,9 +1,11 @@
 <?php
 
-$app['config'] = $app->share(
-    function ($app) {
-        $mainConfigFilePath = $app['app.path'] . '/app/config/main.ini.php';
+call_user_func(
+  function () use ($app)
+  {
+        $mainConfigFilePath = $app->vars['app.path'] . '/app/config/main.ini.php';
 
-        return parse_ini_file($mainConfigFilePath, true);
-    }
+      $app->vars['config'] = parse_ini_file($mainConfigFilePath, true);
+
+  }
 );

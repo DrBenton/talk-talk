@@ -2,6 +2,7 @@
 
 @general:
   id: auth
+  disabled: true
 
 @actions:
   -

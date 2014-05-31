@@ -11,36 +11,36 @@ call_user_func(
     function () use ($app) {
 
         // Core plugins discovery
-        $corePluginsPath = $app['app.path'] . '/app/core-plugins';
-        $app['plugins.finder']->findPlugins($corePluginsPath, $app['plugins.config_files_pattern']);
+        $corePluginsPath = $app->vars['app.path'] . '/app/core-plugins';
+        $app->pluginsFinder->findPlugins($corePluginsPath, $app->vars['plugins.config_files_pattern']);
 
         // Third-party plugins discovery
-        $thirdPartyPluginsPath = $app['app.path'] . '/plugins';
-        $app['plugins.finder']->findPlugins($thirdPartyPluginsPath, $app['plugins.config_files_pattern']);
+        $thirdPartyPluginsPath = $app->vars['app.path'] . '/plugins';
+        $app->pluginsFinder->findPlugins($thirdPartyPluginsPath, $app->vars['plugins.config_files_pattern']);
 
         // Plugins classes loading init
-        $app['plugins.manager']->addBehaviour(new ClassesManager());
-        $app['plugins.manager']->registerClassLoadingSchemes();
+        $app->pluginsManager->addBehaviour(new ClassesManager());
+        $app->pluginsManager->registerClassLoadingSchemes();
 
         // Plugins services init
-        $app['plugins.manager']->addBehaviour(new ServicesManager());
-        $app['plugins.manager']->registerPluginsServices();
+        $app->pluginsManager->addBehaviour(new ServicesManager());
+        $app->pluginsManager->registerPluginsServices();
 
         // Plugins actions variables converters init (map URLs params to objects)
-        $app['plugins.manager']->addBehaviour(new ActionsVariablesConvertersManager());
-        $app['plugins.manager']->registerPluginsActionsVariablesConverters();
+        $app->pluginsManager->addBehaviour(new ActionsVariablesConvertersManager());
+        $app->pluginsManager->registerPluginsActionsVariablesConverters();
 
         // Plugins actions init (map URLs to functions)
-        $app['plugins.manager']->addBehaviour(new ActionsManager());
-        $app['plugins.manager']->registerActions();
+        $app->pluginsManager->addBehaviour(new ActionsManager());
+        $app->pluginsManager->registerActions();
 
         // Plugins events init
-        $app['plugins.manager']->addBehaviour(new EventsManager());
-        $app['plugins.manager']->registerPluginsEvents();
+        $app->pluginsManager->addBehaviour(new EventsManager());
+        $app->pluginsManager->registerPluginsEvents();
 
         // Plugins own locales files init
-        $app['plugins.manager']->addBehaviour(new LocalesManager($app['translator']));
-        $app['plugins.manager']->registerPluginsLocales();
+        $app->pluginsManager->addBehaviour(new LocalesManager($app->vars['translator']));
+        $app->pluginsManager->registerPluginsLocales();
 
     }
 );

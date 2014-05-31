@@ -3,22 +3,28 @@
 namespace TalkTalk\Core\Plugins\Manager;
 
 use Doctrine\Common\Cache\Cache;
-use Psr\Log\LoggerInterface;
-use Silex\Application;
 use Symfony\Component\Security\Core\Exception\DisabledException;
+use Slim\Log;
+use TalkTalk\Core\Application;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
 use TalkTalk\Core\Plugins\Plugin;
 
 class PluginsManager implements PluginsManagerInterface
 {
     /**
-     * @var \Silex\Application
+     * @var \TalkTalk\Core\Application
      */
     protected $app;
+    /**
+     * @var array
+     */
     protected $plugins = array();
+    /**
+     * @var array
+     */
     protected $behaviours = array();
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Slim\Log
      */
     protected $logger;
     /**
@@ -67,7 +73,7 @@ class PluginsManager implements PluginsManagerInterface
 
         // A small security check: we only allow files inside the app
         $fileRealPath = realpath($filePath);
-        if (0 !== strpos($fileRealPath, $app['app.path'])) {
+        if (0 !== strpos($fileRealPath, $app->vars['app.path'])) {
             throw new DisabledException(sprintf('File path "%s" is not inside app directory!', $filePath));
         }
 
@@ -88,8 +94,8 @@ class PluginsManager implements PluginsManagerInterface
             array('%pluginPath%', '%pluginUrl%', '%vendorsUrl%'),
             array(
                 $plugin->path,
-                str_replace($app['app.path'], $app['app.base_url'], $plugin->path),
-                str_replace($app['app.path'], $app['app.base_url'], $app['app.vendors.js.path']),
+                str_replace($app->vars['app.path'], $app->vars['app.base_url'], $plugin->path),
+                str_replace($app->vars['app.path'], $app->vars['app.base_url'], $app->vars['app.vendors.js.path']),
             ),
             $pluginRelatedString
         );
@@ -124,7 +130,7 @@ class PluginsManager implements PluginsManagerInterface
         );
     }
 
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(Log $logger)
     {
         $this->logger = $logger;
     }

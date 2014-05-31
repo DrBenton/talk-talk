@@ -1,11 +1,13 @@
 <?php
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Debug\ErrorHandler;
-use Symfony\Component\Debug\ExceptionHandler;
+$appPackedFilePath = __DIR__ . '/../var/cache/php-packs/app.pack.php';
+if (file_exists($appPackedFilePath)) {
+    require_once $appPackedFilePath;
+}
 
-return function (Request $request) {
+use TalkTalk\Core\Application;
+
+return function () {
 
     // General system setup
     date_default_timezone_set('UTC');
@@ -15,33 +17,19 @@ return function (Request $request) {
 
     // Core params
     //TODO: handle this in a config file?
-    $app['app.path'] = realpath(__DIR__ . '/../../');
-    $app['app.var.path'] = $app['app.path'] . '/app/var';
-    $app['app.var.cache.path'] = $app['app.var.path'] . '/cache';
-    $app['app.var.logs.path'] = $app['app.var.path'] . '/logs';
-    $app['app.vendors.path'] = $app['app.path'] . '/vendor';
-    $app['app.vendors.php.path'] = $app['app.vendors.path'] . '/php';
-    $app['app.vendors.js.path'] = $app['app.vendors.path'] . '/js';
-    $app['app.error'] = null;
-    $app['app.http_status_code'] = 200;//until now, everything is fine :-)
-    $app['perfs.start-time'] = microtime(true);
-    // Some of our Plugins may need a "request" very soon, before the Silex "#handle()"
-    // method is triggered.
-    // Since PHP script always run in response to a HTTP request,
-    // we can give our $app a first Request right now!
-    $app['request'] = $request;
+    $app->vars['app.path'] = realpath(__DIR__ . '/../../');
+    $app->vars['app.var.path'] = $app->vars['app.path'] . '/app/var';
+    $app->vars['app.var.cache.path'] = $app->vars['app.var.path'] . '/cache';
+    $app->vars['app.var.logs.path'] = $app->vars['app.var.path'] . '/logs';
+    $app->vars['app.vendors.path'] = $app->vars['app.path'] . '/vendor';
+    $app->vars['app.vendors.php.path'] = $app->vars['app.vendors.path'] . '/php';
+    $app->vars['app.vendors.js.path'] = $app->vars['app.vendors.path'] . '/js';
+    $app->vars['app.error'] = null;
+    $app->vars['app.http_status_code'] = 200;//until now, everything is fine :-)
+    $app->vars['perfs.start-time'] = microtime(true);
 
-    // Composer autoloader is a central part of our App.
-    // Let's add it as a shared service!
-    $app['autoloader'] = $app->share(
-        function () use ($app) {
-            return include $app['app.path'] . '/vendor/php/autoload.php';
-        }
-    );
-
-    // We need a Request right now, as some plugins logic may need our app base path
-    $app['app.base_url'] = $request->getBasePath();
-    $app['isAjax'] = $request->isXmlHttpRequest();
+    $app->vars['app.base_url'] = $app->request->getResourceUri();
+    $app->vars['isAjax'] = $app->request->isAjax();
 
     // We have a few bootstrap Services to register very early.
     // Let's create a simple Closure to handle them like the PluginsManager
@@ -54,12 +42,10 @@ return function (Request $request) {
     $loadBootstrapService('config');
 
     // ...and start using it right now!
-    $app['debug'] = (bool) $app['config']['debug']['debug'];
-    ErrorHandler::register();
-    ExceptionHandler::register($app['debug']);
+    $app->config('debug', (bool) $app->vars['config']['debug']['debug']);
 
-    // Anybody can need a Logger; let's initialize this Service first!
-    $loadBootstrapService('logger');
+    // Composer autoloader is a central part of our App.
+    $loadBootstrapService('autoloader');
 
     // Plugins services must be initialized quickly, as all our app will rely on it :-)
     $loadBootstrapService('plugins');
@@ -68,18 +54,24 @@ return function (Request $request) {
     $loadBootstrapService('cache');
 
     // Some performances-related stats
-    if ($app['config']['debug']['perfs.tracking.enabled']) {
-        $app['perfs.bootstrap.time_elapsed'] = round(microtime(true) - $app['perfs.start-time'], 3);
-        $app['perfs.bootstrap.nb_included_files'] = count(get_included_files());
+    if ($app->vars['config']['debug']['perfs.tracking.enabled']) {
+        $app->vars['perfs.bootstrap.time_elapsed'] = round(microtime(true) - $app->vars['perfs.start-time'], 3);
+        $app->vars['perfs.bootstrap.nb_included_files'] = count(get_included_files());
     }
+
+    $app->get('/', function() use ($app) {
+       echo '<pre>' . print_r(get_included_files(), true) . '</pre>';
+    });
 
     // Plugins init!
     require_once __DIR__ . '/plugins-init.php';
 
-    if ($app['config']['debug']['perfs.tracking.enabled']) {
-        $app['perfs.plugins-init.time_elapsed'] = round(microtime(true) - $app['perfs.start-time'], 3);
-        $app['perfs.plugins-init.nb_included_files'] = count(get_included_files());
+    if ($app->vars['config']['debug']['perfs.tracking.enabled']) {
+        $app->vars['perfs.plugins-init.time_elapsed'] = round(microtime(true) - $app->vars['perfs.start-time'], 3);
+        $app->vars['perfs.plugins-init.nb_included_files'] = count(get_included_files());
     }
+
+
 
     return $app;
 };

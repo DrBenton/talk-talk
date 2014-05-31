@@ -3,24 +3,31 @@
 use TalkTalk\Core\Plugins\Manager\PluginsManager;
 use TalkTalk\Core\Plugins\PluginsFinder;
 
-$app['plugins.config_files_pattern'] = '/*/plugin-config.yml.php';
+$app->vars['plugins.config_files_pattern'] = '/*/plugin-config.yml.php';
 
-$app['plugins.manager'] = $app->share(
-    function ($app) {
+// Plugins manager init
+$app->container->singleton(
+    'pluginsManager',
+    function ($c) use ($app) {
         $pluginsManager = new PluginsManager();
         $pluginsManager->setApplication($app);
-        $pluginsManager->setLogger($app['logger']);
-        $pluginsManager->setCache($app['cache']);
+        $pluginsManager->setLogger($app->log);
+        $pluginsManager->setCache($app->cache);
 
         return $pluginsManager;
     }
 );
 
-$app['plugins.finder'] = $app->share(
-    function ($app) {
-        $pluginsFinder = new PluginsFinder($app['plugins.manager']);
-        $pluginsFinder->setCache($app['cache']);
+// Plugins finder init
+$app->container->singleton(
+    'pluginsFinder',
+    function ($c) use ($app) {
+        $pluginsFinder = new PluginsFinder($app->pluginsManager);
+        //$pluginsFinder->setLogger($app->log);
+        $pluginsFinder->setCache($app->cache);
 
         return $pluginsFinder;
     }
 );
+
+

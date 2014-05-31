@@ -3,7 +3,7 @@
 namespace TalkTalk\Core\Plugins\Manager\Behaviour;
 
 use Doctrine\Common\Cache\Cache;
-use Psr\Log\LoggerInterface;
+use Slim\Log;
 use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
 
 abstract class BehaviourBase implements BehaviourInterface
@@ -13,7 +13,7 @@ abstract class BehaviourBase implements BehaviourInterface
      */
     protected $pluginsManager;
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Slim\Log
      */
     protected $logger;
     /**
@@ -31,7 +31,7 @@ abstract class BehaviourBase implements BehaviourInterface
         $this->app = $this->pluginsManager->getApp();
     }
 
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(Log $logger)
     {
         $this->logger = $logger;
     }

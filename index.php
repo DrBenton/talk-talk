@@ -1,20 +1,30 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
+use TalkTalk\Core\PhpFilesPacking\Packer;
 
 call_user_func(
     function () {
 
-        $vendorsPath = __DIR__ . '/vendor/php';
+        $vendorsPackedFilePath = __DIR__ . '/app/var/cache/php-packs/vendors.pack.php';
+
+        $hasPackedFiles = file_exists($vendorsPackedFilePath);
+        if ($hasPackedFiles) {
+            require_once $vendorsPackedFilePath;
+        }
 
         // Composer init
+        $vendorsPath = __DIR__ . '/vendor/php';
         require_once $vendorsPath . '/autoload.php';
 
         // Go! Go! Go!
-        $request = Request::createFromGlobals();
         $appInitClosure = require_once __DIR__ . '/app/bootstrap/app.php';
-        $app = $appInitClosure($request);
-        $app->run($request);
+        $app = call_user_func($appInitClosure);
+        $app->run();
+
+        if (!$hasPackedFiles) {
+            Packer::compileAppFiles($app);
+            Packer::compileAppVendors($app);
+        }
 
     }
 );

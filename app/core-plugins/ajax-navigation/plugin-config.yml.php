@@ -2,7 +2,7 @@
 
 @general:
   id: ajax-nav
-  disabled: false
+  disabled: true
 
 @locales:
   - en
