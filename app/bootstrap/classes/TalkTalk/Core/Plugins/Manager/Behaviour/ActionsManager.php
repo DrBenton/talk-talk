@@ -22,7 +22,7 @@ class ActionsManager extends BehaviourBase
             }
 
             foreach ($plugin->data['@actions'] as $actionData) {
-                if (isset($actionData['onlyForDebug']) && !$app['debug']) {
+                if (isset($actionData['onlyForDebug']) && !$app->config('debug')) {
                     continue;
                 }
 

@@ -13,8 +13,12 @@ class ServicesManager extends BehaviourBase
             }
 
             foreach ($plugin->data['@services'] as $serviceFileName) {
-                $serviceFilePath = $plugin->path . '/services/' . $serviceFileName . '.php';
-                $this->pluginsManager->includeFileInIsolatedClosure($serviceFilePath);
+                $serviceFilePath = $plugin->path . '/services-init/' . $serviceFileName . '.php';
+                $serviceDefinition = $this->app->includeFileInIsolatedClosure($serviceFilePath);
+
+                if (!is_a($serviceDefinition, 'TalkTalk\Core\Services\ServiceDefinition')) {
+                    throw new \RuntimeException(sprintf('Invalid Service definition returned for Service "%s"!', $serviceFileName));
+                }
             }
         }
     }

@@ -3,12 +3,12 @@
 namespace TalkTalk\CorePlugins\Core\Cache;
 
 use Illuminate\Cache\StoreInterface;
-use Silex\Application;
+use TalkTalk\Core\Application;
 
 class DoctrineCacheWrappingStore implements StoreInterface
 {
     /**
-     * @var \Silex\Application
+     * @var \TalkTalk\Core\Application
      */
     protected $app;
 
@@ -108,7 +108,7 @@ class DoctrineCacheWrappingStore implements StoreInterface
      */
     public function getPrefix()
     {
-        return $this->app['cache.prefix'];
+        return $this->app->vars['cache.prefix'];
     }
 
     /**
@@ -116,6 +116,6 @@ class DoctrineCacheWrappingStore implements StoreInterface
      */
     protected function getDoctrineCache()
     {
-        return $this->app['cache'];
+        return $this->app->cache;
     }
 }

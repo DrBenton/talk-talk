@@ -21,7 +21,7 @@ abstract class BehaviourBase implements BehaviourInterface
      */
     protected $cache;
     /**
-     * @var \Silex\Application
+     * @var \TalkTalk\Core\Application
      */
     protected $app;
 

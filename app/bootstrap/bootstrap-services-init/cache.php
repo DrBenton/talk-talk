@@ -9,22 +9,26 @@ use Doctrine\Common\Cache\PhpFileCache;
 //use Doctrine\Common\Cache\ApcCache;
 //use Doctrine\Common\Cache\RedisCache;
 
+use TalkTalk\Core\Services\CacheProxy;
+
 $app->vars['cache.prefix'] = 'talk-talk';
 
 $app->vars['cache.file.path'] = $app->vars['app.var.cache.path'] . '/data-cache';
 
-$app->container->singleton(
-    'cache',
-    function ($c) use ($app) {
+return $app->servicesManager->registerServiceClass(
+    'TalkTalk\Core\Services\CacheProxy',
+    function (CacheProxy $serviceInstance) use ($app) {
         if (
             isset($app->vars['config']['data-cache']['enabled']) &&
             false == $app->vars['config']['data-cache']['enabled']
         ) {
             // The app data cache is disabled: let's use the ArrayCache!
-            return new ArrayCache();
+            $serviceInstance->setProxyTarget(new ArrayCache());
+        } else {
+            //TODO: allow full data cache customization through the app "main.ini.php" file
+            $serviceInstance->setProxyTarget(
+                new PhpFileCache($app->vars['cache.file.path'])
+            );
         }
-
-        //TODO: allow full data cache customization through the app "main.ini.php" file
-        return new PhpFileCache($app->vars['cache.file.path']);
     }
 );

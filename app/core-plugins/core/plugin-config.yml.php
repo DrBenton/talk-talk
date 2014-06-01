@@ -19,21 +19,21 @@
     paths: %pluginPath%/classes/TalkTalk/Model
 
 @services:
-  - session
   - db
+  - csrf
   - crypto
-  - settings
-  - url-generator
+  - app-settings
+  - flash-utils
+
+#  - url-generator
   - twig
   - translator
-  - validator
-  - uuid
-  - csrf
-  - html-escape
+  #- validator
+  #- uuid
 
 @events:
-  - error.app-error
-  - before.check-csrf
+#  - error.app-error
+#  - before.check-csrf
 
 @locales:
   -

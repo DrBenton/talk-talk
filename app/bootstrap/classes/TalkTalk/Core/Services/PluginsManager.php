@@ -1,20 +1,16 @@
 <?php
 
-namespace TalkTalk\Core\Plugins\Manager;
+namespace TalkTalk\Core\Services;
 
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Slim\Log;
-use TalkTalk\Core\Application;
+use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
 use TalkTalk\Core\Plugins\Manager\Behaviour\BehaviourInterface;
 use TalkTalk\Core\Plugins\Plugin;
 
-class PluginsManager implements PluginsManagerInterface
+class PluginsManager extends ServiceBase implements ServiceInterface, PluginsManagerInterface
 {
-    /**
-     * @var \TalkTalk\Core\Application
-     */
-    protected $app;
     /**
      * @var array
      */
@@ -32,9 +28,12 @@ class PluginsManager implements PluginsManagerInterface
      */
     protected $cache;
 
-    public function setApplication(Application $app)
+    /**
+     * @inheritdoc
+     */
+    public static function getServiceName()
     {
-        $this->app = $app;
+        return 'pluginsManager';
     }
 
     public function addPlugin(Plugin $plugin)
@@ -139,4 +138,5 @@ class PluginsManager implements PluginsManagerInterface
     {
         $this->cache = $cache;
     }
+
 }

@@ -3,13 +3,12 @@
 namespace TalkTalk\CorePlugins\Core\Cache;
 
 use Illuminate\Cache\CacheManager;
-use Silex\Application;
+use TalkTalk\Core\Application;
 
 class IlluminateCacheManager extends CacheManager
 {
-
     /**
-     * @var \Silex\Application
+     * @var \TalkTalk\Core\Application
      */
     protected $app;
 

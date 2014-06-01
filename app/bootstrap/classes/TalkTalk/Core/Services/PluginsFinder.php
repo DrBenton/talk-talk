@@ -1,13 +1,13 @@
 <?php
 
-namespace TalkTalk\Core\Plugins;
+namespace TalkTalk\Core\Services;
 
 use Doctrine\Common\Cache\Cache;
 use Symfony\Component\Yaml\Yaml;
-use TalkTalk\Core\Plugins\Manager\PluginsManagerInterface;
+use TalkTalk\Core\Plugins\Plugin;
 use TalkTalk\Core\Utils\ArrayUtils;
 
-class PluginsFinder
+class PluginsFinder extends ServiceBase implements ServiceInterface
 {
 
     const CACHE_KEY = 'talk-talk/plugins-finder/plugins-data';
@@ -24,9 +24,17 @@ class PluginsFinder
     protected $enabledPlugins = array();
     protected $disabledPlugins = array();
 
-    public function __construct(PluginsManagerInterface $pluginsManager)
+    /**
+     * @inheritdoc
+     */
+    public static function getServiceName()
     {
-        $this->pluginsManager = $pluginsManager;
+        return 'pluginsFinder';
+    }
+
+    public function onActivation()
+    {
+        $this->pluginsManager = $this->app->pluginsManager;
     }
 
     /**

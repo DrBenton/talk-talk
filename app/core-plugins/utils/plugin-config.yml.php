@@ -21,8 +21,8 @@
     paths: %pluginPath%/classes/TalkTalk/CorePlugins/Utils
 
 @services:
-  - utils-html
-  - perfs
+#  - utils-html
+#  - perfs
 
 @events:
   - after.perfs-info-headers

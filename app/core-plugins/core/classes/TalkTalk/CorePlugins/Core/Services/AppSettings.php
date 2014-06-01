@@ -1,12 +1,21 @@
 <?php
 
-namespace TalkTalk\CorePlugins\Core;
+namespace TalkTalk\CorePlugins\Core\Services;
 
+use TalkTalk\Core\Services\ServiceBase;
 use TalkTalk\Model\Setting as SettingModel;
 use TalkTalk\Core\Utils\StringUtils;
 
-class SettingsManager
+class AppSettings extends ServiceBase
 {
+    /**
+     * @return string
+     */
+    public static function getServiceName()
+    {
+        return 'appSettings';
+    }
+
     protected $lightDataCache = array();
 
     /**
@@ -92,4 +101,5 @@ class SettingsManager
         SettingModel::find($key)->delete();
         unset($this->lightDataCache[$key]);
     }
+
 }
