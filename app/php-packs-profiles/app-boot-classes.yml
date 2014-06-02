@@ -1,0 +1,14 @@
+packing:
+  namespace: app/boot
+  id: classes
+  base-dir: %app-path%/boot/classes/TalkTalk/Core/
+  
+files: 
+  - ApplicationAwareInterface.php
+  - Application.php
+  - Service/BaseService.php
+  - Plugin/UnpackedPlugin.php
+  - Service/PluginsUnpacker.php
+  - Plugin/Config/PluginConfigHandlerInterface.php
+  - Plugin/Config/CoreConfigHandler.php
+  - Service/PluginsFinder.php

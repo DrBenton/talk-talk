@@ -1,0 +1,23 @@
+packing:
+  namespace: vendors
+  id: slim
+  base-dir: %app-root%/vendor/php
+  
+files: 
+  - slim/slim/Slim/Slim.php
+  - slim/slim/Slim/Helper/Set.php
+  - slim/slim/Slim/Log.php
+  - slim/slim/Slim/Middleware/Flash.php
+  - slim/slim/Slim/Middleware.php
+  - slim/slim/Slim/Middleware/MethodOverride.php
+  - slim/slim/Slim/Route.php
+  - slim/slim/Slim/Router.php
+  - slim/slim/Slim/Http/Request.php
+  - slim/slim/Slim/Middleware/PrettyExceptions.php
+  - slim/slim/Slim/Environment.php
+  - slim/slim/Slim/Http/Headers.php
+  - slim/slim/Slim/View.php
+  - slim/slim/Slim/Http/Util.php
+  - slim/slim/Slim/Http/Response.php
+  - slim/slim/Slim/Http/Cookies.php
+  - slim/slim/Slim/Exception/Stop.php

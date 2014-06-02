@@ -1,0 +1,8 @@
+packing:
+  namespace: app/boot
+  id: services
+  base-dir: %app-path%/boot/core-services-init/
+  
+filesIncludedByApp:
+  - packing-manager.php
+  - plugins-unpacker.php

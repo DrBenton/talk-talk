@@ -10,15 +10,22 @@ return function() {
     $appCachePath = $appVarPath . '/cache';
     $appPhpPacksPath = $appCachePath . '/php-packs';
     $appVendorsPath = $rootPath . '/vendor/php';
+    $startTime = microtime(true);
 
-    // Do we have some PHP packs to load early?
-    $appPhpPackFilePath = $appPhpPacksPath . '/app.pack.php';
-    if (file_exists($appPhpPackFilePath)) {
-        include_once $appPhpPackFilePath;
-    }
-    $vendorsPhpPackFilePath = $appPhpPacksPath . '/vendors.pack.php';
-    if (file_exists($vendorsPhpPackFilePath)) {
-        include_once $vendorsPhpPackFilePath;
+    // A constant for some security checks
+    define('APP_ENVIRONMENT', true);
+
+    // Do we have some PHP classes packs to load early?
+    $phpClassesPacks = array(
+        'app/boot/classes',
+        'vendors/all',
+        'vendors/slim',
+    );
+    foreach ($phpClassesPacks as $phpPack) {
+        $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
+        if (file_exists($phpPackFilePath)) {
+            include_once $phpPackFilePath;
+        }
     }
 
     // Composer loading
@@ -39,7 +46,19 @@ return function() {
     $app->vars['app.php_vendors_path'] = $appVendorsPath;
     $app->vars['app.boot_services_path'] = $app->vars['app.boot_path'] . '/core-services-init';
 
+    $app->vars['perfs.start_time'] = $startTime;
     $app->vars['request'] = $slimApp->request;
+
+    // Services packs management
+    $phpIncludedInAppServicesPacks = array(
+        'app/boot/services',
+    );
+    foreach ($phpIncludedInAppServicesPacks as $phpPack) {
+        $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
+        if (file_exists($phpPackFilePath)) {
+            $app->includeInApp($phpPackFilePath);
+        }
+    }
 
     // Core Services init:
     // Packing Manager

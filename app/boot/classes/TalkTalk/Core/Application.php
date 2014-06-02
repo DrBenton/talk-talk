@@ -23,32 +23,46 @@ class Application
     public function __construct(Slim $slimApp)
     {
         $this->slimApp = $slimApp;
+        $this->vars['packs.included_files.closures'] = array();
     }
 
     public function includeInApp($filePath)
     {
-        if (isset($this->vars['packs.included_files.closures'][$filePath])) {
-            return call_user_func($this->vars['packs.included_files.closures'][$filePath]);
-        }
-
         $app = &$this;
+
+        $filePath = $this->appPath($filePath);
+
+        if (isset($this->vars['packs.included_files.closures'][$filePath])) {
+            return call_user_func($this->vars['packs.included_files.closures'][$filePath], $app);
+        }
 
         // Let's append the ".php" file extension if not already present
         $filePath .= (preg_match('~\.php$~i', $filePath)) ? '' : '.php' ;
 
-        if (!file_exists($filePath)) {
+        $fullFilePath = $this->vars['app.root_path'] . '/' . $filePath;
+
+        if (!file_exists($fullFilePath)) {
             throw new \RuntimeException(sprintf('File path "%s" not found!', $filePath));
         }
 
         // A small security check: we only allow files inside the app directory
-        $this->checkAppPath($filePath);
+        $this->checkAppPath($fullFilePath);
 
-        $__includedFilePath = $filePath;
+        $__includedFilePath = $fullFilePath;
 
         return call_user_func(
             function () use (&$app, $__includedFilePath) {
                 return include_once $__includedFilePath;
             }
+        );
+    }
+
+    public function appPath($absoluteFilePath)
+    {
+        return str_replace(
+            array($this->vars['app.root_path'] . '/', '..', '//'),
+            array('', '', '/'),
+            $absoluteFilePath
         );
     }
 
