@@ -1,11 +1,9 @@
 <?php
 
-namespace TalkTalk\Core\Packing;
+namespace TalkTalk\Core\Service;
 
-use TalkTalk\Core\Application;
-use TalkTalk\Core\ApplicationAwareInterface;
 
-class PackingManager implements ApplicationAwareInterface
+class PackingManager extends BaseService
 {
 
     const PACK_FILES_EXTENSION = '.pack.php';
@@ -14,18 +12,9 @@ class PackingManager implements ApplicationAwareInterface
     const PHP_NS_USE_PATTERN = '~use\s+([A-Z][a-zA-Z0-9_\\\\]+)\s*[,;]~';
 
     /**
-     * @var \TalkTalk\Core\Application
-     */
-    protected $app;
-    /**
      * @var string
      */
     protected $packsDir;
-
-    public function setApplication(Application $app)
-    {
-        $this->app = $app;
-    }
 
     public function setPacksDir($packsDir)
     {
@@ -49,7 +38,7 @@ class PackingManager implements ApplicationAwareInterface
      * @param string $targetNamespace
      * @param string $targetId
      */
-    public function packPhpFiles($filesPaths, $targetNamespace, $targetId, $removeWithSpaces = false)
+    public function packPhpFiles($filesPaths, $targetNamespace, $targetId)
     {
         $code = '';
         $rootPath = $this->app->vars['app.root_path'];
@@ -111,7 +100,7 @@ END;
     public function packPhpCode($rawPhpCode, $targetNamespace, $targetId)
     {
         $generator = __METHOD__;
-        $now = date('Y-md- H:i:s');
+        $now = date('Y-m-d H:i:s');
 
         $securityFileHead = <<<END
 if (!defined('APP_ENVIRONMENT')) {
@@ -147,6 +136,17 @@ END;
     {
         $packedDataFilePath = $this->getPackDataFilePath($targetNamespace, $targetId);
         return $this->app->includeInApp($packedDataFilePath);
+    }
+
+    /**
+     * @param string $targetNamespace
+     * @param string $targetId
+     * @return bool
+     */
+    public function hasPackedData($targetNamespace, $targetId)
+    {
+        $packedDataFilePath = $this->getPackDataFilePath($targetNamespace, $targetId);
+        return file_exists($packedDataFilePath);
     }
 
     public function getPackDataFilePath($targetNamespace, $targetId)
@@ -189,7 +189,7 @@ END;
         }
 
         // __DIR__ quick'n'dirty management
-        $phpFileContent = str_replace('__DIR__', '\'' . dirname($phpFilePath) . '\'', $phpFileContent);
+        $phpFileContent = str_replace('__DI'.'R__', '\'' . dirname($phpFilePath) . '\'', $phpFileContent);
 
         // A small "packing" comment is appended to the file
         $phpFileContent .= PHP_EOL . "/* @end \"$phpFilePath\" */" . PHP_EOL . PHP_EOL;

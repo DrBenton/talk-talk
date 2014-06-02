@@ -26,11 +26,19 @@ class PluginsFinder extends BaseService
     {
         $pluginsConfigFiles = glob($basePath . $this->pluginsConfigFilesPatten);
 
+        $app = &$this->app;
         return array_map(
-            function ($pluginConfigFilePath) {
+            function ($pluginConfigFilePath) use ($app) {
+
                 $plugin = new UnpackedPlugin();
-                $plugin->path = dirname($pluginConfigFilePath);
+                $plugin->path = $app->appPath(dirname($pluginConfigFilePath));
                 $plugin->config = Yaml::parse($pluginConfigFilePath);
+
+                if (!isset($plugin->config['@general']['id'])) {
+                    throw new \DomainException(sprintf('Plugin "%s" config file must define a "@general/id" value!', $pluginConfigFilePath));
+                }
+
+                $plugin->id = strtolower($plugin->config['@general']['id']);
 
                 return $plugin;
             },

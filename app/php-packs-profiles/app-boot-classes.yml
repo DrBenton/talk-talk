@@ -7,8 +7,9 @@ files:
   - ApplicationAwareInterface.php
   - Application.php
   - Service/BaseService.php
+  - Service/PackingManager.php
   - Plugin/UnpackedPlugin.php
   - Service/PluginsUnpacker.php
   - Plugin/Config/PluginConfigHandlerInterface.php
-  - Plugin/Config/CoreConfigHandler.php
-  - Service/PluginsFinder.php
+  - Plugin/Config/GeneralConfigHandler.php
+  - Plugin/Config/ActionsConfigHandler.php

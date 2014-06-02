@@ -19,21 +19,31 @@ class PluginsUnpacker extends BaseService
      */
     public function hasPackedPlugins()
     {
-
+        return $this->app
+            ->getService('packing-manager')
+            ->hasPackedData($this->packsDataNs, 'metadata');
     }
 
     public function unpackPlugins()
     {
+        $pluginsMetadata = $this->app
+            ->getService('packing-manager')
+            ->unpackData($this->packsDataNs, 'metadata');
 
+        foreach($pluginsMetadata as $pluginMetadata) {
+            $this->unpackPlugin($pluginMetadata['id']);
+        }
     }
 
     /**
-     * @param string $pluginPackFilePath
+     * @param string $pluginId
      * @return \TalkTalk\Core\Plugin\Plugin
      */
-    protected function unpackPlugin($pluginPackFilePath)
+    protected function unpackPlugin($pluginId)
     {
-
+        $this->app
+            ->getService('packing-manager')
+            ->unpackData($this->packsDataNs, $this->app->vars['plugins.packs_prefix'] . $pluginId);
     }
 
     protected function getPackedPluginsMetadataFile()

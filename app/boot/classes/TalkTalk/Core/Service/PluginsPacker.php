@@ -20,12 +20,17 @@ class PluginsPacker extends BaseService
      */
     public function packPlugins($unpackedPlugins)
     {
-
+        $pluginsMetadata = array();
         foreach($unpackedPlugins as $unpackedPlugin) {
+
             $this->packPlugin($unpackedPlugin);
+
+            $metadata = $unpackedPlugin->getMetadataToPack();
+            $pluginsMetadata[$unpackedPlugin->id] = $metadata;
+
         }
 
-        return $this->generatePluginsMetadata();
+        return $this->generatePluginsMetadata($pluginsMetadata);
     }
 
     /**
@@ -37,12 +42,14 @@ class PluginsPacker extends BaseService
         $pluginPackedPhpCode = $plugin->getPhpCodeToPack();
         $this->app
             ->getService('packing-manager')
-            ->packPhpCode($pluginPackedPhpCode, $this->packsDataNs, $plugin->id);
+            ->packPhpCode($pluginPackedPhpCode, $this->packsDataNs, $this->app->vars['plugins.packs_prefix'] . $plugin->id);
     }
 
-    public function generatePluginsMetadata()
+    public function generatePluginsMetadata(array $pluginsMetadata)
     {
-
+        $this->app
+            ->getService('packing-manager')
+            ->packData($pluginsMetadata, $this->packsDataNs, 'metadata');
     }
 
 }

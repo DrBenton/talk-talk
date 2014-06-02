@@ -28,8 +28,10 @@ return function() {
         }
     }
 
-    // Composer loading
-    require_once $appVendorsPath . '/autoload.php';
+    // Composer loading - only if needed at this point!
+    if (!class_exists('TalkTalk\Core\Application')) {
+        require_once $appVendorsPath . '/autoload.php';
+    }
 
     // Okay, let's create our Application!
     $slimApp = new \Slim\Slim();
@@ -61,8 +63,8 @@ return function() {
     }
 
     // Core Services init:
-    // Packing Manager
     $app->includeInApp($app->vars['app.boot_services_path'] . '/packing-manager.php');
+    $app->includeInApp($app->vars['app.boot_services_path'] . '/autoloader.php');
 
     // Plugins system init
     include_once __DIR__ . '/plugins-system-init.php';

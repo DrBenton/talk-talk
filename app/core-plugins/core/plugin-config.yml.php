@@ -3,13 +3,12 @@
 @general:
   id: core
 
-#
-#@actions:
-#  -
-#    # GET / => actions/home.php
-#    url: /
-#    target: home
-#    name: core/home
+@actions:
+  -
+    # GET / => actions/home.php
+    url: /
+    target: home
+    name: core/home
 #
 #@classes:
 #  -

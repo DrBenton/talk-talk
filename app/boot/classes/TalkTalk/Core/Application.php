@@ -24,6 +24,7 @@ class Application
     {
         $this->slimApp = $slimApp;
         $this->vars['packs.included_files.closures'] = array();
+        $this->registerAutoloader();
     }
 
     public function includeInApp($filePath)
@@ -42,7 +43,7 @@ class Application
         $fullFilePath = $this->vars['app.root_path'] . '/' . $filePath;
 
         if (!file_exists($fullFilePath)) {
-            throw new \RuntimeException(sprintf('File path "%s" not found!', $filePath));
+            throw new \DomainException(sprintf('File to include "%s" not found!', $filePath));
         }
 
         // A small security check: we only allow files inside the app directory
@@ -74,7 +75,7 @@ class Application
     {
         $realPath = realpath($pathToCheck);
         if (0 !== strpos($realPath, $this->vars['app.root_path'])) {
-            throw new \RuntimeException(sprintf('Path "%s" is not inside app directory!', $pathToCheck));
+            throw new \DomainException(sprintf('Path "%s" is not inside app directory!', $pathToCheck));
         }
     }
 
@@ -110,9 +111,25 @@ class Application
         return $serviceResolution;
     }
 
+    public function addAction($urlPattern)
+    {
+        return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
+    }
+
+    public function registerAutoloader()
+    {
+        spl_autoload_register(array($this, 'loadComposer'), true);
+    }
+
     public function run()
     {
         $this->slimApp->run();
+    }
+
+    protected function loadComposer($class)
+    {
+        spl_autoload_unregister(array($this, 'loadComposer'));
+        $this->getService('autoloader')->loadClass($class);
     }
 
 }

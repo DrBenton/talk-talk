@@ -13,4 +13,10 @@ interface PluginConfigHandlerInterface
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin);
 
+    /**
+     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @return array|null
+     */
+    public function getMetadata(UnpackedPlugin $plugin);
+
 } 

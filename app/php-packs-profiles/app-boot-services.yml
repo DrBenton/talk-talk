@@ -4,5 +4,6 @@ packing:
   base-dir: %app-path%/boot/core-services-init/
   
 filesIncludedByApp:
+  - autoloader.php
   - packing-manager.php
   - plugins-unpacker.php

@@ -1,6 +1,6 @@
 <?php
 
-use TalkTalk\Core\Packing\PackingManager;
+use TalkTalk\Core\Service\PackingManager;
 
 $app->defineService(
     'packing-manager',

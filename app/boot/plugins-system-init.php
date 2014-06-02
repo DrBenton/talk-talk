@@ -1,13 +1,14 @@
 <?php
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
-use TalkTalk\Core\Plugin\Config\CoreConfigHandler;
 
 call_user_func(
     function () use ($app) {
 
         // Plugins specific app vars
         $app->vars['plugins.packs_namespace'] = 'plugins';
+        $app->vars['plugins.packs_prefix'] = 'plugin---';
+        $app->vars['plugins.registered_plugins'] = array();
 
         // Plugins specific boot services
 
@@ -26,8 +27,9 @@ call_user_func(
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-finder.php');
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-packer.php');
 
-            // Core Plugins config handler is added to the Unpacked Plugins class
-            UnpackedPlugin::addBehaviour(new CoreConfigHandler());
+            // Plugins core Config Handlers arreadded to the Unpacked Plugins class
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\GeneralConfigHandler());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\ActionsConfigHandler());
 
             // Core plugins discovery
             $corePluginsDir = $app->vars['app.app_path'] . '/core-plugins';
@@ -37,12 +39,31 @@ call_user_func(
             $thirdPartyPluginsDir = $app->vars['app.root_path'] . '/plugins';
             $thirdPartyUnpackedPlugins = $app->getService('plugins.finder')->findPlugins($thirdPartyPluginsDir);
 
+            // No third-party plugin can take the id of a core plugin
+            $getPluginId = function (UnpackedPlugin $plugin) {
+                return strtolower($plugin->id);
+            };
+            $coreUnpackedPluginsIds = array_map(&$getPluginId, $coreUnpackedPlugins);
+            $thirdPartyUnpackedPluginsIds = array_map(&$getPluginId, $thirdPartyUnpackedPlugins);
+            $collisions = array_intersect($coreUnpackedPluginsIds, $thirdPartyUnpackedPluginsIds);
+            if (count($collisions) > 0) {
+                throw new \RuntimeException(sprintf(
+                    'The following Plugins ids are reserved, and cannot be chosen for third-party plugins: %s',
+                    implode(',', $coreUnpackedPluginsIds)
+                ));
+            }
+
             // Plugins packing
             $unpackedPlugins = $coreUnpackedPlugins + $thirdPartyUnpackedPlugins;
             $app->getService('plugins.packer')->packPlugins($unpackedPlugins);
 
         }
 
+        // All right, at this point we have packed Plugins PHP code,
+        // whether is had been generated before or just now.
+        // --> Let's unpack our Plugins super powers!
+
+        $app->getService('plugins.unpacker')->unpackPlugins();
 
 
     }

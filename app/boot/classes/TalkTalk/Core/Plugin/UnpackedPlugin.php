@@ -39,10 +39,32 @@ class UnpackedPlugin
         $code = '';
         foreach(self::$configHandlers as $configHandler)
         {
-            $code .= $configHandler->getPhpCodeToPack($this);
+            $pluginPhpCodeForCurrentConfigHandler = $configHandler->getPhpCodeToPack($this);
+            if (null !== $pluginPhpCodeForCurrentConfigHandler) {
+                $code .= PHP_EOL .
+                    sprintf('/* PHP code generated for plugin "%s" by Config Handler "%s" */', $this->path, get_class($configHandler)) . PHP_EOL .
+                    $pluginPhpCodeForCurrentConfigHandler . PHP_EOL ;
+            }
         }
 
         return $code;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetadataToPack()
+    {
+        $metadata = array();
+        foreach(self::$configHandlers as $configHandler)
+        {
+            $pluginMetadataForCurrentConfigHandler = $configHandler->getMetadata($this);
+            if (null !== $pluginMetadataForCurrentConfigHandler) {
+                $metadata[] = $pluginMetadataForCurrentConfigHandler;
+            }
+        }
+
+        return call_user_func_array('array_merge', $metadata);
     }
 
 }
