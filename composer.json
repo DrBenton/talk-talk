@@ -1,0 +1,25 @@
+{
+  "name": "rougemine/talk-talk",
+  "license": "GPL v2",
+  "authors": [
+    {
+      "name": "Olivier Philippon",
+      "email": "olivier@rougemine.com",
+      "homepage": "http://rougemine.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "slim/slim": "2.4.3",
+    "symfony/yaml": "2.4.6"
+  },
+  "config": {
+    "vendor-dir": "vendor/php"
+  },
+  "autoload": {
+    "psr-4": {
+      "TalkTalk\\": "app/boot/classes/TalkTalk"
+    }
+  }
+}
