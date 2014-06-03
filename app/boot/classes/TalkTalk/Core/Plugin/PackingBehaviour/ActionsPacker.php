@@ -1,13 +1,18 @@
 <?php
 
-namespace TalkTalk\Core\Plugin\Config;
+namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class ActionsConfigPacker implements PluginConfigPackerInterface
+class ActionsPacker implements PluginPackerBehaviourInterface
 {
 
     const ACTION_FILE_PATH = '%plugin-path%/actions/%action-target%.php';
+
+    public function init(UnpackedPlugin $plugin)
+    {
+        // No specific initialization phase for this Packer
+    }
 
     /**
      * @inheritdoc
@@ -54,4 +59,5 @@ namespace {
 }
 PLUGIN_PHP_CODE;
     }
+
 }

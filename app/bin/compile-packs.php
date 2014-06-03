@@ -5,6 +5,7 @@
 return call_user_func(
     function () {
 
+        $startTime = microtime(true);
         $isCli = (php_sapi_name() === 'cli');
 
         // Existing packs removal
@@ -56,6 +57,7 @@ return call_user_func(
         $returnedData = array(
             'nbPacksRemoved' => $nbExistingPackProfilesRemoved,
             'packsCreated' => array_map(array($app, 'appPath'), $packsProfiles),
+            'duration' => round((microtime(true) - $startTime), 3),
         );
 
         if ($isCli && false !== strpos(__FILE__, $GLOBALS['argv'][0])) {

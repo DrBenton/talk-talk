@@ -83,6 +83,9 @@ class PackingManager extends BaseService
         $code = '';
         foreach ($filesToIncludeInPaths as $phpFileToIncludePath) {
 
+            if (!file_exists($phpFileToIncludePath)) {
+                throw new \DomainException(sprintf('PHP file to include in app "%s" not found!', $phpFileToIncludePath));
+            }
             $fileContent = file_get_contents($phpFileToIncludePath);
 
             // First php opening tag removal
@@ -189,6 +192,9 @@ END;
 
     public function getPhpFileContentForPacking($phpFilePath)
     {
+        if (!file_exists($phpFilePath)) {
+            throw new \DomainException(sprintf('PHP file to format for packing "%s" not found!', $phpFilePath));
+        }
         $phpFileContent = file_get_contents($phpFilePath);
 
         // First php opening tag removal

@@ -14,8 +14,11 @@ files:
   - Service/PackingProfilesManager.php
   - Plugin/UnpackedPlugin.php
   - Service/PluginsUnpacker.php
-  - Plugin/Config/PluginConfigPackerInterface.php
-  - Plugin/Config/GeneralConfigPacker.php
-  - Plugin/Config/ActionsConfigPacker.php
+  - Plugin/PackingBehaviour/PluginPackerBehaviourInterface.php
+  - Plugin/PackingBehaviour/GeneralPacker.php
+  - Plugin/PackingBehaviour/ActionsPacker.php
+  - Plugin/PackingBehaviour/ClassesPacker.php
+  - Plugin/PackingBehaviour/ServicesPacker.php
+  - Plugin/PackingBehaviour/NewPackersPacker.php
   - Service/StringUtils.php
   - Service/IOUtils.php

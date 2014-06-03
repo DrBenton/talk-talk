@@ -12,20 +12,23 @@
 
 @classes:
   -
-    prefix: TalkTalk\CorePlugins\Core\
-    path: %plugin-path%/classes/TalkTalk/CorePlugins/Core
+    prefix: TalkTalk\CorePlugin\Core\
+    path: %plugin-path%/classes/TalkTalk/CorePlugin/Core
   -
     prefix: TalkTalk\Model\
     path: %plugin-path%/classes/TalkTalk/Model
 
-#@services:
+@pluginsPackers:
+  - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\TemplatesPacker
+
+@services:
+  - view
 #  - session
 #  - db
 #  - crypto
 #  - config
 #  - settings
 #  - url-generator
-#  - twig
 #  - translator
 #  - validator
 #  - uuid

@@ -1,0 +1,15 @@
+packing:
+  namespace: vendors
+  id: plates
+  base-dir: %app-root%/vendor/php/league/plates/src
+  handledPhPNamespace: League\Plates\
+  
+files: 
+  - Engine.php
+  - Template.php
+  - Extension/ExtensionInterface.php
+  - Extension/Asset.php
+  - Extension/Batch.php
+  - Extension/Escape.php
+  - Extension/Nest.php
+  - Extension/URI.php

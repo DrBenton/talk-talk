@@ -15,7 +15,8 @@
     "symfony/yaml": "2.4.6",
     "illuminate/database": "4.0.x",
     "illuminate/validation": "4.0.x",
-    "illuminate/cache": "4.0.x"
+    "illuminate/cache": "4.0.x",
+    "league/plates": "2.*"
   },
   "config": {
     "vendor-dir": "vendor/php"

@@ -1,11 +1,13 @@
 <?php
 
-namespace TalkTalk\Core\Plugin\Config;
+namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-interface PluginConfigPackerInterface
+interface PluginPackerBehaviourInterface
 {
+
+    public function init(UnpackedPlugin $plugin);
 
     /**
      * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin

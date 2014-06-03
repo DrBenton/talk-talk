@@ -17,6 +17,7 @@ return function() {
 
     // General system setup
     date_default_timezone_set('UTC');
+    chdir($rootPath);
 
     // Do we have some PHP classes packs to load early?
     $phpClassesPacks = array(

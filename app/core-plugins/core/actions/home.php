@@ -1,7 +1,8 @@
 <?php
 
 $action = function () use ($app) {
-    echo 'Hello World!';
+    return $app->getService('view')
+        ->render('core::home');
 };
 
 return $action;

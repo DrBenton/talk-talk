@@ -27,10 +27,12 @@ call_user_func(
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-finder.php');
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-packer.php');
 
-            // Plugins core Config Packers are added to the Unpacked Plugins class
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\GeneralConfigPacker());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\ActionsConfigPacker());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\ClassesConfigPacker());
+            // Plugins core Packing Behaviours are added to the Unpacked Plugins class
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\GeneralPacker());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\ActionsPacker());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\ClassesPacker());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\ServicesPacker());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\NewPackersPacker());
 
             // Core plugins discovery
             $corePluginsDir = $app->vars['app.app_path'] . '/core-plugins';
