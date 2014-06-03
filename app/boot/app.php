@@ -15,10 +15,12 @@ return function() {
     // A constant for some security checks
     define('APP_ENVIRONMENT', true);
 
+    // General system setup
+    date_default_timezone_set('UTC');
+
     // Do we have some PHP classes packs to load early?
     $phpClassesPacks = array(
         'app/boot/classes',
-        'vendors/all',
         'vendors/slim',
     );
     foreach ($phpClassesPacks as $phpPack) {
@@ -29,7 +31,7 @@ return function() {
     }
 
     // Composer loading - only if needed at this point!
-    if (!class_exists('TalkTalk\Core\Application')) {
+    if (!class_exists('TalkTalk\Core\Application', false)) {
         require_once $appVendorsPath . '/autoload.php';
     }
 
@@ -46,10 +48,14 @@ return function() {
     $app->vars['app.cache_path'] = $appCachePath;
     $app->vars['app.php_packs_path'] = $appPhpPacksPath;
     $app->vars['app.php_vendors_path'] = $appVendorsPath;
+    $app->vars['app.js_vendors_path'] = $rootPath . '/vendor/js';
     $app->vars['app.boot_services_path'] = $app->vars['app.boot_path'] . '/core-services-init';
 
     $app->vars['perfs.start_time'] = $startTime;
+    $app->vars['debug'] = true;
     $app->vars['request'] = $slimApp->request;
+    $app->vars['app.base_url'] = $app->vars['request']->getPathInfo();
+    $app->vars['isAjax'] = $app->vars['request']->isAjax();
 
     // Services packs management
     $phpIncludedInAppServicesPacks = array(
@@ -63,8 +69,19 @@ return function() {
     }
 
     // Core Services init:
-    $app->includeInApp($app->vars['app.boot_services_path'] . '/packing-manager.php');
-    $app->includeInApp($app->vars['app.boot_services_path'] . '/autoloader.php');
+    $coreServicesToInit = array(
+        'packing-manager',
+        'packing-profiles-manager',
+        'autoloader',
+        'string-utils',
+        'io-utils',
+    );
+    array_walk(
+        $coreServicesToInit,
+        function ($serviceFileName) use ($app) {
+            $app->includeInApp($app->vars['app.boot_services_path'] . '/' . $serviceFileName . '.php');
+        }
+    );
 
     // Plugins system init
     include_once __DIR__ . '/plugins-system-init.php';

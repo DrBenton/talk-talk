@@ -9,14 +9,14 @@
     url: /
     target: home
     name: core/home
-#
-#@classes:
-#  -
-#    prefix: TalkTalk\CorePlugins\Core\
-#    paths: %pluginPath%/classes/TalkTalk/CorePlugins/Core
-#  -
-#    prefix: TalkTalk\Model\
-#    paths: %pluginPath%/classes/TalkTalk/Model
+
+@classes:
+  -
+    prefix: TalkTalk\CorePlugins\Core\
+    path: %plugin-path%/classes/TalkTalk/CorePlugins/Core
+  -
+    prefix: TalkTalk\Model\
+    path: %plugin-path%/classes/TalkTalk/Model
 
 #@services:
 #  - session

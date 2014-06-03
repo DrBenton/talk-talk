@@ -2,20 +2,9 @@
 
 namespace TalkTalk\Core\Service;
 
-use TalkTalk\Core\Application;
-use TalkTalk\Core\ApplicationAwareInterface;
+use TalkTalk\Core\ApplicationAware;
 
-abstract class BaseService implements ApplicationAwareInterface
+abstract class BaseService extends ApplicationAware
 {
-
-    /**
-     * @var \TalkTalk\Core\Application
-     */
-    protected $app;
-
-    public function setApplication(Application $app)
-    {
-        $this->app = $app;
-    }
 
 }

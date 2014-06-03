@@ -4,7 +4,7 @@ namespace TalkTalk\Core\Plugin\Config;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class GeneralConfigHandler implements PluginConfigHandlerInterface
+class GeneralConfigPacker implements PluginConfigPackerInterface
 {
 
     /**
@@ -15,7 +15,9 @@ class GeneralConfigHandler implements PluginConfigHandlerInterface
         $myConfigPart = $plugin->config['@general'];
 
         return <<<PLUGIN_PHP_CODE
-\$app->vars['plugins.registered_plugins'][] = '$plugin->id';
+namespace {
+    \$app->vars['plugins.registered_plugins'][] = '$plugin->id';
+}
 PLUGIN_PHP_CODE;
     }
 

@@ -27,9 +27,10 @@ call_user_func(
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-finder.php');
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-packer.php');
 
-            // Plugins core Config Handlers arreadded to the Unpacked Plugins class
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\GeneralConfigHandler());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\ActionsConfigHandler());
+            // Plugins core Config Packers are added to the Unpacked Plugins class
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\GeneralConfigPacker());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\ActionsConfigPacker());
+            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\Config\ClassesConfigPacker());
 
             // Core plugins discovery
             $corePluginsDir = $app->vars['app.app_path'] . '/core-plugins';
@@ -43,8 +44,8 @@ call_user_func(
             $getPluginId = function (UnpackedPlugin $plugin) {
                 return strtolower($plugin->id);
             };
-            $coreUnpackedPluginsIds = array_map(&$getPluginId, $coreUnpackedPlugins);
-            $thirdPartyUnpackedPluginsIds = array_map(&$getPluginId, $thirdPartyUnpackedPlugins);
+            $coreUnpackedPluginsIds = array_map($getPluginId, $coreUnpackedPlugins);
+            $thirdPartyUnpackedPluginsIds = array_map($getPluginId, $thirdPartyUnpackedPlugins);
             $collisions = array_intersect($coreUnpackedPluginsIds, $thirdPartyUnpackedPluginsIds);
             if (count($collisions) > 0) {
                 throw new \RuntimeException(sprintf(

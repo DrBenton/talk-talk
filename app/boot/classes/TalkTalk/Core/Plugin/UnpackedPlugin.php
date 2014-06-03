@@ -2,14 +2,15 @@
 
 namespace TalkTalk\Core\Plugin;
 
-use TalkTalk\Core\Plugin\Config\PluginConfigHandlerInterface;
+use TalkTalk\Core\Plugin\Config\PluginConfigPackerInterface;
+use TalkTalk\Core\ApplicationAware;
 
-class UnpackedPlugin
+class UnpackedPlugin extends ApplicationAware
 {
 
     protected static $configHandlers = array();
 
-    public static function addBehaviour(PluginConfigHandlerInterface $configHandler)
+    public static function addBehaviour(PluginConfigPackerInterface $configHandler)
     {
         self::$configHandlers[] = $configHandler;
     }
@@ -65,6 +66,11 @@ class UnpackedPlugin
         }
 
         return call_user_func_array('array_merge', $metadata);
+    }
+
+    public function getAppService($serviceId)
+    {
+        return $this->app->getService($serviceId);
     }
 
 }

@@ -5,5 +5,9 @@ packing:
   
 filesIncludedByApp:
   - autoloader.php
+  - packing-profiles-manager.php
   - packing-manager.php
   - plugins-unpacker.php
+  - string-utils.php
+  - io-utils.php
+

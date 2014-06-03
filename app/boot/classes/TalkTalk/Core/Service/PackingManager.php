@@ -10,6 +10,8 @@ class PackingManager extends BaseService
     const PHP_NS_DECLARATION_PATTERN = '~namespace\s+([A-Z][a-zA-Z0-9_\\\\]+)\s*;~';
     const PHP_NS_WITH_BRACKET_DECLARATION_PATTERN = '~namespace\s*([A-Z][a-zA-Z0-9_\\\\]+)?\s*{~';
     const PHP_NS_USE_PATTERN = '~use\s+([A-Z][a-zA-Z0-9_\\\\]+)\s*[,;]~';
+    const PHP_CLASS_PATTERN = '~^\s*(?:abstract\s+)?class\s+([A-Z][a-zA-Z0-9_]+)~m';
+    const PHP_INTERFACE_PATTERN = '~^\s*interface\s+([A-Z][a-zA-Z0-9_]+)~m';
 
     /**
      * @var string
@@ -40,6 +42,15 @@ class PackingManager extends BaseService
      */
     public function packPhpFiles($filesPaths, $targetNamespace, $targetId)
     {
+        $this->packPhpCode($this->getPhpFilesCode($filesPaths), $targetNamespace, $targetId);
+    }
+
+    /**
+     * @param $filesPaths
+     * @return string
+     */
+    public function getPhpFilesCode($filesPaths)
+    {
         $code = '';
         $rootPath = $this->app->vars['app.root_path'];
         foreach ($filesPaths as $phpFilePath) {
@@ -50,10 +61,24 @@ class PackingManager extends BaseService
             $code .= $this->getPhpFileContentForPacking($phpFilePath);
         }
 
-        $this->packPhpCode($code, $targetNamespace, $targetId);
+        return $code;
     }
 
+    /**
+     * @param array $filesToIncludeInPaths
+     * @param $targetNamespace
+     * @param $targetId
+     */
     public function packAppInclusions(array $filesToIncludeInPaths, $targetNamespace, $targetId)
+    {
+        $this->packPhpCode($this->getAppInclusionsCode($filesToIncludeInPaths), $targetNamespace, $targetId);
+    }
+
+    /**
+     * @param array $filesToIncludeInPaths
+     * @return string
+     */
+    public function getAppInclusionsCode(array $filesToIncludeInPaths)
     {
         $code = '';
         foreach ($filesToIncludeInPaths as $phpFileToIncludePath) {
@@ -89,7 +114,7 @@ END;
             $code .= $fileContent;
         }
 
-        $this->packPhpCode($code, $targetNamespace, $targetId);
+        return $code;
     }
 
     /**
@@ -162,7 +187,7 @@ END;
         return $this->packsDir . '/' . $targetNamespace . '/' . $targetId . self::PACK_FILES_EXTENSION;
     }
 
-    protected function getPhpFileContentForPacking($phpFilePath)
+    public function getPhpFileContentForPacking($phpFilePath)
     {
         $phpFileContent = file_get_contents($phpFilePath);
 
@@ -187,6 +212,9 @@ END;
             // No namespace? Let's enclose this PHP file content in a root one!
             $phpFileContent = 'namespace {' . PHP_EOL . $phpFileContent . PHP_EOL . '} //end namespace' . PHP_EOL ;
         }
+
+        // Let's wrap this file class/interface definition in a "if (class_exists()) {...}"
+        $phpFileContent = $this->wrapClassDefinitionInClassExistsCheck($phpFileContent, $namespaceName);
 
         // __DIR__ quick'n'dirty management
         $phpFileContent = str_replace('__DI'.'R__', '\'' . dirname($phpFilePath) . '\'', $phpFileContent);
@@ -225,5 +253,52 @@ END;
             'content' => $phpFileContent,
             'strippedNamespaces' => $strippedNamespaces
         );
+    }
+
+    /**
+     * This method content is not very clean, but... it seems to work :-)
+     *
+     * @param string $phpFileContent
+     * @param string $classNamespace
+     * @return string
+     */
+    protected function wrapClassDefinitionInClassExistsCheck($phpFileContent, $classNamespace)
+    {
+        $classNsPrefix = (null === $classNamespace) ? '' : $classNamespace . '\\' ;
+
+        // "class_exists()" checks around class/interface definition, *inside* their namespace
+        $definitionsPatterns = array(self::PHP_CLASS_PATTERN, self::PHP_INTERFACE_PATTERN);
+
+        foreach($definitionsPatterns as $definitionPattern) {
+
+            if (preg_match($definitionPattern, $phpFileContent)) {
+
+                $methodToUse = ($definitionPattern === self::PHP_CLASS_PATTERN)
+                    ? 'class_exists'
+                    : 'interface_exists';
+
+                $phpFileContent = preg_replace_callback(
+                    $definitionPattern,
+                    function ($matches) use ($classNsPrefix, $methodToUse) {
+                        $className = $matches[1];
+                        return PHP_EOL . "if (!$methodToUse('$classNsPrefix$className', false)) {" . PHP_EOL . $matches[0];
+                    },
+                    $phpFileContent
+                );
+
+                // We have to close this "if"...
+                // (let's hope this file contains only one class!)
+                $lastClosingBracketPos = strrpos($phpFileContent, '}');
+                $phpFileContent = substr_replace(
+                    $phpFileContent,
+                    PHP_EOL . "}//end if (!class_exists('...'))" . PHP_EOL . '}',
+                    $lastClosingBracketPos
+                );
+
+            }
+
+        }
+
+        return $phpFileContent;
     }
 }

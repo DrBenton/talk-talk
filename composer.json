@@ -12,7 +12,10 @@
   "require": {
     "php": ">=5.3.3",
     "slim/slim": "2.4.3",
-    "symfony/yaml": "2.4.6"
+    "symfony/yaml": "2.4.6",
+    "illuminate/database": "4.0.x",
+    "illuminate/validation": "4.0.x",
+    "illuminate/cache": "4.0.x"
   },
   "config": {
     "vendor-dir": "vendor/php"

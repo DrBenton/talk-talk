@@ -2,89 +2,66 @@
 
 //TODO: prevent access to this file to anyone through HTTP
 
-call_user_func(
+return call_user_func(
     function () {
 
+        $isCli = (php_sapi_name() === 'cli');
+
         // Existing packs removal
-        /**
-         * Recursive glob
-         * @see http://www.g33k-zone.org/post/2010/05/27/Fonction-glob-r%C3%A9cursive
-         */
-        $rglob = function($pattern='*', $path='', $flags = 0) use (&$rglob) {
-            $paths=glob($path.'*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
-            $files=glob($path.$pattern, $flags);
-            foreach ($paths as $path) {
-                $files=array_merge($files, $rglob($pattern, $path, $flags));
-            }
-            return $files;
-        };
+        // We have to do this manually, since we don't have the whole app code at this point.
+        if (!class_exists('TalkTalk\Core\Service\IOUtils', false)) {
+            require_once __DIR__ . '/../boot/classes/TalkTalk/Core/ApplicationInterface.php';
+            require_once __DIR__ . '/../boot/classes/TalkTalk/Core/ApplicationAwareInterface.php';
+            require_once __DIR__ . '/../boot/classes/TalkTalk/Core/ApplicationAware.php';
+            require_once __DIR__ . '/../boot/classes/TalkTalk/Core/Service/BaseService.php';
+            require_once __DIR__ . '/../boot/classes/TalkTalk/Core/Service/IOUtils.php';
+        }
+        $ioUtils = new TalkTalk\Core\Service\IOUtils();
         $appPath = dirname(__DIR__);
         $packsProfilesDir = $appPath . '/var/cache/php-packs';
-        $existingPackProfiles = $rglob('*.pack.php', $packsProfilesDir);
-        foreach($existingPackProfiles as $packToRemove) {
-            unlink($packToRemove);
-        }
+        $existingPackProfilesPaths = $ioUtils->rglob('*.pack.php', $packsProfilesDir);
+        array_walk($existingPackProfilesPaths, function ($path) {
+            unlink($path);
+        });
+        $nbExistingPackProfilesRemoved = count($existingPackProfilesPaths);
+        // Packs metadata removal
+        @unlink($packsProfilesDir . '/packs-metadata.php');
 
-        // App init
+        // App environment init
+        if ($isCli) {
+            // Slim will not not like the CLI context, as there will be some missing $_SERVER vars.
+            // --> let's disable PHP Notices!
+            $previousErrorReportingLevel = error_reporting(E_ALL & ~E_NOTICE);
+        }
         $appInitClosure = require_once __DIR__ . '/../boot/app.php';
         $app = call_user_func($appInitClosure);
+        if ($isCli) {
+            // Back to previous PHP error reporting level
+            error_reporting($previousErrorReportingLevel);
+        }
 
-        $packingManager = $app->getService('packing-manager');
+        // Packing Services init
+        $packingProfilesManager = $app->getService('packing-profiles-manager');
 
+        // Ok, let's fetch the whole list of available PHP packs profiles!
         $packsProfilesDir = $app->vars['app.app_path'] . '/php-packs-profiles';
         $packsProfiles = glob($packsProfilesDir . '/*.yml');
 
-        $replaceVars = function($srcStr) use ($app) {
-            return str_replace(
-                array('%app-root%', '%app-path%'),
-                array($app->vars['app.root_path'], $app->vars['app.app_path']),
-                $srcStr
-            );
-        };
-
-        // Go! Go! Go!
+        // Well... Pack profiles, start your engine!
         foreach($packsProfiles as $packProfileFile)
         {
-            $packProfileData = \Symfony\Component\Yaml\Yaml::parse($packProfileFile);
+            $packingProfilesManager->packProfile($packProfileFile);
+        }
 
-            $baseDir = isset($packProfileData['packing']['base-dir'])
-                ? $packProfileData['packing']['base-dir']
-                : $app->vars['app.root_path'];
-            $baseDir = $replaceVars($baseDir);
+        $returnedData = array(
+            'nbPacksRemoved' => $nbExistingPackProfilesRemoved,
+            'packsCreated' => array_map(array($app, 'appPath'), $packsProfiles),
+        );
 
-            if (isset($packProfileData['files'])) {
-
-                // Simple PHP files to pack (classes, ...)
-                $filesToPack = array_map(
-                    function ($filePath) use (&$baseDir, &$replaceVars) {
-                        return $baseDir . '/' . $replaceVars($filePath);
-                    },
-                    $packProfileData['files']
-                );
-                $packingManager->packPhpFiles(
-                    $filesToPack,
-                    $packProfileData['packing']['namespace'],
-                    $packProfileData['packing']['id']
-                );
-
-            }
-
-            if (isset($packProfileData['filesIncludedByApp'])) {
-
-                // PHP files which will be included via "Application#includeInApp"
-                $filesIncludedByAppToPack = array_map(
-                    function ($filePath) use (&$baseDir, &$replaceVars) {
-                        return $baseDir . '/' . $replaceVars($filePath);
-                    },
-                    $packProfileData['filesIncludedByApp']
-                );
-                $packingManager->packAppInclusions(
-                    $filesIncludedByAppToPack,
-                    $packProfileData['packing']['namespace'],
-                    $packProfileData['packing']['id']
-                );
-
-            }
+        if ($isCli && false !== strpos(__FILE__, $GLOBALS['argv'][0])) {
+            die(json_encode($returnedData) . PHP_EOL);
+        } else {
+            return $returnedData;
         }
 
     }

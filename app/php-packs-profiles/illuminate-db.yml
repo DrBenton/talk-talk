@@ -1,0 +1,23 @@
+packing:
+  namespace: vendors
+  id: illuminate-db
+  base-dir: %app-root%/vendor/php/illuminate/database/
+  handledPhPNamespace: Illuminate\Database\
+
+files:
+  - Illuminate/Database/ConnectionInterface.php
+  - Illuminate/Database/ConnectionResolverInterface.php
+  - Illuminate/Database/Connection.php
+  - Illuminate/Database/Query/Builder.php
+  - Illuminate/Database/Eloquent/Model.php
+  - Illuminate/Database/Eloquent/Collection.php
+  - Illuminate/Database/Eloquent/Relations/Relation.php
+  - Illuminate/Database/Eloquent/Relations/BelongsToMany.php
+  - Illuminate/Database/Eloquent/Relations/HasOneOrMany.php
+  - Illuminate/Database/Eloquent/Relations/Pivot.php
+  - Illuminate/Database/Eloquent/Relations/HasOne.php
+  - Illuminate/Database/Eloquent/Relations/HasMany.php
+  - Illuminate/Database/Eloquent/Relations/MorphOneOrMany.php
+  - Illuminate/Database/Eloquent/Relations/MorphMany.php
+  - Illuminate/Database/Eloquent/Relations/MorphOne.php
+  - Illuminate/Database/Eloquent/Relations/BelongsTo.php

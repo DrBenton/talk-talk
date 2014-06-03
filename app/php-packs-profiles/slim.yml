@@ -1,23 +1,24 @@
 packing:
   namespace: vendors
   id: slim
-  base-dir: %app-root%/vendor/php
+  base-dir: %app-root%/vendor/php/slim/slim/
+  handledPhPNamespace: Slim\
   
 files: 
-  - slim/slim/Slim/Slim.php
-  - slim/slim/Slim/Helper/Set.php
-  - slim/slim/Slim/Log.php
-  - slim/slim/Slim/Middleware/Flash.php
-  - slim/slim/Slim/Middleware.php
-  - slim/slim/Slim/Middleware/MethodOverride.php
-  - slim/slim/Slim/Route.php
-  - slim/slim/Slim/Router.php
-  - slim/slim/Slim/Http/Request.php
-  - slim/slim/Slim/Middleware/PrettyExceptions.php
-  - slim/slim/Slim/Environment.php
-  - slim/slim/Slim/Http/Headers.php
-  - slim/slim/Slim/View.php
-  - slim/slim/Slim/Http/Util.php
-  - slim/slim/Slim/Http/Response.php
-  - slim/slim/Slim/Http/Cookies.php
-  - slim/slim/Slim/Exception/Stop.php
+  - Slim/Slim.php
+  - Slim/Helper/Set.php
+  - Slim/Log.php
+  - Slim/Middleware.php
+  - Slim/Middleware/Flash.php
+  - Slim/Middleware/MethodOverride.php
+  - Slim/Route.php
+  - Slim/Router.php
+  - Slim/Http/Request.php
+  - Slim/Middleware/PrettyExceptions.php
+  - Slim/Environment.php
+  - Slim/Http/Headers.php
+  - Slim/View.php
+  - Slim/Http/Util.php
+  - Slim/Http/Response.php
+  - Slim/Http/Cookies.php
+  - Slim/Exception/Stop.php

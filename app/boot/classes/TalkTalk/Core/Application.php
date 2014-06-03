@@ -5,7 +5,7 @@ namespace TalkTalk\Core;
 use Slim\Slim;
 use TalkTalk\Core\ApplicationAwareInterface;
 
-class Application
+class Application implements ApplicationInterface
 {
 
     /**
@@ -53,7 +53,7 @@ class Application
 
         return call_user_func(
             function () use (&$app, $__includedFilePath) {
-                return include_once $__includedFilePath;
+                return include $__includedFilePath;
             }
         );
     }
@@ -91,7 +91,11 @@ class Application
         }
 
         if (!isset($this->definedServices[$serviceId])) {
-            throw new \RuntimeException(sprintf('No service "%s" found!', $serviceId));
+            $errMsg = sprintf('No Service "%s" found!', $serviceId);
+            if ($this->vars['debug']) {
+                $errMsg .= sprintf('Available Services: %s', implode(', ', $this->definedServices));
+            }
+            throw new \DomainException($errMsg);
         }
 
         $serviceDefinition = $this->definedServices[$serviceId];
@@ -106,9 +110,18 @@ class Application
             $serviceResolution->setApplication($this);
         }
 
+        if (null === $serviceResolution) {
+            throw new \DomainException(sprintf('Service "%s" returned a null value!', $serviceId));
+        }
+
         $this->definedServices[$serviceId] = $serviceResolution;
 
         return $serviceResolution;
+    }
+
+    public function hasService($serviceId)
+    {
+        return isset($this->definedServices[$serviceId]);
     }
 
     public function addAction($urlPattern)
@@ -116,20 +129,40 @@ class Application
         return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
     }
 
-    public function registerAutoloader()
-    {
-        spl_autoload_register(array($this, 'loadComposer'), true);
-    }
-
     public function run()
     {
         $this->slimApp->run();
     }
 
-    protected function loadComposer($class)
+    protected function registerAutoloader()
     {
-        spl_autoload_unregister(array($this, 'loadComposer'));
-        $this->getService('autoloader')->loadClass($class);
+        spl_autoload_register(array($this, 'onClassAutoloadingRequest'), false);
+    }
+
+    protected function onClassAutoloadingRequest($className)
+    {
+        if ($this->hasService('packing-profiles-manager')) {
+
+            $packingProfilesManager = $this->getService('packing-profiles-manager');
+            $hasPackedProfileForThisClass = $packingProfilesManager->hasPackedProfileForClass($className);
+
+            if ($hasPackedProfileForThisClass) {
+                // It seems that we have a packed PHP code that provides this class
+                // --> let's unpack it!
+                $packingProfilesManager->unpackProfileForClass($className);
+            }
+
+            if (class_exists($className, false) || interface_exists($className, false)) {
+                // Mission complete!
+                return;
+            }
+
+        }
+
+        // No PHP pack provides this class. Let's give this job to Composer!
+        if ($this->hasService('autoloader')) {
+            $this->getService('autoloader')->loadClass($className);
+        }
     }
 
 }

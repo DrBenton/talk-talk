@@ -1,0 +1,8 @@
+packing:
+  namespace: vendors
+  id: carbon
+  base-dir: %app-root%/vendor/php/nesbot/carbon/src/
+  handledPhPNamespace: Carbon\
+  
+files: 
+  - Carbon/Carbon.php

@@ -31,6 +31,7 @@ class PluginsFinder extends BaseService
             function ($pluginConfigFilePath) use ($app) {
 
                 $plugin = new UnpackedPlugin();
+                $plugin->setApplication($app);
                 $plugin->path = $app->appPath(dirname($pluginConfigFilePath));
                 $plugin->config = Yaml::parse($pluginConfigFilePath);
 

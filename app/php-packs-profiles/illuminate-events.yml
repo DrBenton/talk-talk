@@ -1,0 +1,9 @@
+packing:
+  namespace: vendors
+  id: illuminate-events
+  base-dir: %app-root%/vendor/php/illuminate/events/
+  handledPhPNamespace: Illuminate\Events\
+
+files:
+  - Illuminate/Events/Dispatcher.php
+  - Illuminate/Events/Subscriber.php

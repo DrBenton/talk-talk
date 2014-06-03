@@ -1,0 +1,11 @@
+packing:
+  namespace: vendors
+  id: illuminate-support
+  base-dir: %app-root%/vendor/php/illuminate/support/
+  handledPhPNamespace: Illuminate\Support\
+
+files:
+  - Illuminate/Support/Contracts/JsonableInterface.php
+  - Illuminate/Support/Contracts/ArrayableInterface.php
+  - Illuminate/Support/Collection.php
+  - Illuminate/Support/helpers.php

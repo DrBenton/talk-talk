@@ -4,8 +4,10 @@ namespace TalkTalk\Core\Plugin\Config;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class ActionsConfigHandler implements PluginConfigHandlerInterface
+class ActionsConfigPacker implements PluginConfigPackerInterface
 {
+
+    const ACTION_FILE_PATH = '%plugin-path%/actions/%action-target%.php';
 
     /**
      * @inheritdoc
@@ -37,14 +39,19 @@ class ActionsConfigHandler implements PluginConfigHandlerInterface
         $method = isset($actionData['method'])
             ? $actionData['method'] //TODO: handle multiple methods
             : 'GET';
-        $actionFilePath = $plugin->path . '/actions/' . $actionData['target'] . '.php';
+        $actionFilePath = str_replace(
+            array('%plugin-path%', '%action-target%'),
+            array($plugin->path, $actionData['target']),
+            self::ACTION_FILE_PATH
+        );
 
         return <<<PLUGIN_PHP_CODE
-\$app->addAction('$urlPattern', function() use (\$app) {
-    \$action = \$app->includeInApp('$actionFilePath');
-    call_user_func(\$action);
-})->via('$method');
-
+namespace {
+    \$app->addAction('$urlPattern', function() use (\$app) {
+        \$action = \$app->includeInApp('$actionFilePath');
+        return call_user_func(\$action);
+    })->via('$method');
+}
 PLUGIN_PHP_CODE;
     }
 }

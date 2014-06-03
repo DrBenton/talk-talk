@@ -4,7 +4,7 @@ namespace TalkTalk\Core\Plugin\Config;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-interface PluginConfigHandlerInterface
+interface PluginConfigPackerInterface
 {
 
     /**
