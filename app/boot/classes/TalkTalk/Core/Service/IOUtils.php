@@ -19,9 +19,18 @@ class IOUtils extends BaseService
 
         $paths = glob($path . '*', GLOB_MARK|GLOB_ONLYDIR|GLOB_NOSORT);
         $files = glob($path . $pattern, $flags);
-        foreach ($paths as $path) {
-            $files = array_merge($files, $this->rglob($pattern, $path, $flags));
+        if (!empty($paths)) {
+            foreach ($paths as $path) {
+                $files = array_merge((array) $files, $this->rglob($pattern, $path, $flags));
+            }
         }
+        
+        $files = array_filter(
+            $files,
+            function ($filePath) {
+                return !!$filePath;
+            }
+        );
 
         return $files;
     }

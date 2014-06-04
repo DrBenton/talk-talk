@@ -15,9 +15,15 @@ interface ApplicationInterface
 
     public function getService($serviceId);
 
+    public function defineFunction($functionId, $callable);
+
+    public function execFunction($functionId);
+
     public function addAction($urlPattern);
 
     public function run();
+
+    public function getResponse();
 
     public function before($callable, $priority = 0);
 

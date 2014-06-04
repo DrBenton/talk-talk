@@ -2,9 +2,10 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
+use TalkTalk\Core\ApplicationAwareInterface;
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-interface PluginPackerBehaviourInterface
+interface PluginPackerBehaviourInterface extends ApplicationAwareInterface
 {
 
     /**

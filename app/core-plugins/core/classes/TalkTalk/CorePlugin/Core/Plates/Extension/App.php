@@ -2,10 +2,7 @@
 
 namespace TalkTalk\CorePlugin\Core\Plates\Extension;
 
-use League\Plates\Extension\ExtensionInterface;
-use TalkTalk\Core\ApplicationAware;
-
-class App extends ApplicationAware implements ExtensionInterface
+class App extends BaseExtension
 {
 
     public function getFunctions()

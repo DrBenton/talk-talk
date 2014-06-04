@@ -65,9 +65,7 @@ return function () {
     $app->vars['isAjax'] = $app->vars['request']->isAjax();
 
     // Classes automatic repacking management
-    if (isset($config['debug']['packing.always_repack_profiles']) &&
-        true == $config['debug']['packing.always_repack_profiles']
-    ) {
+    if (!empty($config['debug']['packing.always_repack_profiles'])) {
         $app->after(
           function () use ($app) {
               $app->getService('logger')->debug(

@@ -43,6 +43,7 @@ class UnpackedPlugin extends ApplicationAware
         // Plugins packing behaviours init, just before packing
         // (this is in case of a Packer which would have something to do before others, like the NewPackersPacker)
         foreach (self::$packingBehaviours as $packingBehaviour) {
+            $packingBehaviour->setApplication($this->app);
             $packingBehaviour->beforePacking($this);
         }
     }
@@ -65,6 +66,7 @@ class UnpackedPlugin extends ApplicationAware
                 $packingBehaviour = get_class($packingBehaviour);
 
                 $code .= <<<BEHAVIOUR_PHP_CODE
+
 /**
  * BEGIN PHP code generated for plugin "$pluginPath" by Packing Behaviour "$packingBehaviour"
  */
@@ -72,6 +74,7 @@ $pluginPhpCodeForCurrentConfigHandler
 /**
  * END PHP code generated for plugin "$pluginPath" by Packing Behaviour "$packingBehaviour"
  */
+
 BEHAVIOUR_PHP_CODE;
 
             }
@@ -95,11 +98,6 @@ BEHAVIOUR_PHP_CODE;
         }
 
         return call_user_func_array('array_merge', $metadata);
-    }
-
-    public function getAppService($serviceId)
-    {
-        return $this->app->getService($serviceId);
     }
 
 }

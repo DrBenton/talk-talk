@@ -1,0 +1,26 @@
+packing:
+  namespace: vendors
+  id: querypath
+  base-dir: %app-root%/vendor/php/querypath/querypath/src
+  # No "\" after this namespace, since the "QueryPath" class doesn't belong to any "QueryPath" namespace :-/
+  handledPhPNamespace: QueryPath
+
+files:
+  - QueryPath/CSS/Token.php
+  - QueryPath/CSS/Scanner.php
+  - QueryPath/CSS/InputStream.php
+  - QueryPath/CSS/Parser.php
+  - QueryPath/CSS/SimpleSelector.php
+  - QueryPath/CSS/EventHandler.php
+  - QueryPath/CSS/Selector.php
+  - QueryPath/CSS/DOMTraverser/PseudoClass.php
+  - QueryPath/CSS/Traverser.php
+  - QueryPath/CSS/DOMTraverser.php
+  - QueryPath/QueryPathIterator.php
+  - QueryPath/Entities.php
+  - QueryPath/Exception.php
+  - QueryPath/ParseException.php
+  - QueryPath/Options.php
+  - QueryPath/Query.php
+  - QueryPath/DOMQuery.php
+  - QueryPath.php

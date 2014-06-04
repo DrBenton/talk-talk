@@ -8,6 +8,8 @@ use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
 class TemplatesPacker extends BasePacker
 {
 
+    const TEMPLATES_PATH = '%plugin-path%/templates';
+
     /**
      * @inheritdoc
      */
@@ -15,7 +17,11 @@ class TemplatesPacker extends BasePacker
     {
         $code = '';
 
-        $pluginTemplatesPath = $plugin->path . '/templates';
+        $pluginTemplatesPath = str_replace(
+            '%plugin-path%',
+            $plugin->path,
+            self::TEMPLATES_PATH
+        );
 
         if (is_dir($pluginTemplatesPath)) {
             // This Plugin has a "templates/" folder.

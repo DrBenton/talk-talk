@@ -25,7 +25,7 @@ PLUGIN_PHP_CODE;
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        if (!isset($plugin->config[$this->myConfigKey])) {
+        if (empty($plugin->config[$this->myConfigKey])) {
             return null;
         }
 
@@ -50,8 +50,9 @@ PLUGIN_PHP_CODE;
 
     protected function getAssetPhpCode(UnpackedPlugin $plugin, $assetType, $assetData)
     {
-        $stringUtils = $plugin->getAppService('utils.string');
-        $assetData['url'] = $stringUtils->handlePluginRelatedString($plugin, $assetData['url']);
+        $assetData['url'] = $this->app
+            ->getService('utils.string')
+            ->handlePluginRelatedString($plugin, $assetData['url']);
 
         switch ($assetType) {
             case 'css':

@@ -74,11 +74,14 @@ class PackingManager extends BaseService
     }
 
     /**
-     * @param  array  $filesToIncludeInPaths
+     * @param  array $filesToIncludeInPaths
+     * @param  array $additionalInclusionFunctionArgs
+     * @throws \DomainException
      * @return string
      */
-    public function getAppInclusionsCode(array $filesToIncludeInPaths)
+    public function getAppInclusionsCode($filesToIncludeInPaths, $additionalInclusionFunctionArgs = array())
     {
+        $filesToIncludeInPaths = (array) $filesToIncludeInPaths;
         $code = '';
         foreach ($filesToIncludeInPaths as $phpFileToIncludePath) {
 
@@ -102,14 +105,22 @@ class PackingManager extends BaseService
             );
             $fileContent = $importedNamespacesStrippingResult['content'];
 
+            // Do we have additional args to transmit to this Closure?
+            $args = '';
+            if (!empty($additionalInclusionFunctionArgs)) {
+                $args = ', ' . implode(', ', $additionalInclusionFunctionArgs);
+            }
+
             // Go!
             $filePath = $this->app->appPath($phpFileToIncludePath);
             $fileContent = <<<END
 namespace {
+    /* begin file to include in app closure: "$filePath" */
     $importedNamespacesStr
-    \$app->vars['packs.included_files.closures']['$filePath'] = function (\$app) {
+    \$app->vars['packs.included_files.closures']['$filePath'] = function (\$app$args) {
         $fileContent
     };
+    /* end file to include in app closure: "$filePath" */
 }
 
 END;
@@ -229,7 +240,7 @@ END;
         return $phpFileContent;
     }
 
-    protected function stripImportedNamespaces($phpFileContent, $phpFilePath)
+    public function stripImportedNamespaces($phpFileContent, $phpFilePath)
     {
         $strippedNamespaces = array();
         $phpFileContent = preg_replace_callback(

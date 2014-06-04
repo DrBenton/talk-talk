@@ -16,7 +16,7 @@ class ActionsPacker extends BasePacker
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        if (!isset($plugin->config[$this->myConfigKey])) {
+        if (empty($plugin->config[$this->myConfigKey])) {
             return null;
         }
 

@@ -16,7 +16,7 @@ class TemplatesExtensionsPacker extends BasePacker
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        if (!isset($plugin->config[$this->myConfigKey])) {
+        if (empty($plugin->config[$this->myConfigKey])) {
             return null;
         }
 
@@ -40,8 +40,8 @@ class TemplatesExtensionsPacker extends BasePacker
 
         $templateExtFileContent = file_get_contents($templateExtFilePath);
 
-        $templateExtFileInclusionCode = $plugin
-            ->getAppService('packing-manager')
+        $templateExtFileInclusionCode = $this->app
+            ->getService('packing-manager')
             ->stripOpeningPhpTag($templateExtFileContent);
 
         $templateExtFileInclusionCode = preg_replace('~^~m', '            ', $templateExtFileInclusionCode);
@@ -49,12 +49,19 @@ class TemplatesExtensionsPacker extends BasePacker
         return <<<PLUGIN_PHP_CODE
 namespace {
     // Template extension "$extensionName" initialization:
-    \$extension = call_user_func(
+    \$app->before(
         function () use (\$app) {
-            $templateExtFileInclusionCode
+            \$extension = call_user_func(
+                function () use (\$app) {
+                    $templateExtFileInclusionCode
+                }
+            );
+            if (\$extension instanceof \TalkTalk\Core\ApplicationAware) {
+                \$extension->setApplication(\$app);
+            }
+            \$app->getService('view')->addExtension(\$extension);
         }
     );
-    \$app->getService('view')->addExtension(\$extension);
 }
 
 PLUGIN_PHP_CODE;

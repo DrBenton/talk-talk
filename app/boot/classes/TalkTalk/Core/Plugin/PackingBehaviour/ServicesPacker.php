@@ -15,7 +15,7 @@ class ServicesPacker extends BasePacker
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        if (!isset($plugin->config[$this->myConfigKey])) {
+        if (empty($plugin->config[$this->myConfigKey])) {
             return null;
         }
 
@@ -37,8 +37,8 @@ class ServicesPacker extends BasePacker
             self::SERVICE_FILE_PATH
         );
 
-        $serviceFileInclusionCode = $plugin
-            ->getAppService('packing-manager')
+        $serviceFileInclusionCode = $this->app
+            ->getService('packing-manager')
             ->getAppInclusionsCode(array($serviceFilePath));
 
         return <<<PLUGIN_PHP_CODE

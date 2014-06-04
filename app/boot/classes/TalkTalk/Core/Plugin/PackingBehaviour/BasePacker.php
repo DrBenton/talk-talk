@@ -2,9 +2,10 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
+use TalkTalk\Core\ApplicationAware;
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-abstract class BasePacker implements PluginPackerBehaviourInterface
+abstract class BasePacker extends ApplicationAware implements PluginPackerBehaviourInterface
 {
 
     protected $myConfigKey;

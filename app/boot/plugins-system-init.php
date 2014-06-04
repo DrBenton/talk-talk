@@ -20,10 +20,7 @@ call_user_func(
 
         if (
             !$hasPackedPlugins ||
-            (
-                isset($app->vars['config']['debug']['packing.always_repack_plugins']) &&
-                true == $app->vars['config']['debug']['packing.always_repack_plugins']
-            )
+            !empty($app->vars['config']['debug']['packing.always_repack_plugins'])
         ) {
 
             $app->getService('logger')->info('Plugins packing.');

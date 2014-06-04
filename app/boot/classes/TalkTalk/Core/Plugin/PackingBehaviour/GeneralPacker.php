@@ -14,7 +14,7 @@ class GeneralPacker  extends BasePacker
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        if (!isset($plugin->config[$this->myConfigKey])) {
+        if (empty($plugin->config[$this->myConfigKey])) {
             throw new \DomainException(sprintf('Plugin "%s" config file must have a "@general" section!'), $plugin->path);
         }
 

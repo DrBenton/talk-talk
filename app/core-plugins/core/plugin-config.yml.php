@@ -64,5 +64,4 @@
 @templates-extensions:
   - app
   - app-assets
-  - hooks
 #  - func.get-app-javascript-config

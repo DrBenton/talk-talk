@@ -29,7 +29,9 @@ class View extends BaseService
 
         $template = new Template($this->platesEngine);
 
-        echo $template->render($templatePath, $vars);
+        $this->app->getResponse()->setBody(
+            $template->render($templatePath, $vars)
+        );
     }
 
     public function setTemplatesFilesExtension($ext)

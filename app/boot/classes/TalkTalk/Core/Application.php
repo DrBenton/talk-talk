@@ -18,6 +18,7 @@ class Application implements ApplicationInterface
 
     protected $definedServices = array();
     protected $resolvedServices = array();
+    protected $definedFunctions = array();
 
     public function __construct(Slim $slimApp)
     {
@@ -68,7 +69,7 @@ class Application implements ApplicationInterface
 
     /**
      * @param  string            $pathToCheck
-     * @throws \RuntimeException
+     * @throws \DomainException
      */
     public function checkAppPath($pathToCheck)
     {
@@ -92,7 +93,7 @@ class Application implements ApplicationInterface
         if (!isset($this->definedServices[$serviceId])) {
             $errMsg = sprintf('No Service "%s" found!', $serviceId);
             if ($this->vars['debug']) {
-                $errMsg .= sprintf('Available Services: %s', implode(', ', $this->definedServices));
+                $errMsg .= sprintf('Available Services: %s', implode(', ', array_keys($this->definedServices)));
             }
             throw new \DomainException($errMsg);
         }
@@ -123,6 +124,25 @@ class Application implements ApplicationInterface
         return isset($this->definedServices[$serviceId]);
     }
 
+    public function defineFunction($functionId, $callable)
+    {
+        $this->definedFunctions[$functionId] = $callable;
+    }
+
+    public function execFunction($functionId)
+    {
+        if (!isset($this->definedFunctions[$functionId])) {
+            $errMsg = sprintf('No Function "%s" found!', $functionId);
+            if ($this->vars['debug']) {
+                $errMsg .= sprintf('Available Functions: %s', implode(', ', array_keys($this->definedFunctions)));
+            }
+            throw new \DomainException($errMsg);
+        }
+
+        $args = array_slice(func_get_args(), 1);
+        return call_user_func_array($this->definedFunctions[$functionId], $args);
+    }
+
     public function addAction($urlPattern)
     {
         return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
@@ -131,6 +151,11 @@ class Application implements ApplicationInterface
     public function run()
     {
         $this->slimApp->run();
+    }
+
+    public function getResponse()
+    {
+        return $this->slimApp->response;
     }
 
     public function before($callable, $priority = 0)
