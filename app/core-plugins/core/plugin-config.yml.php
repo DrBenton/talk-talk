@@ -20,6 +20,8 @@
 
 @pluginsPackers:
   - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\TemplatesPacker
+  - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\TemplatesExtensionsPacker
+  - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\AppAssetsPacker
 
 @services:
   - view
@@ -47,17 +49,20 @@
 #@hooks:
 #  - define_javascript_app_config
 
-#@assets:
-#  stylesheets:
-#  javascripts:
-#    - %vendorsUrl%/requirejs/require.js
-#    - %pluginUrl%/assets/js/requirejs-config.js
-#    - %pluginUrl%/assets/js/main.js
-#    -
-#      url: %vendorsUrl%/html5shiv/dist/html5shiv.min.js
-#      head: true
-#      ieCondition: lt IE 9
+@assets:
+  stylesheets:
+    - %plugin-url%/assets/css/404.css
+  javascripts:
+    - %vendors-url%/requirejs/require.js
+    - %plugin-url%/assets/js/requirejs-config.js
+    - %plugin-url%/assets/js/main.js
+    -
+      url: %vendors-url%/html5shiv/dist/html5shiv.min.js
+      head: true
+      ieCondition: lt IE 9
 
-#@twig-extensions:
-#  - func.get-flashes
+@templates-extensions:
+  - app
+  - app-assets
+  - hooks
 #  - func.get-app-javascript-config

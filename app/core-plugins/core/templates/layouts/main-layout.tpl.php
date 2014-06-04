@@ -12,16 +12,17 @@
     <meta name="csrf-token" content="{{ app['csrf.token_value'] }}"/>
     -->
 
-    <!-- TODO:
-    {{ enable_html_hooks('app_stylesheets') }}
-    {% for stylesheet in get_plugins_stylesheets() %}
-    <link rel="stylesheet" href="{{ stylesheet }}">
-    {% endfor %}
+    <?= $this->hooks()->html('app_stylesheets') ?>
+    <?php foreach($this->appAssets()->getCss() as $cssResource): ?>
+    <link rel="stylesheet" href="<?= $cssResource['url'] ?>">
+    <?php endforeach ?>
 
-    {# Do we have "HEAD" JavaScript files? Let's include them now! #}
-    {% include 'core/common/javascripts-inclusion.twig'
-    with { javascripts: get_plugins_javascripts('head') } %}
-    -->
+    <?php
+    /* Do we have "HEAD" JavaScript files? Let's include them now! */
+    $this->insert('core::common/javascripts-inclusion', array(
+        'javascripts' => $this->appAssets()->getHeadJs()
+    ))
+    ?>
 
 </head>
 <body>
@@ -30,7 +31,7 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<!-- TODO: {{ enable_html_hooks('site_container') }} -->
+<?= $this->hooks()->html('site_container') ?>
 <div id="site-container">
 
     <?php if (isset($this->header)): /*a custom header has been requested*/ ?>
@@ -47,7 +48,7 @@
         <?= $this->insert('core::common/breadcrumb') ?>
     <?php endif ?>
 
-    <!-- TODO: {{ enable_html_hooks('main_content_container') }} -->
+    <!-- TODO: <?= $this->hooks()->html('main_content_container') ?> -->
     <div id="main-content-container">
         <div id="main-content" class="clearfix">
             <?= $this->content() ?>
@@ -66,10 +67,12 @@
 
 </div><?php /* end #site-container */ ?>
 
-<!-- TODO:
-{# JavaScript, it's up to you now! #}
-{% include 'core/common/javascripts-inclusion.twig'
-with { javascripts: get_plugins_javascripts('endOfBody') } %}
--->
+<?php
+/* JavaScript, it's up to you now! */
+$this->insert('core::common/javascripts-inclusion', array(
+    'javascripts' => $this->appAssets()->getEndOfBodyJs()
+))
+?>
+
 </body>
 </html>

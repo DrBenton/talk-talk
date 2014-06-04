@@ -15,6 +15,7 @@ files:
   - Plugin/UnpackedPlugin.php
   - Service/PluginsUnpacker.php
   - Plugin/PackingBehaviour/PluginPackerBehaviourInterface.php
+  - Plugin/PackingBehaviour/BasePacker.php
   - Plugin/PackingBehaviour/GeneralPacker.php
   - Plugin/PackingBehaviour/ActionsPacker.php
   - Plugin/PackingBehaviour/ClassesPacker.php

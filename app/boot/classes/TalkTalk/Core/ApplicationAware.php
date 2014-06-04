@@ -6,7 +6,7 @@ abstract class ApplicationAware implements ApplicationAwareInterface
 {
 
     /**
-     * @var \TalkTalk\Core\Application
+     * @var \TalkTalk\Core\ApplicationInterface
      */
     protected $app;
 

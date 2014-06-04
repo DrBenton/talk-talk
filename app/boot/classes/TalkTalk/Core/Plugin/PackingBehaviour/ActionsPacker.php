@@ -4,15 +4,10 @@ namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class ActionsPacker implements PluginPackerBehaviourInterface
+class ActionsPacker extends BasePacker
 {
 
     const ACTION_FILE_PATH = '%plugin-path%/actions/%action-target%.php';
-
-    public function init(UnpackedPlugin $plugin)
-    {
-        // No specific initialization phase for this Packer
-    }
 
     /**
      * @inheritdoc
@@ -27,15 +22,6 @@ class ActionsPacker implements PluginPackerBehaviourInterface
         }
 
         return $code;
-    }
-
-    /**
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
-     * @return array|null
-     */
-    public function getMetadata(UnpackedPlugin $plugin)
-    {
-        return null;
     }
 
     protected function getActionPhpCode(UnpackedPlugin $plugin, array $actionData)

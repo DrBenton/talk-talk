@@ -3,15 +3,10 @@
 namespace TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
-use TalkTalk\Core\Plugin\PackingBehaviour\PluginPackerBehaviourInterface;
+use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
 
-class TemplatesPacker implements PluginPackerBehaviourInterface
+class TemplatesPacker extends BasePacker
 {
-
-    public function init(UnpackedPlugin $plugin)
-    {
-        // No specific initialization phase for this Packer
-    }
 
     /**
      * @inheritdoc
@@ -36,15 +31,6 @@ PLUGIN_PHP_CODE;
         }
 
         return $code;
-    }
-
-    /**
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
-     * @return array|null
-     */
-    public function getMetadata(UnpackedPlugin $plugin)
-    {
-        return null;
     }
 
 }

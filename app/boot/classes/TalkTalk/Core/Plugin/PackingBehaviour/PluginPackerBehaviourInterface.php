@@ -7,11 +7,22 @@ use TalkTalk\Core\Plugin\UnpackedPlugin;
 interface PluginPackerBehaviourInterface
 {
 
-    public function init(UnpackedPlugin $plugin);
+    /**
+     * Triggered once, before Plugins packing
+     * @return string|null
+     */
+    public function getPackerInitCode();
 
     /**
+     * Triggered just before each Plugin packing
+     * @param UnpackedPlugin $plugin
+     */
+    public function beforePacking(UnpackedPlugin $plugin);
+
+    /**
+     * Triggers each Plugin packing operations
      * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
-     * @return string
+     * @return string|null
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin);
 

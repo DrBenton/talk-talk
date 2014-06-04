@@ -12,8 +12,8 @@ class StringUtils extends BaseService
             array('%plugin-path%', '%plugin-url%', '%vendors-url%'),
             array(
                 $plugin->path,
-                str_replace($app->vars['app.app_path'], $app->vars['app.base_url'], $plugin->path),
-                str_replace($app->vars['app.app_path'], $app->vars['app.base_url'], $app->vars['app.js_vendors_path']),
+                $app->vars['app.base_url'] . $plugin->path,
+                $app->vars['app.base_url'] . $this->app->appPath($app->vars['app.js_vendors_path'])
             ),
             $string
         );

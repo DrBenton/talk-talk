@@ -19,6 +19,10 @@ return function() {
     date_default_timezone_set('UTC');
     chdir($rootPath);
 
+    // App config data parsing
+    $mainConfigFilePath = $appPath . '/config/main.ini.php';
+    $config = parse_ini_file($mainConfigFilePath, true);
+
     // Do we have some PHP classes packs to load early?
     $phpClassesPacks = array(
         'app/boot/classes',
@@ -38,8 +42,11 @@ return function() {
 
     // Okay, let's create our Application!
     $slimApp = new \Slim\Slim();
-    $slimApp->config('debug', true);
     $app = new \TalkTalk\Core\Application($slimApp);
+
+    $app->vars['config'] = &$config;
+    $app->vars['debug'] = (bool) $app->vars['config']['debug']['debug'];
+    $slimApp->config('debug', $app->vars['debug']);
 
     // App core vars definition
     $app->vars['app.root_path'] = $rootPath;
@@ -53,9 +60,8 @@ return function() {
     $app->vars['app.boot_services_path'] = $app->vars['app.boot_path'] . '/core-services-init';
 
     $app->vars['perfs.start_time'] = $startTime;
-    $app->vars['debug'] = true;
     $app->vars['request'] = $slimApp->request;
-    $app->vars['app.base_url'] = $app->vars['request']->getPathInfo();
+    $app->vars['app.base_url'] = $app->vars['request']->getRootUri();
     $app->vars['isAjax'] = $app->vars['request']->isAjax();
 
     // Services packs management
@@ -71,10 +77,12 @@ return function() {
 
     // Core Services init:
     $coreServicesToInit = array(
+        'logger',
         'packing-manager',
         'packing-profiles-manager',
         'autoloader',
         'string-utils',
+        'array-utils',
         'io-utils',
     );
     array_walk(

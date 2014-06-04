@@ -201,6 +201,55 @@ END;
         $phpFileContent = $this->stripOpeningPhpTag($phpFileContent, $phpFilePath);
 
         // Namespace management
+        list($namespaceName, $phpFileContent) = $this->handleClassNamespace($phpFileContent);
+
+        // Let's wrap this file class/interface definition in a "if (class_exists()) {...}"
+        $phpFileContent = $this->wrapClassDefinitionInClassExistsCheck($phpFileContent, $namespaceName);
+
+        // __DIR__ quick'n'dirty management
+        $phpFileContent = str_replace('__DI'.'R__', '\'' . dirname($phpFilePath) . '\'', $phpFileContent);
+
+        // A small "packing" comment is appended to the file
+        $phpFileContent .= PHP_EOL . "/* @end \"$phpFilePath\" */" . PHP_EOL . PHP_EOL;
+
+        return $phpFileContent;
+    }
+
+    public function stripOpeningPhpTag($phpFileContent, $phpFilePath = null)
+    {
+        // First php opening tag removal
+        if ('<?php' === substr($phpFileContent, 0, 5)) {
+            $phpFileContent = substr($phpFileContent, 5);
+            if (null !== $phpFilePath) {
+                $phpFileContent = PHP_EOL . "/* @begin \"$phpFilePath\" */" . PHP_EOL . $phpFileContent;
+            }
+        }
+
+        return $phpFileContent;
+    }
+
+    protected function stripImportedNamespaces($phpFileContent, $phpFilePath)
+    {
+        $strippedNamespaces = array();
+        $phpFileContent = preg_replace_callback(
+            self::PHP_NS_USE_PATTERN,
+            function (array $matches) use (&$strippedNamespaces)
+            {
+                $importedNamespaceName = $matches[1];
+                $strippedNamespaces[] = $importedNamespaceName;
+                return '/* moved "' . $importedNamespaceName . '" */' . PHP_EOL ;
+            },
+            $phpFileContent
+        );
+
+        return array(
+            'content' => $phpFileContent,
+            'strippedNamespaces' => $strippedNamespaces
+        );
+    }
+
+    protected function handleClassNamespace($phpFileContent)
+    {
         $namespaceName = null;
         $phpFileContent = preg_replace_callback(
             self::PHP_NS_DECLARATION_PATTERN,
@@ -219,46 +268,7 @@ END;
             $phpFileContent = 'namespace {' . PHP_EOL . $phpFileContent . PHP_EOL . '} //end namespace' . PHP_EOL ;
         }
 
-        // Let's wrap this file class/interface definition in a "if (class_exists()) {...}"
-        $phpFileContent = $this->wrapClassDefinitionInClassExistsCheck($phpFileContent, $namespaceName);
-
-        // __DIR__ quick'n'dirty management
-        $phpFileContent = str_replace('__DI'.'R__', '\'' . dirname($phpFilePath) . '\'', $phpFileContent);
-
-        // A small "packing" comment is appended to the file
-        $phpFileContent .= PHP_EOL . "/* @end \"$phpFilePath\" */" . PHP_EOL . PHP_EOL;
-
-        return $phpFileContent;
-    }
-
-    protected function stripOpeningPhpTag($phpFileContent, $phpFilePath)
-    {
-        // First php opening tag removal
-        if ('<?php' === substr($phpFileContent, 0, 5)) {
-            $phpFileContent = PHP_EOL . "/* @begin \"$phpFilePath\" */" . PHP_EOL . substr($phpFileContent, 5);
-        }
-
-        return $phpFileContent;
-    }
-
-    protected function stripImportedNamespaces($phpFileContent, $phpFilePath)
-    {
-        $strippedNamespaces = array();
-        $phpFileContent = preg_replace_callback(
-            self::PHP_NS_USE_PATTERN,
-            function (array $matches) use (&$strippedNamespaces)
-            {
-                $importedNamespaceName = $matches[1];
-                $strippedNamespaces[] = $importedNamespaceName;
-                return '/* removed usage of ' . $importedNamespaceName . ' */' . PHP_EOL ;
-            },
-            $phpFileContent
-        );
-
-        return array(
-            'content' => $phpFileContent,
-            'strippedNamespaces' => $strippedNamespaces
-        );
+        return array($namespaceName, $phpFileContent);
     }
 
     /**

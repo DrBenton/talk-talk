@@ -4,13 +4,8 @@ namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class GeneralPacker implements PluginPackerBehaviourInterface
+class GeneralPacker  extends BasePacker
 {
-
-    public function init(UnpackedPlugin $plugin)
-    {
-        // No specific initialization phase for this Packer
-    }
 
     /**
      * @inheritdoc

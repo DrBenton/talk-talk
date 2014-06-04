@@ -4,6 +4,7 @@ namespace TalkTalk\CorePlugin\Core\Service;
 
 use League\Plates\Engine;
 use League\Plates\Template;
+use League\Plates\Extension\ExtensionInterface;
 use TalkTalk\Core\Service\BaseService;
 
 class View extends BaseService
@@ -13,7 +14,14 @@ class View extends BaseService
      * @var \League\Plates\Engine
      */
     protected $platesEngine;
+    /**
+     * @var string
+     */
     protected $templatesFilesExtension;
+    /**
+     * @var array
+     */
+    protected $templatesExtensions = array();
 
     public function render($templatePath, array $vars = array())
     {
@@ -29,6 +37,15 @@ class View extends BaseService
         $this->templatesFilesExtension = $ext;
     }
 
+    public function addExtension(ExtensionInterface $extension)
+    {
+        $this->templatesExtensions[] = $extension;
+
+        if (null !== $this->platesEngine) {
+            $this->platesEngine->loadExtension($extension);
+        }
+    }
+
     protected function initEngine()
     {
         if (null !== $this->platesEngine) {
@@ -37,6 +54,14 @@ class View extends BaseService
 
         $engine = new Engine();
         $engine->setFileExtension($this->templatesFilesExtension);
+
+        // Registered Extensions
+        array_walk(
+            $this->templatesExtensions,
+            function (ExtensionInterface $extension) use ($engine) {
+                $engine->loadExtension($extension);
+            }
+        );
 
         // Views folders init
         if (isset($this->app->vars['view.folders'])) {

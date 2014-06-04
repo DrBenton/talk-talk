@@ -2,6 +2,7 @@
 
 namespace TalkTalk\Core\Service;
 
+use TalkTalk\Core\Plugin\PackingBehaviour\PluginPackerBehaviourInterface;
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
 class PluginsPacker extends BaseService
@@ -15,41 +16,84 @@ class PluginsPacker extends BaseService
     }
 
     /**
-     * @param string $unpackedPlugins
-     * @return string the Plugins PHP pack metadata file path
+     * @param array $unpackedPlugins
      */
-    public function packPlugins($unpackedPlugins)
+    public function packPlugins(array $unpackedPlugins)
     {
-        $pluginsMetadata = array();
-        foreach($unpackedPlugins as $unpackedPlugin) {
+        $this->beforePacking($unpackedPlugins);
 
-            $this->packPlugin($unpackedPlugin);
+        $this->generatePluginsPackersInitCode();
+        $this->generatePluginsCode($unpackedPlugins);
+        $this->generatePluginsMetadata($unpackedPlugins);
+    }
 
-            $metadata = $unpackedPlugin->getMetadataToPack();
-            $pluginsMetadata[$unpackedPlugin->id] = $metadata;
+    protected function beforePacking(array $unpackedPlugins)
+    {
+        array_walk(
+            $unpackedPlugins,
+            function (UnpackedPlugin $plugin) {
+                $plugin->beforePacking();
+            }
+        );
+    }
 
-        }
-
-        return $this->generatePluginsMetadata($pluginsMetadata);
+    protected function generatePluginsCode(array $unpackedPlugins)
+    {
+        array_walk(
+            $unpackedPlugins,
+            array($this, 'generatePluginCode')
+        );
     }
 
     /**
-     * @param string $pluginPath
-     * @return string the PHP pack file path
+     * @param UnpackedPlugin $plugin
      */
-    protected function packPlugin(UnpackedPlugin $plugin)
+    protected function generatePluginCode(UnpackedPlugin $plugin)
     {
         $pluginPackedPhpCode = $plugin->getPhpCodeToPack();
         $this->app
             ->getService('packing-manager')
-            ->packPhpCode($pluginPackedPhpCode, $this->packsDataNs, $this->app->vars['plugins.packs_prefix'] . $plugin->id);
+            ->packPhpCode(
+                $pluginPackedPhpCode,
+                $this->packsDataNs,
+                $this->app->vars['plugins.packs_prefix'] . $plugin->id
+            );
     }
 
-    public function generatePluginsMetadata(array $pluginsMetadata)
+    public function generatePluginsPackersInitCode()
     {
+        $pluginsPackersInitCode = '';
+
+        array_walk(
+            UnpackedPlugin::getBehaviours(),
+            function (PluginPackerBehaviourInterface $pluginsPacker) use (&$pluginsPackersInitCode) {
+                $pluginInitCode = $pluginsPacker->getPackerInitCode();
+                if (null !== $pluginInitCode) {
+                    $pluginsPackersInitCode .= $pluginInitCode;
+                }
+            }
+        );
+
         $this->app
             ->getService('packing-manager')
-            ->packData($pluginsMetadata, $this->packsDataNs, 'metadata');
+            ->packPhpCode($pluginsPackersInitCode, $this->packsDataNs, 'plugins-packers-init');
+    }
+
+    public function generatePluginsMetadata(array $unpackedPlugins)
+    {
+        $pluginsMetadata = array();
+
+        array_walk(
+            $unpackedPlugins,
+            function (UnpackedPlugin $plugin) use (&$pluginsMetadata) {
+                $metadata = $plugin->getMetadataToPack();
+                $pluginsMetadata[$plugin->id] = $metadata;
+            }
+        );
+
+        $this->app
+            ->getService('packing-manager')
+            ->packData($pluginsMetadata, $this->packsDataNs, 'plugins-metadata');
     }
 
 }

@@ -4,10 +4,10 @@ namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class NewPackersPacker implements PluginPackerBehaviourInterface
+class NewPackersPacker extends BasePacker
 {
 
-    public function init(UnpackedPlugin $plugin)
+    public function beforePacking(UnpackedPlugin $plugin)
     {
         $myConfigPart = $plugin->config['@pluginsPackers'];
 
@@ -23,22 +23,5 @@ class NewPackersPacker implements PluginPackerBehaviourInterface
             $packerInstance = new $packerClass();
             UnpackedPlugin::addBehaviour($packerInstance);
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
-    {
-        return null;
-    }
-
-    /**
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
-     * @return array|null
-     */
-    public function getMetadata(UnpackedPlugin $plugin)
-    {
-        return null;
     }
 }

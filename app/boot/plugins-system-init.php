@@ -18,7 +18,15 @@ call_user_func(
         // --> 2) We use the "plugins.unpacker" Service
         $hasPackedPlugins = $app->getService('plugins.unpacker')->hasPackedPlugins();
 
-        if (!$hasPackedPlugins) {
+        if (
+            !$hasPackedPlugins ||
+            (
+                isset($config['debug']['packing.always_repack_plugins']) &&
+                true == $config['debug']['packing.always_repack_plugins']
+            )
+        ) {
+
+            $app->getService('logger')->info('Plugins packing.');
 
             // No packed Plugins found.
             // --> let's find & pack them!

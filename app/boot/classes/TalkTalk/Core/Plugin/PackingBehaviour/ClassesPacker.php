@@ -4,13 +4,8 @@ namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\UnpackedPlugin;
 
-class ClassesPacker implements PluginPackerBehaviourInterface
+class ClassesPacker extends BasePacker
 {
-
-    public function init(UnpackedPlugin $plugin)
-    {
-        // No specific initialization phase for this Packer
-    }
 
     /**
      * @inheritdoc
@@ -25,15 +20,6 @@ class ClassesPacker implements PluginPackerBehaviourInterface
         }
 
         return $code;
-    }
-
-    /**
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
-     * @return array|null
-     */
-    public function getMetadata(UnpackedPlugin $plugin)
-    {
-        return null;
     }
 
     protected function getClassesPhpCode(UnpackedPlugin $plugin, array $classesData)
@@ -61,15 +47,7 @@ class ClassesPacker implements PluginPackerBehaviourInterface
 
         }
 
-        // We also add the class resolution scheme to Composer,
-        // so that we have these class available right now for the Plugins packing operation
-        /*
-        $plugin
-            ->getAppService('autoloader')
-            ->addPsr4(
-                $classesData['prefix'],
-                $classesBasePath
-            );
+        // We also add the class resolution scheme to Composer as a fallback, just in case...
         $classesToIncludeCode .= <<<PLUGIN_PHP_CODE
 namespace {
     \$app->getService('autoloader')->addPsr4(
@@ -78,7 +56,6 @@ namespace {
     );
 }
 PLUGIN_PHP_CODE;
-        */
 
         $classesToIncludeCode .= PHP_EOL . "/* end $nbClassesToInclude PHP Classes inclusions of plugin $plugin->id, path '$classesBasePath' */" . PHP_EOL ;
 
