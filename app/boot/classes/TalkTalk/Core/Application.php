@@ -134,15 +134,25 @@ class Application implements ApplicationInterface
         $this->slimApp->run();
     }
 
+    public function before($callable, $priority = 0)
+    {
+        $this->slimApp->hook('slim.before', $callable, $priority);
+    }
+
+    public function after($callable, $priority = 0)
+    {
+        $this->slimApp->hook('slim.after', $callable, $priority);
+    }
+
     protected function registerAutoloader()
     {
-        spl_autoload_register(array($this, 'onClassAutoloadingRequest'), false);
+        spl_autoload_register(array($this, 'onClassAutoloadingRequest'));
     }
 
     protected function onClassAutoloadingRequest($className)
     {
-        /*
         echo "onClassAutoloadingRequest($className) :: ";
+        /*
         echo "\$this->hasService('packing-profiles-manager')=".$this->hasService('packing-profiles-manager').' :: ';
         echo "\$this->hasService('autoloader')=".$this->hasService('autoloader').' :: ';
         */
@@ -158,6 +168,9 @@ class Application implements ApplicationInterface
             }
 
             if (class_exists($className, false) || interface_exists($className, false)) {
+                $this->getService('logger')->debug(
+                    sprintf('Class "%s" has been loaded with a PHP Pack.', $className)
+                );
                 // Mission complete!
                 return;
             }
@@ -166,6 +179,9 @@ class Application implements ApplicationInterface
 
         // No PHP pack provides this class. Let's give this job to Composer!
         if ($this->hasService('autoloader')) {
+            $this->getService('logger')->debug(
+                sprintf('Composer called to rescue to load class "%s".', $className)
+            );
             $this->getService('autoloader')->loadClass($className);
         }
     }

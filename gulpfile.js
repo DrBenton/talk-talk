@@ -28,7 +28,8 @@ gulp.task("watch", ["compilePhpPacks"], function() {
   gulp.watch(
     [
       "app/boot/**/*.php",
-      "app/core-plugins/**/*.php"
+      "app/core-plugins/**/*.php",
+      "app/plugins/**/*.*"
     ],
     ["compilePhpPacks"]
   );

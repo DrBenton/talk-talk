@@ -19,4 +19,8 @@ interface ApplicationInterface
 
     public function run();
 
+    public function before($callable, $priority = 0);
+
+    public function after($callable, $priority = 0);
+
 }

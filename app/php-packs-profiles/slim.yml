@@ -21,4 +21,6 @@ files:
   - Slim/Http/Util.php
   - Slim/Http/Response.php
   - Slim/Http/Cookies.php
+  - Slim/LogWriter.php
+  - Slim/Log.php
   - Slim/Exception/Stop.php

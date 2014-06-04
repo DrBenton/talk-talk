@@ -57,14 +57,24 @@ class UnpackedPlugin extends ApplicationAware
         // Plugins packing behaviours packing!
         foreach(self::$packingBehaviours as $packingBehaviour)
         {
+
             $pluginPhpCodeForCurrentConfigHandler = $packingBehaviour->getPhpCodeToPack($this);
 
-            if (null !== $pluginPhpCodeForCurrentConfigHandler) {
-                $code .= PHP_EOL .
-                    sprintf('/* Begin PHP code generated for plugin "%s" by Packing Behaviour "%s" */', $this->path, get_class($packingBehaviour)) . PHP_EOL .
-                    $pluginPhpCodeForCurrentConfigHandler . PHP_EOL .
-                    sprintf('/* End PHP code generated for plugin "%s" by Packing Behaviour "%s" */', $this->path, get_class($packingBehaviour)) . PHP_EOL
-                ;
+            if (!!$pluginPhpCodeForCurrentConfigHandler) {
+
+                $pluginPath = $this->path;
+                $packingBehaviour = get_class($packingBehaviour);
+
+                $code .= <<<BEHAVIOUR_PHP_CODE
+/**
+ * BEGIN PHP code generated for plugin "$pluginPath" by Packing Behaviour "$packingBehaviour"
+ */
+$pluginPhpCodeForCurrentConfigHandler
+/**
+ * END PHP code generated for plugin "$pluginPath" by Packing Behaviour "$packingBehaviour"
+ */
+BEHAVIOUR_PHP_CODE;
+
             }
 
         }

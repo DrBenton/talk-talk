@@ -10,6 +10,7 @@ files:
   - ApplicationAware.php
   - Application.php
   - Service/BaseService.php
+  - Service/Logger.php
   - Service/PackingManager.php
   - Service/PackingProfilesManager.php
   - Plugin/UnpackedPlugin.php

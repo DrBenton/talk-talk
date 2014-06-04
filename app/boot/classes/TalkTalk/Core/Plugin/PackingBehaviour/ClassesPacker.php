@@ -53,6 +53,7 @@ class ClassesPacker extends BasePacker
 
         }
 
+        /*
         // We also add the class resolution scheme to Composer as a fallback, just in case...
         $classesToIncludeCode .= <<<PLUGIN_PHP_CODE
 namespace {
@@ -62,6 +63,7 @@ namespace {
     );
 }
 PLUGIN_PHP_CODE;
+        */
 
         $classesToIncludeCode .= PHP_EOL . "/* end $nbClassesToInclude PHP Classes inclusions of plugin $plugin->id, path '$classesBasePath' */" . PHP_EOL ;
 

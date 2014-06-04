@@ -25,8 +25,8 @@ return function() {
 
     // Do we have some PHP classes packs to load early?
     $phpClassesPacks = array(
-        'app/boot/classes',
         'vendors/slim',
+        'app/boot/classes',
     );
     foreach ($phpClassesPacks as $phpPack) {
         $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
