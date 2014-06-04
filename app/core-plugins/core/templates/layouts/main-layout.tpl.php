@@ -48,7 +48,7 @@
         <?= $this->insert('core::common/breadcrumb') ?>
     <?php endif ?>
 
-    <!-- TODO: <?= $this->hooks()->html('main_content_container') ?> -->
+    <?= $this->hooks()->html('main_content_container') ?>
     <div id="main-content-container">
         <div id="main-content" class="clearfix">
             <?= $this->content() ?>

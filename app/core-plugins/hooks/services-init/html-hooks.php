@@ -39,6 +39,7 @@ $app->defineFunction(
         libxml_use_internal_errors(true); //disable warnings...
         $domView = QueryPath::withHTML($rawView);
         $html_hooks = array_unique($html_hooks);
+        // Ok, let's trigger Plugins Hooks with a reference to the DOM View!!!
         foreach ($html_hooks as $hookName) {
             $app->getService('hooks')
                 ->triggerPluginsHook($hookName, array(&$domView));

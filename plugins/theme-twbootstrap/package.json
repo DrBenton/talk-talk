@@ -1,0 +1,16 @@
+{
+  "name": "Talk-Talk---Twitter-Bootstrap-theme",
+  "version": "0.0.0",
+  "authors": [
+    "Olivier Philippon <olivier@rougemine.com>"
+  ],
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-changed": "^0.3.0",
+    "gulp-less": "^1.2.3",
+    "gulp-livereload": "^1.5.0",
+    "gulp-watch": "^0.6.5"
+  },
+  "license": "GPL v2",
+  "private": true
+}

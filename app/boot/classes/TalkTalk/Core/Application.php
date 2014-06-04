@@ -165,7 +165,7 @@ class Application implements ApplicationInterface
 
     public function after($callable, $priority = 0)
     {
-        $this->slimApp->hook('slim.after', $callable, $priority);
+        $this->slimApp->hook('slim.after.dispatch', $callable, $priority);
     }
 
     protected function registerAutoloader()
