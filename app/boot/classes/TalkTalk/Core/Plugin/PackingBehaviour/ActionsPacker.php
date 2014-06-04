@@ -9,12 +9,18 @@ class ActionsPacker extends BasePacker
 
     const ACTION_FILE_PATH = '%plugin-path%/actions/%action-target%.php';
 
+    protected $myConfigKey = '@actions';
+
     /**
      * @inheritdoc
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        $myConfigPart = $plugin->config['@actions'];
+        if (!isset($plugin->config[$this->myConfigKey])) {
+            return null;
+        }
+
+        $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
         foreach($myConfigPart as $actionData) {

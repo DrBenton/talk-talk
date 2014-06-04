@@ -9,6 +9,8 @@ use TalkTalk\Core\Service\ArrayUtils;
 class AppAssetsPacker extends BasePacker
 {
 
+    protected $myConfigKey = '@assets';
+
     public function getPackerInitCode()
     {
         return <<<PLUGIN_PHP_CODE
@@ -23,11 +25,11 @@ PLUGIN_PHP_CODE;
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        if (!isset($plugin->config['@assets'])) {
+        if (!isset($plugin->config[$this->myConfigKey])) {
             return null;
         }
 
-        $myConfigPart = $plugin->config['@assets'];
+        $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
         if (isset($myConfigPart['stylesheets'])) {

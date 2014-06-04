@@ -7,12 +7,16 @@ use TalkTalk\Core\Plugin\UnpackedPlugin;
 class GeneralPacker  extends BasePacker
 {
 
+    protected $myConfigKey = '@general';
+
     /**
      * @inheritdoc
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        $myConfigPart = $plugin->config['@general'];
+        if (!isset($plugin->config[$this->myConfigKey])) {
+            throw new \DomainException(sprintf('Plugin "%s" config file must have a "@general" section!'), $plugin->path);
+        }
 
         return <<<PLUGIN_PHP_CODE
 namespace {

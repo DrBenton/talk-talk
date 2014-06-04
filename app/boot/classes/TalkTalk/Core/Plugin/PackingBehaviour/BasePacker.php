@@ -7,6 +7,8 @@ use TalkTalk\Core\Plugin\UnpackedPlugin;
 abstract class BasePacker implements PluginPackerBehaviourInterface
 {
 
+    protected $myConfigKey;
+
     /**
      * @inheritdoc
      */

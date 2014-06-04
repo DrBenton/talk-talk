@@ -8,12 +8,18 @@ class ServicesPacker extends BasePacker
 {
     const SERVICE_FILE_PATH = '%plugin-path%/services-init/%service-name%.php';
 
+    protected $myConfigKey = '@services';
+
     /**
      * @inheritdoc
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        $myConfigPart = $plugin->config['@services'];
+        if (!isset($plugin->config[$this->myConfigKey])) {
+            return null;
+        }
+
+        $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
         foreach($myConfigPart as $serviceData) {

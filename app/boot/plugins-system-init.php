@@ -50,6 +50,7 @@ call_user_func(
             $thirdPartyPluginsDir = $app->vars['app.root_path'] . '/plugins';
             $thirdPartyUnpackedPlugins = $app->getService('plugins.finder')->findPlugins($thirdPartyPluginsDir);
 
+
             // No third-party plugin can take the id of a core plugin
             $getPluginId = function (UnpackedPlugin $plugin) {
                 return strtolower($plugin->id);
@@ -65,7 +66,10 @@ call_user_func(
             }
 
             // Plugins packing
-            $unpackedPlugins = $coreUnpackedPlugins + $thirdPartyUnpackedPlugins;
+            $app->getService('logger')->info(
+                sprintf('Found %d core Plugins & %d third-party Plugins to pack.', count($coreUnpackedPlugins), count($thirdPartyUnpackedPlugins))
+            );
+            $unpackedPlugins = array_merge($coreUnpackedPlugins, $thirdPartyUnpackedPlugins);
             $app->getService('plugins.packer')->packPlugins($unpackedPlugins);
 
         }

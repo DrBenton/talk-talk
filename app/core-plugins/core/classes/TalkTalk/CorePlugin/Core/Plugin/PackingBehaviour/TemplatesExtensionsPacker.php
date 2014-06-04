@@ -9,12 +9,18 @@ class TemplatesExtensionsPacker extends BasePacker
 {
     const TEMPLATE_EXT_FILE_PATH = '%plugin-path%/templates-extensions/%template-ext-name%.php';
 
+    protected $myConfigKey = '@templates-extensions';
+
     /**
      * @inheritdoc
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        $myConfigPart = $plugin->config['@templates-extensions'];
+        if (!isset($plugin->config[$this->myConfigKey])) {
+            return null;
+        }
+
+        $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
         foreach($myConfigPart as $extensionName) {

@@ -7,12 +7,18 @@ use TalkTalk\Core\Plugin\UnpackedPlugin;
 class ClassesPacker extends BasePacker
 {
 
+    protected $myConfigKey = '@classes';
+
     /**
      * @inheritdoc
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin)
     {
-        $myConfigPart = $plugin->config['@classes'];
+        if (!isset($plugin->config[$this->myConfigKey])) {
+            return null;
+        }
+
+        $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
         foreach($myConfigPart as $classesData) {
