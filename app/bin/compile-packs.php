@@ -43,16 +43,7 @@ return call_user_func(
 
         // Packing Services init
         $packingProfilesManager = $app->getService('packing-profiles-manager');
-
-        // Ok, let's fetch the whole list of available PHP packs profiles!
-        $packsProfilesDir = $app->vars['app.app_path'] . '/php-packs-profiles';
-        $packsProfiles = glob($packsProfilesDir . '/*.yml');
-
-        // Well... Pack profiles, start your engine!
-        foreach($packsProfiles as $packProfileFile)
-        {
-            $packingProfilesManager->packProfile($packProfileFile);
-        }
+        $packsProfiles = $packingProfilesManager->runAllPackProfiles();
 
         $returnedData = array(
             'nbPacksRemoved' => $nbExistingPackProfilesRemoved,

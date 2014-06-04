@@ -151,8 +151,8 @@ class Application implements ApplicationInterface
 
     protected function onClassAutoloadingRequest($className)
     {
-        echo "onClassAutoloadingRequest($className) :: ";
         /*
+        echo "onClassAutoloadingRequest($className) :: ";
         echo "\$this->hasService('packing-profiles-manager')=".$this->hasService('packing-profiles-manager').' :: ';
         echo "\$this->hasService('autoloader')=".$this->hasService('autoloader').' :: ';
         */

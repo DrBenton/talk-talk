@@ -64,6 +64,20 @@ return function() {
     $app->vars['app.base_url'] = $app->vars['request']->getRootUri();
     $app->vars['isAjax'] = $app->vars['request']->isAjax();
 
+    // Classes automatic repacking management
+    if (isset($config['debug']['packing.always_repack_profiles']) &&
+        true == $config['debug']['packing.always_repack_profiles']
+    ) {
+        $app->after(
+          function () use ($app) {
+              $packingProfilesManager = $app->getService('packing-profiles-manager');
+              $packingProfilesManager->clearAllPackedProfiles();
+              $packingProfilesManager->runAllPackProfiles();
+          },
+          -255
+        );
+    }
+
     // Services packs management
     $phpIncludedInAppServicesPacks = array(
         'app/boot/services',

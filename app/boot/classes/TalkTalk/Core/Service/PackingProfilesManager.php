@@ -114,10 +114,25 @@ class PackingProfilesManager extends BaseService
         $this->updatePacksMetadata($packProfileData);
     }
 
+    public function runAllPackProfiles()
+    {
+        // Let's fetch the whole list of available PHP packs profiles
+        $packsProfilesDir = $this->app->vars['app.app_path'] . '/php-packs-profiles';
+        $packsProfiles = glob($packsProfilesDir . '/*.yml');
+
+        // Well... Pack profiles, start your engine!
+        foreach($packsProfiles as $packProfileFile)
+        {
+            $this->packProfile($packProfileFile);
+        }
+
+        return $packsProfiles;
+    }
+
     public function clearAllPackedProfiles()
     {
         // Metadata clearing
-        unlink($this->getPacksMetadataFilePath());
+        @unlink($this->getPacksMetadataFilePath());
         $this->packsMetadata = null;
 
         // Packed profiles clearing
