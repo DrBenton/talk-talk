@@ -21,8 +21,8 @@ call_user_func(
         if (
             !$hasPackedPlugins ||
             (
-                isset($config['debug']['packing.always_repack_plugins']) &&
-                true == $config['debug']['packing.always_repack_plugins']
+                isset($app->vars['config']['debug']['packing.always_repack_plugins']) &&
+                true == $app->vars['config']['debug']['packing.always_repack_plugins']
             )
         ) {
 
@@ -36,11 +36,18 @@ call_user_func(
             $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-packer.php');
 
             // Plugins core Packing Behaviours are added to the Unpacked Plugins class
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\GeneralPacker());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\ActionsPacker());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\ClassesPacker());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\ServicesPacker());
-            UnpackedPlugin::addBehaviour(new \TalkTalk\Core\Plugin\PackingBehaviour\NewPackersPacker());
+            $corePackingBehaviours = array(
+                'GeneralPacker',
+                'ActionsPacker',
+                'ClassesPacker',
+                'ServicesPacker',
+                'NewPackersPacker',
+                'EventsPacker',
+            );
+            foreach($corePackingBehaviours as $packerClassName) {
+                $packerFullClassName = '\TalkTalk\Core\Plugin\PackingBehaviour\\' . $packerClassName;
+                UnpackedPlugin::addBehaviour(new $packerFullClassName);
+            }
 
             // Core plugins discovery
             $corePluginsDir = $app->vars['app.app_path'] . '/core-plugins';

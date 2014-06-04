@@ -17,7 +17,7 @@ class Logger extends Log /* implements Psr\Log\LoggerInterface */
 
     public function log($level, $object, $context = array())
     {
-        $object = date('Y-m-d H:i:s') . ': ' . (string) $object ;
+        $object = date('Y-m-d H:i:s') . ' - ' . (string) self::$levels[$level] . ' : ' . (string) $object ;
         return parent::log($level, $object, $context);
     }
 

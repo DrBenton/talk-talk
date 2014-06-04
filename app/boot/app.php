@@ -70,6 +70,9 @@ return function() {
     ) {
         $app->after(
           function () use ($app) {
+              $app->getService('logger')->debug(
+                  'The app "packing.always_repack_profiles" is set to \'true\': we clear & repack all Pack Profiles.'
+              );
               $packingProfilesManager = $app->getService('packing-profiles-manager');
               $packingProfilesManager->clearAllPackedProfiles();
               $packingProfilesManager->runAllPackProfiles();

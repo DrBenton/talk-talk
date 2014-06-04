@@ -39,6 +39,7 @@ gulp.task("watch", ["compilePhpPacks"], function() {
   var server = livereload(livereloadPort);
   gulp.watch([
     "app/**",
+    "!**/cache/**",
     "!**/*.pack.php",
     "!**/*.log"
   ]).on("change", function(file) {
