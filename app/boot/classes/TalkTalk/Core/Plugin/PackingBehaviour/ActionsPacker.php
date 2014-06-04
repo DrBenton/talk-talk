@@ -23,7 +23,7 @@ class ActionsPacker extends BasePacker
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
-        foreach($myConfigPart as $actionData) {
+        foreach ($myConfigPart as $actionData) {
             $code .= $this->getActionPhpCode($plugin, $actionData);
         }
 
@@ -44,8 +44,9 @@ class ActionsPacker extends BasePacker
 
         return <<<PLUGIN_PHP_CODE
 namespace {
-    \$app->addAction('$urlPattern', function() use (\$app) {
+    \$app->addAction('$urlPattern', function () use (\$app) {
         \$action = \$app->includeInApp('$actionFilePath');
+
         return call_user_func(\$action);
     })->via('$method');
 }

@@ -3,7 +3,6 @@
 namespace TalkTalk\Core;
 
 use Slim\Slim;
-use TalkTalk\Core\ApplicationAwareInterface;
 
 class Application implements ApplicationInterface
 {
@@ -68,7 +67,7 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * @param string $pathToCheck
+     * @param  string            $pathToCheck
      * @throws \RuntimeException
      */
     public function checkAppPath($pathToCheck)

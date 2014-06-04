@@ -8,6 +8,7 @@ class StringUtils extends BaseService
     public function handlePluginRelatedString(\TalkTalk\Core\Plugin\UnpackedPlugin $plugin, $string)
     {
         $app = &$this->app;
+
         return str_replace(
             array('%plugin-path%', '%plugin-url%', '%vendors-url%'),
             array(

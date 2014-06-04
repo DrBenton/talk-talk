@@ -19,7 +19,7 @@ class NewPackersPacker extends BasePacker
 
         // In this Packer we return no code, but we add the new Plugins Packing Behaviours
         // before others Packers "getPhpCodeToPack()" calls
-        foreach($myConfigPart as $packerClass) {
+        foreach ($myConfigPart as $packerClass) {
 
             if (!class_exists($packerClass, false)) {
                 $packerClassPath = $plugin->path . '/classes/' . str_replace('\\', DIRECTORY_SEPARATOR, $packerClass) . '.php' ;

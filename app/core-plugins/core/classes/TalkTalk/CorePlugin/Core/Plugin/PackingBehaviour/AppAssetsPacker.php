@@ -33,13 +33,13 @@ PLUGIN_PHP_CODE;
 
         $code = '';
         if (isset($myConfigPart['stylesheets'])) {
-            foreach($myConfigPart['stylesheets'] as $cssFileData) {
+            foreach ($myConfigPart['stylesheets'] as $cssFileData) {
                 $code .= $this->getAssetPhpCode($plugin, 'css', ArrayUtils::getArray($cssFileData, 'url'));
             }
 
         }
         if (isset($myConfigPart['javascripts'])) {
-            foreach($myConfigPart['javascripts'] as $jsFileData) {
+            foreach ($myConfigPart['javascripts'] as $jsFileData) {
                 $code .= $this->getAssetPhpCode($plugin, 'js', ArrayUtils::getArray($jsFileData, 'url'));
             }
 
@@ -53,8 +53,7 @@ PLUGIN_PHP_CODE;
         $stringUtils = $plugin->getAppService('utils.string');
         $assetData['url'] = $stringUtils->handlePluginRelatedString($plugin, $assetData['url']);
 
-        switch ($assetType)
-        {
+        switch ($assetType) {
             case 'css':
                 $assetPhpCode = $this->getCssPhpCode($plugin, $assetData);
                 break;
@@ -74,6 +73,7 @@ PLUGIN_PHP_CODE;
     protected function getCssPhpCode(UnpackedPlugin $plugin, $cssData)
     {
         $cssDataPhpCode = var_export($cssData, true);
+
         return <<<CSS_PHP_CODE
 \$app->vars['app.assets.css'][] = $cssDataPhpCode;
 CSS_PHP_CODE;
@@ -83,6 +83,7 @@ CSS_PHP_CODE;
     {
         $target = (isset($jsData['head']) && true === $jsData['head']) ? 'head' : 'endOfBody';
         $jsDataPhpCode = var_export($jsData, true);
+
         return <<<JS_PHP_CODE
 \$app->vars['app.assets.js.$target'][] = $jsDataPhpCode;
 JS_PHP_CODE;

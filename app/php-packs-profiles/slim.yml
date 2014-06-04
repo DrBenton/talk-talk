@@ -3,8 +3,8 @@ packing:
   id: slim
   base-dir: %app-root%/vendor/php/slim/slim/
   handledPhPNamespace: Slim\
-  
-files: 
+
+files:
   - Slim/Slim.php
   - Slim/Helper/Set.php
   - Slim/Log.php

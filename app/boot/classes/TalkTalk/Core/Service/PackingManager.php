@@ -2,7 +2,6 @@
 
 namespace TalkTalk\Core\Service;
 
-
 class PackingManager extends BaseService
 {
 
@@ -24,7 +23,7 @@ class PackingManager extends BaseService
     }
 
     /**
-     * @param mixed $data
+     * @param mixed  $data
      * @param string $targetNamespace
      * @param string $targetId
      */
@@ -75,7 +74,7 @@ class PackingManager extends BaseService
     }
 
     /**
-     * @param array $filesToIncludeInPaths
+     * @param  array  $filesToIncludeInPaths
      * @return string
      */
     public function getAppInclusionsCode(array $filesToIncludeInPaths)
@@ -108,7 +107,7 @@ class PackingManager extends BaseService
             $fileContent = <<<END
 namespace {
     $importedNamespacesStr
-    \$app->vars['packs.included_files.closures']['$filePath'] = function(\$app) {
+    \$app->vars['packs.included_files.closures']['$filePath'] = function (\$app) {
         $fileContent
     };
 }
@@ -156,24 +155,26 @@ END;
     }
 
     /**
-     * @param string $targetNamespace
-     * @param string $targetId
+     * @param  string $targetNamespace
+     * @param  string $targetId
      * @return mixed
      */
     public function unpackData($targetNamespace, $targetId)
     {
         $packedDataFilePath = $this->getPackDataFilePath($targetNamespace, $targetId);
+
         return $this->app->includeInApp($packedDataFilePath);
     }
 
     /**
-     * @param string $targetNamespace
-     * @param string $targetId
+     * @param  string $targetNamespace
+     * @param  string $targetId
      * @return bool
      */
     public function hasPackedData($targetNamespace, $targetId)
     {
         $packedDataFilePath = $this->getPackDataFilePath($targetNamespace, $targetId);
+
         return file_exists($packedDataFilePath);
     }
 
@@ -233,10 +234,10 @@ END;
         $strippedNamespaces = array();
         $phpFileContent = preg_replace_callback(
             self::PHP_NS_USE_PATTERN,
-            function (array $matches) use (&$strippedNamespaces)
-            {
+            function (array $matches) use (&$strippedNamespaces) {
                 $importedNamespaceName = $matches[1];
                 $strippedNamespaces[] = $importedNamespaceName;
+
                 return '/* moved "' . $importedNamespaceName . '" */' . PHP_EOL ;
             },
             $phpFileContent
@@ -253,9 +254,9 @@ END;
         $namespaceName = null;
         $phpFileContent = preg_replace_callback(
             self::PHP_NS_DECLARATION_PATTERN,
-            function (array $matches) use (&$namespaceName)
-            {
+            function (array $matches) use (&$namespaceName) {
                 $namespaceName = $matches[1];
+
                 return 'namespace ' . $namespaceName. ' {' . PHP_EOL ;
             },
             $phpFileContent
@@ -274,8 +275,8 @@ END;
     /**
      * This method content is not very clean, but... it seems to work :-)
      *
-     * @param string $phpFileContent
-     * @param string $classNamespace
+     * @param  string $phpFileContent
+     * @param  string $classNamespace
      * @return string
      */
     protected function wrapClassDefinitionInClassExistsCheck($phpFileContent, $classNamespace)
@@ -285,7 +286,7 @@ END;
         // "class_exists()" checks around class/interface definition, *inside* their namespace
         $definitionsPatterns = array(self::PHP_CLASS_PATTERN, self::PHP_INTERFACE_PATTERN);
 
-        foreach($definitionsPatterns as $definitionPattern) {
+        foreach ($definitionsPatterns as $definitionPattern) {
 
             if (preg_match($definitionPattern, $phpFileContent)) {
 
@@ -297,6 +298,7 @@ END;
                     $definitionPattern,
                     function ($matches) use ($classNsPrefix, $methodToUse) {
                         $className = $matches[1];
+
                         return PHP_EOL . "if (!$methodToUse('$classNsPrefix$className', false)) {" . PHP_EOL . $matches[0];
                     },
                     $phpFileContent

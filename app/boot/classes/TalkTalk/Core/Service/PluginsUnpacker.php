@@ -36,13 +36,13 @@ class PluginsUnpacker extends BaseService
             ->getService('packing-manager')
             ->unpackData($this->packsDataNs, 'plugins-metadata');
 
-        foreach($pluginsMetadata as $pluginMetadata) {
+        foreach ($pluginsMetadata as $pluginMetadata) {
             $this->unpackPlugin($pluginMetadata['id']);
         }
     }
 
     /**
-     * @param string $pluginId
+     * @param  string                       $pluginId
      * @return \TalkTalk\Core\Plugin\Plugin
      */
     protected function unpackPlugin($pluginId)

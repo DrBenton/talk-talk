@@ -1,6 +1,6 @@
 <?php
 
-return function() {
+return function () {
 
     // Core vars setup
     $bootPath = __DIR__;
@@ -111,7 +111,6 @@ return function() {
 
     // Plugins system init
     include_once __DIR__ . '/plugins-system-init.php';
-
 
     return $app;
 

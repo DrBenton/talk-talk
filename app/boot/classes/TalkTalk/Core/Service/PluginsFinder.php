@@ -11,7 +11,7 @@ class PluginsFinder extends BaseService
     const PLUGINS_BEHAVIOURS_INIT_DIR = 'plugins-behaviours-init';
     const PLUGINS_BEHAVIOURS_INIT_FILE_PATTERN = '~^[a-z-]-behaviour\.php$~';
 
-    protected  $pluginsConfigFilesPatten;
+    protected $pluginsConfigFilesPatten;
 
     public function setPluginsConfigFilesGlobPattern($pattern)
     {
@@ -19,14 +19,15 @@ class PluginsFinder extends BaseService
     }
 
     /**
-     * @param string $basePath
-     * @return array an array of UnpackedPlugins
+     * @param  string $basePath
+     * @return array  an array of UnpackedPlugins
      */
     public function findPlugins($basePath)
     {
         $pluginsConfigFiles = glob($basePath . $this->pluginsConfigFilesPatten);
 
         $app = &$this->app;
+
         return array_map(
             function ($pluginConfigFilePath) use ($app) {
 

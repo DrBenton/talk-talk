@@ -3,8 +3,8 @@ packing:
   id: plates
   base-dir: %app-root%/vendor/php/league/plates/src
   handledPhPNamespace: League\Plates\
-  
-files: 
+
+files:
   - Engine.php
   - Template.php
   - Extension/ExtensionInterface.php

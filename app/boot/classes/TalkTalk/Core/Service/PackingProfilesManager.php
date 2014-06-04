@@ -29,7 +29,7 @@ class PackingProfilesManager extends BaseService
 
         if (isset($this->packsMetadata['handledPhpNamespaces'])) {
 
-            foreach($this->packsMetadata['handledPhpNamespaces'] as $handledPhpNamespace => $packData) {
+            foreach ($this->packsMetadata['handledPhpNamespaces'] as $handledPhpNamespace => $packData) {
                 if (0 === strpos($className, $handledPhpNamespace)) {
                     return true;
                 }
@@ -46,7 +46,7 @@ class PackingProfilesManager extends BaseService
 
         if (isset($this->packsMetadata['handledPhpNamespaces'])) {
 
-            foreach($this->packsMetadata['handledPhpNamespaces'] as $handledPhpNamespace => $packData) {
+            foreach ($this->packsMetadata['handledPhpNamespaces'] as $handledPhpNamespace => $packData) {
                 if (0 === strpos($className, $handledPhpNamespace)) {
                     $this->getPackingManager()
                         ->unpackData($packData['namespace'], $packData['id']);
@@ -121,8 +121,7 @@ class PackingProfilesManager extends BaseService
         $packsProfiles = glob($packsProfilesDir . '/*.yml');
 
         // Well... Pack profiles, start your engine!
-        foreach($packsProfiles as $packProfileFile)
-        {
+        foreach ($packsProfiles as $packProfileFile) {
             $this->packProfile($packProfileFile);
         }
 

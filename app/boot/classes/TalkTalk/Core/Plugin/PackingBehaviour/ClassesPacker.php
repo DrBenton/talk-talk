@@ -21,7 +21,7 @@ class ClassesPacker extends BasePacker
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
-        foreach($myConfigPart as $classesData) {
+        foreach ($myConfigPart as $classesData) {
             $code .= $this->getClassesPhpCode($plugin, $classesData);
         }
 
@@ -41,7 +41,7 @@ class ClassesPacker extends BasePacker
         $nbClassesToInclude = count($classesToIncludesPaths);
         $classesToIncludeCode = PHP_EOL . "/* begin $nbClassesToInclude PHP Classes inclusions of plugin $plugin->id, path '$classesBasePath' */" . PHP_EOL ;
 
-        foreach($classesToIncludesPaths as $classFilePath) {
+        foreach ($classesToIncludesPaths as $classFilePath) {
 
             // Class content formatting
             $classContent = $plugin

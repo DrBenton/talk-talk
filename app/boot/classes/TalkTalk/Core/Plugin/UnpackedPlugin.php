@@ -42,7 +42,7 @@ class UnpackedPlugin extends ApplicationAware
     {
         // Plugins packing behaviours init, just before packing
         // (this is in case of a Packer which would have something to do before others, like the NewPackersPacker)
-        foreach(self::$packingBehaviours as $packingBehaviour) {
+        foreach (self::$packingBehaviours as $packingBehaviour) {
             $packingBehaviour->beforePacking($this);
         }
     }
@@ -55,8 +55,7 @@ class UnpackedPlugin extends ApplicationAware
         $code = '';
 
         // Plugins packing behaviours packing!
-        foreach(self::$packingBehaviours as $packingBehaviour)
-        {
+        foreach (self::$packingBehaviours as $packingBehaviour) {
 
             $pluginPhpCodeForCurrentConfigHandler = $packingBehaviour->getPhpCodeToPack($this);
 
@@ -88,8 +87,7 @@ BEHAVIOUR_PHP_CODE;
     public function getMetadataToPack()
     {
         $metadata = array();
-        foreach(self::$packingBehaviours as $configHandler)
-        {
+        foreach (self::$packingBehaviours as $configHandler) {
             $pluginMetadataForCurrentConfigHandler = $configHandler->getMetadata($this);
             if (null !== $pluginMetadataForCurrentConfigHandler) {
                 $metadata[] = $pluginMetadataForCurrentConfigHandler;

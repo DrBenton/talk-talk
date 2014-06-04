@@ -22,7 +22,7 @@ class ServicesPacker extends BasePacker
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
-        foreach($myConfigPart as $serviceData) {
+        foreach ($myConfigPart as $serviceData) {
             $code .= $this->getServicePhpCode($plugin, $serviceData);
         }
 

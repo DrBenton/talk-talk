@@ -21,15 +21,15 @@ interface PluginPackerBehaviourInterface
 
     /**
      * Triggers each Plugin packing operations
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @param  \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
      * @return string|null
      */
     public function getPhpCodeToPack(UnpackedPlugin $plugin);
 
     /**
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @param  \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
      * @return array|null
      */
     public function getMetadata(UnpackedPlugin $plugin);
 
-} 
+}

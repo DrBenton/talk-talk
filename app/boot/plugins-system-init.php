@@ -44,7 +44,7 @@ call_user_func(
                 'NewPackersPacker',
                 'EventsPacker',
             );
-            foreach($corePackingBehaviours as $packerClassName) {
+            foreach ($corePackingBehaviours as $packerClassName) {
                 $packerFullClassName = '\TalkTalk\Core\Plugin\PackingBehaviour\\' . $packerClassName;
                 UnpackedPlugin::addBehaviour(new $packerFullClassName);
             }
@@ -86,7 +86,6 @@ call_user_func(
         // --> Let's unpack our Plugins super powers!
 
         $app->getService('plugins.unpacker')->unpackPlugins();
-
 
     }
 );

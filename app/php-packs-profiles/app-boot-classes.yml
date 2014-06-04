@@ -3,8 +3,8 @@ packing:
   id: classes
   base-dir: %app-path%/boot/classes/TalkTalk/Core/
   handledPhPNamespace: TalkTalk\Core\
-  
-files: 
+
+files:
   - ApplicationInterface.php
   - ApplicationAwareInterface.php
   - ApplicationAware.php

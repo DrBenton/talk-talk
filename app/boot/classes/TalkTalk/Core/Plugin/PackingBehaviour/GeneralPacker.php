@@ -26,7 +26,7 @@ PLUGIN_PHP_CODE;
     }
 
     /**
-     * @param \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @param  \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
      * @return array|null
      */
     public function getMetadata(UnpackedPlugin $plugin)

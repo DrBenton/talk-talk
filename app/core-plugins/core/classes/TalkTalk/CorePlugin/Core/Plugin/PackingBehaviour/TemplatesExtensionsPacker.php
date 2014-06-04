@@ -23,7 +23,7 @@ class TemplatesExtensionsPacker extends BasePacker
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
-        foreach($myConfigPart as $extensionName) {
+        foreach ($myConfigPart as $extensionName) {
             $code .= $this->getExtensionPhpCode($plugin, $extensionName);
         }
 
@@ -45,6 +45,7 @@ class TemplatesExtensionsPacker extends BasePacker
             ->stripOpeningPhpTag($templateExtFileContent);
 
         $templateExtFileInclusionCode = preg_replace('~^~m', '            ', $templateExtFileInclusionCode);
+
         return <<<PLUGIN_PHP_CODE
 namespace {
     // Template extension "$extensionName" initialization:
