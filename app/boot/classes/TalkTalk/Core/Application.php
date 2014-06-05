@@ -120,6 +120,11 @@ class Application implements ApplicationInterface
         return $serviceResolution;
     }
 
+    public function get($serviceId)
+    {
+        return $this->getService($serviceId);
+    }
+
     public function hasService($serviceId)
     {
         return isset($this->definedServices[$serviceId]);
@@ -206,7 +211,7 @@ class Application implements ApplicationInterface
         */
         if ($this->hasService('packing-profiles-manager')) {
 
-            $packingProfilesManager = $this->getService('packing-profiles-manager');
+            $packingProfilesManager = $this->get('packing-profiles-manager');
             $hasPackedProfileForThisClass = $packingProfilesManager->hasPackedProfileForClass($className);
 
             if ($hasPackedProfileForThisClass) {
@@ -216,7 +221,7 @@ class Application implements ApplicationInterface
             }
 
             if (class_exists($className, false) || interface_exists($className, false)) {
-                $this->getService('logger')->debug(
+                $this->get('logger')->debug(
                     sprintf('Class "%s" has been loaded with a PHP Pack.', $className)
                 );
                 // Mission complete!
@@ -227,16 +232,22 @@ class Application implements ApplicationInterface
 
         // No PHP pack provides this class. Let's give this job to Composer!
         if ($this->hasService('autoloader')) {
-            $this->getService('logger')->debug(
+            $this->get('logger')->debug(
                 sprintf('Composer called to rescue to load class "%s".', $className)
             );
-            $this->getService('autoloader')->loadClass($className);
+            $this->get('autoloader')->loadClass($className);
         }
     }
 
-    public function redirect($actionName, $params = array(), $status = 302)
+    public function redirect($url, $status = 302)
     {
-        $this->slimApp->redirect(
+        $this->get('flash')->keepFlashes();
+        return $this->slimApp->redirect($url, $status);
+    }
+
+    public function redirectToAction($actionName, $params = array(), $status = 302)
+    {
+        return $this->redirect(
             $this->path($actionName, $params),
             $status
         );

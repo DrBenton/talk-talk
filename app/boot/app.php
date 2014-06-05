@@ -57,7 +57,7 @@ return function () {
     $app->vars['app.php_packs_path'] = $appPhpPacksPath;
     $app->vars['app.php_vendors_path'] = $appVendorsPath;
     $app->vars['app.js_vendors_path'] = $rootPath . '/vendor/js';
-    $app->vars['app.boot_services_path'] = $app->vars['app.boot_path'] . '/core-services-init';
+    $app->vars['app.boot_services_path'] = $app->vars['app.boot_path'] . '/core-services';
 
     $app->vars['perfs.start_time'] = $startTime;
     $app->vars['request'] = $slimApp->request;
@@ -68,10 +68,10 @@ return function () {
     if (!empty($config['debug']['packing.always_repack_profiles'])) {
         $app->after(
           function () use ($app) {
-              $app->getService('logger')->debug(
+              $app->get('logger')->debug(
                   'The app "packing.always_repack_profiles" is set to \'true\': we clear & repack all Pack Profiles.'
               );
-              $packingProfilesManager = $app->getService('packing-profiles-manager');
+              $packingProfilesManager = $app->get('packing-profiles-manager');
               $packingProfilesManager->clearAllPackedProfiles();
               $packingProfilesManager->runAllPackProfiles();
           },
@@ -108,7 +108,7 @@ return function () {
     );
 
     // Pretty errors display, if we are in debug mode
-    if ($app->vars['debug']) {
+    if ($app->vars['debug'] && !empty($app->vars['config']['debug']['use_whoops_for_errors'])) {
         $whoops = new \Whoops\Run;
         $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
         $whoops->register();

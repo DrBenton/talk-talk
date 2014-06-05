@@ -52,7 +52,7 @@ class PluginsPacker extends BaseService
     {
         $pluginPackedPhpCode = $plugin->getPhpCodeToPack();
         $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->packPhpCode(
                 $pluginPackedPhpCode,
                 $this->packsDataNs,
@@ -88,7 +88,7 @@ PACKER_INIT_CODE;
         );
 
         $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->packPhpCode($pluginsPackersInitCode, $this->packsDataNs, 'plugins-packers-init');
     }
 
@@ -105,7 +105,7 @@ PACKER_INIT_CODE;
         );
 
         $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->packData($pluginsMetadata, $this->packsDataNs, 'plugins-metadata');
     }
 

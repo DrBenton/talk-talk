@@ -40,7 +40,9 @@
         <?= $this->insert('core::common/header') ?>
     <?php endif ?>
 
-    <?= $this->insert('core::common/alerts-display') ?>
+    <?= $this->insert('core::common/alerts-display', array(
+        'alerts' => $this->app()->get('flash')->getFlashes('alerts.')
+    )) ?>
 
     <?php if (isset($this->breadcrumb)): /*a custom breadcrumb has been requested*/ ?>
         <?= $this->breadcrumb ?>

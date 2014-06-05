@@ -48,18 +48,18 @@ class ClassesPacker extends BasePacker
     protected function getClassesPhpCode(UnpackedPlugin $plugin, array $classesData)
     {
         $classesBasePath = $this->app
-            ->getService('utils.string')
+            ->get('utils.string')
             ->handlePluginRelatedString($plugin, $classesData['path']);
 
         $classesToIncludesPaths = $this->app
-            ->getService('utils.io')
+            ->get('utils.io')
             ->rglob('*.php', $classesBasePath);
 
         $nbClassesToInclude = count($classesToIncludesPaths);
 
         // Symfony ClassCollectionLoader needs to be able to work with our classes.
         // --> let's make them accessible via Composer!
-        $this->app->getService('autoloader')->addPsr4(
+        $this->app->get('autoloader')->addPsr4(
             $classesData['prefix'],
             $classesBasePath
         );
@@ -86,7 +86,7 @@ class ClassesPacker extends BasePacker
             }
 
             $this->app
-                ->getService('autoloader')
+                ->get('autoloader')
                 ->loadClass($className);
 
         }
@@ -109,7 +109,7 @@ class ClassesPacker extends BasePacker
 
             // Class content formatting
             $classContent = $this->app
-                ->getService('packing-manager')
+                ->get('packing-manager')
                 ->getPhpFileContentForPacking($classFilePath);
 
             // The formatted PHP Class content is appended to our packed Plugin PHP code
@@ -121,7 +121,7 @@ class ClassesPacker extends BasePacker
         // We also add the class resolution scheme to Composer as a fallback, just in case...
         $classesToIncludeCode .= <<<PLUGIN_PHP_CODE
 namespace {
-    \$app->getService('autoloader')->addPsr4(
+    \$app->get('autoloader')->addPsr4(
         '$classesData[prefix]\',
         '$classesBasePath'
     );

@@ -29,11 +29,10 @@
   - session-flash
   - translator
   - db
-#  - crypto
+  - crypto
+  - uuid
+  - validator
 #  - settings
-#  - url-generator
-#  - validator
-#  - uuid
 #  - csrf
 #  - html-escape
 
@@ -41,10 +40,8 @@
 #  - error.app-error
 #  - before.check-csrf
 
-#@locales:
-#  -
-#    file: validation-en
-#    language: en
+@translations:
+  - validation-en
 
 #@hooks:
 #  - define_javascript_app_config

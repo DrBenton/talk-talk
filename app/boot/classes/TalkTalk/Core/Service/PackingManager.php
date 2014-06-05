@@ -169,11 +169,14 @@ $rawPhpCode
     /**
      * @param  string $targetNamespace
      * @param  string $targetId
-     * @return mixed
+     * @return mixed returns -1 if no data pack file has been found for this namespace & id
      */
     public function unpackData($targetNamespace, $targetId)
     {
         $packedDataFilePath = $this->getPackDataFilePath($targetNamespace, $targetId);
+        if (!file_exists($packedDataFilePath)) {
+            return -1;
+        }
 
         return $this->app->includeInApp($packedDataFilePath);
     }

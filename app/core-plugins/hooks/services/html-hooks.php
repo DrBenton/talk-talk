@@ -41,7 +41,7 @@ $app->defineFunction(
         $html_hooks = array_unique($html_hooks);
         // Ok, let's trigger Plugins Hooks with a reference to the DOM View!!!
         foreach ($html_hooks as $hookName) {
-            $app->getService('hooks')
+            $app->get('hooks')
                 ->triggerPluginsHook($hookName, array(&$domView));
         }
         libxml_use_internal_errors(false); //...and enable it again!

@@ -6,7 +6,7 @@ use TalkTalk\Core\Plugin\UnpackedPlugin;
 
 class ServicesPacker extends BasePacker
 {
-    const SERVICE_FILE_PATH = '%plugin-path%/services-init/%service-name%.php';
+    const SERVICE_FILE_PATH = '%plugin-path%/services/%service-name%.php';
 
     protected $myConfigKey = '@services';
 
@@ -38,7 +38,7 @@ class ServicesPacker extends BasePacker
         );
 
         $serviceFileInclusionCode = $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->getAppInclusionsCode(array($serviceFilePath));
 
         return <<<PLUGIN_PHP_CODE

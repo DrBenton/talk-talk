@@ -1,8 +1,6 @@
-<!-- TODO: {{ enable_html_hooks('header') }} -->
+<?= $this->hooks()->html('header') ?>
 <header>
-    <!-- TODO:
-    <h1><a href="{{ path('core/home') }}" class="ajax-link">{{ app['forum-base.title'] }}</a></h1>
-    -->
+    <h1><a href="<?= $this->app()->path('core/home') ?>" class="ajax-link">{{ app['forum-base.title'] }}</a></h1>
     <h1>Talk-Talk</h1>
 
     <nav>
@@ -12,11 +10,9 @@
     </nav>
 
     <div id="logged-user-container">
-        <!-- TODO:
-        {% if app.isAuthenticated %}
-        {% include 'auth/common/user-display.twig' %}
-        {% endif %}
-        -->
+        <?php if ($this->app()->vars['isAuthenticated']): ?>
+            <?php $this->insert('auth::common/user-display') ?>
+        <?php endif ?>
     </div>
 
 </header>

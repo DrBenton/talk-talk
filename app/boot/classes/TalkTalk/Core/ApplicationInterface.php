@@ -15,6 +15,13 @@ interface ApplicationInterface
 
     public function getService($serviceId);
 
+    /**
+     * An alias for "get()"
+     * @param $serviceId
+     * @return mixed
+     */
+    public function get($serviceId);
+
     public function defineFunction($functionId, $callable);
 
     public function execFunction($functionId);
@@ -33,6 +40,8 @@ interface ApplicationInterface
 
     public function path($actionName, $params = array());
 
-    public function redirect($actionName, $params = array(), $status = 302);
+    public function redirect($url, $status = 302);
+
+    public function redirectToAction($actionName, $params = array(), $status = 302);
 
 }

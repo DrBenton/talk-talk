@@ -25,12 +25,12 @@ class Session
         return isset($_SESSION[$key]);
     }
 
-    public function clear($key)
+    public function remove($key)
     {
         unset($_SESSION[$key]);
     }
 
-    public function clearAll()
+    public function clear()
     {
         $_SESSION[] = array();
     }

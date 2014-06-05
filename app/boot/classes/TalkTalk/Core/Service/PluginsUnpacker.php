@@ -20,7 +20,7 @@ class PluginsUnpacker extends BaseService
     public function hasPackedPlugins()
     {
         return $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->hasPackedData($this->packsDataNs, 'plugins-metadata');
     }
 
@@ -28,12 +28,12 @@ class PluginsUnpacker extends BaseService
     {
         // Plugins Packers init code
         $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->unpackData($this->packsDataNs, 'plugins-packers-init');
 
         // Plugins unpacking
         $pluginsMetadata = $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->unpackData($this->packsDataNs, 'plugins-metadata');
 
         foreach ($pluginsMetadata as $pluginMetadata) {
@@ -48,7 +48,7 @@ class PluginsUnpacker extends BaseService
     protected function unpackPlugin($pluginId)
     {
         $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->unpackData($this->packsDataNs, $this->app->vars['plugins.packs_prefix'] . $pluginId);
     }
 

@@ -126,7 +126,7 @@ class PackingProfilesManager extends BaseService
             $this->packProfile($packProfileFile);
         }
 
-        $this->app->getService('logger')->debug(
+        $this->app->get('logger')->debug(
             sprintf('%d PHP Pack Profiles has been triggered.', count($packsProfiles))
         );
 
@@ -141,13 +141,13 @@ class PackingProfilesManager extends BaseService
 
         // Packed profiles clearing
         $existingPackProfilesPaths = $this->app
-            ->getService('utils.io')
+            ->get('utils.io')
             ->rglob('*.' . PackingManager::PACK_FILES_EXTENSION, $this->packsDir);
         array_walk($existingPackProfilesPaths, function ($path) {
             unlink($path);
         });
 
-        $this->app->getService('logger')->debug(
+        $this->app->get('logger')->debug(
             'PHP Pack Profiles cleared.'
         );
     }
@@ -170,7 +170,7 @@ class PackingProfilesManager extends BaseService
      */
     protected function getPackingManager()
     {
-        return $this->app->getService('packing-manager');
+        return $this->app->get('packing-manager');
     }
 
     protected function getPacksMetadataFilePath()

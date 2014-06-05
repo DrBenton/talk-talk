@@ -1,7 +1,7 @@
 packing:
   namespace: app/boot
   id: services
-  base-dir: %app-path%/boot/core-services-init/
+  base-dir: %app-path%/boot/core-services
 
 filesIncludedByApp:
   - autoloader.php

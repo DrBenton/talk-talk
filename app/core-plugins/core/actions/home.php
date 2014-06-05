@@ -1,7 +1,7 @@
 <?php
 
 $action = function () use ($app) {
-    return $app->getService('view')
+    return $app->get('view')
         ->render('core::home');
 };
 

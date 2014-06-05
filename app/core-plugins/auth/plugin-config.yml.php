@@ -38,14 +38,14 @@
     path: %plugin-path%/classes/TalkTalk/Model
 
 @services:
-#  - is-authenticated
+  - is-authenticated
 #  - before-middlewares
-#  - user
+  - user
 
 @translations:
   - en
 
-#@hooks:
-#  - auth.user.check-signin-credentials
-#  - html.header
+@hooks:
+  - auth.user.check-signin-credentials
+  - html.header
 

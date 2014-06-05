@@ -41,7 +41,7 @@ class TemplatesExtensionsPacker extends BasePacker
         $templateExtFileContent = file_get_contents($templateExtFilePath);
 
         $templateExtFileInclusionCode = $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->stripOpeningPhpTag($templateExtFileContent);
 
         $templateExtFileInclusionCode = preg_replace('~^~m', '            ', $templateExtFileInclusionCode);
@@ -59,7 +59,7 @@ namespace {
             if (\$extension instanceof \TalkTalk\Core\ApplicationAware) {
                 \$extension->setApplication(\$app);
             }
-            \$app->getService('view')->addExtension(\$extension);
+            \$app->get('view')->addExtension(\$extension);
         }
     );
 }

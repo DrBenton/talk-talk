@@ -15,10 +15,10 @@ $action = function () use ($app) {
     $breadcrumb = array();
 
     if ($returnUrl = $app->vars['request']->get('return-url')) {
-        $app->getService('session')->set('url.intended', $returnUrl);
+        $app->get('session')->set('url.intended', $returnUrl);
     }
 
-    return $app->getService('view')->render(
+    return $app->get('view')->render(
         'auth::sign-in/sign-in.form',
         array(
             'user' => $app->vars['request']->get('user', new User),

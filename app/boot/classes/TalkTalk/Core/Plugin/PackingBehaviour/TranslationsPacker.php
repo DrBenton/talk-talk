@@ -51,6 +51,9 @@ PLUGIN_PHP_CODE;
         $translationContent = file_get_contents($translationFilePath);
         $translationData = Yaml::parse($translationContent);
 
+        if (!isset($translationData['@language'])) {
+            throw new \DomainException(sprintf('Translations file "%s" must have a "@language" key!', $translationFilePath));
+        }
         $translationLanguage = $translationData['@language'];
         unset($translationData['@language']);
 

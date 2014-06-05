@@ -15,51 +15,52 @@ $action = function () use ($app, &$showFormOnError) {
 
     // Well, we have one! Is it the right password?
     // --> we trigger the 'auth.user.check-signin-credentials' hook!
-    $passwordSuccesses = $app->getService('hooks')->triggerPluginsHook(
+    $passwordSuccesses = $app->get('hooks')->triggerPluginsHook(
         'auth.user.check-signin-credentials',
         array($userData, $dbUser)
     );
 
-    if (!$app->getService('utils.array')->containsTrue($passwordSuccesses)) {
+    $app->get('logger')->debug('$passwordSuccesses='.json_encode($passwordSuccesses));
+    if (!$app->get('utils.array')->containsTrue($passwordSuccesses)) {
         // No Plugin responded "true" for this hook: these User credentials are not correct!
         return $showFormOnError($app, $userData);
     }
 
     // All right, our User is correctly authentified! Let's log him/her...
-    $app->getService('session')->set('userId', $dbUser->id);
+    $app->get('session')->set('userId', $dbUser->id);
 
     // Success feedback
-    $app->getService('flash')->flashTranslated(
-        'success',
+    $app->get('flash')->flashTranslated(
+        'alerts.success.sign-in',
         'core-plugins.auth.sign-in.notifications.success',
         array('%login%' => $dbUser->login)
     );
 
-    if ($app['isAjax']) {
+    if ($app->vars['isAjax']) {
         // JS response
-        return $app->getService('view')->render(
-            'auth/sign-in/sign-in.success.ajax.twig',
+        return $app->get('view')->render(
+            'auth::sign-in/sign-in.success.ajax',
             array('user' => $dbUser)
         );
     } else {
         // Redirection to home / intended URL, with flashed notification
-        $targetUrl = $app->getService('session')->get(
+        $targetUrl = $app->get('session')->get(
             'url.intended',
             $app->path('core/home')
         );
-        $app->getService('session')->clear('url.intended');
+        $app->get('session')->remove('url.intended');
 
         return $app->redirect($targetUrl);
     }
 };
 
 $showFormOnError = function ($app, array $userData) {
-    $app->getService('flash')->flashTranslated(
-        'error',
+    $app->get('flash')->flashTranslatedNow(
+        'alerts.error.sign-in',
         'core-plugins.auth.sign-in.notifications.error'
     );
 
-    return $app->getService('view')->render(
+    return $app->get('view')->render(
         'auth::sign-in/sign-in.form',
         array(
             'user' => new User($userData)

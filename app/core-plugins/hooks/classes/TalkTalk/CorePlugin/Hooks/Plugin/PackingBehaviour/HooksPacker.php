@@ -9,6 +9,7 @@ class HooksPacker extends BasePacker
 {
 
     const HOOKS_FILE_PATH = '%plugin-path%/plugin-hooks.php';
+    const DEFAULT_HOOK_PRIORITY = 0;
     const PLUGIN_COMPONENTS_URL = '%plugin-url%/assets/js/modules/components';
 
     protected $myConfigKey = '@hooks';
@@ -72,9 +73,19 @@ PACKER_INIT_CODE;
 
         // Let's load the Plugin hooks implementation code!
         $pluginHooksImplementations = $this->getPluginHooksImplementations($plugin, $hooksFilePath);
+        if (!is_array($pluginHooksImplementations)) {
+            print_r($pluginHooksImplementations);
+            throw new \DomainException(
+                sprintf('Plugin "%s" hooks implementations file is malformed!', $plugin->id)
+            );
+        }
 
         $code = '';
-        foreach ($myConfigPart as $hookName) {
+        foreach ($myConfigPart as $hookData) {
+
+            // Let's normalize this hook data
+            $normalizedPluginHookData = $this->getNormalizedHookData($plugin, $hookData);
+            $hookName = $normalizedPluginHookData['name'];
 
             if (!isset($pluginHooksImplementations[$hookName])) {
                 print_r($pluginHooksImplementations);
@@ -90,7 +101,7 @@ PACKER_INIT_CODE;
 
             // All right, this hooks seems to have an implementation. Let's add some
             // code to link this Plugin hook to its implementation
-            $code .= $this->getHookPhpCode($plugin, $hookName, $hooksFilePath);
+            $code .= $this->getHookPhpCode($plugin, $normalizedPluginHookData, $hooksFilePath);
         }
 
         // We add the Plugin hooks implementation code to the app
@@ -101,27 +112,32 @@ PACKER_INIT_CODE;
 
     /**
      * @param UnpackedPlugin $plugin
-     * @param string $hookName
+     * @param array $hookData
      * @param string $hooksFilePath
      * @return string
      */
-    protected function getHookPhpCode(UnpackedPlugin $plugin, $hookName, $hooksFilePath)
+    protected function getHookPhpCode(UnpackedPlugin $plugin, array $hookData, $hooksFilePath)
     {
         $pluginComponentsUrl = $this->getPluginComponentsUrl($plugin);
+
+        $hookName = $hookData['name'];
 
         return <<<PLUGIN_PHP_CODE
 namespace {
     /* begin "$plugin->id" Plugin hook "$hookName" plug to app */
-    \$app->vars['hooks.registry']['$hookName'][] = function (\$hookArgs) use (\$app) {
-        \$app->execFunction(
-            'hooks.load_plugin_hooks',
-            '$plugin->id', '$hooksFilePath', '$pluginComponentsUrl'
-        );
-        call_user_func_array(
-            \$app->vars['hooks.registry.implementations']['$plugin->id']['$hookName'],
-            \$hookArgs
-        );
-    };
+    \$app->vars['hooks.registry']['$hookName'][] = array(
+        'implementation' => function (\$hookArgs) use (\$app) {
+            \$app->execFunction(
+                'hooks.load_plugin_hooks',
+                '$plugin->id', '$hooksFilePath', '$pluginComponentsUrl'
+            );
+            return call_user_func_array(
+                \$app->vars['hooks.registry.implementations']['$plugin->id']['$hookName'],
+                \$hookArgs
+            );
+        },
+        'priority' => $hookData[priority]
+    );
     /* end "$plugin->id" Plugin hook "$hookName" plug to app */
 }
 
@@ -157,7 +173,7 @@ PLUGIN_PHP_CODE;
     protected function getPluginHooksImplementationsCode($hooksFilePath)
     {
         $hooksImplementationsInclusionCode = $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->getAppInclusionsCode($hooksFilePath, array('&$hooks', '$myComponentsUrl'));
 
         return $hooksImplementationsInclusionCode;
@@ -166,8 +182,28 @@ PLUGIN_PHP_CODE;
     protected function getPluginComponentsUrl(UnpackedPlugin $plugin)
     {
         return $this->app
-            ->getService('utils.string')
+            ->get('utils.string')
             ->handlePluginRelatedString($plugin, self::PLUGIN_COMPONENTS_URL);
+    }
+
+    protected function getNormalizedHookData(UnpackedPlugin $plugin, $hookData)
+    {
+        $hookData = $this->app->get('utils.array')->getArray($hookData, 'name');
+
+        if (!isset($hookData['priority'])) {
+            if (
+                0 === strpos($hookData['name'], 'html.') &&
+                isset($plugin->data['@general']['htmlHooksPriority'])
+            ) {
+                $hookData['priority'] = $plugin->data['@general']['htmlHooksPriority'];
+            } else {
+                $hookData['priority'] = self::DEFAULT_HOOK_PRIORITY;
+            }
+        }
+
+        $hookData['priority'] = (int) $hookData['priority'];
+
+        return $hookData;
     }
 
 }

@@ -64,7 +64,7 @@ $app->defineService(
 $app->defineFunction(
     'db.connections.resolver.default.init',
     function () use ($app) {
-        return $app->getService('db')->getConnection();
+        return $app->get('db')->getConnection();
     }
 );
 

@@ -15,7 +15,7 @@ class Translation extends BaseExtension
     public function trans()
     {
         return call_user_func_array(
-            array($this->app->getService('translator'), 'trans'),
+            array($this->app->get('translator'), 'trans'),
             func_get_args()
         );
     }

@@ -38,7 +38,7 @@ class EventsPacker extends BasePacker
         );
 
         $serviceFileInclusionCode = $this->app
-            ->getService('packing-manager')
+            ->get('packing-manager')
             ->getAppInclusionsCode(array($eventFilePath));
 
         return <<<PLUGIN_PHP_CODE

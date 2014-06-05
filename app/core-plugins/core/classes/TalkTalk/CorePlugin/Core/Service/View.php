@@ -25,19 +25,24 @@ class View extends BaseService
 
     public function render($templatePath, array $vars = array())
     {
-        $this->initEngine();
-
-        $template = new Template($this->platesEngine);
-
         $this->app->getResponse()->setBody(
-            $template->render($templatePath, $vars)
+            $this->getRendering($templatePath, $vars)
         );
 
         /*
         ob_start();
-        echo $template->render($templatePath, $vars);
+        echo $this->getRendering($templatePath, $vars);
         $this->app->getResponse()->setBody(ob_get_clean());
         */
+    }
+
+    public function getRendering($templatePath, array $vars = array())
+    {
+        $this->initEngine();
+
+        $template = new Template($this->platesEngine);
+
+        return $template->render($templatePath, $vars);
     }
 
     public function setTemplatesFilesExtension($ext)

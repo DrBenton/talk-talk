@@ -52,7 +52,7 @@ PLUGIN_PHP_CODE;
     protected function getAssetPhpCode(UnpackedPlugin $plugin, $assetType, $assetData)
     {
         $assetData['url'] = $this->app
-            ->getService('utils.string')
+            ->get('utils.string')
             ->handlePluginRelatedString($plugin, $assetData['url']);
 
         switch ($assetType) {

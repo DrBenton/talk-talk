@@ -16,14 +16,14 @@ call_user_func(
         // --> 1) We load the "plugins.unpacker" Service
         $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-unpacker.php');
         // --> 2) We use the "plugins.unpacker" Service
-        $hasPackedPlugins = $app->getService('plugins.unpacker')->hasPackedPlugins();
+        $hasPackedPlugins = $app->get('plugins.unpacker')->hasPackedPlugins();
 
         if (
             !$hasPackedPlugins ||
             !empty($app->vars['config']['debug']['packing.always_repack_plugins'])
         ) {
 
-            $app->getService('logger')->info('Plugins packing.');
+            $app->get('logger')->info('Plugins packing.');
 
             // No packed Plugins found.
             // --> let's find & pack them!
@@ -49,11 +49,11 @@ call_user_func(
 
             // Core plugins discovery
             $corePluginsDir = $app->vars['app.app_path'] . '/core-plugins';
-            $coreUnpackedPlugins = $app->getService('plugins.finder')->findPlugins($corePluginsDir);
+            $coreUnpackedPlugins = $app->get('plugins.finder')->findPlugins($corePluginsDir);
 
             // Third-party plugins discovery
             $thirdPartyPluginsDir = $app->vars['app.root_path'] . '/plugins';
-            $thirdPartyUnpackedPlugins = $app->getService('plugins.finder')->findPlugins($thirdPartyPluginsDir);
+            $thirdPartyUnpackedPlugins = $app->get('plugins.finder')->findPlugins($thirdPartyPluginsDir);
 
 
             // No third-party plugin can take the id of a core plugin
@@ -71,11 +71,11 @@ call_user_func(
             }
 
             // Plugins packing
-            $app->getService('logger')->info(
+            $app->get('logger')->info(
                 sprintf('Found %d core Plugins & %d third-party Plugins to pack.', count($coreUnpackedPlugins), count($thirdPartyUnpackedPlugins))
             );
             $unpackedPlugins = array_merge($coreUnpackedPlugins, $thirdPartyUnpackedPlugins);
-            $app->getService('plugins.packer')->packPlugins($unpackedPlugins);
+            $app->get('plugins.packer')->packPlugins($unpackedPlugins);
 
         }
 
@@ -83,7 +83,7 @@ call_user_func(
         // whether is had been generated before or just now.
         // --> Let's unpack our Plugins super powers!
 
-        $app->getService('plugins.unpacker')->unpackPlugins();
+        $app->get('plugins.unpacker')->unpackPlugins();
 
     }
 );
