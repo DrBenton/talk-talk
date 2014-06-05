@@ -1,0 +1,15 @@
+packing:
+  namespace: vendors
+  id: symfony-translation
+  base-dir: %app-root%/vendor/php/symfony/translation
+  handledPhPNamespace: Symfony\Component\Translation
+
+files:
+  - Symfony/Component/Translation/MetadataAwareInterface.php
+  - Symfony/Component/Translation/MessageCatalogueInterface.php
+  - Symfony/Component/Translation/MessageCatalogue.php
+  - Symfony/Component/Translation/Loader/LoaderInterface.php
+  - Symfony/Component/Translation/Loader/ArrayLoader.php
+  - Symfony/Component/Translation/MessageSelector.php
+  - Symfony/Component/Translation/TranslatorInterface.php
+  - Symfony/Component/Translation/Translator.php

@@ -25,6 +25,7 @@ class Application implements ApplicationInterface
         $this->slimApp = $slimApp;
         $this->vars['packs.included_files.closures'] = array();
         $this->registerAutoloader();
+        $this->defineService('slim', $this->slimApp);
     }
 
     public function includeInApp($filePath)
@@ -143,6 +144,19 @@ class Application implements ApplicationInterface
         return call_user_func_array($this->definedFunctions[$functionId], $args);
     }
 
+    public function getFunction($functionId)
+    {
+        if (!isset($this->definedFunctions[$functionId])) {
+            $errMsg = sprintf('No Function "%s" found!', $functionId);
+            if ($this->vars['debug']) {
+                $errMsg .= sprintf('Available Functions: %s', implode(', ', array_keys($this->definedFunctions)));
+            }
+            throw new \DomainException($errMsg);
+        }
+
+        return $this->definedFunctions[$functionId];
+    }
+
     public function addAction($urlPattern)
     {
         return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
@@ -218,6 +232,14 @@ class Application implements ApplicationInterface
             );
             $this->getService('autoloader')->loadClass($className);
         }
+    }
+
+    public function redirect($actionName, $params = array(), $status = 302)
+    {
+        $this->slimApp->redirect(
+            $this->path($actionName, $params),
+            $status
+        );
     }
 
 }

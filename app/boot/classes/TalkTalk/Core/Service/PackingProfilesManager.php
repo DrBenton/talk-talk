@@ -117,6 +117,7 @@ class PackingProfilesManager extends BaseService
     public function runAllPackProfiles()
     {
         // Let's fetch the whole list of available PHP packs profiles
+        clearstatcache(true);
         $packsProfilesDir = $this->app->vars['app.app_path'] . '/php-packs-profiles';
         $packsProfiles = glob($packsProfilesDir . '/*.yml');
 

@@ -26,8 +26,9 @@
 @services:
   - view
   - session
+  - session-flash
   - translator
-#  - db
+  - db
 #  - crypto
 #  - settings
 #  - url-generator

@@ -19,6 +19,8 @@ interface ApplicationInterface
 
     public function execFunction($functionId);
 
+    public function getFunction($functionId);
+
     public function addAction($urlPattern);
 
     public function run();
@@ -30,5 +32,7 @@ interface ApplicationInterface
     public function after($callable, $priority = 0);
 
     public function path($actionName, $params = array());
+
+    public function redirect($actionName, $params = array(), $status = 302);
 
 }

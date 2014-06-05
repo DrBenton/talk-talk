@@ -9,3 +9,6 @@ files:
   - Illuminate/Support/Contracts/ArrayableInterface.php
   - Illuminate/Support/Collection.php
   - Illuminate/Support/helpers.php
+  - Illuminate/Support/Str.php
+  - Illuminate/Support/Pluralizer.php
+  - Illuminate/Support/Fluent.php

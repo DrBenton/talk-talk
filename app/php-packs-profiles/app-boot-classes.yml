@@ -24,3 +24,4 @@ files:
   - Plugin/PackingBehaviour/NewPackersPacker.php
   - Service/StringUtils.php
   - Service/IOUtils.php
+  - Service/ArrayUtils.php

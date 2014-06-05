@@ -14,7 +14,7 @@ gulp.task("jshint", function() {
     .pipe(jshint.reporter("default"));
 });
 
-gulp.task("compilePhpPacks", function (cb) {
+gulp.task("compile-php-packs", function (cb) {
   exec('php app/bin/compile-packs.php', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
@@ -22,16 +22,17 @@ gulp.task("compilePhpPacks", function (cb) {
   });
 });
 
-gulp.task("watch", ["compilePhpPacks"], function() {
+gulp.task("watch", ["compile-php-packs"], function() {
 
   // PHP packings
   gulp.watch(
     [
       "app/boot/**/*.php",
       "app/core-plugins/**/*.php",
-      "app/plugins/**/*.*"
+      "app/plugins/**/*.*",
+      "app/php-packs-profiles/*.yml"
     ],
-    ["compilePhpPacks"]
+    ["compile-php-packs"]
   );
 
   // Live reload
@@ -49,5 +50,5 @@ gulp.task("watch", ["compilePhpPacks"], function() {
 
 });
 
-gulp.task("default", ["watch"]);
+gulp.task("default", ["compile-php-packs"]);
 

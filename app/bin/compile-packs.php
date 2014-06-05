@@ -38,11 +38,12 @@ return call_user_func(
         $app = call_user_func($appInitClosure);
         if ($isCli) {
             // Back to previous PHP error reporting level
-            error_reporting($previousErrorReportingLevel);
+            error_reporting(E_ALL/*$previousErrorReportingLevel*/);
         }
 
         // Packing Services init
         $packingProfilesManager = $app->getService('packing-profiles-manager');
+        $packingProfilesManager->clearAllPackedProfiles();
         $packsProfiles = $packingProfilesManager->runAllPackProfiles();
 
         $returnedData = array(

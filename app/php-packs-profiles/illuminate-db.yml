@@ -8,6 +8,7 @@ files:
   - Illuminate/Database/ConnectionInterface.php
   - Illuminate/Database/ConnectionResolverInterface.php
   - Illuminate/Database/Connection.php
+  - Illuminate/Database/MySqlConnection.php
   - Illuminate/Database/Query/Builder.php
   - Illuminate/Database/Eloquent/Model.php
   - Illuminate/Database/Eloquent/Collection.php
@@ -21,3 +22,15 @@ files:
   - Illuminate/Database/Eloquent/Relations/MorphMany.php
   - Illuminate/Database/Eloquent/Relations/MorphOne.php
   - Illuminate/Database/Eloquent/Relations/BelongsTo.php
+  - Illuminate/Database/Connectors/ConnectorInterface.php
+  - Illuminate/Database/Connectors/Connector.php
+  - Illuminate/Database/Connectors/MySqlConnector.php
+  - Illuminate/Database/Eloquent/Builder.php
+  - Illuminate/Database/Query/Processors/Processor.php
+  - Illuminate/Database/Query/Processors/MySqlProcessor.php
+  - Illuminate/Database/Grammar.php
+  - Illuminate/Database/Query/Grammars/Grammar.php
+  - Illuminate/Database/Query/Grammars/MySqlGrammar.php
+  - Illuminate/Database/Capsule/Manager.php
+  - Illuminate/Database/Connectors/ConnectionFactory.php
+  - Illuminate/Database/DatabaseManager.php

@@ -1,0 +1,8 @@
+packing:
+  namespace: vendors
+  id: illuminate-container
+  base-dir: %app-root%/vendor/php/illuminate/container/
+  handledPhPNamespace: Illuminate\Container\
+
+files:
+  - Illuminate/Container/Container.php

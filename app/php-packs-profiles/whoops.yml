@@ -1,0 +1,17 @@
+packing:
+  namespace: vendors
+  id: whoops
+  base-dir: %app-root%/vendor/php/filp/whoops/src
+  handledPhPNamespace: Whoops\
+
+files:
+  - Whoops/Exception/Inspector.php
+  - Whoops/Exception/Frame.php
+  - Whoops/Exception/FrameCollection.php
+  - Whoops/Exception/ErrorException.php
+  - Whoops/Handler/HandlerInterface.php
+  - Whoops/Handler/Handler.php
+  - Whoops/Handler/PrettyPageHandler.php
+  - Whoops/Run.php
+  - Whoops/Util/TemplateHelper.php
+  - Whoops/Util/Misc.php

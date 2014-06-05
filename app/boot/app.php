@@ -107,6 +107,13 @@ return function () {
         }
     );
 
+    // Pretty errors display, if we are in debug mode
+    if ($app->vars['debug']) {
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+        $whoops->register();
+    }
+
     // Plugins system init
     include_once __DIR__ . '/plugins-system-init.php';
 
