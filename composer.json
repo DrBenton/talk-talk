@@ -14,11 +14,13 @@
     "slim/slim": "2.4.3",
     "symfony/yaml": "2.4.6",
     "symfony/class-loader": "2.4.6",
-    "illuminate/database": "4.0.x",
-    "illuminate/validation": "4.0.x",
-    "illuminate/cache": "4.0.x",
+    "symfony/translation": "2.4.6",
+    "illuminate/database": "4.1.x",
+    "illuminate/validation": "4.1.x",
+    "illuminate/cache": "4.1.x",
     "league/plates": "2.*",
-    "querypath/QueryPath": ">=3.0.0"
+    "querypath/QueryPath": ">=3.0.0",
+    "filp/whoops": "~1.0"
   },
   "config": {
     "vendor-dir": "vendor/php"

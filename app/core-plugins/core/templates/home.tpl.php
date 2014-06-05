@@ -1,4 +1,4 @@
-<?php $this->layout('core::layouts/main-layout') ?>
+<?php $this->layout( $this->app()->vars['isAjax'] ? 'ajax-nav::layouts/ajax-layout' : 'core::layouts/main-layout') ?>
 
 <?php $this->start('footer') ?>
 

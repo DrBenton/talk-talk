@@ -32,6 +32,7 @@ class ActionsPacker extends BasePacker
 
     protected function getActionPhpCode(UnpackedPlugin $plugin, array $actionData)
     {
+        // Bare actions stuff
         $urlPattern = $actionData['url'];
         $method = isset($actionData['method'])
             ? $actionData['method'] //TODO: handle multiple methods
@@ -42,14 +43,27 @@ class ActionsPacker extends BasePacker
             self::ACTION_FILE_PATH
         );
 
+        // Advanced action settings
+        $advancedSettings = '';
+
+        // Route name management
+        if (isset($actionData['name'])) {
+            $advancedSettings .= <<<ACTION_NAME
+    ->name('$actionData[name]')
+ACTION_NAME;
+        }
+
         return <<<PLUGIN_PHP_CODE
 namespace {
     \$app->addAction('$urlPattern', function () use (\$app) {
         \$action = \$app->includeInApp('$actionFilePath');
 
         return call_user_func(\$action);
-    })->via('$method');
+    })
+    ->via('$method')
+$advancedSettings;
 }
+
 PLUGIN_PHP_CODE;
     }
 

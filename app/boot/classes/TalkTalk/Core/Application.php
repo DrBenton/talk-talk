@@ -168,6 +168,16 @@ class Application implements ApplicationInterface
         $this->slimApp->hook('slim.after.dispatch', $callable, $priority);
     }
 
+    /**
+     * @param string $actionName
+     * @param array $params
+     * @return string
+     */
+    public function path($actionName, $params = array())
+    {
+        return $this->slimApp->urlFor($actionName, $params);
+    }
+
     protected function registerAutoloader()
     {
         spl_autoload_register(array($this, 'onClassAutoloadingRequest'));

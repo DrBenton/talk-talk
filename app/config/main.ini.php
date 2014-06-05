@@ -5,7 +5,7 @@
 [debug]
 debug = true
 packing.always_repack_profiles = false
-packing.always_repack_plugins = false
+packing.always_repack_plugins = true
 livereload = false
 livereload.port = 35729
 perfs.tracking.enabled = true

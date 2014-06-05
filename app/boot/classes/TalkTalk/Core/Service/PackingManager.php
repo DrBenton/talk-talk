@@ -146,7 +146,9 @@ if (!defined('APP_ENVIRONMENT')) {
 }
 END;
         if (preg_match(self::PHP_NS_WITH_BRACKET_DECLARATION_PATTERN, $rawPhpCode)) {
-            $securityFileHead = 'namespace {' . PHP_EOL . $securityFileHead . PHP_EOL . '}' . PHP_EOL ;
+            $securityFileHead = 'namespace {' . PHP_EOL .
+                $this->app->getService('utils.string')->indent($securityFileHead) .
+                PHP_EOL . '}' . PHP_EOL ;
         }
 
         $rawPhpCode = <<<END
@@ -277,6 +279,7 @@ END;
             $phpFileContent .= PHP_EOL . '} //end namespace "' . $namespaceName . '"' . PHP_EOL ;
         } elseif (!preg_match('~^\s*namespace\s+~m', $phpFileContent)) {
             // No namespace? Let's enclose this PHP file content in a root one!
+            $phpFileContent = str_replace(PHP_EOL, PHP_EOL . '    ', $phpFileContent);
             $phpFileContent = 'namespace {' . PHP_EOL . $phpFileContent . PHP_EOL . '} //end namespace' . PHP_EOL ;
         }
 
@@ -304,6 +307,8 @@ END;
                 $methodToUse = ($definitionPattern === self::PHP_CLASS_PATTERN)
                     ? 'class_exists'
                     : 'interface_exists';
+
+                $phpFileContent = $this->app->getService('utils.string')->indent($phpFileContent);
 
                 $phpFileContent = preg_replace_callback(
                     $definitionPattern,

@@ -17,6 +17,7 @@ class AppAssetsPacker extends BasePacker
 namespace {
     \$app->vars['app.assets.css'] = array();
 }
+
 PLUGIN_PHP_CODE;
     }
 

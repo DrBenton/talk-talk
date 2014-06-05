@@ -22,8 +22,8 @@ class ServicesPacker extends BasePacker
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
         $code = '';
-        foreach ($myConfigPart as $serviceData) {
-            $code .= $this->getServicePhpCode($plugin, $serviceData);
+        foreach ($myConfigPart as $serviceName) {
+            $code .= $this->getServicePhpCode($plugin, $serviceName);
         }
 
         return $code;
@@ -48,6 +48,7 @@ namespace {
     // Service "$serviceName" initialization:
     \$app->includeInApp('$serviceFilePath');
 }
+
 PLUGIN_PHP_CODE;
     }
 }

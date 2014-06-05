@@ -32,6 +32,12 @@ class View extends BaseService
         $this->app->getResponse()->setBody(
             $template->render($templatePath, $vars)
         );
+
+        /*
+        ob_start();
+        echo $template->render($templatePath, $vars);
+        $this->app->getResponse()->setBody(ob_get_clean());
+        */
     }
 
     public function setTemplatesFilesExtension($ext)

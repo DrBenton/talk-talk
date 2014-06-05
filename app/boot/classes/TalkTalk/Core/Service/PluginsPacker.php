@@ -67,9 +67,22 @@ class PluginsPacker extends BaseService
         array_walk(
             UnpackedPlugin::getBehaviours(),
             function (PluginPackerBehaviourInterface $pluginsPacker) use (&$pluginsPackersInitCode) {
-                $pluginInitCode = $pluginsPacker->getPackerInitCode();
-                if (null !== $pluginInitCode) {
-                    $pluginsPackersInitCode .= $pluginInitCode;
+
+                $packerInitCode = $pluginsPacker->getPackerInitCode();
+
+                if (null !== $packerInitCode) {
+                    $packerClass = get_class($pluginsPacker);
+                    $pluginsPackersInitCode .= <<<PACKER_INIT_CODE
+
+/**
+ * begin Plugin Packer "$packerClass" init code
+ */
+$packerInitCode
+/**
+ * end Plugin Packer "$packerClass" init code
+ */
+
+PACKER_INIT_CODE;
                 }
             }
         );

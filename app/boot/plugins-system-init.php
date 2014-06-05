@@ -40,6 +40,7 @@ call_user_func(
                 'ServicesPacker',
                 'NewPackersPacker',
                 'EventsPacker',
+                'TranslationsPacker',
             );
             foreach ($corePackingBehaviours as $packerClassName) {
                 $packerFullClassName = '\TalkTalk\Core\Plugin\PackingBehaviour\\' . $packerClassName;

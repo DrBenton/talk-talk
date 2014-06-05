@@ -20,4 +20,10 @@ class StringUtils extends BaseService
         );
     }
 
+    public function indent($text, $nbIndents = 1, $indent = '    ')
+    {
+        $indentation = str_repeat($indent, $nbIndents);
+        return $indentation . preg_replace('~^([^A-Z]+)~m', $indentation . '$1', $text);
+    }
+
 }

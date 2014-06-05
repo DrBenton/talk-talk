@@ -25,13 +25,12 @@
 
 @services:
   - view
-#  - session
+  - session
+  - translator
 #  - db
 #  - crypto
-#  - config
 #  - settings
 #  - url-generator
-#  - translator
 #  - validator
 #  - uuid
 #  - csrf
@@ -50,8 +49,6 @@
 #  - define_javascript_app_config
 
 @assets:
-  stylesheets:
-    - %plugin-url%/assets/css/404.css
   javascripts:
     - %vendors-url%/requirejs/require.js
     - %plugin-url%/assets/js/requirejs-config.js
@@ -64,4 +61,5 @@
 @templates-extensions:
   - app
   - app-assets
+  - translation
 #  - func.get-app-javascript-config

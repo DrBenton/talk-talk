@@ -29,4 +29,6 @@ interface ApplicationInterface
 
     public function after($callable, $priority = 0);
 
+    public function path($actionName, $params = array());
+
 }
