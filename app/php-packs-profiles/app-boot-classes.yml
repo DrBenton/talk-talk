@@ -13,7 +13,7 @@ files:
   - Service/Logger.php
   - Service/PackingManager.php
   - Service/PackingProfilesManager.php
-  - Plugin/UnpackedPlugin.php
+  - Plugin/Plugin.php
   - Service/PluginsUnpacker.php
   - Plugin/PackingBehaviour/PluginPackerBehaviourInterface.php
   - Plugin/PackingBehaviour/BasePacker.php
