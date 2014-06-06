@@ -1,6 +1,6 @@
 <?= $this->hooks()->html('header') ?>
 <header>
-    <h1><a href="<?= $this->app()->path('core/home') ?>" class="ajax-link">{{ app['forum-base.title'] }}</a></h1>
+    <h1><a href="<?= $this->app()->path('core/home') ?>" class="ajax-link"><?= $this->app()->exec('forum-base.get_site_title') ?></a></h1>
     <h1>Talk-Talk</h1>
 
     <nav>
