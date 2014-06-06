@@ -2,10 +2,10 @@
 <div class="post-container <?= $this->post->author->id === $this->topic->author->id ? 'topic-author' : '' ?>">
     <div id="post-<?= $this->post->id ?>" class="post">
         <h4 class="post-title">
-            <?= $this->post->title ?> <i>(<?= $this->post->id ?>)</i>
+            <?= $this->forumUtils()->bbcodeToHtml($this->post->title) ?> <i>(<?= $this->post->id ?>)</i>
         </h4>
         <div class="post-content">
-            <?= $this->post->content ?>
+            <?= $this->forumUtils()->bbcodeToHtml($this->post->content) ?>
         </div>
         <div class="post-info">
             <i>

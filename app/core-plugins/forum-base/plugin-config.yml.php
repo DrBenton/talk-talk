@@ -60,19 +60,22 @@
   -
     prefix: TalkTalk\Model\
     path: %plugin-path%/classes/TalkTalk/Model
-#  -
-#    prefix: TalkTalk\Decoda\
-#    path: %plugin-path%/classes/TalkTalk/Decoda
+  -
+    prefix: TalkTalk\Decoda\
+    path: %plugin-path%/classes/TalkTalk/Decoda
+  -
+    prefix: TalkTalk\CorePlugin\ForumBase\
+    path: %plugin-path%/classes/TalkTalk/CorePlugin/ForumBase
 
 @services:
   - forums-data
-#  - forum-markup-manager
+  - forum-markup-manager
 
 @translations:
   - en
 
-#@twig-extensions:
-#  - filter.bbcode-to-html
+@templates-extensions:
+  - forum-utils
 
 #@hooks:
 #  - html.new_topic_form

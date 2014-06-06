@@ -24,7 +24,8 @@
     "league/plates": "2.*",
     "querypath/QueryPath": ">=3.0.0",
     "filp/whoops": "~1.0",
-    "ircmaxell/password-compat": "1.0.2"
+    "ircmaxell/password-compat": "1.0.2",
+    "mjohnson/decoda": "6.5.1"
   },
   "config": {
     "vendor-dir": "vendor/php"
