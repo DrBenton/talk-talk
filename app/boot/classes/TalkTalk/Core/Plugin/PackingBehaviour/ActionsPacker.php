@@ -98,6 +98,16 @@ PLUGIN_PHP_CODE;
         $beforeActionDefinition = '';
         $afterActionDefinition = '';
 
+        // "onlyForDebug" setting management
+        if (!empty($actionData['onlyForDebug'])) {
+            $beforeActionDefinition .= '
+            if (!$app->vars[\'debug\']) {
+                // This action is only active in "debug" mode!
+                return;
+            }
+            ';
+        }
+
         // Route name management
         if (isset($actionData['name'])) {
             $actionName = $actionData['name'];
