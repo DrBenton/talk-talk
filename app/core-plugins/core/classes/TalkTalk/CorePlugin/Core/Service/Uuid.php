@@ -7,6 +7,11 @@ class Uuid
 
     public function numeric()
     {
+        return round(microtime(true));
+    }
+
+    public function alnum()
+    {
         return uniqid();
     }
 
