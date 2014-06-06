@@ -16,10 +16,25 @@ class PackingManager extends BaseService
      * @var string
      */
     protected $packsDir;
+    /**
+     * @var bool
+     */
+    protected $stripWhiteSpaces = false;
 
+    /**
+     * @param string $packsDir
+     */
     public function setPacksDir($packsDir)
     {
         $this->packsDir = $packsDir;
+    }
+
+    /**
+     * @param bool $strippingOrNot
+     */
+    public function setWhiteSpacesStripping($strippingOrNot)
+    {
+        $this->stripWhiteSpaces = $strippingOrNot;
     }
 
     /**
@@ -164,6 +179,11 @@ $rawPhpCode
             mkdir($targetDir, 0755, true);
         }
         file_put_contents($targetFilePath, $rawPhpCode);
+
+        if ($this->stripWhiteSpaces) {
+            // Apollo... You go faster now, but we can't understand anything of what you say...
+            file_put_contents($targetFilePath, php_strip_whitespace($targetFilePath));
+        }
     }
 
     /**

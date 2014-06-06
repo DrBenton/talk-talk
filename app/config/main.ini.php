@@ -21,6 +21,10 @@ always_repack_plugins = false
 ; we have to know the base_url in order to inject their URLs in packed Plugins code
 ; NO TRAILING SLASH! Leave blank if the site lies at its domain root.
 base_url =
+; Caution: when this option is set to 'true', all the code in PHP packs will
+; be smallest and easier to load for your server, but... it won't be readable by you any more!
+; Only use in production.
+strip_white_spaces = true
 
 [data-cache]
 enabled = false
