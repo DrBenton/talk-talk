@@ -27,8 +27,14 @@ $app->defineFunction(
     }
 );
 
-$app->vars['utils.html.breadcrumb.home'] = array(
-    'url' => $app->path('core/home'),
-    'label' => 'core-plugins.utils.breadcrumb.home',
-    'class' => 'home',
+$app->defineFunction(
+    'utils.html.breadcrumb.get_home_part',
+    function () use ($app) {
+        return array(
+            'url' => $app->path('core/home'),
+            'label' => 'core-plugins.utils.breadcrumb.home',
+            'class' => 'home',
+        );
+    }
 );
+
