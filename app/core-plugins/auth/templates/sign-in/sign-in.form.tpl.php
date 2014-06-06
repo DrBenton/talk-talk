@@ -1,11 +1,5 @@
 <?php $this->layout( $this->app()->vars['isAjax'] ? 'ajax-nav::layouts/ajax-layout' : 'core::layouts/main-layout') ?>
 
-<!--TODO
-{% block breadcrumb %}
-{% include 'core/common/breadcrumb.twig' %}
-{% endblock %}
--->
-
 <span class="ajax-loading-data" data-ajax-cache='<?= json_encode(array('duration' => 600)) ?>'></span>
 
 <?= $this->hooks()->html('form', 'signin_form') ?>

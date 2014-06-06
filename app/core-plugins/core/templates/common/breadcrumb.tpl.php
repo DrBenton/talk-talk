@@ -1,35 +1,38 @@
-<!-- TODO:
-{% if app.isAjax %}
-{# We use a temporary container when in an Ajax context #}
-{% set tmpNotificationsContainerId = app.uuid %}
-{% set breadcrumbContainerId = "breacrumb-" ~ tmpNotificationsContainerId %}
-{% else { { %}# We use a real, permanent container when not in an Ajax context #}% set breadcrumbContainerId = "breadcrumb" %}
-{% endif %}
+<?php
+if ($this->app()->vars['isAjax']) {
+    // We use a temporary container when in an Ajax context
+    $tmpBreadcrumbContainerId = $this->app()->get('uuid')->numeric();
+    $breadcrumbContainerId = 'breadcrumb-' . $tmpBreadcrumbContainerId;
+} else {
+    // We use a real, permanent container when not in an Ajax context
+    $breadcrumbContainerId = 'breadcrumb';
+}
+?>
 
-{{ enable_html_hooks('breadcrumb') }}
-<ul id="{{ breadcrumbContainerId }}"
-    class="breadcrumb {{ app.isAjax ? 'hidden' : '' }}">
-    {% if breadcrumb is defined %}
-    {% for index, breadcrumbPart in breadcrumb %}
-    <li class="breadcrumb-item level-{{ index }} {{ breadcrumbPart.class|default('') }}">
-        <a href="{{ breadcrumbPart.url }}"
-           class="breadcrumb-link ajax-link">
-            {{ app.translator.trans(breadcrumbPart.label, breadcrumbPart.labelParams|default([])) }}
-        </a>
-    </li>
-    {% endfor %}
-    {% endif %}
+<?= $this->hooks()->html('breadcrumb') ?>
+<ul id="<?= $breadcrumbContainerId ?>"
+    class="breadcrumb <?= ($this->app()->vars['isAjax']) ? 'hidden' : '' ?>">
+    <?php if (!empty($this->data)): ?>
+        <?php foreach($this->data as $index => $breadcrumbPart): ?>
+        <li class="breadcrumb-item level-<?= $index ?> <?= isset($breadcrumbPart['class']) ? $this->e($breadcrumbPart['class']) : '' ?>">
+            <a href="<?= $this->e($breadcrumbPart['url']) ?>"
+               class="breadcrumb-link ajax-link">
+                <?= $this->e($this->trans($breadcrumbPart['label'], isset($breadcrumbPart['labelParams']) ? $breadcrumbPart['labelParams'] : array())) ?>
+            </a>
+        </li>
+        <?php endforeach ?>
+    <?php endif ?>
 </ul>
 
-{% if app.isAjax %}
-<script>
-    require(["jquery"], function ($) {
-        // This breadcrumb is displayed in the layout #breadcrumb
-        var breadcrumbToDisplaySelector = "#{{ breadcrumbContainerId }}";
-        $(document).trigger("uiNeedsBreadcrumbUpdate", {
-            fromSelector: breadcrumbToDisplaySelector
+<?php if ($this->app()->vars['isAjax']): ?>
+    <script>
+        require(["jquery"], function ($) {
+            console.log('breadcrumb update')
+            // This breadcrumb is displayed in the layout #breadcrumb
+            var breadcrumbToDisplaySelector = "#<?= $breadcrumbContainerId ?>";
+            $(document).trigger("uiNeedsBreadcrumbUpdate", {
+                fromSelector: breadcrumbToDisplaySelector
+            });
         });
-    });
-</script>
-{% endif %}
--->
+    </script>
+<?php endif ?>

@@ -3,16 +3,14 @@
 use TalkTalk\Model\User;
 
 $action = function () use ($app) {
-    /*
-    $breadcrumb = array(
+
+    $breadcrumbData = array(
         $app->exec('utils.html.breadcrumb.get_home_part'),
         array(
-            'url' => $app['url_generator']->generate('auth/sign-up'),
+            'url' => $app->path('auth/sign-up'),
             'label' => 'core-plugins.auth.sign-up.breadcrumb.0',
         ),
     );
-    */
-    $breadcrumb = array();
 
     if ($returnUrl = $app->vars['request']->get('return-url')) {
         $app->get('session')->set('url.intended', $returnUrl);
@@ -22,7 +20,7 @@ $action = function () use ($app) {
         'auth::sign-up/sign-up.form',
         array(
             'user' => $app->vars['request']->get('user', new User),
-            'breadcrumb' => $breadcrumb,
+            'breadcrumbData' => $breadcrumbData,
         )
     );
 };

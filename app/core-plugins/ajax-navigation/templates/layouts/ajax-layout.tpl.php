@@ -9,13 +9,14 @@
 
     <?php /* Notifications display through JavaScript (if any) */ ?>
     <?php $this->insert('core::common/alerts-display', array(
-    'alerts' => $this->app()->get('flash')->getFlashes('alerts.')
+        'alerts' => $this->app()->get('flash')->getFlashes('alerts.')
     )) ?>
 
-    <!--TODO
-    {% block breadcrumb %}
-    {% endblock %}
-    -->
+    <?php if (isset($this->breadcrumb)): /*a custom breadcrumb has been requested*/ ?>
+        <?= $this->breadcrumb ?>
+    <?php else: /*default breadcrumb*/ ?>
+        <?= $this->insert('core::common/breadcrumb', array('data' => $this->breadcrumbData)) ?>
+    <?php endif ?>
 
     <?= $this->content() ?>
 
