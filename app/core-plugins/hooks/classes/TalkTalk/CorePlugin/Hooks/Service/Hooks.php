@@ -6,7 +6,7 @@ use TalkTalk\Core\Service\BaseService;
 
 class Hooks extends BaseService
 {
-    
+
     protected $pluginsHooksImplementations = array();
 
     public function triggerPluginsHook($hookName, array $hookArgs = array())
@@ -20,7 +20,7 @@ class Hooks extends BaseService
 
         // Go!
         $results = array();
-        foreach($this->app->vars['hooks.registry'][$hookName] as $hookData) {
+        foreach ($this->app->vars['hooks.registry'][$hookName] as $hookData) {
             $results[] = call_user_func($hookData['implementation'], $hookArgs);
         }
 

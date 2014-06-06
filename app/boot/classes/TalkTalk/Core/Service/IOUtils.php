@@ -24,7 +24,7 @@ class IOUtils extends BaseService
                 $files = array_merge((array) $files, $this->rglob($pattern, $path, $flags));
             }
         }
-        
+
         $files = array_filter(
             $files,
             function ($filePath) {

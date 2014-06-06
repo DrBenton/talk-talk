@@ -44,7 +44,7 @@ if (! $this->app()->vars['isAjax'] || !empty($this->alerts)):
             <?php endforeach ?>
         <?php endif ?>
 
-    </div><? /* end .alerts-to-display */ ?>
+    </div><?php /* end .alerts-to-display */ ?>
 
     <?php if ($this->app()->vars['isAjax']): ?>
         <script>

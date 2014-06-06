@@ -78,5 +78,4 @@ $getFormValidator = function ($app, array $userData) {
     return $validator;
 };
 
-
 return $action;

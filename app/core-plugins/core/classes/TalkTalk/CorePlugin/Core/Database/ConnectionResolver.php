@@ -37,7 +37,7 @@ class ConnectionResolver implements ConnectionResolverInterface
     /**
      * Create a new connection resolver instance.
      *
-     * @param  array $connections
+     * @param array $connections
      */
     public function __construct(array $connections = array())
     {
@@ -49,7 +49,7 @@ class ConnectionResolver implements ConnectionResolverInterface
     /**
      * Get a database connection instance.
      *
-     * @param  string $name
+     * @param  string                          $name
      * @return \Illuminate\Database\Connection
      */
     public function connection($name = null)
@@ -68,7 +68,7 @@ class ConnectionResolver implements ConnectionResolverInterface
     /**
      * Add a connection to the resolver, resolved through a Closure.
      *
-     * @param  string $name
+     * @param  string   $name
      * @param  callable $connectionInitClosure
      * @return void
      */
@@ -84,7 +84,7 @@ class ConnectionResolver implements ConnectionResolverInterface
     /**
      * Add a connection to the resolver.
      *
-     * @param  string $name
+     * @param  string                          $name
      * @param  \Illuminate\Database\Connection $connection
      * @return void
      */

@@ -74,8 +74,8 @@ class PackingManager extends BaseService
     }
 
     /**
-     * @param  array $filesToIncludeInPaths
-     * @param  array $additionalInclusionFunctionArgs
+     * @param  array            $filesToIncludeInPaths
+     * @param  array            $additionalInclusionFunctionArgs
      * @throws \DomainException
      * @return string
      */
@@ -169,7 +169,7 @@ $rawPhpCode
     /**
      * @param  string $targetNamespace
      * @param  string $targetId
-     * @return mixed returns -1 if no data pack file has been found for this namespace & id
+     * @return mixed  returns -1 if no data pack file has been found for this namespace & id
      */
     public function unpackData($targetNamespace, $targetId)
     {

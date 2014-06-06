@@ -111,9 +111,9 @@ PACKER_INIT_CODE;
     }
 
     /**
-     * @param Plugin $plugin
-     * @param array $hookData
-     * @param string $hooksFilePath
+     * @param  Plugin $plugin
+     * @param  array  $hookData
+     * @param  string $hooksFilePath
      * @return string
      */
     protected function getHookPhpCode(Plugin $plugin, array $hookData, $hooksFilePath)
@@ -131,6 +131,7 @@ namespace {
                 'hooks.load_plugin_hooks',
                 '$plugin->id', '$hooksFilePath', '$pluginComponentsUrl'
             );
+
             return call_user_func_array(
                 \$app->vars['hooks.registry.implementations']['$plugin->id']['$hookName'],
                 \$hookArgs
@@ -145,8 +146,8 @@ PLUGIN_PHP_CODE;
     }
 
     /**
-     * @param Plugin $plugin
-     * @param string $hooksFilePath
+     * @param  Plugin $plugin
+     * @param  string $hooksFilePath
      * @return array
      */
     protected function getPluginHooksImplementations(Plugin $plugin, $hooksFilePath)
@@ -167,7 +168,7 @@ PLUGIN_PHP_CODE;
     }
 
     /**
-     * @param string $hooksFilePath
+     * @param  string $hooksFilePath
      * @return string
      */
     protected function getPluginHooksImplementationsCode($hooksFilePath)

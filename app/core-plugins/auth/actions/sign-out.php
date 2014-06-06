@@ -1,4 +1,4 @@
-<?
+<?php
 
 $action = function () use ($app) {
 

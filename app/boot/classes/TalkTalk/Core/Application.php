@@ -69,7 +69,7 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * @param  string            $pathToCheck
+     * @param  string           $pathToCheck
      * @throws \DomainException
      */
     public function checkAppPath($pathToCheck)
@@ -146,6 +146,7 @@ class Application implements ApplicationInterface
         }
 
         $args = array_slice(func_get_args(), 1);
+
         return call_user_func_array($this->definedFunctions[$functionId], $args);
     }
 
@@ -188,8 +189,8 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * @param string $actionName
-     * @param array $params
+     * @param  string $actionName
+     * @param  array  $params
      * @return string
      */
     public function path($actionName, $params = array())
@@ -242,6 +243,7 @@ class Application implements ApplicationInterface
     public function redirect($url, $status = 302)
     {
         $this->get('flash')->keepFlashes();
+
         return $this->slimApp->redirect($url, $status);
     }
 

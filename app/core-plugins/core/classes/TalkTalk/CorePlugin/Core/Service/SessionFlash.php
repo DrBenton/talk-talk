@@ -77,13 +77,12 @@ class SessionFlash extends BaseService
         array_walk(
             $flashes,
             function ($flashValue, $flashKey) use (&$filteredFlashes, $flashesKeyPrefix) {
-                if(0 === strpos($flashKey, $flashesKeyPrefix)) {
+                if (0 === strpos($flashKey, $flashesKeyPrefix)) {
                     $filteredFlashes[$flashKey] = $flashValue;
                 }
             }
         );
         //echo '$filteredFlashes=<pre>'.print_r($filteredFlashes, true).'</pre>';
-
         return $filteredFlashes;
     }
 

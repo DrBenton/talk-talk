@@ -25,14 +25,15 @@ class Crypto extends BaseService
         }
     }
 
-    public function hashPassword($rawPassword) {
+    public function hashPassword($rawPassword)
+    {
         return password_hash($rawPassword, PASSWORD_BCRYPT);
     }
 
-    public function verifyPassword($rawPassword, $passwordHash) {
+    public function verifyPassword($rawPassword, $passwordHash)
+    {
         $res = password_verify($rawPassword, $passwordHash);
         //$this->app->get('logger')->debug("verifyPassword('$rawPassword', '$passwordHash') => ".((int) $res));
-
         return $res;
     }
 

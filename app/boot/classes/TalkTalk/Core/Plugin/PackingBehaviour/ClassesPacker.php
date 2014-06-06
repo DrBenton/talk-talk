@@ -114,7 +114,7 @@ class ClassesPacker extends BasePacker
 
             // The formatted PHP Class content is appended to our packed Plugin PHP code
             $classesToIncludeCode .= $classContent;
-            
+
         }
 
         /*

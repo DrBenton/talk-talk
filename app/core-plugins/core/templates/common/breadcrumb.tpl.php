@@ -3,8 +3,7 @@
 {# We use a temporary container when in an Ajax context #}
 {% set tmpNotificationsContainerId = app.uuid %}
 {% set breadcrumbContainerId = "breacrumb-" ~ tmpNotificationsContainerId %}
-{% else { %}# We use a real, permanent container when not in an Ajax context #}
-{% set breadcrumbContainerId = "breadcrumb" %}
+{% else { { %}# We use a real, permanent container when not in an Ajax context #}% set breadcrumbContainerId = "breadcrumb" %}
 {% endif %}
 
 {{ enable_html_hooks('breadcrumb') }}
