@@ -127,7 +127,7 @@ namespace {
     /* begin "$plugin->id" Plugin hook "$hookName" plug to app */
     \$app->vars['hooks.registry']['$hookName'][] = array(
         'implementation' => function (\$hookArgs) use (\$app) {
-            \$app->execFunction(
+            \$app->exec(
                 'hooks.load_plugin_hooks',
                 '$plugin->id', '$hooksFilePath', '$pluginComponentsUrl'
             );

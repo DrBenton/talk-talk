@@ -26,6 +26,13 @@ interface ApplicationInterface
 
     public function execFunction($functionId);
 
+    /**
+     * An alias for "execFunction()"
+     * @param $functionId
+     * @return mixed
+     */
+    public function exec($functionId);
+
     public function getFunction($functionId);
 
     public function addAction($urlPattern);

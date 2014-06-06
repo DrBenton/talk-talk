@@ -52,7 +52,7 @@ $app->defineFunction(
 $app->defineService(
     'db',
     function () use ($app, $capsule, $DEFAULT_DB_CONNECTION_NAME) {
-        $app->execFunction('db.connection.add', $app->vars['db.settings'], $DEFAULT_DB_CONNECTION_NAME);
+        $app->exec('db.connection.add', $app->vars['db.settings'], $DEFAULT_DB_CONNECTION_NAME);
         //$capsule->setCacheManager(new IlluminateCacheManager($app));
         $capsule->bootEloquent();
 

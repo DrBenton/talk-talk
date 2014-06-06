@@ -12,7 +12,7 @@ $action = function () use ($app, &$getFormValidator) {
 
     if ($validator->fails()) {
         // Flash errors & redirect if validation failed
-        $app->execFunction('validator.flash_validator_messages', $validator);
+        $app->exec('validator.flash_validator_messages', $validator);
 
         return $app->get('view')->render(
             'auth::sign-up/sign-up.form',
@@ -65,7 +65,7 @@ $action = function () use ($app, &$getFormValidator) {
 };
 
 $getFormValidator = function ($app, array $userData) {
-    $validator = $app->execFunction(
+    $validator = $app->exec(
         'validator.get',
         $userData,
         array(

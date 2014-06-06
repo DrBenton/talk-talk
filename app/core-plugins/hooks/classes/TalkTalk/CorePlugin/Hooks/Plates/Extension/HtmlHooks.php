@@ -21,7 +21,7 @@ class HtmlHooks extends BaseExtension
 
     public function html($hookName)
     {
-        $this->app->execFunction('hooks.html.add', $hookName);
+        $this->app->exec('hooks.html.add', $hookName);
 
         return "<!-- HTML hook : '$hookName' --> ";
     }

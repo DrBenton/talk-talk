@@ -5,7 +5,7 @@ use TalkTalk\Model\User;
 $action = function () use ($app) {
     /*
     $breadcrumb = array(
-        $app['utils.html.breadcrumb.home'],
+        $app->exec('utils.html.breadcrumb.get_home_part'),
         array(
             'url' => $app['url_generator']->generate('auth/sign-in'),
             'label' => 'core-plugins.auth.sign-in.breadcrumb.0',

@@ -25,7 +25,7 @@ $hooks['html.site_container'] = function (DOMQuery $html) use ($app, $LIVERELOAD
 $hooks['html.header'] = function (DOMQuery $html) use ($app) {
     // Add the page header links
     $headerNavList = $html->find('header nav ul');
-    $headerLinks = $app->execFunction('utils.html.get_page_header_links');
+    $headerLinks = $app->exec('utils.html.get_page_header_links');
 
     $headerNavList
         ->append(implode('', $headerLinks));

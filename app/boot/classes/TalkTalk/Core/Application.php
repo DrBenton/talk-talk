@@ -150,6 +150,11 @@ class Application implements ApplicationInterface
         return call_user_func_array($this->definedFunctions[$functionId], $args);
     }
 
+    public function exec($functionId)
+    {
+        return call_user_func_array(array($this, 'execFunction'), func_get_args());
+    }
+
     public function getFunction($functionId)
     {
         if (!isset($this->definedFunctions[$functionId])) {
