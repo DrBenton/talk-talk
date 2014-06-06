@@ -40,7 +40,7 @@
         <?= $this->insert('core::common/header') ?>
     <?php endif ?>
 
-    <?= $this->insert('core::common/alerts-display', array(
+    <?php $this->insert('core::common/alerts-display', array(
         'alerts' => $this->app()->get('flash')->getFlashes('alerts.')
     )) ?>
 
@@ -63,11 +63,12 @@
         <?= $this->insert('core::common/footer') ?>
     <?php endif ?>
 
-    <!-- TODO: {% include 'core/common/js-data.twig' %} -->
 
     <!-- TODO: {% include 'utils/debug/app-perfs-info.twig' %} -->
 
 </div><?php /* end #site-container */ ?>
+
+<?php $this->insert('core::common/js-data') ?>
 
 <?php
 /* JavaScript, it's up to you now! */

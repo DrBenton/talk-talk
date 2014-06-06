@@ -36,15 +36,15 @@
 #  - csrf
 #  - html-escape
 
-#@events:
-#  - error.app-error
+@events:
+  - error.app-error
 #  - before.check-csrf
 
 @translations:
   - validation-en
 
-#@hooks:
-#  - define_javascript_app_config
+@hooks:
+  - define_javascript_app_config
 
 @assets:
   javascripts:

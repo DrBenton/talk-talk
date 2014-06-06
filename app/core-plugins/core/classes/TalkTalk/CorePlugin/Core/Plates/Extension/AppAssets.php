@@ -41,4 +41,12 @@ class AppAssets extends BaseExtension
         return $this->app->vars['app.assets.js.endOfBody'];
     }
 
+    public function getJavascriptConfigData()
+    {
+        $jsConfigData = $this->app->get('hooks')->triggerPluginsHook('define_javascript_app_config');
+        $jsConfigDataFlattened = call_user_func_array('array_merge', $jsConfigData);
+
+        return $jsConfigDataFlattened;
+    }
+
 }

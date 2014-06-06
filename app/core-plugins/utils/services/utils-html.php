@@ -1,5 +1,10 @@
 <?php
 
+
+use QueryPath\DOMQuery;
+
+// Page header stuff
+
 $headerLinks = array();
 
 $app->defineFunction(
@@ -27,6 +32,8 @@ $app->defineFunction(
     }
 );
 
+// Page breadcrumb stuff
+
 $app->defineFunction(
     'utils.html.breadcrumb.get_home_part',
     function () use ($app) {
@@ -35,6 +42,22 @@ $app->defineFunction(
             'label' => 'core-plugins.utils.breadcrumb.home',
             'class' => 'home',
         );
+    }
+);
+
+// HTML components stuff - powered by Twitter Flight
+
+$app->defineFunction(
+    'html-components.add_component',
+    function (DOMQuery $node, $componentsNames) use ($app) {
+        $nodeCurrentComponents = explode(',', $node->attr('data-component'));
+        $componentsNames = $app->get('utils.array')->getArray($componentsNames);
+        $nodeCurrentComponents = array_merge($nodeCurrentComponents, $componentsNames);
+        $nodeCurrentComponents = array_filter($nodeCurrentComponents, function ($componentName) {
+            return is_string($componentName) && strlen($componentName) > 0;
+        });
+        $node->addClass('flight-component');
+        $node->attr('data-component', implode(',', $nodeCurrentComponents));
     }
 );
 

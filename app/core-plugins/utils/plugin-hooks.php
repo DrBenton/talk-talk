@@ -31,9 +31,9 @@ $hooks['html.header'] = function (DOMQuery $html) use ($app) {
         ->append(implode('', $headerLinks));
 };
 
-$hooks['html.alerts_container'] = function (DOMQuery $html) use ($myComponentsUrl) {
+$hooks['html.alerts_container'] = function (DOMQuery $html) use ($app, $myComponentsUrl) {
     // Add the alerts JS manager component
-    $html->find('#alerts-container')
-        ->addClass('flight-component')
-        ->attr('data-component', $myComponentsUrl . '/ui/alerts-manager');
+    $alertsContainer = $html->find('#alerts-container');
+    $component = $myComponentsUrl . '/ui/alerts-manager';
+    $app->exec('html-components.add_component', $alertsContainer, $component);
 };

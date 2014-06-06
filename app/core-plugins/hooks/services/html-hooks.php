@@ -16,12 +16,9 @@ $app->defineFunction(
     'hooks.html.trigger_hooks',
     function () use ($app, &$html_hooks) {
 
-        /*
-         //TODO
-        if (null !== $app['app.error']) {
+        if (isset($app->vars['app.error'])) {
             return; //don't modify any HTML code if we have an error
         }
-         */
 
         $response = &$app->getResponse();
         $rawView = $response->getBody();
@@ -41,8 +38,12 @@ $app->defineFunction(
         $html_hooks = array_unique($html_hooks);
         // Ok, let's trigger Plugins Hooks with a reference to the DOM View!!!
         foreach ($html_hooks as $hookName) {
-            $app->get('hooks')
-                ->triggerPluginsHook($hookName, array(&$domView));
+            try {
+                $app->get('hooks')
+                    ->triggerPluginsHook($hookName, array(&$domView));
+            } catch (\ErrorException $e) {
+                ;// We won't handle DOM handling Exceptions for the moment...
+            }
         }
         libxml_use_internal_errors(false); //...and enable it again!
 
