@@ -5,7 +5,7 @@ namespace TalkTalk\Core\Plugin;
 use TalkTalk\Core\Plugin\PackingBehaviour\PluginPackerBehaviourInterface;
 use TalkTalk\Core\ApplicationAware;
 
-class UnpackedPlugin extends ApplicationAware
+class Plugin extends ApplicationAware
 {
 
     protected static $packingBehaviours = array();

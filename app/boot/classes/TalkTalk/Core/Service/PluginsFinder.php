@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Service;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 use Symfony\Component\Yaml\Yaml;
 
 class PluginsFinder extends BaseService
@@ -31,7 +31,7 @@ class PluginsFinder extends BaseService
         return array_map(
             function ($pluginConfigFilePath) use ($app) {
 
-                $plugin = new UnpackedPlugin();
+                $plugin = new Plugin();
                 $plugin->setApplication($app);
                 $plugin->path = $app->appPath(dirname($pluginConfigFilePath));
                 $plugin->config = Yaml::parse($pluginConfigFilePath);

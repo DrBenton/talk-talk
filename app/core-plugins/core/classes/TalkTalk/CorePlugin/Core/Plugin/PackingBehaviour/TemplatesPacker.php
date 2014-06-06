@@ -2,7 +2,7 @@
 
 namespace TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
 
 class TemplatesPacker extends BasePacker
@@ -13,7 +13,7 @@ class TemplatesPacker extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         $code = '';
 

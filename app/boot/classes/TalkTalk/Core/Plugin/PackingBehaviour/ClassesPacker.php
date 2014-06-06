@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class ClassesPacker extends BasePacker
 {
@@ -29,7 +29,7 @@ class ClassesPacker extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -45,7 +45,7 @@ class ClassesPacker extends BasePacker
         return $code;
     }
 
-    protected function getClassesPhpCode(UnpackedPlugin $plugin, array $classesData)
+    protected function getClassesPhpCode(Plugin $plugin, array $classesData)
     {
         $classesBasePath = $this->app
             ->get('utils.string')

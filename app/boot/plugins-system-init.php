@@ -1,6 +1,6 @@
 <?php
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 call_user_func(
     function () use ($app) {
@@ -44,7 +44,7 @@ call_user_func(
             );
             foreach ($corePackingBehaviours as $packerClassName) {
                 $packerFullClassName = '\TalkTalk\Core\Plugin\PackingBehaviour\\' . $packerClassName;
-                UnpackedPlugin::addBehaviour(new $packerFullClassName);
+                Plugin::addBehaviour(new $packerFullClassName);
             }
 
             // Core plugins discovery
@@ -57,7 +57,7 @@ call_user_func(
 
 
             // No third-party plugin can take the id of a core plugin
-            $getPluginId = function (UnpackedPlugin $plugin) {
+            $getPluginId = function (Plugin $plugin) {
                 return strtolower($plugin->id);
             };
             $coreUnpackedPluginsIds = array_map($getPluginId, $coreUnpackedPlugins);

@@ -2,14 +2,14 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class NewPackersPacker extends BasePacker
 {
 
     protected $myConfigKey = '@pluginsPackers';
 
-    public function beforePacking(UnpackedPlugin $plugin)
+    public function beforePacking(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -27,7 +27,7 @@ class NewPackersPacker extends BasePacker
             }
 
             $packerInstance = new $packerClass();
-            UnpackedPlugin::addBehaviour($packerInstance);
+            Plugin::addBehaviour($packerInstance);
         }
     }
 }

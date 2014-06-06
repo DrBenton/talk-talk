@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class EventsPacker extends BasePacker
 {
@@ -13,7 +13,7 @@ class EventsPacker extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -29,7 +29,7 @@ class EventsPacker extends BasePacker
         return $code;
     }
 
-    protected function getEventPhpCode(UnpackedPlugin $plugin, $eventName)
+    protected function getEventPhpCode(Plugin $plugin, $eventName)
     {
         $eventFilePath = str_replace(
             array('%plugin-path%', '%event-name%'),

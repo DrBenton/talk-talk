@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class GeneralPacker  extends BasePacker
 {
@@ -12,7 +12,7 @@ class GeneralPacker  extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             throw new \DomainException(sprintf('Plugin "%s" config file must have a "@general" section!'), $plugin->path);
@@ -26,10 +26,10 @@ PLUGIN_PHP_CODE;
     }
 
     /**
-     * @param  \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @param  \TalkTalk\Core\Plugin\Plugin $plugin
      * @return array|null
      */
-    public function getMetadata(UnpackedPlugin $plugin)
+    public function getMetadata(Plugin $plugin)
     {
         return array(
           'id' => $plugin->id,

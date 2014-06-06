@@ -3,7 +3,7 @@
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\ApplicationAwareInterface;
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 interface PluginPackerBehaviourInterface extends ApplicationAwareInterface
 {
@@ -16,21 +16,21 @@ interface PluginPackerBehaviourInterface extends ApplicationAwareInterface
 
     /**
      * Triggered just before each Plugin packing
-     * @param UnpackedPlugin $plugin
+     * @param Plugin $plugin
      */
-    public function beforePacking(UnpackedPlugin $plugin);
+    public function beforePacking(Plugin $plugin);
 
     /**
      * Triggers each Plugin packing operations
-     * @param  \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @param  \TalkTalk\Core\Plugin\Plugin $plugin
      * @return string|null
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin);
+    public function getPhpCodeToPack(Plugin $plugin);
 
     /**
-     * @param  \TalkTalk\Core\Plugin\UnpackedPlugin $plugin
+     * @param  \TalkTalk\Core\Plugin\Plugin $plugin
      * @return array|null
      */
-    public function getMetadata(UnpackedPlugin $plugin);
+    public function getMetadata(Plugin $plugin);
 
 }

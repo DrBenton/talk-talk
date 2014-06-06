@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class ActionsPacker extends BasePacker
 {
@@ -14,7 +14,7 @@ class ActionsPacker extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -30,7 +30,7 @@ class ActionsPacker extends BasePacker
         return $code;
     }
 
-    protected function getActionPhpCode(UnpackedPlugin $plugin, array $actionData)
+    protected function getActionPhpCode(Plugin $plugin, array $actionData)
     {
         // Bare actions stuff
         $urlPattern = $actionData['url'];

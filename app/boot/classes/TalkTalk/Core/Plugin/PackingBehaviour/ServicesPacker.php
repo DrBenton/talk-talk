@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class ServicesPacker extends BasePacker
 {
@@ -13,7 +13,7 @@ class ServicesPacker extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -29,7 +29,7 @@ class ServicesPacker extends BasePacker
         return $code;
     }
 
-    protected function getServicePhpCode(UnpackedPlugin $plugin, $serviceName)
+    protected function getServicePhpCode(Plugin $plugin, $serviceName)
     {
         $serviceFilePath = str_replace(
             array('%plugin-path%', '%service-name%'),

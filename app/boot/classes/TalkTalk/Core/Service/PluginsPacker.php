@@ -3,7 +3,7 @@
 namespace TalkTalk\Core\Service;
 
 use TalkTalk\Core\Plugin\PackingBehaviour\PluginPackerBehaviourInterface;
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 class PluginsPacker extends BaseService
 {
@@ -31,7 +31,7 @@ class PluginsPacker extends BaseService
     {
         array_walk(
             $unpackedPlugins,
-            function (UnpackedPlugin $plugin) {
+            function (Plugin $plugin) {
                 $plugin->beforePacking();
             }
         );
@@ -46,9 +46,9 @@ class PluginsPacker extends BaseService
     }
 
     /**
-     * @param UnpackedPlugin $plugin
+     * @param Plugin $plugin
      */
-    protected function generatePluginCode(UnpackedPlugin $plugin)
+    protected function generatePluginCode(Plugin $plugin)
     {
         $pluginPackedPhpCode = $plugin->getPhpCodeToPack();
         $this->app
@@ -65,7 +65,7 @@ class PluginsPacker extends BaseService
         $pluginsPackersInitCode = '';
 
         array_walk(
-            UnpackedPlugin::getBehaviours(),
+            Plugin::getBehaviours(),
             function (PluginPackerBehaviourInterface $pluginsPacker) use (&$pluginsPackersInitCode) {
 
                 $packerInitCode = $pluginsPacker->getPackerInitCode();
@@ -98,7 +98,7 @@ PACKER_INIT_CODE;
 
         array_walk(
             $unpackedPlugins,
-            function (UnpackedPlugin $plugin) use (&$pluginsMetadata) {
+            function (Plugin $plugin) use (&$pluginsMetadata) {
                 $metadata = $plugin->getMetadataToPack();
                 $pluginsMetadata[$plugin->id] = $metadata;
             }

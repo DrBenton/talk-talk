@@ -2,7 +2,7 @@
 
 namespace TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
 use TalkTalk\Core\Service\ArrayUtils;
 
@@ -24,7 +24,7 @@ PLUGIN_PHP_CODE;
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -49,7 +49,7 @@ PLUGIN_PHP_CODE;
         return $code;
     }
 
-    protected function getAssetPhpCode(UnpackedPlugin $plugin, $assetType, $assetData)
+    protected function getAssetPhpCode(Plugin $plugin, $assetType, $assetData)
     {
         $assetData['url'] = $this->app
             ->get('utils.string')
@@ -72,7 +72,7 @@ namespace {
 PLUGIN_PHP_CODE;
     }
 
-    protected function getCssPhpCode(UnpackedPlugin $plugin, $cssData)
+    protected function getCssPhpCode(Plugin $plugin, $cssData)
     {
         $cssDataPhpCode = var_export($cssData, true);
 
@@ -81,7 +81,7 @@ PLUGIN_PHP_CODE;
 CSS_PHP_CODE;
     }
 
-    protected function getJsPhpCode(UnpackedPlugin $plugin, $jsData)
+    protected function getJsPhpCode(Plugin $plugin, $jsData)
     {
         $target = (isset($jsData['head']) && true === $jsData['head']) ? 'head' : 'endOfBody';
         $jsDataPhpCode = var_export($jsData, true);

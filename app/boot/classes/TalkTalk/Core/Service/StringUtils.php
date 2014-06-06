@@ -5,7 +5,7 @@ namespace TalkTalk\Core\Service;
 class StringUtils extends BaseService
 {
 
-    public function handlePluginRelatedString(\TalkTalk\Core\Plugin\UnpackedPlugin $plugin, $string)
+    public function handlePluginRelatedString(\TalkTalk\Core\Plugin\Plugin $plugin, $string)
     {
         $app = &$this->app;
 

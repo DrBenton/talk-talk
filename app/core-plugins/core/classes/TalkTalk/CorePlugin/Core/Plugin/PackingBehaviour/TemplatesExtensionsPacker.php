@@ -2,7 +2,7 @@
 
 namespace TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
 
 class TemplatesExtensionsPacker extends BasePacker
@@ -14,7 +14,7 @@ class TemplatesExtensionsPacker extends BasePacker
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -30,7 +30,7 @@ class TemplatesExtensionsPacker extends BasePacker
         return $code;
     }
 
-    protected function getExtensionPhpCode(UnpackedPlugin $plugin, $extensionName)
+    protected function getExtensionPhpCode(Plugin $plugin, $extensionName)
     {
         $templateExtFilePath = str_replace(
             array('%plugin-path%', '%template-ext-name%'),

@@ -2,7 +2,7 @@
 
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 use Symfony\Component\Yaml\Yaml;
 
 class TranslationsPacker extends BasePacker
@@ -24,7 +24,7 @@ PLUGIN_PHP_CODE;
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -40,7 +40,7 @@ PLUGIN_PHP_CODE;
         return $code;
     }
 
-    protected function getTranslationPhpCode(UnpackedPlugin $plugin, $translationName)
+    protected function getTranslationPhpCode(Plugin $plugin, $translationName)
     {
         $translationFilePath = str_replace(
             array('%plugin-path%', '%translation-name%'),

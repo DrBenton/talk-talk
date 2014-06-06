@@ -3,7 +3,7 @@
 namespace TalkTalk\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\ApplicationAware;
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 
 abstract class BasePacker extends ApplicationAware implements PluginPackerBehaviourInterface
 {
@@ -22,7 +22,7 @@ abstract class BasePacker extends ApplicationAware implements PluginPackerBehavi
     /**
      * @inheritdoc
      */
-    public function beforePacking(UnpackedPlugin $plugin)
+    public function beforePacking(Plugin $plugin)
     {
         // Default behaviour is to do nothing here
     }
@@ -30,7 +30,7 @@ abstract class BasePacker extends ApplicationAware implements PluginPackerBehavi
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         // Default behaviour is to return nothing here
         return null;
@@ -39,7 +39,7 @@ abstract class BasePacker extends ApplicationAware implements PluginPackerBehavi
     /**
      * @inheritdoc
      */
-    public function getMetadata(UnpackedPlugin $plugin)
+    public function getMetadata(Plugin $plugin)
     {
         // Default behaviour is to return nothing here
         return null;

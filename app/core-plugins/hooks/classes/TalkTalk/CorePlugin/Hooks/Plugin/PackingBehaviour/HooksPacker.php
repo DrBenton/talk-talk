@@ -2,7 +2,7 @@
 
 namespace TalkTalk\CorePlugin\Hooks\Plugin\PackingBehaviour;
 
-use TalkTalk\Core\Plugin\UnpackedPlugin;
+use TalkTalk\Core\Plugin\Plugin;
 use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
 
 class HooksPacker extends BasePacker
@@ -51,7 +51,7 @@ PACKER_INIT_CODE;
     /**
      * @inheritdoc
      */
-    public function getPhpCodeToPack(UnpackedPlugin $plugin)
+    public function getPhpCodeToPack(Plugin $plugin)
     {
         if (empty($plugin->config[$this->myConfigKey])) {
             return null;
@@ -111,12 +111,12 @@ PACKER_INIT_CODE;
     }
 
     /**
-     * @param UnpackedPlugin $plugin
+     * @param Plugin $plugin
      * @param array $hookData
      * @param string $hooksFilePath
      * @return string
      */
-    protected function getHookPhpCode(UnpackedPlugin $plugin, array $hookData, $hooksFilePath)
+    protected function getHookPhpCode(Plugin $plugin, array $hookData, $hooksFilePath)
     {
         $pluginComponentsUrl = $this->getPluginComponentsUrl($plugin);
 
@@ -145,11 +145,11 @@ PLUGIN_PHP_CODE;
     }
 
     /**
-     * @param UnpackedPlugin $plugin
+     * @param Plugin $plugin
      * @param string $hooksFilePath
      * @return array
      */
-    protected function getPluginHooksImplementations(UnpackedPlugin $plugin, $hooksFilePath)
+    protected function getPluginHooksImplementations(Plugin $plugin, $hooksFilePath)
     {
         // This Plugin has a "plugin-hooks.php" file.
         // --> let's load it!
@@ -179,14 +179,14 @@ PLUGIN_PHP_CODE;
         return $hooksImplementationsInclusionCode;
     }
 
-    protected function getPluginComponentsUrl(UnpackedPlugin $plugin)
+    protected function getPluginComponentsUrl(Plugin $plugin)
     {
         return $this->app
             ->get('utils.string')
             ->handlePluginRelatedString($plugin, self::PLUGIN_COMPONENTS_URL);
     }
 
-    protected function getNormalizedHookData(UnpackedPlugin $plugin, $hookData)
+    protected function getNormalizedHookData(Plugin $plugin, $hookData)
     {
         $hookData = $this->app->get('utils.array')->getArray($hookData, 'name');
 
