@@ -1,0 +1,12 @@
+packing:
+  namespace: vendors
+  id: decoda
+  base-dir: %app-root%/vendor/php/mjohnson/decoda/src/
+  handledPhPNamespace: Decoda\
+
+files:
+  - Decoda/Filter.php
+  - Decoda/Component.php
+  - Decoda/Component/AbstractComponent.php
+  - Decoda/Filter/AbstractFilter.php
+  - Decoda/Filter/ImageFilter.php
