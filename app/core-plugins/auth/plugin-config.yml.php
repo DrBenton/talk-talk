@@ -34,11 +34,13 @@
 
 @classes:
   -
+    prefix: TalkTalk\CorePlugin\Auth\
+    path: %plugin-path%/classes/TalkTalk/CorePlugin/Auth
+  -
     prefix: TalkTalk\Model\
     path: %plugin-path%/classes/TalkTalk/Model
 
 @services:
-  - is-authenticated
 #  - before-middlewares
   - user
 

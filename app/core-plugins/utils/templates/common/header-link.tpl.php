@@ -1,7 +1,7 @@
 <?php
 $visibilityClass = (
-    (!empty($this->options['onlyForAuthenticated']) && !$this->app()->vars['isAuthenticated']) ||
-    (!empty($this->options['onlyForAnonymous']) && !$this->app()->vars['isAnonymous'])
+    (!empty($this->options['onlyForAuthenticated']) && !$this->app()->get('user')->isAuthenticated()) ||
+    (!empty($this->options['onlyForAnonymous']) && !$this->app()->get('user')->isAnonymous())
 ) ? 'hidden' : '' ;
 ?>
 <li class="<?= $this->options['class'] ?> <?= $visibilityClass ?>">

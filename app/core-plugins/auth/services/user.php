@@ -1,14 +1,12 @@
 <?php
 
-use TalkTalk\Model\User;
+use TalkTalk\CorePlugin\Auth\Service\User;
 
 $app->defineService(
     'user',
     function () use ($app) {
-        if ($app->vars['isAnonymous']) {
-            throw new \DomainException('No authenticated User found!');
-        }
+        $service = new User();
 
-        return User::findOrFail($app->get('session')->get('userId'));
+        return $service;
     }
 );

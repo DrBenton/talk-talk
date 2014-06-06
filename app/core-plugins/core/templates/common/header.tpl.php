@@ -10,7 +10,7 @@
     </nav>
 
     <div id="logged-user-container">
-        <?php if ($this->app()->vars['isAuthenticated']): ?>
+        <?php if ($this->app()->get('user')->isAuthenticated()): ?>
             <?php $this->insert('auth::common/user-display') ?>
         <?php endif ?>
     </div>
