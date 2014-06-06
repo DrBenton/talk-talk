@@ -13,10 +13,14 @@ perfs.tracking.sql_queries.enabled = true
 perfs.tracking.sql_queries.max_length = 20
 
 [packing]
-use_app_packing = false
-use_vendors_packing = false
+use_app_packing = true
+use_vendors_packing = true
 always_repack_profiles = false
-always_repack_plugins = true
+always_repack_plugins = false
+; When we compile Plugins in a "non HTTP" context (i.e. CLI),
+; we have to know the base_url in order to inject their URLs in packed Plugins code
+; NO TRAILING SLASH! Leave blank if the site lies at its domain root.
+base_url =
 
 [data-cache]
 enabled = false

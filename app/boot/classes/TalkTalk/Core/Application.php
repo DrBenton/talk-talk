@@ -179,6 +179,11 @@ class Application implements ApplicationInterface
         $this->slimApp->run();
     }
 
+    public function getRequest()
+    {
+        return $this->slimApp->request;
+    }
+
     public function getResponse()
     {
         return $this->slimApp->response;

@@ -42,6 +42,8 @@ interface ApplicationInterface
 
     public function run();
 
+    public function getRequest();
+
     public function getResponse();
 
     public function before($callable, $priority = 0);

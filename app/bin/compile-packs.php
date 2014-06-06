@@ -28,18 +28,31 @@ return call_user_func(
         // Packs metadata removal
         @unlink($packsProfilesDir . '/packs-metadata.php');
 
+        // We could need some config data before our app needs it
+        $mainConfigFilePath = $appPath . '/config/main.ini.php';
+        $appConfig = parse_ini_file($mainConfigFilePath, true);
+
         // App environment init
+        $customAppConfig = array();
+        if (isset($appConfig['packing']['base_url'])) {
+            $customAppConfig['app.base_url'] = $appConfig['packing']['base_url'];
+        }
+
         if ($isCli) {
             // Slim will not not like the CLI context, as there will be some missing $_SERVER vars.
             // --> let's disable PHP Notices!
             $previousErrorReportingLevel = error_reporting(E_ALL & ~E_NOTICE);
         }
         $appInitClosure = require_once __DIR__ . '/../boot/app.php';
-        $app = call_user_func($appInitClosure);
+        $app = call_user_func($appInitClosure, $customAppConfig);
         if ($isCli) {
             // Back to previous PHP error reporting level
-            error_reporting(E_ALL/*$previousErrorReportingLevel*/);
+            error_reporting($previousErrorReportingLevel);
         }
+
+        // Let's set a "base_url" in our Request to mimic a HTTP context
+        // Some packing operations, like URL injection into Plugins packed code, will use it
+        //$app->vars['app.base_url'] = $app->vars['config']['packing']['base_url'];
 
         // Packing Services init
         $packingProfilesManager = $app->getService('packing-profiles-manager');
@@ -48,8 +61,9 @@ return call_user_func(
 
         $returnedData = array(
             'nbPacksRemoved' => $nbExistingPackProfilesRemoved,
-            'packsCreated' => array_map(array($app, 'appPath'), $packsProfiles),
-            'duration' => round((microtime(true) - $startTime), 3),
+            'nbPackedProfiles' => count($packsProfiles),
+            'nbPackedPlugins' => $app->vars['plugins.packing.nb_packed'],
+            'duration' => round((microtime(true) - $startTime) * 1000),
         );
 
         if ($isCli && false !== strpos(__FILE__, $GLOBALS['argv'][0])) {

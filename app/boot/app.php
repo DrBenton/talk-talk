@@ -1,6 +1,6 @@
 <?php
 
-return function () {
+return function (array $customConfig = array()) {
 
     // Core vars setup
     $bootPath = __DIR__;
@@ -22,6 +22,7 @@ return function () {
     // App config data parsing
     $mainConfigFilePath = $appPath . '/config/main.ini.php';
     $config = parse_ini_file($mainConfigFilePath, true);
+    //$config = array_merge_recursive($config, $customConfig);
 
     // Do we have some PHP classes packs to load early?
     $earlyPhpClassesPacks = array();
@@ -64,7 +65,9 @@ return function () {
 
     $app->vars['perfs.start_time'] = $startTime;
     $app->vars['request'] = $slimApp->request;
-    $app->vars['app.base_url'] = $app->vars['request']->getRootUri();
+    $app->vars['app.base_url'] = (isset($customConfig['app.base_url']))
+        ? $customConfig['app.base_url']
+        : $app->vars['request']->getRootUri();
     $app->vars['isAjax'] = $app->vars['request']->isAjax();
     $app->vars['app.http_status_code'] = 200;//everything goes well... until now :-)
 

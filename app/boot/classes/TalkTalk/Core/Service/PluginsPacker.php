@@ -15,6 +15,60 @@ class PluginsPacker extends BaseService
         $this->packsDataNs = $namespace;
     }
 
+    public function packAllPlugins()
+    {
+        $this->app->get('logger')->info(__METHOD__ . ' - Plugins packing.');
+        $this->app->vars['plugins.packing.nb_packed'] = 0;
+        $startTime = microtime(true);
+
+        // Plugins core Packing Behaviours are added to the Unpacked Plugins class
+        $corePackingBehaviours = array(
+            'GeneralPacker',
+            'ActionsPacker',
+            'ClassesPacker',
+            'ServicesPacker',
+            'NewPackersPacker',
+            'EventsPacker',
+            'TranslationsPacker',
+        );
+        foreach ($corePackingBehaviours as $packerClassName) {
+            $packerFullClassName = '\TalkTalk\Core\Plugin\PackingBehaviour\\' . $packerClassName;
+            Plugin::addBehaviour(new $packerFullClassName);
+        }
+
+        // Core plugins discovery
+        $corePluginsDir = $this->app->vars['app.app_path'] . '/core-plugins';
+        $coreUnpackedPlugins = $this->app->get('plugins.finder')->findPlugins($corePluginsDir);
+
+        // Third-party plugins discovery
+        $thirdPartyPluginsDir = $this->app->vars['app.root_path'] . '/plugins';
+        $thirdPartyUnpackedPlugins = $this->app->get('plugins.finder')->findPlugins($thirdPartyPluginsDir);
+
+        // No third-party plugin can take the id of a core plugin
+        $getPluginId = function (Plugin $plugin) {
+            return strtolower($plugin->id);
+        };
+        $coreUnpackedPluginsIds = array_map($getPluginId, $coreUnpackedPlugins);
+        $thirdPartyUnpackedPluginsIds = array_map($getPluginId, $thirdPartyUnpackedPlugins);
+        $collisions = array_intersect($coreUnpackedPluginsIds, $thirdPartyUnpackedPluginsIds);
+        if (count($collisions) > 0) {
+            throw new \RuntimeException(sprintf(
+                'The following Plugins ids are reserved, and cannot be chosen for third-party plugins: %s',
+                implode(',', $coreUnpackedPluginsIds)
+            ));
+        }
+
+        // Plugins packing
+        $this->app->get('logger')->debug(
+            sprintf('%s - Found %d core Plugins & %d third-party Plugins to pack.', __METHOD__, count($coreUnpackedPlugins), count($thirdPartyUnpackedPlugins))
+        );
+        $unpackedPlugins = array_merge($coreUnpackedPlugins, $thirdPartyUnpackedPlugins);
+        $this->packPlugins($unpackedPlugins);
+
+        $this->app->vars['plugins.packing.nb_packed'] = count($unpackedPlugins);
+        $this->app->get('logger')->info(__METHOD__ . ' - Plugins packed. '.round((microtime(true) - $startTime) * 1000).'ms.');
+    }
+    
     /**
      * @param array $unpackedPlugins
      */
@@ -39,6 +93,7 @@ class PluginsPacker extends BaseService
 
     protected function generatePluginsCode(array $unpackedPlugins)
     {
+        $this->app->get('logger')->debug(__METHOD__ . '()');
         array_walk(
             $unpackedPlugins,
             array($this, 'generatePluginCode')
@@ -50,13 +105,17 @@ class PluginsPacker extends BaseService
      */
     protected function generatePluginCode(Plugin $plugin)
     {
+        $this->app->get('logger')->debug(sprintf('%s(%s) - plugin path=', __METHOD__, $plugin->id, $plugin->path));
+
         $pluginPackedPhpCode = $plugin->getPhpCodeToPack();
+
+        $phpPackId = $this->app->vars['plugins.packs_prefix'] . $plugin->id;
         $this->app
             ->get('packing-manager')
             ->packPhpCode(
                 $pluginPackedPhpCode,
                 $this->packsDataNs,
-                $this->app->vars['plugins.packs_prefix'] . $plugin->id
+                $phpPackId
             );
     }
 
@@ -94,6 +153,8 @@ PACKER_INIT_CODE;
 
     public function generatePluginsMetadata(array $unpackedPlugins)
     {
+        $this->app->get('logger')->debug(__METHOD__ . '()');
+
         $pluginsMetadata = array();
 
         array_walk(
