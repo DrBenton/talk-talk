@@ -24,11 +24,14 @@ return function () {
     $config = parse_ini_file($mainConfigFilePath, true);
 
     // Do we have some PHP classes packs to load early?
-    $phpClassesPacks = array(
-        'vendors/slim',
-        'app/boot/classes',
-    );
-    foreach ($phpClassesPacks as $phpPack) {
+    $earlyPhpClassesPacks = array();
+    if (!empty($config['packing']['use_app_packing'])) {
+        // Since our App has a hard-coded dependency to Slim, we have to load the Sim "vendor pack"
+        // if we load our app boot classes.
+        $earlyPhpClassesPacks[] = 'vendors/slim';
+        $earlyPhpClassesPacks[] = 'app/boot/classes';
+    }
+    foreach ($earlyPhpClassesPacks as $phpPack) {
         $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
         if (file_exists($phpPackFilePath)) {
             include_once $phpPackFilePath;
@@ -63,9 +66,10 @@ return function () {
     $app->vars['request'] = $slimApp->request;
     $app->vars['app.base_url'] = $app->vars['request']->getRootUri();
     $app->vars['isAjax'] = $app->vars['request']->isAjax();
+    $app->vars['app.http_status_code'] = 200;//everything goes well... until now :-)
 
     // Classes automatic repacking management
-    if (!empty($config['debug']['packing.always_repack_profiles'])) {
+    if (!empty($config['debug']['packing']['always_repack_profiles'])) {
         $app->after(
           function () use ($app) {
               $app->get('logger')->debug(
@@ -75,18 +79,20 @@ return function () {
               $packingProfilesManager->clearAllPackedProfiles();
               $packingProfilesManager->runAllPackProfiles();
           },
-          -255
+          \TalkTalk\Core\ApplicationInterface::LATE_EVENT
         );
     }
 
     // Services packs management
-    $phpIncludedInAppServicesPacks = array(
-        'app/boot/services',
-    );
-    foreach ($phpIncludedInAppServicesPacks as $phpPack) {
-        $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
-        if (file_exists($phpPackFilePath)) {
-            $app->includeInApp($phpPackFilePath);
+    if (!empty($config['packing']['use_app_packing'])) {
+        $servicesIncludedInAppPhpPacks = array(
+            'app/boot/services',
+        );
+        foreach ($servicesIncludedInAppPhpPacks as $phpPack) {
+            $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
+            if (file_exists($phpPackFilePath)) {
+                $app->includeInApp($phpPackFilePath);
+            }
         }
     }
 

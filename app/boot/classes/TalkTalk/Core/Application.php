@@ -19,6 +19,7 @@ class Application implements ApplicationInterface
     protected $definedServices = array();
     protected $resolvedServices = array();
     protected $definedFunctions = array();
+    protected $errorHandlers = array();
 
     public function __construct(Slim $slimApp)
     {
@@ -193,6 +194,15 @@ class Application implements ApplicationInterface
         $this->slimApp->hook('slim.after.dispatch', $callable, $priority);
     }
 
+    public function error($callable, $priority = 0)
+    {
+        $this->errorHandlers[] = array(
+            'callable' => $callable,
+            'priority' => $priority,
+        );
+        $this->slimApp->error(array($this, 'onError'));
+    }
+
     /**
      * @param  string $actionName
      * @param  array  $params
@@ -201,6 +211,21 @@ class Application implements ApplicationInterface
     public function path($actionName, $params = array())
     {
         return $this->slimApp->urlFor($actionName, $params);
+    }
+
+    public function redirect($url, $status = 302)
+    {
+        $this->get('flash')->keepFlashes();
+
+        return $this->slimApp->redirect($url, $status);
+    }
+
+    public function redirectToAction($actionName, $params = array(), $status = 302)
+    {
+        return $this->redirect(
+            $this->path($actionName, $params),
+            $status
+        );
     }
 
     protected function registerAutoloader()
@@ -215,7 +240,10 @@ class Application implements ApplicationInterface
         echo "\$this->hasService('packing-profiles-manager')=".$this->hasService('packing-profiles-manager').' :: ';
         echo "\$this->hasService('autoloader')=".$this->hasService('autoloader').' :: ';
         */
-        if ($this->hasService('packing-profiles-manager')) {
+        if (
+            !empty($this->vars['config']['packing']['use_vendors_packing']) &&
+            $this->hasService('packing-profiles-manager')
+        ) {
 
             $packingProfilesManager = $this->get('packing-profiles-manager');
             $hasPackedProfileForThisClass = $packingProfilesManager->hasPackedProfileForClass($className);
@@ -245,19 +273,28 @@ class Application implements ApplicationInterface
         }
     }
 
-    public function redirect($url, $status = 302)
+    /**
+     * @param \Exception $e
+     * @private
+     */
+    public function onError(\Exception $e)
     {
-        $this->get('flash')->keepFlashes();
+        usort($this->errorHandlers, function (array $errorHandlerA, array $errorHandlerB)
+        {
+            $priorityA = $errorHandlerA['priority'];
+            $priorityB = $errorHandlerB['priority'];
+            if ($priorityA > $priorityB) {
+                return -1;
+            } elseif ($priorityA < $priorityB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 
-        return $this->slimApp->redirect($url, $status);
-    }
-
-    public function redirectToAction($actionName, $params = array(), $status = 302)
-    {
-        return $this->redirect(
-            $this->path($actionName, $params),
-            $status
-        );
+        foreach($this->errorHandlers as $errorHandler) {
+            call_user_func($errorHandler['callable'], $e);
+        }
     }
 
 }

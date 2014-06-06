@@ -5,6 +5,9 @@ namespace TalkTalk\Core;
 interface ApplicationInterface
 {
 
+    const EARLY_EVENT = 512;
+    const LATE_EVENT  = -512;
+
     public function includeInApp($filePath);
 
     public function appPath($absoluteFilePath);
@@ -44,6 +47,8 @@ interface ApplicationInterface
     public function before($callable, $priority = 0);
 
     public function after($callable, $priority = 0);
+
+    public function error($callable, $priority = 0);
 
     public function path($actionName, $params = array());
 
