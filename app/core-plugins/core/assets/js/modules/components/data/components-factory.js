@@ -19,8 +19,14 @@ define(function (require, exports, module) {
       var componentsName = $jqElement.data("component");
 
       myDebug && logger.debug(module.id, "loadComponents(" + componentsName + ")");
+
       var componentsToAttach = componentsName.split(",");
+      componentsToAttach = _.map(componentsToAttach, function(componentName) {
+        return componentName.replace(/^\//, '', componentName);
+      });
+
       require(componentsToAttach, function () {
+
         _.forEach(arguments, function (component, i) {
           if (!component || !component.attachTo) {
             myDebug && logger.warn(module.id, "Invalid component \""+componentsToAttach[i]+"\" spotted!");
@@ -29,6 +35,7 @@ define(function (require, exports, module) {
           component.attachTo($jqElement);
           $jqElement.addClass("flight-component-attached");
         });
+
       });
     };
 

@@ -17,9 +17,10 @@ define(function (require, exports, module) {
 
     this.onAjaxContentLoadingDone = function(ev, data) {
       this.nbActionsLoadedFromAjax++;
-      this.loadingsDurations.push(data.duration);
+      var duration = data.duration * 1000;
+      this.loadingsDurations.push(duration);
 
-      this.$node.find(".current-action-loading-duration").text(data.duration);
+      this.$node.find(".current-action-loading-duration").text(duration);
       this.$node.find(".nb-actions-loaded").text(this.nbActionsLoadedFromAjax);
       this.$node.find(".current-action-has-been-loaded-from-cache").addClass("hidden");
       this.updateAverageActionsLoadingDuration();
@@ -51,7 +52,7 @@ define(function (require, exports, module) {
       });
       var nbActions = this.nbActionsLoadedFromAjax;
       nbActions += (withLoadingsFromCache) ? this.nbActionsLoadedFromCache : 0 ;
-      return Math.round( sum / nbActions * 1000) / 1000;
+      return sum / nbActions;
     };
 
     // Component initialization

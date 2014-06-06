@@ -17,9 +17,9 @@ $this->perfsInfo = $this->app()->get('perfs')->getAllPerfsInfo();
                 Total number of plugins: <b class="nb-plugins"><?= $this->perfsInfo['nbPlugins'] ?></b>
             </li>
             <li>
-                Time elapsed until this display: <b class="perfs-elapsed-time-now"><?= $this->perfsInfo['elapsedTimeNow'] ?></b>s.<br>
-                - time elapsed at bootstrap (before plugins initialization): <b class="perfs-elapsed-time-bootstrap"><?= $this->perfsInfo['elapsedTimeAtBootstrap'] ?></b>s.<br>
-                - time elapsed at "app ready" (after Plugins init, just before <code>$app->run()</code>): <b class="perfs-elapsed-time-plugins-init"><?= $this->perfsInfo['elapsedTimeAtPluginsInit'] ?></b>s.
+                Time elapsed until this display: <b class="perfs-elapsed-time-now"><?= $this->perfsInfo['elapsedTimeNow'] ?></b>ms.<br>
+                - time elapsed at bootstrap (before plugins initialization): <b class="perfs-elapsed-time-bootstrap"><?= $this->perfsInfo['elapsedTimeAtBootstrap'] ?></b>ms.<br>
+                - time elapsed at "app ready" (after Plugins init, just before <code>$app->run()</code>): <b class="perfs-elapsed-time-plugins-init"><?= $this->perfsInfo['elapsedTimeAtPluginsInit'] ?></b>ms.
             </li>
             <li class="hidden">
                 {#
