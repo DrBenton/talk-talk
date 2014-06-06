@@ -27,7 +27,6 @@ if ($this->app()->vars['isAjax']) {
 <?php if ($this->app()->vars['isAjax']): ?>
     <script>
         require(["jquery"], function ($) {
-            console.log('breadcrumb update')
             // This breadcrumb is displayed in the layout #breadcrumb
             var breadcrumbToDisplaySelector = "#<?= $breadcrumbContainerId ?>";
             $(document).trigger("uiNeedsBreadcrumbUpdate", {

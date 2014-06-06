@@ -13,11 +13,11 @@ $hooks['html.perfs_info'] = function (DOMQuery $html) use ($app, $myComponentsUr
     $debugInfo = $html->find('#perfs-info');
 
     // 1) "Advanced perfs" debug info Component
-    $component = $myComponentsUrl . 'ui/debug/ajax-advanced-perfs-debug-info';
+    $component = $myComponentsUrl . '/ui/debug/ajax-advanced-perfs-debug-info';
     $app->exec('html-components.add_component', $debugInfo, $component);
 
     // 2) "Ajax loadings" debug info Component
-    $ajaxDebugInfoHtml = $app['twig']->render('ajax-navigation/debug/ajax-debug-info.twig');
+    $ajaxDebugInfoHtml = $app->get('view')->getRendering('ajax-nav::debug/ajax-debug-info');
     $debugInfo->prepend($ajaxDebugInfoHtml);
     $ajaxLoadingsDebugInfo = $html->find('#ajax-loadings-debug-info');
     $component = $myComponentsUrl . '/ui/debug/ajax-loadings-debug-info';

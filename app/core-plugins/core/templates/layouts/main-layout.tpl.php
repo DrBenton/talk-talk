@@ -62,7 +62,11 @@
     <?php endif ?>
 
 
-    <!-- TODO: {% include 'utils/debug/app-perfs-info.twig' %} -->
+    <?php
+    if ($this->app()->vars['debug'] && !empty($this->app()->vars['config']['debug']['perfs.tracking.enabled'])) {
+        $this->insert('utils::debug/app-perfs-info');
+    }
+    ?>
 
 </div><?php /* end #site-container */ ?>
 

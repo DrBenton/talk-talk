@@ -66,7 +66,8 @@ class PluginsPacker extends BaseService
         $this->packPlugins($unpackedPlugins);
 
         $this->app->vars['plugins.packing.nb_packed'] = count($unpackedPlugins);
-        $this->app->get('logger')->info(__METHOD__ . ' - Plugins packed. '.round((microtime(true) - $startTime) * 1000).'ms.');
+        $this->app->vars['perfs.plugins.packing.duration'] = round((microtime(true) - $startTime) * 1000);
+        $this->app->get('logger')->info(__METHOD__ . ' - Plugins packed. '.$this->app->vars['perfs.plugins.packing.duration'].'ms.');
     }
     
     /**

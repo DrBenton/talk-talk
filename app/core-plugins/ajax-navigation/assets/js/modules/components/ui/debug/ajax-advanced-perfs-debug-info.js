@@ -67,6 +67,9 @@ define(function (require, exports, module) {
         });
         this.$node.find(".sql-queries")
           .html(sqlQueriesHtml);
+      } else {
+        this.$node.find(".sql-queries")
+          .empty();
       }
     };
 

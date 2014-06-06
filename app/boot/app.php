@@ -124,8 +124,20 @@ return function (array $customConfig = array()) {
         $whoops->register();
     }
 
+    // Some performances-related stats
+    if ($app->vars['config']['debug']['perfs.tracking.enabled']) {
+        $app->vars['perfs.bootstrap.elapsed_time'] = round((microtime(true) - $app->vars['perfs.start_time']) * 1000);
+        $app->vars['perfs.bootstrap.nb_included_files'] = count(get_included_files());
+    }
+
     // Plugins system init
     include_once __DIR__ . '/plugins-system-init.php';
+
+    // Performances-related stats, episode II
+    if ($app->vars['config']['debug']['perfs.tracking.enabled']) {
+        $app->vars['perfs.plugins-init.elapsed_time'] = round((microtime(true) - $app->vars['perfs.start_time']) * 1000);
+        $app->vars['perfs.plugins-init.nb_included_files'] = count(get_included_files());
+    }
 
     return $app;
 

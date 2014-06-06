@@ -29,7 +29,7 @@ gulp.task("watch", ["compile-php-packs"], function() {
     [
       "app/boot/**/*.php",
       "app/core-plugins/**/*.php",
-      "app/plugins/**/*.*",
+      "app/plugins/**/*.php",
       "app/php-packs-profiles/*.yml"
     ],
     ["compile-php-packs"]

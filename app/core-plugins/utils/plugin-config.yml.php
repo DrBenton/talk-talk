@@ -18,15 +18,15 @@
 
 @classes:
   -
-    prefix: TalkTalk\CorePlugins\Utils\
-    path: %plugin-path%/classes/TalkTalk/CorePlugins/Utils
+    prefix: TalkTalk\CorePlugin\Utils\
+    path: %plugin-path%/classes/TalkTalk/CorePlugin/Utils
 
 @services:
   - utils-html
-#  - perfs
+  - perfs
 
 @events:
-#  - after.perfs-info-headers
+  - after.perfs-info-headers
 
 @hooks:
   -
@@ -39,6 +39,5 @@
 @translations:
   - en
 
-#@twig-extensions:
-#  - func.current-path
-#  - filter.from-now
+@templates-extensions:
+  - utils

@@ -25,6 +25,11 @@ class Session
         return isset($_SESSION[$key]);
     }
 
+    public function all()
+    {
+        return $_SESSION;
+    }
+
     public function remove($key)
     {
         unset($_SESSION[$key]);
