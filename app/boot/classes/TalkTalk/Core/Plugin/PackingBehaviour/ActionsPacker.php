@@ -65,18 +65,23 @@ PLUGIN_PHP_CODE;
 
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
+        // Does this Plugin have a general "actionsUrlsPrefix" setting?
+        $urlsPrefix = (!empty($plugin->config['@general']['actionsUrlsPrefix']))
+            ? $plugin->config['@general']['actionsUrlsPrefix']
+            : '';
+
         $code = '';
         foreach ($myConfigPart as $actionData) {
-            $code .= $this->getActionPhpCode($plugin, $actionData);
+            $code .= $this->getActionPhpCode($plugin, $actionData, $urlsPrefix);
         }
 
         return $code;
     }
 
-    protected function getActionPhpCode(Plugin $plugin, array $actionData)
+    protected function getActionPhpCode(Plugin $plugin, array $actionData, $urlsPrefix)
     {
         // Bare actions stuff
-        $urlPattern = $actionData['url'];
+        $urlPattern = $urlsPrefix . $actionData['url'];
         $method = isset($actionData['method'])
             ? $actionData['method'] //TODO: handle multiple methods
             : 'GET';
