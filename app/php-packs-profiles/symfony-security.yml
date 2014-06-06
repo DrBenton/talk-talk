@@ -1,0 +1,12 @@
+packing:
+  namespace: vendors
+  id: symfony-security
+  base-dir: %app-root%/vendor/php/symfony/
+  handledPhPNamespace: Symfony\Component\Security\
+
+files:
+  - security-core/Symfony/Component/Security/Core/Util/SecureRandomInterface.php
+  - security-core/Symfony/Component/Security/Core/Util/SecureRandom.php
+  - security-core/Symfony/Component/Security/Core/Util/StringUtils.php
+  - security-csrf/Symfony/Component/Security/Csrf/TokenGenerator/TokenGeneratorInterface.php
+  - security-csrf/Symfony/Component/Security/Csrf/TokenGenerator/UriSafeTokenGenerator.php

@@ -2,7 +2,7 @@ packing:
   namespace: vendors
   id: symfony-translation
   base-dir: %app-root%/vendor/php/symfony/translation
-  handledPhPNamespace: Symfony\Component\Translation
+  handledPhPNamespace: Symfony\Component\Translation\
 
 files:
   - Symfony/Component/Translation/MetadataAwareInterface.php

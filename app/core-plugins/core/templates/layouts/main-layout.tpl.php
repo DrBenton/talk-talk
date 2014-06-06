@@ -7,10 +7,8 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- TODO:
-    <meta name="csrf-param" content="{{ app['csrf.token_name'] }}"/>
-    <meta name="csrf-token" content="{{ app['csrf.token_value'] }}"/>
-    -->
+    <meta name="csrf-param" content="<?= $this->app()->get('csrf')->getTokenName() ?>"/>
+    <meta name="csrf-token" content="<?= $this->app()->get('csrf')->getTokenValue() ?>"/>
 
     <?= $this->hooks()->html('app_stylesheets') ?>
     <?php foreach($this->appAssets()->getCss() as $cssResource): ?>

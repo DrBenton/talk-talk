@@ -8,7 +8,7 @@
       method="post"
       class="sign-form ajax-form">
 
-    {% include 'core/common/csrf-hidden-input.twig' %}
+    <?php $this->insert('core::common/csrf-hidden-input') ?>
 
     <fieldset id="core-inputs">
 

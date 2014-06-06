@@ -33,12 +33,12 @@
   - uuid
   - validator
   - settings
-#  - csrf
+  - csrf
 #  - html-escape
 
 @events:
   - error.app-error
-#  - before.check-csrf
+  - before.check-csrf
 
 @translations:
   - validation-en

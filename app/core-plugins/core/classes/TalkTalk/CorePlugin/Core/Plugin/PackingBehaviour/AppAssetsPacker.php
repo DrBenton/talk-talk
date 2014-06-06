@@ -4,7 +4,6 @@ namespace TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour;
 
 use TalkTalk\Core\Plugin\Plugin;
 use TalkTalk\Core\Plugin\PackingBehaviour\BasePacker;
-use TalkTalk\Core\Service\ArrayUtils;
 
 class AppAssetsPacker extends BasePacker
 {
@@ -35,13 +34,21 @@ PLUGIN_PHP_CODE;
         $code = '';
         if (isset($myConfigPart['stylesheets'])) {
             foreach ($myConfigPart['stylesheets'] as $cssFileData) {
-                $code .= $this->getAssetPhpCode($plugin, 'css', ArrayUtils::getArray($cssFileData, 'url'));
+                $code .= $this->getAssetPhpCode(
+                    $plugin,
+                    'css',
+                    $this->app->get('utils.array')->getArray($cssFileData, 'url')
+                );
             }
 
         }
         if (isset($myConfigPart['javascripts'])) {
             foreach ($myConfigPart['javascripts'] as $jsFileData) {
-                $code .= $this->getAssetPhpCode($plugin, 'js', ArrayUtils::getArray($jsFileData, 'url'));
+                $code .= $this->getAssetPhpCode(
+                    $plugin,
+                    'js',
+                    $this->app->get('utils.array')->getArray($jsFileData, 'url')
+                );
             }
 
         }

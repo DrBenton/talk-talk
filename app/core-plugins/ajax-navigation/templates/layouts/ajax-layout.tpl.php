@@ -14,7 +14,7 @@
 
     <?php if (isset($this->breadcrumb)): /*a custom breadcrumb has been requested*/ ?>
         <?= $this->breadcrumb ?>
-    <?php else: /*default breadcrumb*/ ?>
+    <?php elseif(isset($this->breadcrumbData)): /*default breadcrumb*/ ?>
         <?= $this->insert('core::common/breadcrumb', array('data' => $this->breadcrumbData)) ?>
     <?php endif ?>
 

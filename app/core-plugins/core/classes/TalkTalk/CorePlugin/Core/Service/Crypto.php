@@ -3,12 +3,15 @@
 namespace TalkTalk\CorePlugin\Core\Service;
 
 use TalkTalk\Core\Service\BaseService;
+use TalkTalk\Core\ApplicationInterface;
 
 class Crypto extends BaseService
 {
 
-    public function __construct()
+    public function setApplication(ApplicationInterface $app)
     {
+        parent::setApplication($app);
+
         if (!function_exists('password_hash')) {
 
             // Let's first try to use the library from a data pack
