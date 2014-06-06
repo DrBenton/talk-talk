@@ -27,4 +27,22 @@ class StringUtils extends BaseService
         return $indentation . preg_replace('~^([^A-Z]+)~m', $indentation . '$1', $text);
     }
 
+    /**
+     * Returns 'true' if the given data looks like a JSON-encoded data string.
+     *
+     * @param  mixed $data
+     * @return bool
+     */
+    public function isJsonish($data)
+    {
+        $openingDelimiters = array('{', '[');
+        $closingDelimiters = array('}', ']');
+
+        return (
+            is_string($data) &&
+            in_array($data[0], $openingDelimiters) &&
+            in_array($data[strlen($data)-1], $closingDelimiters)
+        );
+    }
+
 }
