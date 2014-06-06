@@ -3,6 +3,7 @@
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Eloquent\Model;
 use TalkTalk\CorePlugin\Core\Database\ConnectionResolver;
+use TalkTalk\CorePlugin\Core\Cache\IlluminateCacheManager;
 
 $DEFAULT_DB_CONNECTION_NAME = 'talk-talk';
 
@@ -52,8 +53,13 @@ $app->defineFunction(
 $app->defineService(
     'db',
     function () use ($app, $capsule, $DEFAULT_DB_CONNECTION_NAME) {
+
         $app->exec('db.connection.add', $app->vars['db.settings'], $DEFAULT_DB_CONNECTION_NAME);
-        //$capsule->setCacheManager(new IlluminateCacheManager($app));
+
+        $cacheManager = new IlluminateCacheManager();
+        $cacheManager->setApplication($app);
+        $capsule->setCacheManager($cacheManager);
+
         $capsule->bootEloquent();
 
         return $capsule;

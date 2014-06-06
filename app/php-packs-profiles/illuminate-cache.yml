@@ -1,0 +1,9 @@
+packing:
+  namespace: vendors
+  id: illuminate-cache
+  base-dir: %app-root%/vendor/php/illuminate/cache/
+  handledPhPNamespace: Illuminate\Cache\
+
+files:
+  - Illuminate/Cache/CacheManager.php
+  - Illuminate/Cache/StoreInterface.php

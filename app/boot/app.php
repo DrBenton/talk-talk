@@ -93,6 +93,7 @@ return function () {
     // Core Services init:
     $coreServicesToInit = array(
         'logger',
+        'cache',
         'packing-manager',
         'packing-profiles-manager',
         'autoloader',

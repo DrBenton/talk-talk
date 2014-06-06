@@ -12,3 +12,4 @@ files:
   - Illuminate/Support/Str.php
   - Illuminate/Support/Pluralizer.php
   - Illuminate/Support/Fluent.php
+  - Illuminate/Support/Manager.php

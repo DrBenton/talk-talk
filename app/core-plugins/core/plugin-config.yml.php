@@ -32,7 +32,7 @@
   - crypto
   - uuid
   - validator
-#  - settings
+  - settings
 #  - csrf
 #  - html-escape
 
