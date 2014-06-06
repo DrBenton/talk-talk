@@ -8,7 +8,7 @@ $this->perfsInfo = $this->app()->get('perfs')->getAllPerfsInfo();
         <legend>App performance</legend>
         <ul>
             <li>
-                For URL: <code class="current-action-url"><?= $this->e($this->utils()->getCurrentPath()) ?></code>
+                For URL: <code class="current-action-url"><?= $this->e($this->utils()->getCurrentPath()) ?></code> - app.base_url=<?= $this->app()->vars['app.base_url'] ?>
             </li>
             <li>
                 Number of SQL queries: <b class="nb-sql-queries"><?= $this->perfsInfo['nbSqlQueries'] ?></b>

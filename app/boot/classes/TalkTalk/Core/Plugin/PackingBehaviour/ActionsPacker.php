@@ -133,7 +133,7 @@ namespace {
             \$action = \$app->addAction('$urlPattern', function () use (\$app) {
                 \$action = \$app->includeInApp('$actionFilePath');
 
-                return call_user_func(\$action);
+                return call_user_func_array(\$action, func_get_args());
             })
             ->via('$method');
 

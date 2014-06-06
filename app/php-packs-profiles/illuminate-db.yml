@@ -28,6 +28,7 @@ files:
   - Illuminate/Database/Eloquent/Builder.php
   - Illuminate/Database/Query/Processors/Processor.php
   - Illuminate/Database/Query/Processors/MySqlProcessor.php
+  - Illuminate/Database/QueryException.php
   - Illuminate/Database/Grammar.php
   - Illuminate/Database/Query/Grammars/Grammar.php
   - Illuminate/Database/Query/Grammars/MySqlGrammar.php

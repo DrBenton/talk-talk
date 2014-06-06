@@ -21,7 +21,7 @@ $app->defineFunction(
     'forum-base.html.breadcrumb.get_single_forum',
     function (Forum $forum) use ($app) {
         return array(
-            'url' => $app->path('forum-base/forum', array('forum' => $forum->id)),
+            'url' => $app->path('forum-base/forum', array('forumId' => $forum->id)),
             'label' => 'core-plugins.forum-base.breadcrumb.forum',
             'labelParams' => array('%title%' => $forum->title),
         );

@@ -42,8 +42,8 @@ $app->after(
             $headers['X-Perfs-QueryPath-Duration'] = $app['perfs.querypath.duration'];
         }
 
-        if (isset($app->vars['perfs.plugins.packing.duration'])) {
-            $headers['X-Perfs-Plugins-Packing-Duration'] = $app['perfs.plugins.packing.duration'];
+        if (isset($perfsInfo['pluginsPackingDuration'])) {
+            $headers['X-Perfs-Plugins-Packing-Duration'] = $perfsInfo['pluginsPackingDuration'];
         }
 
         $response = $app->getResponse();
