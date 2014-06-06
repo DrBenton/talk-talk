@@ -1,0 +1,10 @@
+packing:
+  namespace: vendors
+  id: doctrine-cache
+  base-dir: %app-root%/vendor/php/doctrine/cache/lib
+  handledPhPNamespace: Doctrine\Common\Cache\
+
+files:
+  - Doctrine/Common/Cache/Cache.php
+  - Doctrine/Common/Cache/CacheProvider.php
+  - Doctrine/Common/Cache/ArrayCache.php
