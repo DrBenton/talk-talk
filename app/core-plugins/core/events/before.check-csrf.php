@@ -11,7 +11,7 @@ $CSRF_PROTECTED_METHODS = array('POST', 'PUT', 'DELETE');
 $app->before(
     function () use ($app, $CSRF_PROTECTED_METHODS) {
 
-        $request = $app->vars['request'];
+        $request = $app->getRequest();
 
         if (!in_array($request->getMethod(), $CSRF_PROTECTED_METHODS)) {
             return; //not a CSRF-protected HTTP method

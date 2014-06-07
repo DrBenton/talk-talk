@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Response;
+
 $html_hooks = array();
 
 $app->defineFunction(
@@ -14,14 +16,13 @@ $app->defineFunction(
 
 $app->defineFunction(
     'hooks.html.trigger_hooks',
-    function () use ($app, &$html_hooks) {
+    function (Response $response) use ($app, &$html_hooks) {
 
         if (isset($app->vars['app.error'])) {
             return; //don't modify any HTML code if we have an error
         }
 
-        $response = &$app->getResponse();
-        $rawView = $response->getBody();
+        $rawView = $response->getContent();
 
         if (
             0 === count($html_hooks) ||
@@ -60,6 +61,6 @@ $app->defineFunction(
             // Let's return the plain HTML string
             $modifiedHtml = $domView->html();
         }
-        $response->setBody($modifiedHtml);
+        $response->setContent($modifiedHtml);
     }
 );

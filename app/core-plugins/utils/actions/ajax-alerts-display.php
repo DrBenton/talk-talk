@@ -2,7 +2,7 @@
 
 $action = function () use ($app) {
 
-    $receivedAlertsData = $app->vars['request']->post('alerts', null);
+    $receivedAlertsData = $app->getRequest()->post('alerts', null);
 
     if (null === $receivedAlertsData) {
         throw new \InvalidParameterException('Missing mandatory POST param "alerts"!');

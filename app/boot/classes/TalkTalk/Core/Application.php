@@ -2,7 +2,10 @@
 
 namespace TalkTalk\Core;
 
+use Silex\Provider\UrlGeneratorServiceProvider;
 use Slim\Slim;
+use Silex\Application as SilexApplication;
+use Symfony\Component\HttpFoundation\Request;
 
 class Application implements ApplicationInterface
 {
@@ -15,18 +18,36 @@ class Application implements ApplicationInterface
      * @var \Slim\Slim
      */
     protected $slimApp;
+    /**
+     * @var \Silex\Application
+     */
+    protected $silexApp;
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
+    protected $request;
 
     protected $definedServices = array();
     protected $resolvedServices = array();
     protected $definedFunctions = array();
-    protected $errorHandlers = array();
+    protected $beforeRunCallbacks = array();
 
-    public function __construct(Slim $slimApp)
+    public function __construct(Slim $slimApp, SilexApplication $silexApp, Request $request)
     {
         $this->slimApp = $slimApp;
+        $this->silexApp = $silexApp;
+        $this->request = $request;
         $this->vars['packs.included_files.closures'] = array();
         $this->registerAutoloader();
         $this->defineService('slim', $this->slimApp);
+    }
+
+    public function setConfig(array $configData)
+    {
+        $this->vars['config'] = $configData;
+        $this->vars['debug'] = (bool) $configData['debug']['debug'];
+        $this->slimApp->config('debug', $this->vars['debug']);
+        $this->silexApp['debug'] = $this->vars['debug'];
     }
 
     public function includeInApp($filePath)
@@ -171,41 +192,67 @@ class Application implements ApplicationInterface
 
     public function addAction($urlPattern)
     {
-        return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
+        return call_user_func_array(array($this->silexApp, 'match'), func_get_args());
+        //return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
     }
 
     public function run()
     {
-        $this->slimApp->run();
+        usort($this->beforeRunCallbacks, function (array $errorHandlerA, array $errorHandlerB)
+        {
+            $priorityA = $errorHandlerA['priority'];
+            $priorityB = $errorHandlerB['priority'];
+            if ($priorityA > $priorityB) {
+                return -1;
+            } elseif ($priorityA < $priorityB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        foreach($this->beforeRunCallbacks as $beforeRunCallbackData) {
+            call_user_func($beforeRunCallbackData['callable']);
+        }
+        $this->silexApp->run($this->request);
+        //$this->slimApp->run();
     }
 
     public function getRequest()
     {
-        return $this->slimApp->request;
+        return $this->request;
     }
 
-    public function getResponse()
+    public function beforeRun($callable, $priority = 0)
     {
-        return $this->slimApp->response;
+        $this->beforeRunCallbacks[] = array(
+            'callable' => $callable,
+            'priority' => $priority,
+        );
     }
 
     public function before($callable, $priority = 0)
     {
-        $this->slimApp->hook('slim.before', $callable, $priority);
+        $this->silexApp->before($callable, $priority);
+        //$this->slimApp->hook('slim.before', $callable, $priority);
     }
 
     public function after($callable, $priority = 0)
     {
-        $this->slimApp->hook('slim.after.dispatch', $callable, $priority);
+        $this->silexApp->after($callable, $priority);
+        //$this->slimApp->hook('slim.after.dispatch', $callable, $priority);
     }
 
     public function error($callable, $priority = 0)
     {
+        /*
         $this->errorHandlers[] = array(
             'callable' => $callable,
             'priority' => $priority,
         );
         $this->slimApp->error(array($this, 'onError'));
+        */
+        $this->silexApp->error($callable, $priority);
     }
 
     /**
@@ -215,14 +262,25 @@ class Application implements ApplicationInterface
      */
     public function path($actionName, $params = array())
     {
-        return $this->slimApp->urlFor($actionName, $params);
+        static $urlGenerator;
+        if (null === $urlGenerator) {
+            if (!isset($this->silexApp['url_generator'])) {
+                $this->silexApp->register(
+                  new UrlGeneratorServiceProvider()
+                );
+            }
+            $urlGenerator = $this->silexApp['url_generator'];
+        }
+
+        return $urlGenerator->generate($actionName, $params);
+        //return $this->slimApp->urlFor($actionName, $params);
     }
 
     public function redirect($url, $status = 302)
     {
         $this->get('flash')->keepFlashes();
 
-        return $this->slimApp->redirect($url, $status);
+        return $this->silexApp->redirect($url, $status);
     }
 
     public function redirectToAction($actionName, $params = array(), $status = 302)
@@ -271,7 +329,7 @@ class Application implements ApplicationInterface
 
         // No PHP pack provides this class. Let's give this job to Composer!
         if ($this->hasService('autoloader')) {
-            $this->get('logger')->debug(
+            $this->get('logger')->info(
                 sprintf('Composer called to rescue to load class "%s".', $className)
             );
             $this->get('autoloader')->loadClass($className);
@@ -284,6 +342,7 @@ class Application implements ApplicationInterface
      */
     public function onError(\Exception $e)
     {
+        /*
         usort($this->errorHandlers, function (array $errorHandlerA, array $errorHandlerB)
         {
             $priorityA = $errorHandlerA['priority'];
@@ -300,6 +359,7 @@ class Application implements ApplicationInterface
         foreach($this->errorHandlers as $errorHandler) {
             call_user_func($errorHandler['callable'], $e);
         }
+        */
     }
 
 }

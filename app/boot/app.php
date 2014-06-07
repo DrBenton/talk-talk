@@ -26,9 +26,10 @@ return function (array $customConfig = array()) {
 
     // Do we have some PHP classes packs to load early?
     $earlyPhpClassesPacks = array();
-    if (!empty($config['packing']['use_app_packing'])) {
+    if (true || !empty($config['packing']['use_app_packing'])) {
         // Since our App has a hard-coded dependency to Slim, we have to load the Sim "vendor pack"
         // if we load our app boot classes.
+        $earlyPhpClassesPacks[] = 'vendors/silex';
         $earlyPhpClassesPacks[] = 'vendors/slim';
         $earlyPhpClassesPacks[] = 'app/boot/classes';
     }
@@ -40,17 +41,18 @@ return function (array $customConfig = array()) {
     }
 
     // Composer loading - only if needed at this point!
-    if (!class_exists('TalkTalk\Core\Application', false)) {
-        require_once $appVendorsPath . '/autoload.php';
+    if (!class_exists('TalkTalk\Core\Application', false) || !class_exists('Silex\Application', false)) {
+        $loader = require_once $appVendorsPath . '/autoload.php';
     }
 
     // Okay, let's create our Application!
     $slimApp = new \Slim\Slim();
-    $app = new \TalkTalk\Core\Application($slimApp);
+    $silexApp = new \Silex\Application();
+    $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+    $app = new \TalkTalk\Core\Application($slimApp, $silexApp, $request);
 
-    $app->vars['config'] = &$config;
-    $app->vars['debug'] = (bool) $app->vars['config']['debug']['debug'];
-    $slimApp->config('debug', $app->vars['debug']);
+    $app->setConfig($config);
+
 
     // App core vars definition
     $app->vars['app.root_path'] = $rootPath;
@@ -64,11 +66,10 @@ return function (array $customConfig = array()) {
     $app->vars['app.boot_services_path'] = $app->vars['app.boot_path'] . '/core-services';
 
     $app->vars['perfs.start_time'] = $startTime;
-    $app->vars['request'] = $slimApp->request;
     $app->vars['app.base_url'] = (isset($customConfig['app.base_url']))
         ? $customConfig['app.base_url']
-        : $app->vars['request']->getRootUri();
-    $app->vars['isAjax'] = $app->vars['request']->isAjax();
+        : $app->getRequest()->getBasePath();
+    $app->vars['isAjax'] = $app->getRequest()->isXmlHttpRequest();
     $app->vars['app.http_status_code'] = 200;//everything goes well... until now :-)
 
     // Classes automatic repacking management

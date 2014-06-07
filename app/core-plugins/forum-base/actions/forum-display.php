@@ -11,7 +11,7 @@ $action = function ($forumId) use ($app) {
     $forumChildren = $forum->getChildren();
 
     // Topics retrieval (only those of the current page)
-    $pageNum = (int) $app->vars['request']->get('page', 1);
+    $pageNum = (int) $app->getRequest()->get('page', 1);
     $topics = $forum->topics();
     $topicsToDisplay = $topics->getQuery()
         ->orderBy('updated_at', 'DESC')

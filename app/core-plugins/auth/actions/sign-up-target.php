@@ -5,7 +5,7 @@ use TalkTalk\Model\User;
 $action = function () use ($app, &$getFormValidator) {
 
     // Get form User data
-    $userData = $app->vars['request']->post('user');
+    $userData = $app->getRequest()->post('user');
 
     // Validate!
     $validator = $getFormValidator($app, $userData);

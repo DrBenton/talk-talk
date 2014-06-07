@@ -12,7 +12,7 @@ $action = function ($topicId) use ($app) {
     $nbPostsTotal = Post::where('topic_id', '=', $topic->id)->count();
 
     // Posts retrieval (only those of the current page)
-    $pageNum = (int) $app->vars['request']->get('page', 1);
+    $pageNum = (int) $app->getRequest()->get('page', 1);
     if ('last' === $pageNum) {
         $pageNum = ceil($nbPostsTotal / $app->vars['forum-base.pagination.posts.nb_per_page']);
     } elseif (!is_numeric($pageNum)) {

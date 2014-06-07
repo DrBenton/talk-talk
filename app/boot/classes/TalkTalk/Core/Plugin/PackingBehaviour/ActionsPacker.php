@@ -19,7 +19,7 @@ namespace {
     $app->vars['plugins.actions'] = array();
     $app->vars['plugins.actions.names'] = array();
 
-    $app->before(
+    $app->beforeRun(
         function () use ($app) {
             $app->get('logger')->debug(
                 sprintf('Actions initialization (%d actions registered).', count($app->vars['plugins.actions']))
@@ -47,7 +47,8 @@ namespace {
                 call_user_func($action['actionRegistering']);
             }
         },
-        -10 // this "before" will be run... well... before "normal" befores
+        // this "before" will be run... well... before "normal" befores
+        \TalkTalk\Core\ApplicationInterface::EARLY_EVENT
     );
 }
 
@@ -118,9 +119,9 @@ PLUGIN_PHP_CODE;
             }
             ";
             $afterActionDefinition .= "
-            \$action->name('$actionName');
+            //\$action->name('$actionName');
+            \$action->bind('$actionName');
             \$app->vars['plugins.actions.names'][] = '$actionName';
-            \$app->get('logger')->debug('Action \"$actionName\" added to Slim router (plugin \"$plugin->id\").');
             ";
         }
 
@@ -135,7 +136,10 @@ namespace {
 
                 return call_user_func_array(\$action, func_get_args());
             })
-            ->via('$method');
+            //->via('$method');
+            ->method('$method');
+
+            \$app->get('logger')->debug('Action with URL "$urlPattern" (method $method) added to Silex router (plugin "$plugin->id").');
 
             $afterActionDefinition
         },

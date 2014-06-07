@@ -8,6 +8,8 @@ interface ApplicationInterface
     const EARLY_EVENT = 512;
     const LATE_EVENT  = -512;
 
+    public function setConfig(array $configData);
+
     public function includeInApp($filePath);
 
     public function appPath($absoluteFilePath);
@@ -44,7 +46,7 @@ interface ApplicationInterface
 
     public function getRequest();
 
-    public function getResponse();
+    public function beforeRun($callable, $priority = 0);
 
     public function before($callable, $priority = 0);
 

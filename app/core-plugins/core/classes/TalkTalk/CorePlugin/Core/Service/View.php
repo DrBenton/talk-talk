@@ -25,15 +25,7 @@ class View extends BaseService
 
     public function render($templatePath, array $vars = array())
     {
-        $this->app->getResponse()->setBody(
-            $this->getRendering($templatePath, $vars)
-        );
-
-        /*
-        ob_start();
-        echo $this->getRendering($templatePath, $vars);
-        $this->app->getResponse()->setBody(ob_get_clean());
-        */
+        return $this->getRendering($templatePath, $vars);
     }
 
     public function getRendering($templatePath, array $vars = array())

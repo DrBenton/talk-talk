@@ -8,12 +8,7 @@ use TalkTalk\Core\Service\BaseService;
 class SessionFlash extends BaseService
 {
 
-    const SLIM_FLASHES_SESSION_NS = 'slim.flash';
-
-    /**
-     * @var \Slim\Middleware\Flash
-     */
-    protected $slimFlash;
+    const FLASHES_SESSION_NS = 'talktalk.flash';
 
     public function __construct()
     {
@@ -22,22 +17,9 @@ class SessionFlash extends BaseService
         }
     }
 
-    public function setApplication(ApplicationInterface $app)
-    {
-        parent::setApplication($app);
-
-        $slimEnv = $this->app->get('slim')->environment();
-        $this->slimFlash = $slimEnv[self::SLIM_FLASHES_SESSION_NS];
-    }
-
     public function flash($flashKey, $flashValue)
     {
-        $this->slimFlash->set($flashKey, $flashValue);
-    }
-
-    public function flashNow($flashKey, $flashValue)
-    {
-        $this->slimFlash->now($flashKey, $flashValue);
+        $_SESSION[self::FLASHES_SESSION_NS][$flashKey] = $flashValue;
     }
 
     public function flashTranslated($flashKey, $flashValueTranslationKey, $flashValueTranslationParams = array())
@@ -48,25 +30,18 @@ class SessionFlash extends BaseService
         );
     }
 
-    public function flashTranslatedNow($flashKey, $flashValueTranslationKey, $flashValueTranslationParams = array())
-    {
-        $this->flashNow(
-            $flashKey,
-            $this->translateFlash($flashValueTranslationKey, $flashValueTranslationParams)
-        );
-    }
-
     public function keepFlashes()
     {
-        $this->slimFlash->keep();
+        //TODO
     }
 
     public function getFlashes($flashesKeyPrefix = null)
     {
-        $nextMessages = (isset($_SESSION[self::SLIM_FLASHES_SESSION_NS]) && is_array($_SESSION[self::SLIM_FLASHES_SESSION_NS]))
-            ? $_SESSION[self::SLIM_FLASHES_SESSION_NS]
-            : array();
-        $flashes = $nextMessages + $this->slimFlash->getMessages();
+        if (!isset($_SESSION[self::FLASHES_SESSION_NS])) {
+            return array();
+        }
+
+        $flashes = $_SESSION[self::FLASHES_SESSION_NS];
 
         if (null === $flashesKeyPrefix) {
             return $flashes;
