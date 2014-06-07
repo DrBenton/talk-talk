@@ -25,6 +25,7 @@ class PluginsPacker extends BaseService
         $corePackingBehaviours = array(
             'GeneralPacker',
             'ActionsPacker',
+            'ActionsParamsConvertersPacker',
             'ClassesPacker',
             'ServicesPacker',
             'NewPackersPacker',

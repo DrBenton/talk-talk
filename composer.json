@@ -26,7 +26,8 @@
     "querypath/QueryPath": ">=3.0.0",
     "filp/whoops": "~1.0",
     "ircmaxell/password-compat": "1.0.2",
-    "mjohnson/decoda": "6.5.1"
+    "mjohnson/decoda": "6.5.1",
+    "teacup/log" : "0.1.0"
   },
   "config": {
     "vendor-dir": "vendor/php"

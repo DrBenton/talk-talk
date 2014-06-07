@@ -3,7 +3,6 @@
 namespace TalkTalk\Core;
 
 use Silex\Provider\UrlGeneratorServiceProvider;
-use Slim\Slim;
 use Silex\Application as SilexApplication;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,10 +13,6 @@ class Application implements ApplicationInterface
      * @var array
      */
     public $vars = array();
-    /**
-     * @var \Slim\Slim
-     */
-    protected $slimApp;
     /**
      * @var \Silex\Application
      */
@@ -32,21 +27,19 @@ class Application implements ApplicationInterface
     protected $definedFunctions = array();
     protected $beforeRunCallbacks = array();
 
-    public function __construct(Slim $slimApp, SilexApplication $silexApp, Request $request)
+    public function __construct(SilexApplication $silexApp, Request $request)
     {
-        $this->slimApp = $slimApp;
         $this->silexApp = $silexApp;
         $this->request = $request;
         $this->vars['packs.included_files.closures'] = array();
         $this->registerAutoloader();
-        $this->defineService('slim', $this->slimApp);
+        $this->defineService('silex', $this->silexApp);
     }
 
     public function setConfig(array $configData)
     {
         $this->vars['config'] = $configData;
         $this->vars['debug'] = (bool) $configData['debug']['debug'];
-        $this->slimApp->config('debug', $this->vars['debug']);
         $this->silexApp['debug'] = $this->vars['debug'];
     }
 
@@ -193,29 +186,26 @@ class Application implements ApplicationInterface
     public function addAction($urlPattern)
     {
         return call_user_func_array(array($this->silexApp, 'match'), func_get_args());
-        //return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
+    }
+
+    public function addActionsParamsConverter($converterId, $callable)
+    {
+        if (!preg_match('~^[a-z][a-z0-9_]+$~i', $converterId)) {
+            throw new \DomainException(sprintf('Converter id "%s" is not correct (as they are converters to class methods, their name must follow the PHP classes methods naming restrictions)', $converterId));
+        }
+
+        $silexCallbacksBridge = $this->getService('silex.callbacks_bridge');
+        if (!isset($this->silexApp['converters'])) {
+            $this->silexApp['converters'] = $silexCallbacksBridge;
+        }
+        $silexCallbacksBridge->registerCallback($converterId, $callable);
     }
 
     public function run()
     {
-        usort($this->beforeRunCallbacks, function (array $errorHandlerA, array $errorHandlerB)
-        {
-            $priorityA = $errorHandlerA['priority'];
-            $priorityB = $errorHandlerB['priority'];
-            if ($priorityA > $priorityB) {
-                return -1;
-            } elseif ($priorityA < $priorityB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        $this->triggerBeforeRunCallbacks();
 
-        foreach($this->beforeRunCallbacks as $beforeRunCallbackData) {
-            call_user_func($beforeRunCallbackData['callable']);
-        }
         $this->silexApp->run($this->request);
-        //$this->slimApp->run();
     }
 
     public function getRequest()
@@ -234,24 +224,15 @@ class Application implements ApplicationInterface
     public function before($callable, $priority = 0)
     {
         $this->silexApp->before($callable, $priority);
-        //$this->slimApp->hook('slim.before', $callable, $priority);
     }
 
     public function after($callable, $priority = 0)
     {
         $this->silexApp->after($callable, $priority);
-        //$this->slimApp->hook('slim.after.dispatch', $callable, $priority);
     }
 
     public function error($callable, $priority = 0)
     {
-        /*
-        $this->errorHandlers[] = array(
-            'callable' => $callable,
-            'priority' => $priority,
-        );
-        $this->slimApp->error(array($this, 'onError'));
-        */
         $this->silexApp->error($callable, $priority);
     }
 
@@ -273,7 +254,6 @@ class Application implements ApplicationInterface
         }
 
         return $urlGenerator->generate($actionName, $params);
-        //return $this->slimApp->urlFor($actionName, $params);
     }
 
     public function redirect($url, $status = 302)
@@ -336,14 +316,9 @@ class Application implements ApplicationInterface
         }
     }
 
-    /**
-     * @param \Exception $e
-     * @private
-     */
-    public function onError(\Exception $e)
+    protected function triggerBeforeRunCallbacks()
     {
-        /*
-        usort($this->errorHandlers, function (array $errorHandlerA, array $errorHandlerB)
+        usort($this->beforeRunCallbacks, function (array $errorHandlerA, array $errorHandlerB)
         {
             $priorityA = $errorHandlerA['priority'];
             $priorityB = $errorHandlerB['priority'];
@@ -356,10 +331,9 @@ class Application implements ApplicationInterface
             }
         });
 
-        foreach($this->errorHandlers as $errorHandler) {
-            call_user_func($errorHandler['callable'], $e);
+        foreach($this->beforeRunCallbacks as $beforeRunCallbackData) {
+            call_user_func($beforeRunCallbackData['callable']);
         }
-        */
     }
 
 }

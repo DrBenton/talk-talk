@@ -26,11 +26,11 @@ return function (array $customConfig = array()) {
 
     // Do we have some PHP classes packs to load early?
     $earlyPhpClassesPacks = array();
-    if (true || !empty($config['packing']['use_app_packing'])) {
-        // Since our App has a hard-coded dependency to Slim, we have to load the Sim "vendor pack"
-        // if we load our app boot classes.
+    if (!empty($config['packing']['use_app_packing'])) {
+        // Since our App has a hard-coded dependency to Silex, we have to load the Silex "vendor pack"
+        // prior to our app boot classes loading.
         $earlyPhpClassesPacks[] = 'vendors/silex';
-        $earlyPhpClassesPacks[] = 'vendors/slim';
+        $earlyPhpClassesPacks[] = 'vendors/logger';
         $earlyPhpClassesPacks[] = 'app/boot/classes';
     }
     foreach ($earlyPhpClassesPacks as $phpPack) {
@@ -46,10 +46,9 @@ return function (array $customConfig = array()) {
     }
 
     // Okay, let's create our Application!
-    $slimApp = new \Slim\Slim();
     $silexApp = new \Silex\Application();
     $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
-    $app = new \TalkTalk\Core\Application($slimApp, $silexApp, $request);
+    $app = new \TalkTalk\Core\Application($silexApp, $request);
 
     $app->setConfig($config);
 
@@ -110,6 +109,7 @@ return function (array $customConfig = array()) {
         'string-utils',
         'array-utils',
         'io-utils',
+        'silex-callbacks-bridge',
     );
     array_walk(
         $coreServicesToInit,

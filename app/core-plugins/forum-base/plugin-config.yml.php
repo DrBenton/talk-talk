@@ -13,35 +13,41 @@
     priority: 10
   -
     # GET /forum/ID => actions/forum-display.php
-    url: /forum/:forumId
+    url: /forum/{forum}
     target: forum-display
     name: forum-base/forum
+    params-converters:
+      forum: forum_id
   -
     # GET /forum/ID/topics/new => actions/new-topic-form.php
     # (authentication required)
-    url: /forum/:forumId/topics/new
+    url: /forum/{forum}/topics/new
     target: new-topic-form
     name: forum-base/new-topic-form
+    params-converters:
+      forum: forum_id
     before:
       - auth.middleware.is-authenticated
   -
     # POST /forum/ID/topics => actions/new-topic-target.php
     # (authentication required)
-    url: /topic/:forumId/topics
+    url: /topic/{forum}/topics
     target: new-topic-target
     name: forum-base/new-topic-form/target
     method: POST
+    params-converters:
+      forum: forum_id
     before:
       - auth.middleware.is-authenticated
   -
     # GET /topic/ID => actions/topic-display.php
-    url: /topic/:topicId
+    url: /topic/{topic}
     target: topic-display
     name: forum-base/topic
   -
     # GET /topic/ID/posts/new => actions/new-post-form.php
     # (authentication required)
-    url: /topic/:topicId/posts/new
+    url: /topic/{topic}/posts/new
     target: new-post-form
     name: forum-base/new-post-form
     before:
@@ -49,12 +55,15 @@
   -
     # POST /topic/ID/posts => actions/new-post-target.php
     # (authentication required)
-    url: /topic/:topicId/posts
+    url: /topic/{topic}/posts
     target: new-post-target
     name: forum-base/new-post-form/target
     method: POST
     before:
       - auth.middleware.is-authenticated
+
+@actions-params-converters:
+  - forum_id
 
 @classes:
   -

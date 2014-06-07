@@ -3,9 +3,7 @@
 use TalkTalk\Model\Forum;
 use TalkTalk\Model\Topic;
 
-$action = function ($forumId) use ($app) {
-
-    $forum = Forum::findOrFail($forumId);
+$action = function (Forum $forum) use ($app) {
 
     // Forum children retrieval
     $forumChildren = $forum->getChildren();
@@ -31,7 +29,7 @@ $action = function ($forumId) use ($app) {
         'currentPageNum' => $pageNum,
         'nbPages' => ceil($nbTopicsTotal / $app->vars['forum-base.pagination.topics.nb_per_page']),
         'baseUrl' => $app->path(
-            'forum-base/forum', array('forumId' => $forum->id)
+            'forum-base/forum', array('forum' => $forum->id)
         ) . '?page=%page%'
     );
 

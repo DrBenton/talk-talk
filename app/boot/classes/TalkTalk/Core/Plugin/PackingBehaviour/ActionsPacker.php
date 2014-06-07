@@ -46,9 +46,7 @@ namespace {
             foreach($actions as $action) {
                 call_user_func($action['actionRegistering']);
             }
-        },
-        // this "before" will be run... well... before "normal" befores
-        \TalkTalk\Core\ApplicationInterface::EARLY_EVENT
+        }
     );
 }
 
@@ -109,20 +107,31 @@ PLUGIN_PHP_CODE;
             ';
         }
 
-        // Route name management
+        // Action name management
         if (isset($actionData['name'])) {
             $actionName = $actionData['name'];
             $beforeActionDefinition .= "
             if (in_array('$actionName', \$app->vars['plugins.actions.names'])) {
-                \$app->get('logger')->debug('Action \"$actionName\" not added to Slim router, as this route name is already registered (plugin \"$plugin->id\").');
-                return;//Slim don't authorize named routes overriding; let's stop here!
+                \$app->get('logger')->debug('Action \"$actionName\" not added to router, as this route name is already registered (plugin \"$plugin->id\").');
+                return;
             }
             ";
             $afterActionDefinition .= "
-            //\$action->name('$actionName');
             \$action->bind('$actionName');
             \$app->vars['plugins.actions.names'][] = '$actionName';
             ";
+        }
+
+        // Actions params converters management
+        if (isset($actionData['params-converters'])) {
+            foreach ($actionData['params-converters'] as $paramName => $converterId) {
+                $afterActionDefinition .= "
+                    \$action->convert(
+                        '$paramName',
+                        'converters:$converterId'
+                    );
+                ";
+            }
         }
 
         return <<<PLUGIN_PHP_CODE
@@ -134,9 +143,16 @@ namespace {
             \$action = \$app->addAction('$urlPattern', function () use (\$app) {
                 \$action = \$app->includeInApp('$actionFilePath');
 
-                return call_user_func_array(\$action, func_get_args());
+                // We trigger the Dependencies Injector on the returned Closure...
+                \$silexApp = \$app->get('silex');
+                \$actionArgs = \$silexApp['resolver']->getArguments(
+                    \$app->getRequest(),
+                    \$action
+                );
+
+                // ...and we finally trigger the action Closure!
+                return call_user_func_array(\$action, \$actionArgs);
             })
-            //->via('$method');
             ->method('$method');
 
             \$app->get('logger')->debug('Action with URL "$urlPattern" (method $method) added to Silex router (plugin "$plugin->id").');
