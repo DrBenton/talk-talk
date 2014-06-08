@@ -11,7 +11,7 @@
                 <div class="topic-container">
                     <div class="topic">
                         <h4 class="topic-title">
-                            <a href="<?= $this->app()->path('forum-base/topic', array('topicId' => $topic->id)) ?>"
+                            <a href="<?= $this->app()->path('forum-base/topic', array('topic' => $topic->id)) ?>"
                                class="ajax-link">
                                 <?= $this->e($topic->title) ?> - <?= $topic->nb_replies ?> replies
                             </a>

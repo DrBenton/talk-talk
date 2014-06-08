@@ -43,6 +43,8 @@
     # GET /topic/ID => actions/topic-display.php
     url: /topic/{topic}
     target: topic-display
+    params-converters:
+      topic: topic-id
     name: forum-base/topic
   -
     # GET /topic/ID/posts/new => actions/new-post-form.php
@@ -50,6 +52,8 @@
     url: /topic/{topic}/posts/new
     target: new-post-form
     name: forum-base/new-post-form
+    params-converters:
+      topic: topic-id
     before:
       - auth.middleware.is-authenticated
   -
@@ -59,11 +63,14 @@
     target: new-post-target
     name: forum-base/new-post-form/target
     method: POST
+    params-converters:
+      topic: topic-id
     before:
       - auth.middleware.is-authenticated
 
 @actions-params-converters:
   - forum-id
+  - topic-id
 
 @classes:
   -

@@ -1,15 +1,16 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
 use TalkTalk\Model\Forum;
 use TalkTalk\Model\Topic;
 
-$action = function (Forum $forum) use ($app) {
+$action = function (Request $request, Forum $forum) use ($app) {
 
     // Forum children retrieval
     $forumChildren = $forum->getChildren();
 
     // Topics retrieval (only those of the current page)
-    $pageNum = (int) $app->getRequest()->get('page', 1);
+    $pageNum = $request->query->getInt('page', 1);
     $topics = $forum->topics();
     $topicsToDisplay = $topics->getQuery()
         ->orderBy('updated_at', 'DESC')
