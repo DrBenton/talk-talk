@@ -13,12 +13,13 @@ class TranslationsPacker extends BasePacker
 
     public function getPackerInitCode()
     {
-        return <<<PLUGIN_PHP_CODE
+        return <<<'PACKER_INIT_PHP_CODE'
+
 namespace {
-    \$app->vars['translation.data'] = array();
+    $app->vars['translation.data'] = array();
 }
 
-PLUGIN_PHP_CODE;
+PACKER_INIT_PHP_CODE;
     }
 
     /**
@@ -42,10 +43,12 @@ PLUGIN_PHP_CODE;
 
     protected function getTranslationPhpCode(Plugin $plugin, $translationName)
     {
-        $translationFilePath = str_replace(
-            array('%plugin-path%', '%translation-name%'),
-            array($plugin->path, $translationName),
-            self::TRANSLATION_FILE_PATH
+        $translationFilePath = $this->replace(
+            self::TRANSLATION_FILE_PATH,
+            array(
+                '%plugin-path%' => $plugin->path,
+                '%translation-name%' => $translationName,
+            )
         );
 
         $translationContent = file_get_contents($translationFilePath);
@@ -59,12 +62,25 @@ PLUGIN_PHP_CODE;
 
         $translationFileInclusionCode = var_export($translationData, true);
 
-        return <<<PLUGIN_PHP_CODE
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
+
 namespace {
-    // Translation "$translationName" data:
-    \$app->vars['translation.data']['$translationLanguage'][] = $translationFileInclusionCode;
+    // Translation "%translation-name%" data (from Plugin "%plugin-id%"):
+    // (will be used in "core-plugins/core/services/translator.php")
+    $app->vars['translation.data']['%translation-language%'][] = %translation-file-inclusion-code%;
 }
 
 PLUGIN_PHP_CODE;
+
+        // Job's done!
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%translation-file-inclusion-code%' => $translationFileInclusionCode,
+                '%translation-language%' => $translationLanguage,
+                '%translation-name%' => $translationName,
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 }

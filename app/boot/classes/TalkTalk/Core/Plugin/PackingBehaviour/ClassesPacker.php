@@ -47,19 +47,19 @@ class ClassesPacker extends BasePacker
 
     protected function getClassesPhpCode(Plugin $plugin, array $classesData)
     {
-        $classesBasePath = $this->app
-            ->get('utils.string')
+        $autoloader = $this->app->get('autoloader');
+
+        $classesBasePath = $this->app->get('utils.string')
             ->handlePluginRelatedString($plugin, $classesData['path']);
 
-        $classesToIncludesPaths = $this->app
-            ->get('utils.io')
+        $classesToIncludesPaths = $this->app->get('utils.io')
             ->rglob('*.php', $classesBasePath);
 
         $nbClassesToInclude = count($classesToIncludesPaths);
 
         // Symfony ClassCollectionLoader needs to be able to work with our classes.
         // --> let's make them accessible via Composer!
-        $this->app->get('autoloader')->addPsr4(
+        $autoloader->addPsr4(
             $classesData['prefix'],
             $classesBasePath
         );
@@ -67,11 +67,13 @@ class ClassesPacker extends BasePacker
         // We build a "class name" => "class file path" map
         $classesNamesFilesPathsMap = array();
         foreach ($classesToIncludesPaths as $classFilePath) {
-            //TODO: make it cleaner
-            $className = str_replace(
-                array(DIRECTORY_SEPARATOR, '.php'),
-                array('\\', ''),
-                preg_replace('~^.*/classes/~', '', $classFilePath)
+            $classRelativePath = preg_replace('~^.*/classes/~', '', $classFilePath);
+            $className = $this->replace(
+                $classRelativePath,
+                array(
+                    DIRECTORY_SEPARATOR => '\\',
+                    '.php' => '',
+                )
             );
             $classesNamesFilesPathsMap[$className] = $classFilePath;
         }
@@ -80,15 +82,10 @@ class ClassesPacker extends BasePacker
 
         // We want to be sure that all these classes are loaded before Symfony's ClassCollectionLoader work
         foreach ($classesNames as $className) {
-
             if (class_exists($className, false)) {
                 continue;
             }
-
-            $this->app
-                ->get('autoloader')
-                ->loadClass($className);
-
+            $autoloader->loadClass($className);
         }
 
         // Please, Symfony, order our classes by their hierarchy!
@@ -108,8 +105,7 @@ class ClassesPacker extends BasePacker
             $classFilePath = $classesNamesFilesPathsMap[$className];
 
             // Class content formatting
-            $classContent = $this->app
-                ->get('packing-manager')
+            $classContent = $this->getPackingManager()
                 ->getPhpFileContentForPacking($classFilePath);
 
             // The formatted PHP Class content is appended to our packed Plugin PHP code

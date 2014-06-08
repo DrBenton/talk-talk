@@ -17,8 +17,9 @@ class NewPackersPacker extends BasePacker
 
         $myConfigPart = $plugin->config[$this->myConfigKey];
 
-        // In this Packer we return no code, but we add the new Plugins Packing Behaviours
-        // before others Packers "getPhpCodeToPack()" calls
+        // In this Packer we return no code at all,
+        // but we register the Plugins Packing Behaviours
+        // before others Packers "getPhpCodeToPack()" method calls.
         foreach ($myConfigPart as $packerClass) {
 
             if (!class_exists($packerClass, false)) {

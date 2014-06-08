@@ -18,11 +18,20 @@ class GeneralPacker  extends BasePacker
             throw new \DomainException(sprintf('Plugin "%s" config file must have a "@general" section!'), $plugin->path);
         }
 
-        return <<<PLUGIN_PHP_CODE
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
+
 namespace {
-    \$app->vars['plugins.registered_plugins'][] = '$plugin->id';
+    $app->vars['plugins.registered_plugins'][] = '%plugin-id%';
 }
+
 PLUGIN_PHP_CODE;
+
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 
     /**

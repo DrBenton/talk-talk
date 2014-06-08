@@ -13,19 +13,22 @@ class ActionsParamsConvertersPacker extends BasePacker
 
     public function getPackerInitCode()
     {
-        return <<<'PLUGIN_PHP_CODE'
+        return <<<'PACKER_INIT_PHP_CODE'
+
 namespace {
     // Actions initialization
     $app->vars['plugins.actions.params-converters'] = array();
 
     $app->beforeRun(
         function () use ($app) {
+            $converters = &$app->vars['plugins.actions.params-converters'];
+
             $app->get('logger')->debug(
-                sprintf('Actions params converters initialization (%d converters registered).', count($app->vars['plugins.actions.params-converters']))
+                sprintf('Actions params converters initialization (%d converters registered).', count($converters))
             );
 
             // 2) Actions params converters are registered!
-            foreach($app->vars['plugins.actions.params-converters'] as $converterId => $converterCallback) {
+            foreach($converters as $converterId => $converterCallback) {
                 $app->addActionsParamsConverter($converterId, $converterCallback);
             }
         },
@@ -33,7 +36,7 @@ namespace {
     );
 }
 
-PLUGIN_PHP_CODE;
+PACKER_INIT_PHP_CODE;
     }
 
     /**
@@ -57,27 +60,39 @@ PLUGIN_PHP_CODE;
 
     protected function getConverterPhpCode(Plugin $plugin, $converterId)
     {
-        $converterFilePath = str_replace(
-            array('%plugin-path%', '%converter-id%'),
-            array($plugin->path, $converterId),
-            self::CONVERTER_FILE_PATH
+        $converterFilePath = $this->replace(
+            self::CONVERTER_FILE_PATH,
+            array(
+                '%plugin-path%' => $plugin->path,
+                '%converter-id%' => $converterId,
+            )
         );
 
-        $converterFileInclusionCode = $this->app
-            ->get('packing-manager')
+        $converterFileInclusionCode = $this->getPackingManager()
             ->getAppInclusionsCode(array($converterFilePath));
 
-        return <<<PLUGIN_PHP_CODE
-$converterFileInclusionCode
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
+
+%converter-file-inclusion-code%
 
 namespace {
-    // "$converterId" Actions Params Converter init (from Plugin "$plugin->id")
-    \$app->vars['plugins.actions.params-converters']['$converterId'] = function () use (\$app) {
-        return \$app->includeInApp('$converterFilePath');
+    // "%converter-id%" Actions Params Converter init (from Plugin "%plugin-id%")
+    $app->vars['plugins.actions.params-converters']['%converter-id%'] = function () use ($app) {
+        return $app->includeInApp('%converter-file-path%');
     };
 }
 
 PLUGIN_PHP_CODE;
+
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%converter-id%' => $converterId,
+                '%converter-file-inclusion-code%' => $converterFileInclusionCode,
+                '%converter-file-path%' => $converterFilePath,
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 
 }

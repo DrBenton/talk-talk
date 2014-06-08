@@ -40,7 +40,7 @@ interface ApplicationInterface
 
     public function getFunction($functionId);
 
-    public function addAction($urlPattern);
+    public function addAction($urlPattern, $callback);
 
     public function addActionsParamsConverter($converterId, $callable);
 

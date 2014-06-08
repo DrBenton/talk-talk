@@ -17,7 +17,7 @@
     target: forum-display
     name: forum-base/forum
     params-converters:
-      forum: forum_id
+      forum: forum-id
   -
     # GET /forum/ID/topics/new => actions/new-topic-form.php
     # (authentication required)
@@ -25,7 +25,7 @@
     target: new-topic-form
     name: forum-base/new-topic-form
     params-converters:
-      forum: forum_id
+      forum: forum-id
     before:
       - auth.middleware.is-authenticated
   -
@@ -36,7 +36,7 @@
     name: forum-base/new-topic-form/target
     method: POST
     params-converters:
-      forum: forum_id
+      forum: forum-id
     before:
       - auth.middleware.is-authenticated
   -
@@ -63,7 +63,7 @@
       - auth.middleware.is-authenticated
 
 @actions-params-converters:
-  - forum_id
+  - forum-id
 
 @classes:
   -

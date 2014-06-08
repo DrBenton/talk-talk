@@ -12,12 +12,13 @@ class AppAssetsPacker extends BasePacker
 
     public function getPackerInitCode()
     {
-        return <<<PLUGIN_PHP_CODE
+        return <<<'PACKER_INIT_PHP_CODE'
+
 namespace {
-    \$app->vars['app.assets.css'] = array();
+    $app->vars['app.assets.css'] = array();
 }
 
-PLUGIN_PHP_CODE;
+PACKER_INIT_PHP_CODE;
     }
 
     /**
@@ -72,6 +73,7 @@ PLUGIN_PHP_CODE;
         }
 
         return <<<PLUGIN_PHP_CODE
+
 namespace {
     $assetPhpCode
 }
@@ -84,7 +86,9 @@ PLUGIN_PHP_CODE;
         $cssDataPhpCode = var_export($cssData, true);
 
         return <<<CSS_PHP_CODE
+
 \$app->vars['app.assets.css'][] = $cssDataPhpCode;
+
 CSS_PHP_CODE;
     }
 
@@ -94,7 +98,9 @@ CSS_PHP_CODE;
         $jsDataPhpCode = var_export($jsData, true);
 
         return <<<JS_PHP_CODE
+
 \$app->vars['app.assets.js.$target'][] = $jsDataPhpCode;
+
 JS_PHP_CODE;
     }
 

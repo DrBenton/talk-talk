@@ -39,6 +39,7 @@ class Application implements ApplicationInterface
     public function setConfig(array $configData)
     {
         $this->vars['config'] = $configData;
+
         $this->vars['debug'] = (bool) $configData['debug']['debug'];
         $this->silexApp['debug'] = $this->vars['debug'];
     }
@@ -109,7 +110,7 @@ class Application implements ApplicationInterface
         if (!isset($this->definedServices[$serviceId])) {
             $errMsg = sprintf('No Service "%s" found!', $serviceId);
             if ($this->vars['debug']) {
-                $errMsg .= sprintf('Available Services: %s', implode(', ', array_keys($this->definedServices)));
+                $errMsg .= ' ' . sprintf('Available Services: %s', implode(', ', array_keys($this->definedServices)));
             }
             throw new \DomainException($errMsg);
         }
@@ -155,7 +156,7 @@ class Application implements ApplicationInterface
         if (!isset($this->definedFunctions[$functionId])) {
             $errMsg = sprintf('No Function "%s" found!', $functionId);
             if ($this->vars['debug']) {
-                $errMsg .= sprintf('Available Functions: %s', implode(', ', array_keys($this->definedFunctions)));
+                $errMsg .= ' ' . sprintf('Available Functions: %s', implode(', ', array_keys($this->definedFunctions)));
             }
             throw new \DomainException($errMsg);
         }
@@ -183,28 +184,30 @@ class Application implements ApplicationInterface
         return $this->definedFunctions[$functionId];
     }
 
-    public function addAction($urlPattern)
+    public function addAction($urlPattern, $callback)
     {
+        $this->get('logger')
+            ->debug(sprintf('Action with URL "%s" added to Silex router.', $urlPattern));
+
         return call_user_func_array(array($this->silexApp, 'match'), func_get_args());
     }
 
     public function addActionsParamsConverter($converterId, $callable)
     {
-        if (!preg_match('~^[a-z][a-z0-9_]+$~i', $converterId)) {
+        if (!preg_match('~^[a-z][-a-z0-9_]+$~i', $converterId)) {
             throw new \DomainException(sprintf('Converter id "%s" is not correct (as they are converters to class methods, their name must follow the PHP classes methods naming restrictions)', $converterId));
         }
 
-        $silexCallbacksBridge = $this->getService('silex.callbacks_bridge');
-        if (!isset($this->silexApp['converters'])) {
-            $this->silexApp['converters'] = $silexCallbacksBridge;
-        }
-        $silexCallbacksBridge->registerCallback($converterId, $callable);
+        $this->getService('silex.callbacks_bridge')
+            ->registerCallback($converterId, $callable);
     }
 
     public function run()
     {
         $this->triggerBeforeRunCallbacks();
 
+        $this->get('logger')
+            ->debug('silexApp#run()');
         $this->silexApp->run($this->request);
     }
 
@@ -318,6 +321,9 @@ class Application implements ApplicationInterface
 
     protected function triggerBeforeRunCallbacks()
     {
+        $this->get('logger')
+            ->debug(sprintf('triggerBeforeRunCallbacks() - %d callbacks registred', count($this->beforeRunCallbacks)));
+
         usort($this->beforeRunCallbacks, function (array $errorHandlerA, array $errorHandlerB)
         {
             $priorityA = $errorHandlerA['priority'];
