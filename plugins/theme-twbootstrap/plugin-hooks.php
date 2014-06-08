@@ -47,27 +47,28 @@ $hooks['html.page.home'] = function (DOMQuery $html) use ($app) {
     $homeHeading->addClass('jumbotron');
 
     // Site settings
-    $siteTitleFontSize = $app['settings']->get('app.site-title.font-size');
+    $settings = $app->get('settings');
+    $siteTitleFontSize = $settings->get('app.site-title.font-size');
     if (null !== $siteTitleFontSize) {
         $homeHeadingTitle->attr('style', $homeHeadingTitle->attr('style') . "font-size: ${siteTitleFontSize};");
     }
-    $siteTitleColor = $app['settings']->get('app.site-title.color');
+    $siteTitleColor = $settings->get('app.site-title.color');
     if (null !== $siteTitleColor) {
         $homeHeadingTitle->attr('style', $homeHeadingTitle->attr('style') . "color: ${siteTitleColor};");
     }
-    $siteTitleShadow = $app['settings']->get('app.site-title.shadow');
+    $siteTitleShadow = $settings->get('app.site-title.shadow');
     if (null !== $siteTitleShadow) {
         $homeHeadingTitle->attr('style', $homeHeadingTitle->attr('style') . "text-shadow: ${siteTitleShadow};");
     }
-    $siteImageUrl = $app['settings']->get('app.site-image.url');
+    $siteImageUrl = $settings->get('app.site-image.url');
     if (null !== $siteImageUrl) {
         $homeHeading->addClass('with-image');
         $homeHeading->attr('style', "background-image: url(\"$siteImageUrl\");");
-        $siteImageBgColor = $app['settings']->get('app.site-image.bgcolor');
+        $siteImageBgColor = $settings->get('app.site-image.bgcolor');
         if (null !== $siteImageBgColor) {
             $homeHeading->attr('style', $homeHeading->attr('style') . "background-color: ${siteImageBgColor};");
         }
-        $siteImageSize = $app['settings']->get('app.site-image.size');
+        $siteImageSize = $settings->get('app.site-image.size');
         if (null !== $siteImageSize) {
             list($width, $height) = explode('x', $siteImageSize);
             $homeHeading->attr('style', $homeHeading->attr('style') . "height: ${height}px;");
@@ -286,7 +287,8 @@ $hooks['html.component.progress'] = function (DOMQuery $html) use ($app, $myComp
     // Now that we have replaced all the <progress> with our custom TWB components, let's add
     // a JS behaviour on them!
     $twbProgressComponents = $html->find('.progress-component');
-    $app['html-components.add_component'](
+    $app->exec(
+        'html-components.add_component',
         $twbProgressComponents,
         $myComponentsUrl . 'ui/twb-progress'
     );
