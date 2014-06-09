@@ -7,8 +7,8 @@
     - ^/phpbb
     - ^/sign-in$
     - ^/utils/get-ajax-alerts-display$
-  firewalls:
-   - auth.middleware.is-authenticated
+  globalFirewalls:
+   - authentification-required
 
 @actions:
   -

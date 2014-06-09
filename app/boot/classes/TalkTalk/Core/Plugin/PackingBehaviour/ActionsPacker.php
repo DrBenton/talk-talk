@@ -251,13 +251,27 @@ ACTION_CONVERTER_AFTER_CODE;
         Plugin $plugin, array $actionData,
         &$beforeActionDefinitions, &$afterActionDefinitions, &$codePlaceholders
     ) {
-        if (!isset($actionData['firewalls'])) {
+        if (!isset($plugin->data['@general']['globalFirewalls']) && !isset($actionData['firewalls'])) {
             return;
         }
 
-        $stringUtils = $this->app->get('utils.string');
+        $firewallsIds = array();
 
+        // Whole Plugin "general/globalFirewalls" firewalls goes first
+        if (isset($plugin->config['@general']['globalFirewalls'])) {
+            foreach ($plugin->config['@general']['globalFirewalls'] as $wholePluginFirewallId) {
+                $firewallsIds[] = $wholePluginFirewallId;
+            }
+        }
+
+        // Now, we handle this route specific firewalls
         foreach ($actionData['firewalls'] as $firewallId) {
+            $firewallsIds[] = $firewallId;
+        }
+
+        // Okay, let's add these guys to our Action
+        $stringUtils = $this->app->get('utils.string');
+        foreach ($firewallsIds as $firewallId) {
 
             $firewallId = $stringUtils->camelize('firewall-' . $firewallId);
 
