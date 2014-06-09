@@ -21,13 +21,20 @@ if (! $this->app()->vars['isAjax'] || !empty($this->alerts)):
             <?= $this->hooks()->html('component.alert') ?>
             <?php foreach(array('error', 'success', 'info') as $alertType): ?>
                 <?php
-                $alerts = $this->app()->get('flash')->getFlashes("alerts.$alertType.");
-
-                if (!empty($alerts)):
+                $alertsToDisplay = array();
+                array_walk( /* PHP, why can't we use array_filter with associative arrays ? */
+                    $this->alerts,
+                    function ($alertContent, $alertKey) use (&$alertsToDisplay, $alertType) {
+                        if (0 === strpos($alertKey, "alerts.$alertType.")) {
+                            $alertsToDisplay[$alertKey] = $alertContent;
+                        }
+                    }
+                );
+                if (!empty($alertsToDisplay)):
                 ?>
                     <div class="alert alert-<?= $alertType ?>">
                         <ul>
-                            <?php foreach($alerts as $alert): ?>
+                            <?php foreach($alertsToDisplay as $alert): ?>
                             <li>
                                 <?php if (is_string($alert)): ?>
                                     <?= $this->e($alert) ?>
