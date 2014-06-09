@@ -40,9 +40,18 @@ PLUGIN_PHP_CODE;
      */
     public function getMetadata(Plugin $plugin)
     {
-        return array(
+        $pluginMetadata = array(
           'id' => $plugin->id,
           'path' => $plugin->path,
         );
+
+        if (!empty($plugin->config['@general']['disabled'])) {
+            $pluginMetadata['disabled'] = true;
+        }
+        if (isset($plugin->config['@general']['enabledOnlyForUrl'])) {
+            $pluginMetadata['enabledOnlyForUrl'] = $plugin->config['@general']['enabledOnlyForUrl'];
+        }
+
+        return $pluginMetadata;
     }
 }

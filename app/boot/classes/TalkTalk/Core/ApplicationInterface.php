@@ -46,6 +46,9 @@ interface ApplicationInterface
 
     public function run();
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
     public function getRequest();
 
     public function beforeRun($callable, $priority = 0);

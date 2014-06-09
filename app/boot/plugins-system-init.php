@@ -9,6 +9,10 @@ call_user_func(
         $app->vars['plugins.packs_namespace'] = 'plugins';
         $app->vars['plugins.packs_prefix'] = 'plugin---';
         $app->vars['plugins.registered_plugins'] = array();
+        $app->vars['plugins.disabled_plugins'] = array(
+            'permanently' => array(),
+            'forCurrentUrl' => array(),
+        );
 
         // Plugins specific boot services
 

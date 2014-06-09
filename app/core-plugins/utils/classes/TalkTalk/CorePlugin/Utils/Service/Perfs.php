@@ -52,8 +52,8 @@ class Perfs extends BaseService
         $perfsInfo['nbIncludedFilesAtPluginsInit'] = $this->app->vars['perfs.plugins-init.nb_included_files'];
         // Plugins-related info
         $perfsInfo['nbPlugins'] = count($this->app->vars['plugins.registered_plugins']);
-        $perfsInfo['nbPluginsPermanentlyDisabled'] = 0;//TODO
-        $perfsInfo['nbPluginsDisabledForCurrentUrl'] = 0;//TODO
+        $perfsInfo['nbPluginsPermanentlyDisabled'] = count($this->app->vars['plugins.disabled_plugins']['permanently']);
+        $perfsInfo['nbPluginsDisabledForCurrentUrl'] = count($this->app->vars['plugins.disabled_plugins']['forCurrentUrl']);
         if (isset($this->app->vars['plugins.packing.duration'])) {
             $perfsInfo['pluginsPackingDuration'] = $this->app->vars['plugins.packing.duration'];
         }

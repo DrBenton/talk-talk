@@ -36,13 +36,22 @@ class PluginsUnpacker extends BaseService
             ->get('packing-manager')
             ->unpackData($this->packsDataNs, 'plugins-metadata');
 
+        // Well... Each Plugin is now unpacked! (if its is enabled)
         foreach ($pluginsMetadata as $pluginMetadata) {
-            $this->unpackPlugin($pluginMetadata['id']);
+
+            if ($this->isPermanentlyDisabled($pluginMetadata)) {
+                continue;
+            }
+            if ($this->isDisabledForCurrentUrl($pluginMetadata)) {
+                continue;
+            }
+
+            $this->unpackPlugin($pluginMetadata['id'], $pluginMetadata);
         }
     }
 
     /**
-     * @param  string                       $pluginId
+     * @param  string $pluginId
      * @return \TalkTalk\Core\Plugin\Plugin
      */
     protected function unpackPlugin($pluginId)
@@ -52,9 +61,45 @@ class PluginsUnpacker extends BaseService
             ->unpackData($this->packsDataNs, $this->app->vars['plugins.packs_prefix'] . $pluginId);
     }
 
-    protected function getPackedPluginsMetadataFile()
+    protected function isPermanentlyDisabled(array $pluginMetadata)
     {
+        static $requestPathInfo;
 
+        if (empty($pluginMetadata['disabled'])) {
+            return false;
+        }
+
+        $this->app->vars['plugins.disabled_plugins']['permanently'][] = $pluginMetadata['id'];
+
+        $this->app->get('logger')
+            ->debug(sprintf('Plugin "%s" is permanently disabled"', $pluginMetadata['id']));
+
+        return false;
     }
 
+    protected function isDisabledForCurrentUrl(array $pluginMetadata)
+    {
+        static $requestPathInfo;
+
+        if (!isset($pluginMetadata['enabledOnlyForUrl'])) {
+            return false;
+        }
+
+        if (null === $requestPathInfo) {
+            $requestPathInfo = $this->app->getRequest()->getPathInfo();
+        }
+
+        foreach ($pluginMetadata['enabledOnlyForUrl'] as $whiteListUrlPattern) {
+            if (preg_match('~'.$whiteListUrlPattern.'~', $requestPathInfo)) {
+                return false;
+            }
+        }
+
+        $this->app->vars['plugins.disabled_plugins']['forCurrentUrl'][] = $pluginMetadata['id'];
+
+        $this->app->get('logger')
+            ->debug(sprintf('Plugin "%s" is disabled for current URL "%s"', $pluginMetadata['id'], $requestPathInfo));
+
+        return true;
+    }
 }
