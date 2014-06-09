@@ -41,8 +41,10 @@
     path: %plugin-path%/classes/TalkTalk/Model
 
 @services:
-#  - before-middlewares
   - user
+
+@firewalls:
+  - authentification-required
 
 @translations:
   - en
