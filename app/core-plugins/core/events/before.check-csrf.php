@@ -4,14 +4,13 @@
  * @see app/core-plugins/core/services/csrf.php for CSRF token generation, related to this app event
  */
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
 $CSRF_PROTECTED_METHODS = array('POST', 'PUT', 'DELETE');
 
 $app->before(
-    function () use ($app, $CSRF_PROTECTED_METHODS) {
-
-        $request = $app->vars['request'];
+    function (Request $request) use ($app, $CSRF_PROTECTED_METHODS) {
 
         if (!in_array($request->getMethod(), $CSRF_PROTECTED_METHODS)) {
             return; //not a CSRF-protected HTTP method
@@ -19,7 +18,7 @@ $app->before(
 
         // Let's check CSRF token!!
         $tokenName = $app->get('csrf')->getTokenName();
-        $receivedToken = $request->post($tokenName);
+        $receivedToken = $request->request->get($tokenName);
         if (null === $receivedToken && isset($request->headers['X-CSRF-Token'])) {
             $receivedToken = $request->headers['X-CSRF-Token'];
         }

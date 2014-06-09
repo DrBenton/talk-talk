@@ -31,23 +31,37 @@ class EventsPacker extends BasePacker
 
     protected function getEventPhpCode(Plugin $plugin, $eventName)
     {
-        $eventFilePath = str_replace(
-            array('%plugin-path%', '%event-name%'),
-            array($plugin->path, $eventName),
-            self::EVENT_FILE_PATH
+        $eventFilePath = $this->replace(
+            self::EVENT_FILE_PATH,
+            array(
+                '%plugin-path%' => $plugin->path,
+                '%event-name%' => $eventName,
+            )
         );
 
-        $serviceFileInclusionCode = $this->app
-            ->get('packing-manager')
+        $eventFileInclusionCode = $this->getPackingManager()
             ->getAppInclusionsCode(array($eventFilePath));
 
-        return <<<PLUGIN_PHP_CODE
-$serviceFileInclusionCode
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
+
+%event-file-inclusion-code%
 
 namespace {
-    // Event "$eventName" initialization:
-    \$app->includeInApp('$eventFilePath');
+    // Event "%event-name%" initialization (from Plugin "%plugin-id%"):
+    $app->includeInApp('%event-file-path%');
 }
+
 PLUGIN_PHP_CODE;
+
+        // Job's done!
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%event-file-inclusion-code%' => $eventFileInclusionCode,
+                '%event-file-path%' => $eventFilePath,
+                '%event-name%' => $eventName,
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 }

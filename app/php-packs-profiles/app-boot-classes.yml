@@ -25,3 +25,4 @@ files:
   - Service/StringUtils.php
   - Service/IOUtils.php
   - Service/ArrayUtils.php
+  - Service/SilexCallbacksBridge.php

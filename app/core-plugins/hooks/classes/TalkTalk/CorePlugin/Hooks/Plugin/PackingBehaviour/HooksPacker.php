@@ -17,6 +17,7 @@ class HooksPacker extends BasePacker
     public function getPackerInitCode()
     {
         return <<<'PACKER_INIT_CODE'
+
 namespace {
 
     /* Plugins hooks system initialization */
@@ -57,10 +58,11 @@ PACKER_INIT_CODE;
             return null;
         }
 
-        $hooksFilePath = str_replace(
-            '%plugin-path%',
-            $plugin->path,
-            self::HOOKS_FILE_PATH
+        $hooksFilePath = $this->replace(
+            self::HOOKS_FILE_PATH,
+            array(
+                '%plugin-path%' => $plugin->path,
+            )
         );
 
         if (!is_file($hooksFilePath)) {
@@ -88,7 +90,6 @@ PACKER_INIT_CODE;
             $hookName = $normalizedPluginHookData['name'];
 
             if (!isset($pluginHooksImplementations[$hookName])) {
-                print_r($pluginHooksImplementations);
                 throw new \DomainException(
                     sprintf('Plugin "%s" registers a "%s" hook, but this hook definition can not be found in the %d Plugin hooks implementations!', $plugin->id, $hookName, count($pluginHooksImplementations))
                 );
@@ -120,29 +121,39 @@ PACKER_INIT_CODE;
     {
         $pluginComponentsUrl = $this->getPluginComponentsUrl($plugin);
 
-        $hookName = $hookData['name'];
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
 
-        return <<<PLUGIN_PHP_CODE
 namespace {
-    /* begin "$plugin->id" Plugin hook "$hookName" plug to app */
-    \$app->vars['hooks.registry']['$hookName'][] = array(
-        'implementation' => function (\$hookArgs) use (\$app) {
-            \$app->exec(
+    // Hook "%hook-name%" initialization (from Plugin "%plugin-id%"):
+    $app->vars['hooks.registry']['%hook-name%'][] = array(
+        'implementation' => function ($hookArgs) use ($app) {
+            $app->exec(
                 'hooks.load_plugin_hooks',
-                '$plugin->id', '$hooksFilePath', '$pluginComponentsUrl'
+                '%plugin-id%', '%hooks-file-path%', '%plugin-components-url%'
             );
 
             return call_user_func_array(
-                \$app->vars['hooks.registry.implementations']['$plugin->id']['$hookName'],
-                \$hookArgs
+                $app->vars['hooks.registry.implementations']['%plugin-id%']['%hook-name%'],
+                $hookArgs
             );
         },
-        'priority' => $hookData[priority]
+        'priority' => %hook-priority%
     );
-    /* end "$plugin->id" Plugin hook "$hookName" plug to app */
 }
 
 PLUGIN_PHP_CODE;
+
+        // Job's done!
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%hooks-file-path%' => $hooksFilePath,
+                '%hook-name%' => $hookData['name'],
+                '%hook-priority%' => $hookData['priority'],
+                '%plugin-components-url%' => $pluginComponentsUrl,
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 
     /**
@@ -173,8 +184,7 @@ PLUGIN_PHP_CODE;
      */
     protected function getPluginHooksImplementationsCode($hooksFilePath)
     {
-        $hooksImplementationsInclusionCode = $this->app
-            ->get('packing-manager')
+        $hooksImplementationsInclusionCode = $this->getPackingManager()
             ->getAppInclusionsCode($hooksFilePath, array('&$hooks', '$myComponentsUrl'));
 
         return $hooksImplementationsInclusionCode;

@@ -32,38 +32,48 @@ class TemplatesExtensionsPacker extends BasePacker
 
     protected function getExtensionPhpCode(Plugin $plugin, $extensionName)
     {
-        $templateExtFilePath = str_replace(
-            array('%plugin-path%', '%template-ext-name%'),
-            array($plugin->path, $extensionName),
-            self::TEMPLATE_EXT_FILE_PATH
+        $templateExtFilePath = $this->replace(
+            self::TEMPLATE_EXT_FILE_PATH,
+            array(
+                '%plugin-path%' => $plugin->path,
+                '%template-ext-name%' => $extensionName,
+            )
         );
 
         $templateExtFileContent = file_get_contents($templateExtFilePath);
 
-        $templateExtFileInclusionCode = $this->app
-            ->get('packing-manager')
+        $templateExtFileInclusionCode = $this->getPackingManager()
             ->stripOpeningPhpTag($templateExtFileContent);
 
-        $templateExtFileInclusionCode = preg_replace('~^~m', '            ', $templateExtFileInclusionCode);
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
 
-        return <<<PLUGIN_PHP_CODE
 namespace {
-    // Template extension "$extensionName" initialization:
-    \$app->before(
-        function () use (\$app) {
-            \$extension = call_user_func(
-                function () use (\$app) {
-                    $templateExtFileInclusionCode
+    // Template extension "%extension-name%" initialization (from Plugin "%plugin-id%"):
+    $app->before(
+        function () use ($app) {
+            $extension = call_user_func(
+                function () use ($app) {
+                    %template-ext-file-inclusion-code%
                 }
             );
-            if (\$extension instanceof \TalkTalk\Core\ApplicationAware) {
-                \$extension->setApplication(\$app);
+            if ($extension instanceof \TalkTalk\Core\ApplicationAware) {
+                $extension->setApplication($app);
             }
-            \$app->get('view')->addExtension(\$extension);
+            $app->get('view')->addExtension($extension);
         }
     );
 }
 
 PLUGIN_PHP_CODE;
+
+        // Job's done!
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%template-ext-file-inclusion-code%' => $templateExtFileInclusionCode,
+                '%extension-name%' => $extensionName,
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 }

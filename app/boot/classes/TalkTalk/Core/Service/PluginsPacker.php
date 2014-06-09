@@ -18,6 +18,7 @@ class PluginsPacker extends BaseService
     public function packAllPlugins()
     {
         $this->app->get('logger')->info(__METHOD__ . ' - Plugins packing.');
+
         $this->app->vars['plugins.packing.nb_packed'] = 0;
         $startTime = microtime(true);
 
@@ -25,6 +26,7 @@ class PluginsPacker extends BaseService
         $corePackingBehaviours = array(
             'GeneralPacker',
             'ActionsPacker',
+            'ActionsParamsConvertersPacker',
             'ClassesPacker',
             'ServicesPacker',
             'NewPackersPacker',

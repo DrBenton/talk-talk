@@ -1,0 +1,8 @@
+packing:
+  namespace: vendors
+  id: logger
+  base-dir: %app-root%/vendor/php/teacup/log/
+  handledPhPNamespace: Teacup\
+
+files:
+  - Log.php

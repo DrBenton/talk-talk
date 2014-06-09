@@ -13,9 +13,7 @@ call_user_func(
         // Plugins specific boot services
 
         // Do we have packed Plugins?
-        if (!empty($app->vars['config']['packing']['use_app_packing'])) {
-            $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-unpacker.php');
-        }
+        $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-unpacker.php');
         $hasPackedPlugins = $app->get('plugins.unpacker')->hasPackedPlugins();
 
         if (
@@ -27,13 +25,11 @@ call_user_func(
             // --> let's find & pack them!
 
             // "plugins.finder" & "plugins.packer" Services init
-            if (!empty($app->vars['config']['packing']['use_app_packing'])) {
-                $app->includeInApp(
-                    $app->vars['app.boot_services_path'] . '/plugins-finder.php'
-                );
-                $app->includeInApp(
-                    $app->vars['app.boot_services_path'] . '/plugins-packer.php'
-                );
+            if (!$app->hasService('plugins.finder')) {
+                $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-finder.php');
+            }
+            if (!$app->hasService('plugins.packer')) {
+                $app->includeInApp($app->vars['app.boot_services_path'] . '/plugins-packer.php');
             }
 
             // Go! Let's pack all our Plugins!

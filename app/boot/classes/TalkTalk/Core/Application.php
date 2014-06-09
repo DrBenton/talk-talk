@@ -2,7 +2,9 @@
 
 namespace TalkTalk\Core;
 
-use Slim\Slim;
+use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Application as SilexApplication;
+use Symfony\Component\HttpFoundation\Request;
 
 class Application implements ApplicationInterface
 {
@@ -12,21 +14,34 @@ class Application implements ApplicationInterface
      */
     public $vars = array();
     /**
-     * @var \Slim\Slim
+     * @var \Silex\Application
      */
-    protected $slimApp;
+    protected $silexApp;
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
+    protected $request;
 
     protected $definedServices = array();
     protected $resolvedServices = array();
     protected $definedFunctions = array();
-    protected $errorHandlers = array();
+    protected $beforeRunCallbacks = array();
 
-    public function __construct(Slim $slimApp)
+    public function __construct(SilexApplication $silexApp, Request $request)
     {
-        $this->slimApp = $slimApp;
+        $this->silexApp = $silexApp;
+        $this->request = $request;
         $this->vars['packs.included_files.closures'] = array();
         $this->registerAutoloader();
-        $this->defineService('slim', $this->slimApp);
+        $this->defineService('silex', $this->silexApp);
+    }
+
+    public function setConfig(array $configData)
+    {
+        $this->vars['config'] = $configData;
+
+        $this->vars['debug'] = (bool) $configData['debug']['debug'];
+        $this->silexApp['debug'] = $this->vars['debug'];
     }
 
     public function includeInApp($filePath)
@@ -95,7 +110,7 @@ class Application implements ApplicationInterface
         if (!isset($this->definedServices[$serviceId])) {
             $errMsg = sprintf('No Service "%s" found!', $serviceId);
             if ($this->vars['debug']) {
-                $errMsg .= sprintf('Available Services: %s', implode(', ', array_keys($this->definedServices)));
+                $errMsg .= ' ' . sprintf('Available Services: %s', implode(', ', array_keys($this->definedServices)));
             }
             throw new \DomainException($errMsg);
         }
@@ -141,7 +156,7 @@ class Application implements ApplicationInterface
         if (!isset($this->definedFunctions[$functionId])) {
             $errMsg = sprintf('No Function "%s" found!', $functionId);
             if ($this->vars['debug']) {
-                $errMsg .= sprintf('Available Functions: %s', implode(', ', array_keys($this->definedFunctions)));
+                $errMsg .= ' ' . sprintf('Available Functions: %s', implode(', ', array_keys($this->definedFunctions)));
             }
             throw new \DomainException($errMsg);
         }
@@ -169,43 +184,59 @@ class Application implements ApplicationInterface
         return $this->definedFunctions[$functionId];
     }
 
-    public function addAction($urlPattern)
+    public function addAction($urlPattern, $callback)
     {
-        return call_user_func_array(array($this->slimApp, 'map'), func_get_args());
+        $this->get('logger')
+            ->debug(sprintf('Action with URL "%s" added to Silex router.', $urlPattern));
+
+        return call_user_func_array(array($this->silexApp, 'match'), func_get_args());
+    }
+
+    public function addActionsParamsConverter($converterId, $callable)
+    {
+        if (!preg_match('~^[a-z][-a-z0-9_]+$~i', $converterId)) {
+            throw new \DomainException(sprintf('Converter id "%s" is not correct (as they are converters to class methods, their name must follow the PHP classes methods naming restrictions)', $converterId));
+        }
+
+        $this->getService('silex.callbacks_bridge')
+            ->registerCallback($converterId, $callable);
     }
 
     public function run()
     {
-        $this->slimApp->run();
+        $this->triggerBeforeRunCallbacks();
+
+        $this->get('logger')
+            ->debug('silexApp#run()');
+        $this->silexApp->run($this->request);
     }
 
     public function getRequest()
     {
-        return $this->slimApp->request;
+        return $this->request;
     }
 
-    public function getResponse()
+    public function beforeRun($callable, $priority = 0)
     {
-        return $this->slimApp->response;
+        $this->beforeRunCallbacks[] = array(
+            'callable' => $callable,
+            'priority' => $priority,
+        );
     }
 
     public function before($callable, $priority = 0)
     {
-        $this->slimApp->hook('slim.before', $callable, $priority);
+        $this->silexApp->before($callable, $priority);
     }
 
     public function after($callable, $priority = 0)
     {
-        $this->slimApp->hook('slim.after.dispatch', $callable, $priority);
+        $this->silexApp->after($callable, $priority);
     }
 
     public function error($callable, $priority = 0)
     {
-        $this->errorHandlers[] = array(
-            'callable' => $callable,
-            'priority' => $priority,
-        );
-        $this->slimApp->error(array($this, 'onError'));
+        $this->silexApp->error($callable, $priority);
     }
 
     /**
@@ -215,14 +246,24 @@ class Application implements ApplicationInterface
      */
     public function path($actionName, $params = array())
     {
-        return $this->slimApp->urlFor($actionName, $params);
+        static $urlGenerator;
+        if (null === $urlGenerator) {
+            if (!isset($this->silexApp['url_generator'])) {
+                $this->silexApp->register(
+                  new UrlGeneratorServiceProvider()
+                );
+            }
+            $urlGenerator = $this->silexApp['url_generator'];
+        }
+
+        return $urlGenerator->generate($actionName, $params);
     }
 
     public function redirect($url, $status = 302)
     {
         $this->get('flash')->keepFlashes();
 
-        return $this->slimApp->redirect($url, $status);
+        return $this->silexApp->redirect($url, $status);
     }
 
     public function redirectToAction($actionName, $params = array(), $status = 302)
@@ -271,20 +312,19 @@ class Application implements ApplicationInterface
 
         // No PHP pack provides this class. Let's give this job to Composer!
         if ($this->hasService('autoloader')) {
-            $this->get('logger')->debug(
+            $this->get('logger')->info(
                 sprintf('Composer called to rescue to load class "%s".', $className)
             );
             $this->get('autoloader')->loadClass($className);
         }
     }
 
-    /**
-     * @param \Exception $e
-     * @private
-     */
-    public function onError(\Exception $e)
+    protected function triggerBeforeRunCallbacks()
     {
-        usort($this->errorHandlers, function (array $errorHandlerA, array $errorHandlerB)
+        $this->get('logger')
+            ->debug(sprintf('triggerBeforeRunCallbacks() - %d callbacks registred', count($this->beforeRunCallbacks)));
+
+        usort($this->beforeRunCallbacks, function (array $errorHandlerA, array $errorHandlerB)
         {
             $priorityA = $errorHandlerA['priority'];
             $priorityB = $errorHandlerB['priority'];
@@ -297,8 +337,8 @@ class Application implements ApplicationInterface
             }
         });
 
-        foreach($this->errorHandlers as $errorHandler) {
-            call_user_func($errorHandler['callable'], $e);
+        foreach($this->beforeRunCallbacks as $beforeRunCallbackData) {
+            call_user_func($beforeRunCallbackData['callable']);
         }
     }
 

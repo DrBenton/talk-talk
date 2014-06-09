@@ -1,17 +1,16 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
 use TalkTalk\Model\Forum;
 use TalkTalk\Model\Topic;
 
-$action = function ($forumId) use ($app) {
-
-    $forum = Forum::findOrFail($forumId);
+$action = function (Request $request, Forum $forum) use ($app) {
 
     // Forum children retrieval
     $forumChildren = $forum->getChildren();
 
     // Topics retrieval (only those of the current page)
-    $pageNum = (int) $app->vars['request']->get('page', 1);
+    $pageNum = $request->query->getInt('page', 1);
     $topics = $forum->topics();
     $topicsToDisplay = $topics->getQuery()
         ->orderBy('updated_at', 'DESC')
@@ -31,7 +30,7 @@ $action = function ($forumId) use ($app) {
         'currentPageNum' => $pageNum,
         'nbPages' => ceil($nbTopicsTotal / $app->vars['forum-base.pagination.topics.nb_per_page']),
         'baseUrl' => $app->path(
-            'forum-base/forum', array('forumId' => $forum->id)
+            'forum-base/forum', array('forum' => $forum->id)
         ) . '?page=%page%'
     );
 

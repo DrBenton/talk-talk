@@ -7,7 +7,7 @@
             <div class="forum-container level-{{ forum.depth }}">
                 <div class="forum">
                     <h3 class="forum-title">
-                        <a href="<?= $this->e($this->app()->path('forum-base/forum', array('forumId' => $forum->id))) ?>"
+                        <a href="<?= $this->e($this->app()->path('forum-base/forum', array('forum' => $forum->id))) ?>"
                            class="forum-link root-forum-link ajax-link">
                             <?= $this->e($forum->title) ?>
                         </a>
@@ -21,7 +21,7 @@
                             <div class="forum-children">
                                 <?php foreach ($forum->getChildren() as $childForum): ?>
                                 <h5>
-                                    <a href="<?= $this->e($this->app()->path('forum-base/forum', array('forumId' => $childForum->id))) ?>"
+                                    <a href="<?= $this->e($this->app()->path('forum-base/forum', array('forum' => $childForum->id))) ?>"
                                        class="forum-link child-forum-link ajax-link">
                                         <?= $this->e($childForum->title) ?>
                                     </a>

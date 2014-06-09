@@ -5,7 +5,7 @@ use TalkTalk\Model\User;
 $action = function () use ($app, &$showFormOnError) {
 
     // Get form User data
-    $userData = $app->vars['request']->post('user');
+    $userData = $app->getRequest()->post('user');
 
     // Do we have a User with such a login?
     $dbUser = User::where('login', '=', $userData['login'])->first();

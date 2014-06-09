@@ -7,16 +7,18 @@ class StringUtils extends BaseService
 
     public function handlePluginRelatedString(\TalkTalk\Core\Plugin\Plugin $plugin, $string)
     {
-        $app = &$this->app;
+        static $vendorsUrl;
+        if (null === $vendorsUrl) {
+            $vendorsUrl = $this->app->vars['app.base_url'] . '/' . $this->app->appPath($this->app->vars['app.js_vendors_path']);
+        }
 
-        return str_replace(
-            array('%plugin-path%', '%plugin-url%', '%vendors-url%'),
+        return $this->replace(
+            $string,
             array(
-                $plugin->path,
-                $app->vars['app.base_url'] . '/' . $plugin->path,
-                $app->vars['app.base_url'] . '/' . $this->app->appPath($app->vars['app.js_vendors_path'])
-            ),
-            $string
+                '%plugin-path%' => $plugin->path,
+                '%plugin-url%' => $this->app->vars['app.base_url'] . '/' . $plugin->path,
+                '%vendors-url%' => $vendorsUrl,
+            )
         );
     }
 
@@ -42,6 +44,38 @@ class StringUtils extends BaseService
             is_string($data) &&
             in_array($data[0], $openingDelimiters) &&
             in_array($data[strlen($data)-1], $closingDelimiters)
+        );
+    }
+
+    /**
+     * More convenient API for str_replace
+     * @param $string
+     * @param array $varsMap
+     * @return string
+     */
+    public function replace($string, array $varsMap)
+    {
+        return str_replace(
+            array_keys($varsMap),
+            array_values($varsMap),
+            $string
+        );
+    }
+
+    /**
+     * Converts underscored or dasherized string to a camelized one.
+     * Begins with a lower case letter unless it starts with an underscore or string
+     * @param string $string
+     * @return string
+     */
+    public function camelize($string)
+    {
+        return preg_replace_callback(
+            '~[-_\s]+(.)~',
+            function (array $matches) {
+                return strtoupper($matches[1]);
+            },
+            $string
         );
     }
 

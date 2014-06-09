@@ -35,24 +35,13 @@ return call_user_func(
         // App environment init
         $customAppConfig = array();
         if (isset($appConfig['packing']['base_url'])) {
+            // Let's set a "base_url" in our Request to mimic a HTTP context
+            // Some packing operations, like URL injection into Plugins packed code, will use it
             $customAppConfig['app.base_url'] = $appConfig['packing']['base_url'];
         }
 
-        if ($isCli) {
-            // Slim will not not like the CLI context, as there will be some missing $_SERVER vars.
-            // --> let's disable PHP Notices!
-            $previousErrorReportingLevel = error_reporting(E_ALL & ~E_NOTICE);
-        }
         $appInitClosure = require_once __DIR__ . '/../boot/app.php';
         $app = call_user_func($appInitClosure, $customAppConfig);
-        if ($isCli) {
-            // Back to previous PHP error reporting level
-            error_reporting($previousErrorReportingLevel);
-        }
-
-        // Let's set a "base_url" in our Request to mimic a HTTP context
-        // Some packing operations, like URL injection into Plugins packed code, will use it
-        //$app->vars['app.base_url'] = $app->vars['config']['packing']['base_url'];
 
         // Packing Services init
         $packingProfilesManager = $app->getService('packing-profiles-manager');

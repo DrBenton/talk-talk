@@ -12,3 +12,4 @@ filesIncludedByApp:
   - string-utils.php
   - io-utils.php
   - array-utils.php
+  - silex-callbacks-bridge.php

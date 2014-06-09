@@ -1,18 +1,18 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
 use TalkTalk\Model\Topic;
 use TalkTalk\Model\Post;
 
-$action = function ($topicId) use ($app) {
+$action = function (Request $request, Topic $topic) use ($app) {
 
-    $topic = Topic::findOrFail($topicId);
     $topic->load('author');
 
     // Total number of posts retrieval
     $nbPostsTotal = Post::where('topic_id', '=', $topic->id)->count();
 
     // Posts retrieval (only those of the current page)
-    $pageNum = (int) $app->vars['request']->get('page', 1);
+    $pageNum = $request->query->getInt('page', 1);
     if ('last' === $pageNum) {
         $pageNum = ceil($nbPostsTotal / $app->vars['forum-base.pagination.posts.nb_per_page']);
     } elseif (!is_numeric($pageNum)) {
@@ -37,7 +37,7 @@ $action = function ($topicId) use ($app) {
 
     // Pagination stuff
     $topicUrl = $app->path(
-        'forum-base/topic', array('topicId' => $topic->id)
+        'forum-base/topic', array('topic' => $topic->id)
     );
     $paginationData = array(
         'currentPageNum' => $pageNum,

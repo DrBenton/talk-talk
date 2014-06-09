@@ -12,14 +12,14 @@ $action = function () use ($app) {
         ),
     );
 
-    if ($returnUrl = $app->vars['request']->get('return-url')) {
+    if ($returnUrl = $app->getRequest()->get('return-url')) {
         $app->get('session')->set('url.intended', $returnUrl);
     }
 
     return $app->get('view')->render(
         'auth::sign-in/sign-in.form',
         array(
-            'user' => $app->vars['request']->get('user', new User),
+            'user' => $app->getRequest()->get('user', new User),
             'breadcrumbData' => $breadcrumbData,
         )
     );

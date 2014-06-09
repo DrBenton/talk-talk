@@ -11,7 +11,7 @@
     </div>
 <?php else: ?>
     <?= $this->hooks()->html('create_new_post_link') ?>
-    <a href="<?= $this->app()->path('forum-base/new-post-form', array('topicId' => $this->topicId)) ?>"
+    <a href="<?= $this->app()->path('forum-base/new-post-form', array('topic' => $this->topicId)) ?>"
        class="create-new-topic-link ajax-link">
         <?= $this->e($this->trans('core-plugins.forum-base.topics-list.create-new-post')) ?>
     </a>

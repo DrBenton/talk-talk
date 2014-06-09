@@ -31,24 +31,37 @@ class ServicesPacker extends BasePacker
 
     protected function getServicePhpCode(Plugin $plugin, $serviceName)
     {
-        $serviceFilePath = str_replace(
-            array('%plugin-path%', '%service-name%'),
-            array($plugin->path, $serviceName),
-            self::SERVICE_FILE_PATH
+        $serviceFilePath = $this->replace(
+            self::SERVICE_FILE_PATH,
+            array(
+                '%plugin-path%' => $plugin->path,
+                '%service-name%' => $serviceName,
+            )
         );
 
-        $serviceFileInclusionCode = $this->app
-            ->get('packing-manager')
+        $serviceFileInclusionCode = $this->getPackingManager()
             ->getAppInclusionsCode(array($serviceFilePath));
 
-        return <<<PLUGIN_PHP_CODE
-$serviceFileInclusionCode
+        $pluginPhpCode = <<<'PLUGIN_PHP_CODE'
+
+%service-file-inclusion-code%
 
 namespace {
-    // Service "$serviceName" initialization:
-    \$app->includeInApp('$serviceFilePath');
+    // Service "%service-name%" initialization (from Plugin "%plugin-id%"):
+    $app->includeInApp('%service-file-path%');
 }
 
 PLUGIN_PHP_CODE;
+
+        // Job's done!
+        return $this->replace(
+            $pluginPhpCode,
+            array(
+                '%service-file-inclusion-code%' => $serviceFileInclusionCode,
+                '%service-file-path%' => $serviceFilePath,
+                '%service-name%' => $serviceName,
+                '%plugin-id%' => $plugin->id,
+            )
+        );
     }
 }

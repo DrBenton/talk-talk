@@ -1,7 +1,10 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 $app->after(
-    function () use ($app) {
+    function (Request $request, Response $response) use ($app) {
 
         if (empty($app->vars['config']['debug']['perfs.tracking.enabled'])) {
             return;
@@ -39,15 +42,14 @@ $app->after(
         }
 
         if (isset($app->vars['perfs.querypath.duration'])) {
-            $headers['X-Perfs-QueryPath-Duration'] = $app['perfs.querypath.duration'];
+            $headers['X-Perfs-QueryPath-Duration'] = $app->vars['perfs.querypath.duration'];
         }
 
         if (isset($perfsInfo['pluginsPackingDuration'])) {
             $headers['X-Perfs-Plugins-Packing-Duration'] = $perfsInfo['pluginsPackingDuration'];
         }
 
-        $response = $app->getResponse();
-        $response->headers->replace($headers);
+        $response->headers->add($headers);
 
     },
     -1 // we want to run this *after* the QueryPath "after" hook

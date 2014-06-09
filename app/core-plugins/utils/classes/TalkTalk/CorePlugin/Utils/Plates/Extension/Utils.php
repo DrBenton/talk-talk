@@ -21,7 +21,13 @@ class Utils extends BaseExtension
 
     public function getCurrentPath()
     {
-        return $this->app->get('slim')->request->getPathInfo();
+        $silexApp = $this->app->getService('silex');
+        $request = $this->app->getRequest();
+
+        return $silexApp['url_generator']->generate(
+            $request->attributes->get('_route'),
+            $request->attributes->get('_route_params')
+        );
     }
 
 }
