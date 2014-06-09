@@ -14,7 +14,7 @@
 
         <div class="form-group login <?= isset($this->failed_fields) && isset($this->failed_fields['login']) ? 'form-error' : '' ?>">
             <label for="signin-input-login">
-                <?= $this->e($this->trans('core-plugins.auth.sign-in.form.login')) ?>
+                <?= $this->transE('core-plugins.auth.sign-in.form.login') ?>
             </label>
 
             <div class="input-container">
@@ -28,7 +28,7 @@
 
         <div class="form-group password <?= isset($this->failed_fields) && isset($this->failed_fields['password']) ? 'form-error' : '' ?>">
             <label for="signin-input-password">
-                <?= $this->e($this->trans('core-plugins.auth.sign-in.form.password')) ?>
+                <?= $this->transE('core-plugins.auth.sign-in.form.password') ?>
             </label>
 
             <div class="input-container">
@@ -44,7 +44,7 @@
     <div class="form-group submit">
         <div class="input-container">
             <button type="submit" class="submit-button">
-                <?= $this->e($this->trans('core-plugins.auth.sign-in.form.submit')) ?>
+                <?= $this->transE('core-plugins.auth.sign-in.form.submit') ?>
             </button>
         </div>
     </div>

@@ -18,6 +18,6 @@
 
 <?php else: ?>
     <div class="empty-list-msg">
-        <?= $this->e($this->trans('core-plugins.forum-base.posts-list.no-post')) ?>
+        <?= $this->transE('core-plugins.forum-base.posts-list.no-post') ?>
     </div>
 <?php endif ?>

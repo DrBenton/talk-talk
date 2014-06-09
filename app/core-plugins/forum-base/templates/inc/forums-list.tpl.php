@@ -40,7 +40,7 @@
 <?php else: ?>
 
     <div class="empty-list-msg">
-        <?= $this->e($this->trans('core-plugins.forum-base.forums-list.no-forum')) ?>
+        <?= $this->transE('core-plugins.forum-base.forums-list.no-forum') ?>
     </div>
 
 <?php endif ?>

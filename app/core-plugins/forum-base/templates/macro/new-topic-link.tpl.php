@@ -13,6 +13,6 @@
     <?= $this->hooks()->html('create_new_topic_link') ?>
     <a href="<?= $this->app()->path('forum-base/new-topic-form', array('forum' => $this->forumId)) ?>"
        class="create-new-topic-link ajax-link">
-        <?= $this->e($this->trans('core-plugins.forum-base.topics-list.create-new-topic')) ?>
+        <?= $this->transE('core-plugins.forum-base.topics-list.create-new-topic') ?>
     </a>
 <?php endif ?>

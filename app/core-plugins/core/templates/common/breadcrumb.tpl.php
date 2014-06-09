@@ -17,7 +17,7 @@ if ($this->app()->vars['isAjax']) {
         <li class="breadcrumb-item level-<?= $index ?> <?= isset($breadcrumbPart['class']) ? $this->e($breadcrumbPart['class']) : '' ?>">
             <a href="<?= $this->e($breadcrumbPart['url']) ?>"
                class="breadcrumb-link ajax-link">
-                <?= $this->e($this->trans($breadcrumbPart['label'], isset($breadcrumbPart['labelParams']) ? $breadcrumbPart['labelParams'] : array())) ?>
+                <?= $this->transE($breadcrumbPart['label'], isset($breadcrumbPart['labelParams']) ? $breadcrumbPart['labelParams'] : array()) ?>
             </a>
         </li>
         <?php endforeach ?>

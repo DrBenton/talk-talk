@@ -20,7 +20,7 @@
 
         <div class="form-group login <?= isset($this->failed_fields) && isset($this->failed_fields['login']) ? 'form-error' : '' ?>">
             <label for="signup-input-login">
-                <?= $this->e($this->trans('core-plugins.auth.sign-up.form.login')) ?>
+                <?= $this->transE('core-plugins.auth.sign-up.form.login') ?>
             </label>
 
             <div class="input-container">
@@ -34,7 +34,7 @@
 
         <div class="form-group email <?= isset($this->failed_fields) && isset($this->failed_fields['email']) ? 'form-error' : '' ?>">
             <label for="signup-input-email">
-                <?= $this->e($this->trans('core-plugins.auth.sign-up.form.email')) ?>
+                <?= $this->transE('core-plugins.auth.sign-up.form.email') ?>
             </label>
 
             <div class="input-container">
@@ -48,7 +48,7 @@
 
         <div class="form-group password <?= isset($this->failed_fields) && isset($this->failed_fields['password']) ? 'form-error' : '' ?>">
             <label for="signup-input-password">
-                <?= $this->e($this->trans('core-plugins.auth.sign-up.form.password')) ?>
+                <?= $this->transE('core-plugins.auth.sign-up.form.password') ?>
             </label>
 
             <div class="input-container">
@@ -61,7 +61,7 @@
 
         <div class="form-group password-confirmation">
             <label for="signup-input-password-confirmation">
-                <?= $this->e($this->trans('core-plugins.auth.sign-up.form.password_confirmation')) ?>
+                <?= $this->transE('core-plugins.auth.sign-up.form.password_confirmation') ?>
             </label>
 
             <div class="input-container">
@@ -77,7 +77,7 @@
     <div class="form-group submit">
         <div class="input-container">
             <button type="submit" class="submit-button">
-                <?= $this->e($this->trans('core-plugins.auth.sign-up.form.submit')) ?>
+                <?= $this->transE('core-plugins.auth.sign-up.form.submit') ?>
             </button>
         </div>
     </div>
