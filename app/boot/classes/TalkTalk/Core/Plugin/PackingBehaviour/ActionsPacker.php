@@ -106,6 +106,9 @@ PACKER_INIT_PHP_CODE;
         // Actions params converters management (if necessary)
         $this->handleActionParamsConverters($plugin, $actionData, $beforeActionDefinitions, $afterActionDefinitions, $codePlaceholders);
 
+        // Actions firewalls management (if necessary)
+        $this->handleActionFirewalls($plugin, $actionData, $beforeActionDefinitions, $afterActionDefinitions, $codePlaceholders);
+
         // All right, let's compute all this PHP code!
         $pluginPhpCode = <<<'PLUGIN_ACTIONS_PHP_CODE'
 
@@ -226,6 +229,38 @@ ACTION_CONVERTER_AFTER_CODE;
                 array(
                     '%param-name%' => $paramName,
                     '%converter-id%' => $converterId,
+                )
+            );
+
+        }
+    }
+
+    protected function handleActionFirewalls(
+        Plugin $plugin, array $actionData,
+        &$beforeActionDefinitions, &$afterActionDefinitions, &$codePlaceholders
+    ) {
+        if (!isset($actionData['firewalls'])) {
+            return;
+        }
+
+        $stringUtils = $this->app->get('utils.string');
+
+        foreach ($actionData['firewalls'] as $firewallId) {
+
+            $firewallId = $stringUtils->camelize('firewall-' . $firewallId);
+
+            $firewallCode =  <<<'ACTION_FIREWALL_AFTER_CODE'
+
+                $action->before(
+                    'talk_talk_callbacks:%firewall-id%'
+                );
+
+ACTION_FIREWALL_AFTER_CODE;
+
+            $afterActionDefinitions .= $this->replace(
+                $firewallCode,
+                array(
+                    '%firewall-id%' => $firewallId,
                 )
             );
 

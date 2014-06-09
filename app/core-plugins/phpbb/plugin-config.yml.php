@@ -28,13 +28,15 @@
     url: /import/importing
     target: import/importing-page
     name: phpbb/import/importing
-    before: phpbb.middleware.require-phpbb-connection-settings
+    firewalls:
+      - phpbb-connection-settings-in-session-required
   -
     # GET /phpbb/import/importing/import-XXX/metadata => actions/import/importing/XXX-import-metadata.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
     url: /import/importing/import-{itemType}/metadata
     target: import/importing/{itemType}-import-metadata
-    before: phpbb.middleware.require-phpbb-connection-settings
+    firewalls:
+      - phpbb-connection-settings-in-session-required
     requirements:
      itemType: (users|forums|topics|posts)
   -
@@ -43,14 +45,16 @@
     url: /import/importing/clear-previous-imports
     method: POST
     target: import/importing/clear-previous-imports
-    before: phpbb.middleware.require-phpbb-connection-settings
+    firewalls:
+      - phpbb-connection-settings-in-session-required
   -
     # POST /phpbb/import/importing/import-XXX/batch/N => actions/import/importing/XXX-import-batch.php
     # (requires "phpbb-settings" in Session, previously initialized in "/import/start")
     url: /import/importing/import-{itemType}/batch/{batchIndex}
     method: POST
     target: import/importing/{itemType}-import-batch
-    before: phpbb.middleware.require-phpbb-connection-settings
+    firewalls:
+      - phpbb-connection-settings-in-session-required
     requirements:
      itemType: (users|forums|topics|posts)
      batchIndex: \d+ #{batchIndex} must be an integer
@@ -60,7 +64,8 @@
     url: /import/importing/finish-import
     method: POST
     target: import/importing/finish-import
-    before: phpbb.middleware.require-phpbb-connection-settings
+    firewalls:
+      - phpbb-connection-settings-in-session-required
 
 @classes:
   -
@@ -75,6 +80,9 @@
 #  - phpbb-import-forums
 #  - phpbb-import-topics
 #  - phpbb-import-posts
+
+@firewalls:
+  - phpbb-connection-settings-in-session-required
 
 #@events:
 #  - before.set-phpbb-db-settings-from-session

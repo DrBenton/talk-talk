@@ -22,6 +22,7 @@
   - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\TemplatesPacker
   - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\TemplatesExtensionsPacker
   - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\AppAssetsPacker
+  - TalkTalk\CorePlugin\Core\Plugin\PackingBehaviour\ActionsFirewallsPacker
 
 @services:
   - view
