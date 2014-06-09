@@ -120,9 +120,7 @@ return function (array $customConfig = array()) {
 
     // Pretty errors display, if we are in debug mode
     if ($app->vars['debug'] && !empty($app->vars['config']['debug']['use_whoops_for_errors'])) {
-        $whoops = new \Whoops\Run;
-        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-        $whoops->register();
+        $app->get('silex')->register(new Whoops\Provider\Silex\WhoopsServiceProvider);
     }
 
     // Some performances-related stats

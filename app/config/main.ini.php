@@ -4,7 +4,7 @@
 
 [debug]
 debug = true
-use_whoops_for_errors = false
+use_whoops_for_errors = true
 livereload = false
 livereload.port = 35729
 perfs.tracking.enabled = true
@@ -24,7 +24,7 @@ base_url =
 ; Caution: when this option is set to 'true', all the code in PHP packs will
 ; be smallest and easier to load for your server, but... it won't be readable by you any more!
 ; Only use in production.
-strip_white_spaces = true
+strip_white_spaces = false
 
 [data-cache]
 enabled = false

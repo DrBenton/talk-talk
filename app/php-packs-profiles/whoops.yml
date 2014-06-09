@@ -15,3 +15,5 @@ files:
   - Whoops/Run.php
   - Whoops/Util/TemplateHelper.php
   - Whoops/Util/Misc.php
+  - Whoops/Handler/CallbackHandler.php
+  - Whoops/Provider/Silex/WhoopsServiceProvider.php
