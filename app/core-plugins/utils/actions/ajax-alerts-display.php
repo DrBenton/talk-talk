@@ -2,10 +2,10 @@
 
 $action = function () use ($app) {
 
-    $receivedAlertsData = $app->getRequest()->post('alerts', null);
+    $receivedAlertsData = $app->getRequest()->request->get('alerts', null);
 
     if (null === $receivedAlertsData) {
-        throw new \InvalidParameterException('Missing mandatory POST param "alerts"!');
+        throw new \DomainException('Missing mandatory POST param "alerts"!');
     }
 
     $alertsToDisplay = array();

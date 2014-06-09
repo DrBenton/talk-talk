@@ -19,8 +19,8 @@ $app->before(
         // Let's check CSRF token!!
         $tokenName = $app->get('csrf')->getTokenName();
         $receivedToken = $request->request->get($tokenName);
-        if (null === $receivedToken && isset($request->headers['X-CSRF-Token'])) {
-            $receivedToken = $request->headers['X-CSRF-Token'];
+        if (null === $receivedToken && $request->headers->has('X-CSRF-Token')) {
+            $receivedToken = $request->headers->get('X-CSRF-Token');
         }
         $sessionToken = $app->get('session')->get($tokenName, '**no CSRF token in session**');
 

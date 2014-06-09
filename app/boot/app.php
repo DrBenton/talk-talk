@@ -36,13 +36,14 @@ return function (array $customConfig = array()) {
     foreach ($earlyPhpClassesPacks as $phpPack) {
         $phpPackFilePath = $appPhpPacksPath . '/' . $phpPack . '.pack.php';
         if (file_exists($phpPackFilePath)) {
+            // Low cost PHP unpacking (we will use our App features when it will be loaded)
             include_once $phpPackFilePath;
         }
     }
 
     // Composer loading - only if needed at this point!
     if (!class_exists('TalkTalk\Core\Application', false) || !class_exists('Silex\Application', false)) {
-        $loader = require_once $appVendorsPath . '/autoload.php';
+        require_once $appVendorsPath . '/autoload.php';
     }
 
     // Okay, let's create our Application!
@@ -50,8 +51,8 @@ return function (array $customConfig = array()) {
     $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
     $app = new \TalkTalk\Core\Application($silexApp, $request);
 
+    // App config init
     $app->setConfig($config);
-
 
     // App core vars definition
     $app->vars['app.root_path'] = $rootPath;
@@ -118,7 +119,7 @@ return function (array $customConfig = array()) {
         }
     );
 
-    // Pretty errors display, if we are in debug mode
+    // Pretty errors display, if we are in debug mode and "Whoops" flag is set to 'true'
     if ($app->vars['debug'] && !empty($app->vars['config']['debug']['use_whoops_for_errors'])) {
         $app->get('silex')->register(new Whoops\Provider\Silex\WhoopsServiceProvider);
     }
