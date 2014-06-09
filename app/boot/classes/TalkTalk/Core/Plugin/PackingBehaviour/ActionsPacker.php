@@ -20,6 +20,7 @@ namespace {
     $app->vars['plugins.actions'] = array();
     $app->vars['plugins.actions.names'] = array();
 
+    // Actions registration
     $app->beforeRun(
         function () use ($app) {
             $app->get('logger')->debug(
@@ -35,6 +36,26 @@ namespace {
             foreach($actions as $action) {
                 call_user_func($action['actionRegistering']);
             }
+        }
+    );
+
+    // Global "run Action" function
+    $app->defineFunction(
+        'actions.run',
+        function ($actionFilePath) use ($app) {
+
+            $actionClosure = $app->includeInApp($actionFilePath);
+
+            // We trigger the Dependencies Injector on the returned Closure...
+            $silexApp = $app->get('silex');
+            $actionArgs = $silexApp['resolver']->getArguments(
+                $app->getRequest(),
+                $actionClosure
+            );
+
+            // ...and we finally trigger the action Closure!
+            return call_user_func_array($actionClosure, $actionArgs);
+
         }
     );
 }
@@ -119,17 +140,8 @@ namespace {
 
             // Action registration (from Plugin "%plugin-id%")
             $action = $app->addAction('%url-pattern%', function () use ($app) {
-                $action = $app->includeInApp('%action-file-path%');
 
-                // We trigger the Dependencies Injector on the returned Closure...
-                $silexApp = $app->get('silex');
-                $actionArgs = $silexApp['resolver']->getArguments(
-                    $app->getRequest(),
-                    $action
-                );
-
-                // ...and we finally trigger the action Closure!
-                return call_user_func_array($action, $actionArgs);
+                return $app->exec('actions.run', '%action-file-path%');
             });
             $action->method('%method%');
 
