@@ -37,7 +37,7 @@
     target: import/importing/{itemType}-import-metadata
     firewalls:
       - phpbb-connection-settings-in-session-required
-    requirements:
+    params-formats:
      itemType: (users|forums|topics|posts)
   -
     # POST /phpbb/import/importing/clear-previous-imports => actions/import/importing/clear-previous-imports.php
@@ -55,7 +55,7 @@
     target: import/importing/{itemType}-import-batch
     firewalls:
       - phpbb-connection-settings-in-session-required
-    requirements:
+    params-formats:
      itemType: (users|forums|topics|posts)
      batchIndex: \d+ #{batchIndex} must be an integer
   -

@@ -44,6 +44,25 @@ namespace {
         'actions.run',
         function ($actionFilePath) use ($app) {
 
+            // We may have dynamic params in the target Action file path; let's handle them!
+            $actionFilePath = preg_replace_callback(
+                '/\{([a-z]+)\}/i',
+                function ($matches) use ($app) {
+                    $paramName = $matches[1];
+
+                    $paramValue = $app->getRequest()->get($paramName);
+                    // Security check: we do want a "Action requirement" for this param!
+                    if (null === $paramValue) {
+                        throw new \DomainException(
+                            sprintf('Action file dynamic parameter "%s" must be bound to a Request param!', $paramName)
+                        );
+                    }
+
+                    return $paramValue;
+                },
+                $actionFilePath
+            );
+
             $actionClosure = $app->includeInApp($actionFilePath);
 
             // We trigger the Dependencies Injector on the returned Closure...
@@ -123,6 +142,9 @@ PACKER_INIT_PHP_CODE;
 
         // Action name management (if necessary)
         $this->handleActionName($plugin, $actionData, $beforeActionDefinitions, $afterActionDefinitions, $codePlaceholders);
+
+        // Actions params formats management (if necessary)
+        $this->handleActionParamsFormats($plugin, $actionData, $beforeActionDefinitions, $afterActionDefinitions, $codePlaceholders);
 
         // Actions params converters management (if necessary)
         $this->handleActionParamsConverters($plugin, $actionData, $beforeActionDefinitions, $afterActionDefinitions, $codePlaceholders);
@@ -211,6 +233,36 @@ ACTION_NAME_BEFORE_CODE;
 ACTION_NAME_AFTER_CODE;
 
         $codePlaceholders['%action-name%'] = $actionName;
+    }
+
+    protected function handleActionParamsFormats(
+        Plugin $plugin, array $actionData,
+        &$beforeActionDefinitions, &$afterActionDefinitions, &$codePlaceholders
+    ) {
+        if (!isset($actionData['params-formats'])) {
+            return;
+        }
+
+        foreach ($actionData['params-formats'] as $paramName => $paramPattern) {
+
+            $paramFormatCode =  <<<'ACTION_PARAM_FORMAT_AFTER_CODE'
+
+                $action->assert(
+                    '%param-name%',
+                    '%param-pattern%'
+                );
+
+ACTION_PARAM_FORMAT_AFTER_CODE;
+
+            $afterActionDefinitions .= $this->replace(
+                $paramFormatCode,
+                array(
+                    '%param-name%' => $paramName,
+                    '%param-pattern%' => $paramPattern,
+                )
+            );
+
+        }
     }
 
     protected function handleActionParamsConverters(
