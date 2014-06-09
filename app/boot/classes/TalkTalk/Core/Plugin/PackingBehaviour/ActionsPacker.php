@@ -29,19 +29,7 @@ namespace {
             $actions = $app->vars['plugins.actions'];
 
             // 1) Actions are sorted by priority
-            $actionsSorter = function (array $actionA, array $actionB)
-            {
-                $priorityA = $actionA['priority'];
-                $priorityB = $actionB['priority'];
-                if ($priorityA > $priorityB) {
-                    return -1;
-                } elseif ($priorityA < $priorityB) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            };
-            usort($actions, $actionsSorter);
+            $app->get('utils.array')->sortBy($actions, 'priority');
 
             // 2) Actions are registered!
             foreach($actions as $action) {
@@ -222,6 +210,8 @@ ACTION_NAME_AFTER_CODE;
 
         foreach ($actionData['params-converters'] as $paramName => $converterId) {
 
+            $converterId = $stringUtils->camelize('converter-' . $converterId);
+
             $converterCode =  <<<'ACTION_CONVERTER_AFTER_CODE'
 
                 $action->convert(
@@ -235,7 +225,7 @@ ACTION_CONVERTER_AFTER_CODE;
                 $converterCode,
                 array(
                     '%param-name%' => $paramName,
-                    '%converter-id%' => $stringUtils->camelize($converterId),
+                    '%converter-id%' => $converterId,
                 )
             );
 

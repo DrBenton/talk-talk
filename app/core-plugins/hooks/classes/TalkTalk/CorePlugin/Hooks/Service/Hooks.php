@@ -15,12 +15,14 @@ class Hooks extends BaseService
             return array();
         }
 
+        $hookRegisteredCallbacks = &$this->app->vars['hooks.registry'][$hookName];
+
         // Hooks are sorted by priority
-        usort($this->app->vars['hooks.registry'][$hookName], array($this, 'sortHooks'));
+        $this->app->get('utils.array')->sortBy($hookRegisteredCallbacks, 'priority');
 
         // Go!
         $results = array();
-        foreach ($this->app->vars['hooks.registry'][$hookName] as $hookData) {
+        foreach ($hookRegisteredCallbacks as $hookData) {
             $results[] = call_user_func($hookData['implementation'], $hookArgs);
         }
 

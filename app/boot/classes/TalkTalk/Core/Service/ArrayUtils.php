@@ -39,9 +39,31 @@ class ArrayUtils
      * @param  array $haystack
      * @return bool
      */
-    public static function containsTrue(array $haystack)
+    public function containsTrue(array $haystack)
     {
         return in_array(true, $haystack, true);
+    }
+
+    /**
+     * @param array $array
+     * @param string $fieldName
+     */
+    public function sortBy(array &$array, $fieldName)
+    {
+        $actionsSorter = function (array $actionA, array $actionB) use ($fieldName)
+        {
+            $priorityA = $actionA[$fieldName];
+            $priorityB = $actionB[$fieldName];
+            if ($priorityA > $priorityB) {
+                return -1;
+            } elseif ($priorityA < $priorityB) {
+                return 1;
+            } else {
+                return 0;
+            }
+        };
+
+        usort($array, $actionsSorter);
     }
 
 }

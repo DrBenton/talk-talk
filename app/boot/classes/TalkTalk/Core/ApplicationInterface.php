@@ -42,8 +42,6 @@ interface ApplicationInterface
 
     public function addAction($urlPattern, $callback);
 
-    public function addActionsParamsConverter($converterId, $callable);
-
     public function run();
 
     /**

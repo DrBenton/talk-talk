@@ -192,16 +192,6 @@ class Application implements ApplicationInterface
         return call_user_func_array(array($this->silexApp, 'match'), func_get_args());
     }
 
-    public function addActionsParamsConverter($converterId, $callable)
-    {
-        if (!preg_match('~^[a-z][-a-z0-9_]+$~i', $converterId)) {
-            throw new \DomainException(sprintf('Converter id "%s" is not correct (as they are converters to class methods, their name must follow the PHP classes methods naming restrictions)', $converterId));
-        }
-
-        $this->getService('silex.callbacks_bridge')
-            ->registerCallback($converterId, $callable);
-    }
-
     public function run()
     {
         $this->triggerBeforeRunCallbacks();
@@ -324,18 +314,7 @@ class Application implements ApplicationInterface
         $this->get('logger')
             ->debug(sprintf('triggerBeforeRunCallbacks() - %d callbacks registred', count($this->beforeRunCallbacks)));
 
-        usort($this->beforeRunCallbacks, function (array $errorHandlerA, array $errorHandlerB)
-        {
-            $priorityA = $errorHandlerA['priority'];
-            $priorityB = $errorHandlerB['priority'];
-            if ($priorityA > $priorityB) {
-                return -1;
-            } elseif ($priorityA < $priorityB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        $this->get('utils.array')->sortBy($this->beforeRunCallbacks, 'priority');
 
         foreach($this->beforeRunCallbacks as $beforeRunCallbackData) {
             call_user_func($beforeRunCallbackData['callable']);
