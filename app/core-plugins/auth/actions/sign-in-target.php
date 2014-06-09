@@ -5,7 +5,7 @@ use TalkTalk\Model\User;
 $action = function () use ($app, &$showFormOnError) {
 
     // Get form User data
-    $userData = $app->getRequest()->post('user');
+    $userData = $app->getRequest()->request->get('user');
 
     // Do we have a User with such a login?
     $dbUser = User::where('login', '=', $userData['login'])->first();
@@ -39,7 +39,7 @@ $action = function () use ($app, &$showFormOnError) {
     if ($app->vars['isAjax']) {
         // JS response
         return $app->get('view')->render(
-            'auth::sign-in/sign-in.success.ajax',
+            'auth::sign-in/sign-in-target.success.ajax',
             array('user' => $dbUser)
         );
     } else {

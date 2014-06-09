@@ -5,7 +5,7 @@ use TalkTalk\Model\User;
 $action = function () use ($app, &$getFormValidator) {
 
     // Get form User data
-    $userData = $app->getRequest()->post('user');
+    $userData = $app->getRequest()->request->get('user');
 
     // Validate!
     $validator = $getFormValidator($app, $userData);
@@ -49,7 +49,7 @@ $action = function () use ($app, &$getFormValidator) {
     if ($app->vars['isAjax']) {
         // JS response
         return $app->get('view')->render(
-            'auth::sign-up/sign-up.success.ajax',
+            'auth::sign-up/sign-up-target.success.ajax',
             array('user' => $user)
         );
     } else {

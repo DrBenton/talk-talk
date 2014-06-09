@@ -12,7 +12,7 @@ $action = function () use ($app) {
     if ($app->vars['isAjax']) {
         // JS response
         return $app->get('view')->render(
-            'auth::sign-out/sign-out.success.ajax'
+            'auth::sign-out/sign-out-target.success.ajax'
         );
     } else {
         // Redirection to home
