@@ -57,6 +57,10 @@ class SessionFlash extends BaseService
                 }
             }
         );
+
+        //TODO: make it cleaner, or use Symfony Session & FlashBag
+        unset($_SESSION[self::FLASHES_SESSION_NS]);
+
         //echo '$filteredFlashes=<pre>'.print_r($filteredFlashes, true).'</pre>';
         return $filteredFlashes;
     }

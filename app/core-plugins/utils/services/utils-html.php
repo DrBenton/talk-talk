@@ -32,6 +32,13 @@ $app->defineFunction(
     }
 );
 
+$app->defineFunction(
+    'utils.html.escape',
+    function ($string) {
+        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    }
+);
+
 // Page breadcrumb stuff
 
 $app->defineFunction(

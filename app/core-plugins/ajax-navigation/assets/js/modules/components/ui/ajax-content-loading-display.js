@@ -34,6 +34,7 @@ define(function (require, exports, module) {
     this.after("initialize", function() {
       this.on("ajaxContentLoadingStart", this.onAjaxContentLoadingStart);
       this.on("ajaxContentLoadingDone", this.onAjaxContentLoadingDone);
+      this.on("ajaxContentLoadingError", this.onAjaxContentLoadingDone);
     });
   }
 

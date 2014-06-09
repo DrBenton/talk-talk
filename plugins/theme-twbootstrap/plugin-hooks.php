@@ -290,7 +290,7 @@ $hooks['html.component.progress'] = function (DOMQuery $html) use ($app, $myComp
     $app->exec(
         'html-components.add_component',
         $twbProgressComponents,
-        $myComponentsUrl . 'ui/twb-progress'
+        $myComponentsUrl . '/ui/twb-progress'
     );
 };
 
