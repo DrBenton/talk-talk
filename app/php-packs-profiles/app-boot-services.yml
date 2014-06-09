@@ -6,6 +6,7 @@ packing:
 filesIncludedByApp:
   - autoloader.php
   - logger.php
+  - cache.php
   - packing-profiles-manager.php
   - packing-manager.php
   - plugins-unpacker.php
