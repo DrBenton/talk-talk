@@ -81,12 +81,11 @@ define(function (require, exports, module) {
         type: "GET"
       })
         .then(
-          _.bind(this.onItemsTypeImportMetadataSuccess, this, itemsType)
-        )
-        .fail(
+          _.bind(this.onItemsTypeImportMetadataSuccess, this, itemsType),
           _.bind(function(err) {
             this.triggerImportErrorEvent(err, serviceUrl);
             this.resetState();
+            throw new Error("Metadata retrieval of '"+itemsType+"' items failed.");
           }, this)
         );
     };
@@ -138,12 +137,11 @@ define(function (require, exports, module) {
         type: "POST"
       })
         .then(
-          _.bind(this.onNextItemsTypeImportBatchEnd, this)
-        )
-        .fail(
+          _.bind(this.onNextItemsTypeImportBatchEnd, this),
           _.bind(function(err) {
             this.triggerImportErrorEvent(err, serviceUrl);
             this.resetState();
+            throw new Error("Failed to execute batch n°"+this.currentItemsImport.currentBatchIndex+" of '"+this.currentItemsImport.type+"' items.");
           }, this)
         );
     };
@@ -212,12 +210,11 @@ define(function (require, exports, module) {
           _.bind(function (data) {
             this.trigger(document, "dataPhpBbPreviousImportClearingDone", data);
             this.resetState();
-          }, this)
-        )
-        .fail(
+          }, this),
           _.bind(function (err) {
             this.triggerImportErrorEvent(err, serviceUrl);
             this.resetState();
+            throw new Error("Previous imports clearing failed.");
           }, this)
         );
     };

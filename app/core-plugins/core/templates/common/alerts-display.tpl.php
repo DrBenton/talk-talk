@@ -1,3 +1,4 @@
+<?php if($this->app()->vars['debug']) { echo '<!-- Alerts data:' . print_r($this->alerts, true) . ' -->'; } ?>
 <?php
 if (! $this->app()->vars['isAjax'] || !empty($this->alerts)):
 ?>

@@ -264,6 +264,11 @@ class Application implements ApplicationInterface
         );
     }
 
+    public function json($data = array(), $status = 200, array $headers = array())
+    {
+        return $this->silexApp->json($data, $status, $headers);
+    }
+
     protected function registerAutoloader()
     {
         spl_autoload_register(array($this, 'onClassAutoloadingRequest'));

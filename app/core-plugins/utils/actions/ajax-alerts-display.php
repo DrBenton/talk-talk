@@ -15,7 +15,7 @@ $action = function () use ($app) {
         };
         $alertMsg = $app->get('translator')->trans($alertData['transKey'], $alertData['vars']);
         // "alerts-display.tpl.php" needs alerts grouped by type:
-        $alertsToDisplay["alerts.$alertData.alert-$i"][] = $alertMsg;
+        $alertsToDisplay["alerts.$alertData[type].alert-$i"] = $alertMsg;
     }
 
     return $app->get('view')->render(

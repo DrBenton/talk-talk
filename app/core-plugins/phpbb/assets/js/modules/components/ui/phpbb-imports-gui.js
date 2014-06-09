@@ -96,6 +96,8 @@ define(function (require, exports, module) {
         {"%importUrl%": data.serviceUrl},
         "error"
       );
+      this.getStartButton().show();
+      this.$node.find(".please-wait").hide();
     };
 
     this.onImportProcessDone = function(ev, data) {

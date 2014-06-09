@@ -63,4 +63,6 @@ interface ApplicationInterface
 
     public function redirectToAction($actionName, $params = array(), $status = 302);
 
+    public function json($data = array(), $status = 200, array $headers = array());
+
 }

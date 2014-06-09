@@ -73,19 +73,18 @@
     path: %plugin-path%/classes/TalkTalk/CorePlugins/PhpBb
 
 @services:
-#  - before-middlewares
   - phpbb-db
-#  - phpbb-data
-#  - phpbb-import-users
-#  - phpbb-import-forums
-#  - phpbb-import-topics
-#  - phpbb-import-posts
+  - phpbb-data
+  - phpbb-import-users
+  - phpbb-import-forums
+  - phpbb-import-topics
+  - phpbb-import-posts
 
 @firewalls:
   - phpbb-connection-settings-in-session-required
 
-#@events:
-#  - before.set-phpbb-db-settings-from-session
+@events:
+  - before.set-phpbb-db-settings-from-session
 
 #@hooks:
 #  - auth.user.check-signin-credentials
