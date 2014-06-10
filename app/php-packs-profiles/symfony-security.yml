@@ -10,3 +10,5 @@ files:
   - security-core/Symfony/Component/Security/Core/Util/StringUtils.php
   - security-csrf/Symfony/Component/Security/Csrf/TokenGenerator/TokenGeneratorInterface.php
   - security-csrf/Symfony/Component/Security/Csrf/TokenGenerator/UriSafeTokenGenerator.php
+  # The following file is required by package "seyon/phpbb3-user-bundle", which allows us to authenticate imported phpBB Users
+  - security-core/Symfony/Component/Security/Core/Encoder/PasswordEncoderInterface.php

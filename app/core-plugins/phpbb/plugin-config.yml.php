@@ -86,8 +86,8 @@
 @events:
   - before.set-phpbb-db-settings-from-session
 
-#@hooks:
-#  - auth.user.check-signin-credentials
+@hooks:
+  - auth.user.check-signin-credentials
 
 @translations:
   - en

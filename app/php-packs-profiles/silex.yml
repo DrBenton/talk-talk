@@ -6,73 +6,73 @@ packing:
 
 files:
   # Symfony first dependencies
-  - symfony/http-kernel/Symfony/Component/HttpKernel/HttpKernelInterface.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/TerminableInterface.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernelInterface.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/TerminableInterface.php
   # Http Request related classes
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/ParameterBag.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/HeaderBag.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/ServerBag.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/FileBag.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/Request.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/ParameterBag.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/HeaderBag.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/ServerBag.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/FileBag.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/Request.php
   # Silex core
   - pimple/pimple/lib/Pimple.php
   - silex/silex/src/Silex/Application.php
   # Routes stuff
-  - symfony/event-dispatcher/Symfony/Component/EventDispatcher/EventSubscriberInterface.php
-  - symfony/event-dispatcher/Symfony/Component/EventDispatcher/Event.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/KernelEvents.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/KernelEvent.php
-  - symfony/routing/Symfony/Component/Routing/RequestContextAwareInterface.php
-  - symfony/routing/Symfony/Component/Routing/Matcher/UrlMatcherInterface.php
-  - symfony/routing/Symfony/Component/Routing/RouteCollection.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/RouterListener.php
-  - symfony/routing/Symfony/Component/Routing/Route.php
+  - symfony/symfony/src/Symfony/Component/EventDispatcher/EventSubscriberInterface.php
+  - symfony/symfony/src/Symfony/Component/EventDispatcher/Event.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/KernelEvents.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/KernelEvent.php
+  - symfony/symfony/src/Symfony/Component/Routing/RequestContextAwareInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/Matcher/UrlMatcherInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/RouteCollection.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/RouterListener.php
+  - symfony/symfony/src/Symfony/Component/Routing/Route.php
   - silex/silex/src/Silex/Controller.php
   - silex/silex/src/Silex/Route.php
   - silex/silex/src/Silex/ControllerCollection.php
   - silex/silex/src/Silex/LazyUrlMatcher.php
   # Who could live without a UrlGenerator?
-  - symfony/routing/Symfony/Component/Routing/Generator/ConfigurableRequirementsInterface.php
-  - symfony/routing/Symfony/Component/Routing/Generator/UrlGeneratorInterface.php
-  - symfony/routing/Symfony/Component/Routing/Generator/UrlGenerator.php
+  - symfony/symfony/src/Symfony/Component/Routing/Generator/ConfigurableRequirementsInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/Generator/UrlGeneratorInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/Generator/UrlGenerator.php
   - silex/silex/src/Silex/ServiceProviderInterface.php
   - silex/silex/src/Silex/Provider/UrlGeneratorServiceProvider.php
   # Http Response related classes
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/GetResponseEvent.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/PostResponseEvent.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/FilterResponseEvent.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/ResponseHeaderBag.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/Response.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/HttpKernel.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/GetResponseEvent.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/PostResponseEvent.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/FilterResponseEvent.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/ResponseHeaderBag.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/Response.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php
   # Exceptions management (yeah, it's sad, but... this *will* happen)
-  - symfony/debug/Symfony/Component/Debug/Exception/FlattenException.php
-  - symfony/debug/Symfony/Component/Debug/ExceptionHandler.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/GetResponseForControllerResultEvent.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/GetResponseForExceptionEvent.php
+  - symfony/symfony/src/Symfony/Component/Debug/Exception/FlattenException.php
+  - symfony/symfony/src/Symfony/Component/Debug/ExceptionHandler.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/GetResponseForControllerResultEvent.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/GetResponseForExceptionEvent.php
   - silex/silex/src/Silex/ExceptionListenerWrapper.php
   - silex/silex/src/Silex/ExceptionHandler.php
   # Request context & Events dispatching (the PHP classes mega party is about to begin!)
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/FilterControllerEvent.php
-  - symfony/routing/Symfony/Component/Routing/CompiledRoute.php
-  - symfony/routing/Symfony/Component/Routing/RouteCompilerInterface.php
-  - symfony/routing/Symfony/Component/Routing/RouteCompiler.php
-  - symfony/routing/Symfony/Component/Routing/Matcher/RedirectableUrlMatcherInterface.php
-  - symfony/routing/Symfony/Component/Routing/Matcher/RequestMatcherInterface.php
-  - symfony/routing/Symfony/Component/Routing/Matcher/UrlMatcher.php
-  - symfony/routing/Symfony/Component/Routing/Matcher/RedirectableUrlMatcher.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/FilterControllerEvent.php
+  - symfony/symfony/src/Symfony/Component/Routing/CompiledRoute.php
+  - symfony/symfony/src/Symfony/Component/Routing/RouteCompilerInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/RouteCompiler.php
+  - symfony/symfony/src/Symfony/Component/Routing/Matcher/RedirectableUrlMatcherInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/Matcher/RequestMatcherInterface.php
+  - symfony/symfony/src/Symfony/Component/Routing/Matcher/UrlMatcher.php
+  - symfony/symfony/src/Symfony/Component/Routing/Matcher/RedirectableUrlMatcher.php
   - silex/silex/src/Silex/RedirectableUrlMatcher.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Controller/ControllerResolverInterface.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Controller/ControllerResolver.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Controller/ControllerResolverInterface.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Controller/ControllerResolver.php
   - silex/silex/src/Silex/ControllerResolver.php
   - silex/silex/src/Silex/EventListener/StringToResponseListener.php
   - silex/silex/src/Silex/CallbackResolver.php
   - silex/silex/src/Silex/EventListener/ConverterListener.php
   - silex/silex/src/Silex/EventListener/MiddlewareListener.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/ResponseListener.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/LocaleListener.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/ResponseListener.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/EventListener/LocaleListener.php
   - silex/silex/src/Silex/EventListener/LocaleListener.php
-  - symfony/http-foundation/Symfony/Component/HttpFoundation/RequestStack.php
-  - symfony/routing/Symfony/Component/Routing/RequestContext.php
-  - symfony/event-dispatcher/Symfony/Component/EventDispatcher/EventDispatcherInterface.php
-  - symfony/event-dispatcher/Symfony/Component/EventDispatcher/EventDispatcher.php
-  - symfony/http-kernel/Symfony/Component/HttpKernel/Event/FinishRequestEvent.php
+  - symfony/symfony/src/Symfony/Component/HttpFoundation/RequestStack.php
+  - symfony/symfony/src/Symfony/Component/Routing/RequestContext.php
+  - symfony/symfony/src/Symfony/Component/EventDispatcher/EventDispatcherInterface.php
+  - symfony/symfony/src/Symfony/Component/EventDispatcher/EventDispatcher.php
+  - symfony/symfony/src/Symfony/Component/HttpKernel/Event/FinishRequestEvent.php

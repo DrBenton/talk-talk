@@ -9,6 +9,12 @@
       "role": "Developer"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/DrBenton/PHPBB3UserBundle"
+    }
+  ],
   "require": {
     "php": ">=5.3.3",
     "silex/silex": "~1.2",
@@ -26,7 +32,8 @@
     "filp/whoops": "~1.0",
     "ircmaxell/password-compat": "1.0.2",
     "mjohnson/decoda": "6.5.1",
-    "teacup/log" : "0.1.0"
+    "teacup/log" : "0.1.0",
+    "seyon/phpbb3-user-bundle": "dev-master"
   },
   "config": {
     "vendor-dir": "vendor/php"

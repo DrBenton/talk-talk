@@ -236,6 +236,9 @@ $rawPhpCode
         // First php opening tag removal
         $phpFileContent = $this->stripOpeningPhpTag($phpFileContent, $phpFilePath);
 
+        // Lats php closing tag removal, if any
+        $phpFileContent = preg_replace('~\?>\s*$~', '', $phpFileContent);
+
         // Namespace management
         list($namespaceName, $phpFileContent) = $this->handleClassNamespace($phpFileContent);
 

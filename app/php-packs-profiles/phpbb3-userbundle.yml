@@ -1,0 +1,8 @@
+packing:
+  namespace: vendors
+  id: phpbb3-userbundle
+  base-dir: %app-root%/vendor/php/seyon/phpbb3-user-bundle/
+  handledPhPNamespace: Seyon\PHPBB3\UserBundle\
+
+files:
+  - Security/Encoder.php
