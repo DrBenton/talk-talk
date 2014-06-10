@@ -303,7 +303,7 @@ ACTION_CONVERTER_AFTER_CODE;
         Plugin $plugin, array $actionData,
         &$beforeActionDefinitions, &$afterActionDefinitions, &$codePlaceholders
     ) {
-        if (!isset($plugin->data['@general']['globalFirewalls']) && !isset($actionData['firewalls'])) {
+        if (!isset($plugin->config['@general']['globalFirewalls']) && !isset($actionData['firewalls'])) {
             return;
         }
 
@@ -317,8 +317,10 @@ ACTION_CONVERTER_AFTER_CODE;
         }
 
         // Now, we handle this route specific firewalls
-        foreach ($actionData['firewalls'] as $firewallId) {
-            $firewallsIds[] = $firewallId;
+        if (isset($actionData['firewalls'])) {
+            foreach ($actionData['firewalls'] as $firewallId) {
+                $firewallsIds[] = $firewallId;
+            }
         }
 
         // Okay, let's add these guys to our Action
