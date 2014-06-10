@@ -2,6 +2,9 @@
 
 namespace TalkTalk\Model;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 class Topic extends ModelWithMetadata
 {
 
@@ -40,36 +43,38 @@ class Topic extends ModelWithMetadata
     }
 
     /**
-     * @return \TalkTalk\Model\Post
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function firstPost()
     {
-        static $firstPost;
+        static $firstPost;//poor man's cache
 
         if (!isset($firstPost)) {
-            $firstPost = Post::with('author')
-                ->where('topic_id', '=', $this->id)
+            $post = new Post();
+            $firstPostQuery = $post->query()
+                ->with('author')
                 ->orderBy('created_at', 'ASC')
-                ->take(1)
-                ->first();
+                ->take(1);
+            $firstPost = new HasOne($firstPostQuery, $this, $post->getTable().'.topic_id', 'id');
         }
 
         return $firstPost;
     }
 
     /**
-     * @return \TalkTalk\Model\Post
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function lastPost()
     {
-        static $lastPost;
+        static $lastPost;//poor man's cache
 
         if (!isset($lastPost)) {
-            $lastPost = Post::with('author')
-                ->where('topic_id', '=', $this->id)
+            $post = new Post();
+            $lastPostQuery = $post->query()
+                ->with('author')
                 ->orderBy('created_at', 'DESC')
-                ->take(1)
-                ->first();
+                ->take(1);
+            $lastPost = new HasOne($lastPostQuery, $this, $post->getTable().'.topic_id', 'id');
         }
 
         return $lastPost;
@@ -77,16 +82,18 @@ class Topic extends ModelWithMetadata
 
     /**
      * @param  int   $nbPosts
-     * @return array an array of \TalkTalk\Model\Post instances
+     * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function lastPosts($nbPosts)
     {
-        return Post::with('author')
-            ->where('topic_id', '=', $this->id)
+        $post = new Post();
+        $lastPostsQuery = $post->query()
+            ->with('author')
             ->orderBy('created_at', 'DESC')
-            ->take($nbPosts)
-            ->get()
-            ->all();
+            ->take($nbPosts);
+        $lastPosts = new HasMany($lastPostsQuery, $this, $post->getTable().'.topic_id', 'id');
+
+        return $lastPosts;
     }
 
 }
