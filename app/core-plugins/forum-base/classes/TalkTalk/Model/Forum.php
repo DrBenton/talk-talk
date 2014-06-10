@@ -34,7 +34,7 @@ class Forum extends ModelWithMetadata
     /**
      * @return array
      */
-    public static function all()
+    public static function all($columns = array('*'))
     {
         static::initTree();
 
@@ -47,7 +47,7 @@ class Forum extends ModelWithMetadata
      * @param  mixed                                                 $id
      * @return \Illuminate\Database\Eloquent\Model|Collection|static
      */
-    public static function find($id)
+    public static function find($id, $columns = array('*'))
     {
         static::initTree();
 
@@ -64,7 +64,7 @@ class Forum extends ModelWithMetadata
      * @param  mixed                                                 $id
      * @return \Illuminate\Database\Eloquent\Model|Collection|static
      */
-    public static function findOrFail($id)
+    public static function findOrFail($id, $columns = array('*'))
     {
         static::initTree();
 

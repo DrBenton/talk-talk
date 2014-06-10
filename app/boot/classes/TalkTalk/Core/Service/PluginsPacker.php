@@ -126,8 +126,9 @@ class PluginsPacker extends BaseService
     {
         $pluginsPackersInitCode = '';
 
+        $pluginsBehaviours = Plugin::getBehaviours();
         array_walk(
-            Plugin::getBehaviours(),
+            $pluginsBehaviours,
             function (PluginPackerBehaviourInterface $pluginsPacker) use (&$pluginsPackersInitCode) {
 
                 $packerInitCode = $pluginsPacker->getPackerInitCode();
