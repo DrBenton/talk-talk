@@ -50,5 +50,8 @@
     lastItem: true
   });
 
+  // let's expose our app config data as a Module
+  define("app/config", [], appConfigData);
+
 
 })();
