@@ -26,7 +26,7 @@ $action = function () use ($app, &$showFormOnError) {
         return $showFormOnError($app, $userData);
     }
 
-    // All right, our User is correctly authentified! Let's log him/her...
+    // All right, our User is correctly authenticated! Let's log him/her...
     $app->get('session')->set('userId', $dbUser->id);
 
     // Success feedback

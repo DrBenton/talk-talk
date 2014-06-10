@@ -44,7 +44,7 @@
   - user
 
 @firewalls:
-  - authentification-required
+  - authentication-required
 
 @translations:
   - en

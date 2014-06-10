@@ -36,4 +36,4 @@ core-plugins:
       notifications:
         success: Bye! Hope to see you soon!
     middlewares:
-      authentication-required: Authentification required. Please sign in.
+      authentication-required: Authentication required. Please sign in.

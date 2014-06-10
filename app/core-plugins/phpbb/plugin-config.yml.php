@@ -8,7 +8,7 @@
     - ^/sign-in$
     - ^/utils/get-ajax-alerts-display$
   globalFirewalls:
-   - authentification-required
+   - authentication-required
 
 @actions:
   -
