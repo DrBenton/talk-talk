@@ -4,7 +4,7 @@
 
 <?= $this->hooks()->html('page.new_post_form') ?>
 
-<?= $this->hooks()->html('form', 'new_post_form') ?>
+<?= $this->hooks()->html('form', 'component.post_content_editor') ?>
 <form id="new-post-form" role="form"
       action="<?= $this->app()->path('forum-base/new-post-form/target', array('topic' => $this->topic->id)) ?>"
       method="post"

@@ -14,7 +14,7 @@ $action = function (Request $request, Topic $topic) use ($app) {
 
     // First & last Posts
     $firstPost = $topic->firstPost;
-    $lastPosts = $topic->lastPosts(3);
+    $lastPosts = $topic->lastPosts(3)->getResults()->all();
 
     // Don't display the first Post in the last Posts list
     $lastPosts = array_filter($lastPosts, function (Post $post) use ($firstPost) {

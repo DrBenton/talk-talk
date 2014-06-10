@@ -10,6 +10,7 @@
     "jquery": "1.11.0",
     "requirejs": "~2.1.10",
     "lodash": "~2.4.1",
+    "flight": "~1.1.4",
     "console-polyfill": "~0.1.1",
     "history.js": "~1.8.0",
     "pace": "~0.4.17",
@@ -22,7 +23,7 @@
     "jqjquery-wysibb": "~1.5.1",
     "require-css": "~0.1.2",
     "markitup-markitup": "~1.1.14",
-    "flight": "~1.1.4"
+    "SCEditor": "~1.4.4"
   },
   "keywords": [
     "forum",

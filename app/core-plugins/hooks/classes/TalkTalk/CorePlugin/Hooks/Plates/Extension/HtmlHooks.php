@@ -19,11 +19,16 @@ class HtmlHooks extends BaseExtension
         return $this;
     }
 
-    public function html($hookName)
+    public function html()
     {
-        $this->app->exec('hooks.html.add', $hookName);
+        $hooksNames = func_get_args();
+        call_user_func_array($this->app->getFunction('hooks.html.add'), $hooksNames);
 
-        return "<!-- HTML hook : '$hookName' --> ";
+        if ($this->app->vars['debug']) {
+            return '<!-- HTML hook : "'.implode(', ', $hooksNames).'" --> ';
+        } else {
+            return '';
+        }
     }
 
 }

@@ -9,9 +9,9 @@
         <div class="topic-desc">
             Created <?= $this->topic->created_at ?> by
             <span class="topic-author"><?= $this->e($this->topic->author->login) ?></span><br>
-            <?php if ($this->topic->lastPost()->id !== $this->posts[0]->id): ?>
-                Last reply <?= $this->topic->lastPost()->created_at ?> by
-                <span class="topic-last-participant"><?= $this->topic->lastPost()->author->login ?></span>
+            <?php if ($this->topic->lastPost->id !== $this->posts[0]->id): ?>
+                Last reply <?= $this->topic->lastPost->created_at ?> by
+                <span class="topic-last-participant"><?= $this->topic->lastPost->author->login ?></span>
             <?php else: ?>
                 No reply.
             <?php endif ?>

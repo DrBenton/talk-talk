@@ -26,8 +26,8 @@
     name: forum-base/new-topic-form
     params-converters:
       forum: forum-id
-    before:
-      - auth.middleware.is-authenticated
+    firewalls:
+      - authentication-required
   -
     # POST /forum/ID/topics => actions/new-topic-target.php
     # (authentication required)
@@ -37,8 +37,8 @@
     method: POST
     params-converters:
       forum: forum-id
-    before:
-      - auth.middleware.is-authenticated
+    firewalls:
+      - authentication-required
   -
     # GET /topic/ID => actions/topic-display.php
     url: /topic/{topic}
@@ -54,8 +54,8 @@
     name: forum-base/new-post-form
     params-converters:
       topic: topic-id
-    before:
-      - auth.middleware.is-authenticated
+    firewalls:
+      - authentication-required
   -
     # POST /topic/ID/posts => actions/new-post-target.php
     # (authentication required)
@@ -65,8 +65,8 @@
     method: POST
     params-converters:
       topic: topic-id
-    before:
-      - auth.middleware.is-authenticated
+    firewalls:
+      - authentication-required
 
 @actions-params-converters:
   - forum-id
@@ -93,6 +93,5 @@
 @templates-extensions:
   - forum-utils
 
-#@hooks:
-#  - html.new_topic_form
-#  - html.new_post_form
+@hooks:
+  - html.component.post_content_editor
