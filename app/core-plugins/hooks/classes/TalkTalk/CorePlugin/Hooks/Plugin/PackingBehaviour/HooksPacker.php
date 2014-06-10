@@ -192,9 +192,12 @@ PLUGIN_PHP_CODE;
 
     protected function getPluginComponentsUrl(Plugin $plugin)
     {
-        return $this->app
-            ->get('utils.string')
-            ->handlePluginRelatedString($plugin, self::PLUGIN_COMPONENTS_URL);
+        return preg_replace(
+            '~^' . $this->app->vars['app.base_url'] . '/~',
+            '',
+            $this->app->get('utils.string')
+                ->handlePluginRelatedString($plugin, self::PLUGIN_COMPONENTS_URL)
+        );
     }
 
     protected function getNormalizedHookData(Plugin $plugin, $hookData)
