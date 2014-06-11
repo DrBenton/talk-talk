@@ -8,3 +8,5 @@ files:
   - Doctrine/Common/Cache/Cache.php
   - Doctrine/Common/Cache/CacheProvider.php
   - Doctrine/Common/Cache/ArrayCache.php
+  - Doctrine/Common/Cache/FileCache.php
+  - Doctrine/Common/Cache/PhpFileCache.php
