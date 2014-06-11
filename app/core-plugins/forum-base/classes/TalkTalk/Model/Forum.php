@@ -122,7 +122,12 @@ class Forum extends ModelWithMetadata
             $allForumsRaw = & $cachedData;
             $allForums = new Collection();
             foreach ($allForumsRaw as $forumRaw) {
-                $allForums->add(new Forum($forumRaw));
+                foreach ($forumRaw as $key => $value) {
+                    if (preg_match('~^-?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$~', $value)) {
+                        $forumRaw[$key] = \DateTime::createFromFormat('Y-m-d H:i:s', $value);
+                    }
+                }
+                $allForums->add(new static($forumRaw));
             }
 
         } else {
