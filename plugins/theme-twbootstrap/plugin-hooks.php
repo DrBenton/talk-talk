@@ -299,3 +299,12 @@ $hooks['html.phpbb_db_settings_form'] = function (DOMQuery $html) {
     $html->find('form#phpbb-import-start-form .submit-button')
         ->prepend('<span class="glyphicon glyphicon-wrench"></span>');
 };
+
+$hooks['html.ajax_topic_writing_widget'] = $hooks['html.ajax_post_writing_widget'] = function (DOMQuery $html) {
+    $ajaxWritingWidget = $html->find('.ajax-writing-frame');
+    $ajaxWritingWidget->addClass('panel panel-default');
+    $ajaxWritingWidget->find('.header')
+        ->wrap('<div class="panel-heading"></div>')
+        ->addClass('panel-title');
+    $ajaxWritingWidget->find('form')->addClass('panel-body');
+};

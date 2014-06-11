@@ -36,4 +36,5 @@
   - html.page.new_post_form
   - html.component.progress
   - html.phpbb_db_settings_form
+  - html.ajax_topic_writing_widget
 

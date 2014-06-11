@@ -64,7 +64,7 @@ RUN su - $USER_LOGIN -c "git clone https://github.com/creationix/nvm.git /home/$
 RUN su - $USER_LOGIN -c "echo '[ -s /home/$USER_LOGIN/.nvm/nvm.sh ] && . /home/$USER_LOGIN/.nvm/nvm.sh # This loads NVM' >> $BASHRC"
 RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && nvm install 0.10"
 RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && nvm alias default 0.10"
-RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && npm install -g grunt-cli gulp bower"
+RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && npm install -g grunt-cli gulp bower less"
 
 # Some shell stuff for our "dev" user
 ENV QUOTE "'"

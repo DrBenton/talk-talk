@@ -8,7 +8,7 @@ define(function (require, exports, module) {
   var logger = require("logger");
   var appConfig = require("app/config");
 
-  var myDebug = !false;
+  var myDebug = false;
 
   // Exports: component definition
   module.exports = defineComponent(postContentEditor, withAlertsCapabilities);
