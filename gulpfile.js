@@ -24,29 +24,33 @@ gulp.task("compile-php-packs", function (cb) {
 
 gulp.task("watch", ["compile-php-packs"], function() {
 
-  // PHP packings
-  gulp.watch(
-    [
-      "app/boot/**/*.php",
-      "app/core-plugins/**/*.php",
-      "app/plugins/**/*.php",
-      "app/php-packs-profiles/*.yml"
+  var liveReloadEnabled = !! appConfig["debug"]["livereload"];
+
+  if (liveReloadEnabled) {
+    var livereloadPort = parseInt(appConfig["debug"]["livereload.port"]);
+    var server = livereload(livereloadPort);
+    console.log("LiveReload started.");
+  }
+
+  console.log("Yes captain?");
+  gulp.watch([
+      "app/**",
+      "plugins/**",
+      "!**/var/**",
+      "!**/components/**",
+      "!**/*.pack.php"
     ],
     ["compile-php-packs"]
-  );
+  ).on("change", function(file) {
 
-  // Live reload
-  var livereloadPort = parseInt(appConfig.debug["livereload.port"]);
-  var server = livereload(livereloadPort);
-  gulp.watch([
-    "app/**",
-    "!**/cache/**",
-    "!**/*.pack.php",
-    "!**/*.log"
-  ]).on("change", function(file) {
       console.log(file.path + " changed.");
-      server.changed(file.path);
+
+      if (liveReloadEnabled) {
+        server.changed(file.path);
+      }
+
   });
+  console.log("Ready to serve!");
 
 });
 

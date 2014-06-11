@@ -44,7 +44,7 @@ define(function (require, exports, module) {
 
       _.forEach(headersDomSelectorsMaping, _.bind(function(domSelector, headerName) {
         this.$node.find(domSelector).text(
-          data.getResponseHeader(headerName) || ''
+          data.getResponseHeader(headerName) || ""
         )
         .closest("li").removeClass("hidden");
       }, this));

@@ -22,7 +22,7 @@ define(function (require, exports, module) {
 
       var componentsToAttach = componentsName.split(",");
       componentsToAttach = _.map(componentsToAttach, function(componentName) {
-        return componentName.replace(/^\//, '', componentName);
+        return componentName.replace(/^\//, "", componentName);
       });
 
       require(componentsToAttach, function () {
