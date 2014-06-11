@@ -3,6 +3,7 @@
 namespace TalkTalk\CorePlugin\Utils\Service;
 
 use TalkTalk\Core\Service\BaseService;
+use TalkTalk\Core\Service\PackingManager;
 
 class Perfs extends BaseService
 {
@@ -17,7 +18,24 @@ class Perfs extends BaseService
 
     public function getNbIncludedFiles()
     {
-        return count(get_included_files());
+        $includedFiles = get_included_files();
+
+        $templatesFilesExt = '.' . $this->app->vars['view.templates_ext'];
+        $packsFilesExt = PackingManager::PACK_FILES_EXTENSION;
+        $nbIncludedTemplates = $nbIncludedPacks = 0;
+        foreach ($includedFiles as $includedFilePath) {
+            if (false !== strpos($includedFilePath, $templatesFilesExt)) {
+                $nbIncludedTemplates++;
+            } elseif (false !== strpos($includedFilePath, $packsFilesExt)) {
+                $nbIncludedPacks++;
+            }
+        }
+
+        return array(
+            'total' => count($includedFiles),
+            'templates' => $nbIncludedTemplates,
+            'packs' => $nbIncludedPacks
+        );
     }
 
     public function getDbConnectionLog($connectionName = null)
@@ -47,7 +65,10 @@ class Perfs extends BaseService
         $perfsInfo['elapsedTimeAtBootstrap'] = $this->app->vars['perfs.bootstrap.elapsed_time'];
         $perfsInfo['elapsedTimeAtPluginsInit'] = $this->app->vars['perfs.plugins-init.elapsed_time'];
         // Number of included files, for different app phases
-        $perfsInfo['nbIncludedFilesNow'] = $this->getNbIncludedFiles();
+        $nbIncludedFilesData = $this->getNbIncludedFiles();
+        $perfsInfo['nbIncludedFilesNow'] = $nbIncludedFilesData['total'];
+        $perfsInfo['nbIncludedTemplatesNow'] = $nbIncludedFilesData['templates'];
+        $perfsInfo['nbIncludedPacksNow'] = $nbIncludedFilesData['packs'];
         $perfsInfo['nbIncludedFilesAtBootstrap'] = $this->app->vars['perfs.bootstrap.nb_included_files'];
         $perfsInfo['nbIncludedFilesAtPluginsInit'] = $this->app->vars['perfs.plugins-init.nb_included_files'];
         // Plugins-related info
@@ -74,6 +95,15 @@ class Perfs extends BaseService
                 $perfsInfo['sqlQueries'] = array_merge($perfsInfo['sqlQueries'], $phpbbConnectionLog['sqlQueries']);
             }
         }
+        // View rendering duration, if any
+        if (isset($this->app->vars['perfs.view.rendering.duration'])) {
+            $perfsInfo['viewRenderingDuration'] = $this->app->vars['perfs.view.rendering.duration'];
+        }
+        // QueryPath HTML hooks duration, if any
+        if (isset($this->app->vars['perfs.querypath.duration'])) {
+            $perfsInfo['queryPathDuration'] = $this->app->vars['perfs.querypath.duration'];
+        }
+
 
         return $perfsInfo;
     }

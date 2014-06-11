@@ -52,7 +52,7 @@ define(function (require, exports, module) {
       });
       var nbActions = this.nbActionsLoadedFromAjax;
       nbActions += (withLoadingsFromCache) ? this.nbActionsLoadedFromCache : 0 ;
-      return sum / nbActions;
+      return Math.round(sum / nbActions);
     };
 
     // Component initialization

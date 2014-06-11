@@ -17,6 +17,8 @@ $app->after(
             'X-Perfs-Elapsed-Time-Bootstrap' => $perfsInfo['elapsedTimeAtBootstrap'],
             'X-Perfs-Elapsed-Time-Plugins-Init' => $perfsInfo['elapsedTimeAtPluginsInit'],
             'X-Perfs-Nb-Included-Files-Now' => $perfsInfo['nbIncludedFilesNow'],
+            'X-Perfs-Nb-Included-Templates-Now' => $perfsInfo['nbIncludedTemplatesNow'],
+            'X-Perfs-Nb-Included-Packs-Now' => $perfsInfo['nbIncludedPacksNow'],
             'X-Perfs-Nb-Included-Files-Bootstrap' => $perfsInfo['nbIncludedFilesAtBootstrap'],
             'X-Perfs-Nb-Included-Files-Plugins-Init' => $perfsInfo['nbIncludedFilesAtPluginsInit'],
             'X-Perfs-Nb-Plugins' => $perfsInfo['nbPlugins'],
@@ -41,10 +43,17 @@ $app->after(
             $headers['X-Perfs-SQL-Queries'] = json_encode($sqlQueries);
         }
 
-        if (isset($app->vars['perfs.querypath.duration'])) {
-            $headers['X-Perfs-QueryPath-Duration'] = $app->vars['perfs.querypath.duration'];
+        // Optional View rendering info
+        if (isset($perfsInfo['viewRenderingDuration'])) {
+            $headers['X-Perfs-View-Rendering-Duration'] = $perfsInfo['viewRenderingDuration'];
         }
 
+        // Optional QueryPath info
+        if (isset($perfsInfo['queryPathDuration'])) {
+            $headers['X-Perfs-QueryPath-Duration'] = $perfsInfo['queryPathDuration'];
+        }
+
+        // Optional Plugins packing info
         if (isset($perfsInfo['pluginsPackingDuration'])) {
             $headers['X-Perfs-Plugins-Packing-Duration'] = $perfsInfo['pluginsPackingDuration'];
         }

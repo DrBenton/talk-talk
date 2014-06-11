@@ -48,7 +48,7 @@ $app->defineFunction(
         }
         libxml_use_internal_errors(false); //...and enable it again!
 
-        $app->vars['perfs.querypath.duration'] = round(microtime(true) - $startTime, 3);
+        $app->vars['perfs.querypath.duration'] = round((microtime(true) - $startTime) * 1000);
 
         if ($app->vars['isAjax']) {
             // Notifications are handled in the Ajax Layout.

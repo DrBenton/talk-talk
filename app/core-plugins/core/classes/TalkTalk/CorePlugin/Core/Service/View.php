@@ -23,9 +23,18 @@ class View extends BaseService
      */
     protected $templatesExtensions = array();
 
+    protected $perfsTracking = false;
+
     public function render($templatePath, array $vars = array())
     {
-        return $this->getRendering($templatePath, $vars);
+        $startTime = microtime(true);
+        $viewContent = $this->getRendering($templatePath, $vars);
+
+        if ($this->perfsTracking) {
+            $this->app->vars['perfs.view.rendering.duration'] = round((microtime(true) - $startTime) * 1000);
+        }
+
+        return $viewContent;
     }
 
     public function getRendering($templatePath, array $vars = array())
@@ -76,6 +85,11 @@ class View extends BaseService
                     $engine->addFolder($viewFolderData['namespace'], $viewFolderData['path']);
                 }
             );
+        }
+
+        // Do we tracks app performance?
+        if ($this->app->vars['config']['debug']['perfs.tracking.enabled']) {
+            $this->perfsTracking = true;
         }
 
         $this->platesEngine = $engine;

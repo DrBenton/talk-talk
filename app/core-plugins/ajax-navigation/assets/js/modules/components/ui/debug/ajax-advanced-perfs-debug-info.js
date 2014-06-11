@@ -30,27 +30,24 @@ define(function (require, exports, module) {
         "X-Perfs-Nb-Included-Files-Now": ".perfs-nb-included-files-now",
         "X-Perfs-Nb-Included-Files-Bootstrap": ".perfs-nb-included-files-bootstrap",
         "X-Perfs-Nb-Included-Files-Plugins-Init": ".perfs-nb-included-files-plugins-init",
+        "X-Perfs-Nb-Included-Templates-Now": ".perfs-nb-included-templates-now",
+        "X-Perfs-Nb-Included-Packs-Now": ".perfs-nb-included-packs-now",
         "X-Perfs-Nb-Plugins": ".nb-plugins",
         "X-Perfs-Nb-Plugins-Permanently-Disabled": ".nb-plugins-permanently-disabled",
         "X-Perfs-Nb-Plugins-Disabled-For-Current-URL": ".nb-plugins-disabled-for-current-url",
         "X-Perfs-Nb-Actions-Registered": ".nb-actions-registered",
         "X-Perfs-Session-Content": ".session-content",
-        "X-Perfs-SQL-Nb-Queries": ".nb-sql-queries"
+        "X-Perfs-SQL-Nb-Queries": ".nb-sql-queries",
+        "X-Perfs-View-Rendering-Duration": ".view-rendering-duration",
+        "X-Perfs-QueryPath-Duration": ".query-path-duration"
       };
 
       _.forEach(headersDomSelectorsMaping, _.bind(function(domSelector, headerName) {
         this.$node.find(domSelector).text(
-          data.getResponseHeader(headerName)
-        );
+          data.getResponseHeader(headerName) || ''
+        )
+        .closest("li").removeClass("hidden");
       }, this));
-
-      // X-Perfs-QueryPath-Duration
-      var queryPathDuration = data.getResponseHeader("X-Perfs-QueryPath-Duration");
-      if (queryPathDuration) {
-        this.$node.find(".query-path-duration")
-          .text(queryPathDuration)
-          .closest("li").removeClass("hidden");
-      }
 
       // X-Perfs-SQL-Queries
       var sqlQueries = data.getResponseHeader("X-Perfs-SQL-Queries");

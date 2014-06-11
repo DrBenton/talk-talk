@@ -22,14 +22,26 @@ $this->perfsInfo = $this->app()->get('perfs')->getAllPerfsInfo();
                 - time elapsed at "app ready" (after Plugins init, just before <code>$app->run()</code>): <b class="perfs-elapsed-time-plugins-init"><?= $this->perfsInfo['elapsedTimeAtPluginsInit'] ?></b>ms.
             </li>
             <li class="hidden">
-                {#
-                We can't display this data, since QueryPath hooks run *after* the page content has been rendered.
-                --> but we will display it when we will receive the data from Ajax Responses HTTP headers!
-                #}
-                QueryPath phase duration: <b class="query-path-duration">N/A</b>s.
+                <?php
+                /**
+                 * We can't display this data, since the View rendering is not finished at this time :-)
+                 * --> but we will display it when we will receive the data from Ajax Responses HTTP headers!
+                 */
+                ?>
+                View rendering duration: <b class="view-rendering-duration">N/A</b>ms.
+            </li>
+            <li class="hidden">
+                <?php
+                /**
+                 * We can't display this data either, because QueryPath hooks run *after* the page content has been rendered.
+                 */
+                ?>
+                QueryPath HTML hooks duration: <b class="query-path-duration">N/A</b>ms.
             </li>
             <li>
-                Included files: <b class="perfs-nb-included-files-now"><?= $this->perfsInfo['nbIncludedFilesNow'] ?></b><br>
+                Included files: <b class="perfs-nb-included-files-now"><?= $this->perfsInfo['nbIncludedFilesNow'] ?></b>
+                <i>(including <b class="perfs-nb-included-templates-now"><?= $this->perfsInfo['nbIncludedTemplatesNow'] ?></b> Templates &amp;
+                <b class="perfs-nb-included-packs-now"><?= $this->perfsInfo['nbIncludedPacksNow'] ?></b> PHP Packs)</i><br>
                 - at bootstrap phase: <b class="perfs-nb-included-files-bootstrap"><?= $this->perfsInfo['nbIncludedFilesAtBootstrap'] ?></b><br>
                 - at "app ready" phase : <b class="perfs-nb-included-files-plugins-init"><?= $this->perfsInfo['nbIncludedFilesAtPluginsInit'] ?></b>
             </li>
