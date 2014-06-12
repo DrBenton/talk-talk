@@ -55,7 +55,7 @@ $action = function () use ($app, &$showFormOnError) {
 };
 
 $showFormOnError = function ($app, array $userData) {
-    $app->get('flash')->flashTranslatedNow(
+    $app->get('flash')->flashTranslated(
         'alerts.error.sign-in',
         'core-plugins.auth.sign-in.notifications.error'
     );
