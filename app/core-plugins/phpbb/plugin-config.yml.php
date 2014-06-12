@@ -88,6 +88,7 @@
 
 @hooks:
   - auth.user.check-signin-credentials
+  - html.page.phpbb.imports
 
 @translations:
   - en

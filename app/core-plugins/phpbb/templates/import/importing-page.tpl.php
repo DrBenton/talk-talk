@@ -2,13 +2,8 @@
 
 <span class="ajax-loading-data" data-ajax-cache="<?= $this->e(json_encode(array('duration' => 600))) ?>"></span>
 
+<?= $this->hooks()->html('page.phpbb.imports') ?>
 <div class="imports-container flight-component"
-     data-component="<?= $this->e(
-            implode(',', array(
-                'app-modules/phpbb/components/ui/phpbb-imports-gui',
-                'app-modules/phpbb/components/data/phpbb-imports-handler',
-            ))
-        )?>"
      data-items-types="<?= $this->e(json_encode($this->itemsTypes)) ?>">
 
     <div class="intro">
