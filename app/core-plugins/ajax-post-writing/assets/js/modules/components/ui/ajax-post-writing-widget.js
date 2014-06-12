@@ -10,10 +10,6 @@ define(function (require, exports, module) {
   var $ = require("jquery");
   var logger = require("logger");
 
-  // CSS dependencies
-  require("css!../../../../css/ajax-writing-frame.css");
-
-
   var myDebug = !false;
 
   // Exports: component definition
@@ -40,6 +36,14 @@ define(function (require, exports, module) {
       myDebug && logger.debug(module.id, "Ajax Topic writing requested for Forum n°", parentForumId);
       this.$node.empty().show();
       this.loadNewTopicWidgetContent(parentForumId);
+    };
+
+    this.onAjaxPostWritingRequest = function (ev, data)
+    {
+      var parentTopicId = data.topicId;
+      myDebug && logger.debug(module.id, "Ajax Post writing requested for Topic n°", parentTopicId);
+      this.$node.empty().show();
+      this.loadNewPostWidgetContent(parentTopicId);
     };
 
     this.onCloseBtClick = function (ev, data)
@@ -78,6 +82,17 @@ define(function (require, exports, module) {
         );
     };
 
+    this.loadNewPostWidgetContent = function (topicId) {
+      this.$node.addClass("ajax-loading");
+      this.clearEventsBindings();
+      this.ajaxPromise({
+        url: appConfig["base_url"] + "/ajax-post-writing/topic/"+topicId+"/new-post/widget"
+      })
+        .then(
+          _.bind(this.onWidgetContentRetrieved, this)
+        );
+    };
+
     this.onWidgetContentRetrieved = function (data) {
         this.$node.removeClass("ajax-loading");
         this.$node.html(data);
@@ -105,6 +120,7 @@ define(function (require, exports, module) {
     this.after("initialize", function() {
       this.$node.addClass("state-normal flight-component flight-component-attached");
       this.on(document, "uiNeedsAjaxTopicWriting", this.onAjaxTopicWritingRequest);
+      this.on(document, "uiNeedsAjaxPostWriting", this.onAjaxPostWritingRequest);
     });
   }
 

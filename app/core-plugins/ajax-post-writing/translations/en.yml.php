@@ -6,4 +6,6 @@ core-plugins:
   ajax-post-writing:
     ajax-writing-frame:
       topic:
-        intro: Write a new Topic for forum "%forum-title%"
+        intro: Write a new Topic for Forum "%forum-title%"
+      post:
+        intro: Add a new Post response to Topic "%topic-title%"

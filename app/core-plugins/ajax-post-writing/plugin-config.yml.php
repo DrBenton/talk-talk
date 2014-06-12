@@ -6,11 +6,17 @@
 
 @actions:
   -
-    # GET /ajax-post-writing/get-widget => actions/get-ajax-post-writing-widget.php
+    # GET /ajax-post-writing/get-widget => actions/get-new-topic-widget.php
     url: /ajax-post-writing/forum/{forum}/new-topic/widget
     target: get-new-topic-widget
     params-converters:
       forum: forum-id
+  -
+    # GET /ajax-post-writing/get-widget => actions/get-new-post-widget.php
+    url: /ajax-post-writing/topic/{topic}/new-post/widget
+    target: get-new-post-widget
+    params-converters:
+      topic: topic-id
 
 @translations:
   - en

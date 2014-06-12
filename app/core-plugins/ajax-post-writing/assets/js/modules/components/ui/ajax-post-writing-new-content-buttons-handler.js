@@ -26,12 +26,23 @@ define(function (require, exports, module) {
 
       ajaxPostWriting.ajaxWritingWidgetInitialized || this.createAjaxWritingWidget();
 
-      this.$node.css("opacity", 0.5);
-      this.trigger(document, "uiNeedsAjaxTopicWriting", {
-        forumId: parseInt(this.$node.data("forum-id"), 10)
-      });
+      switch (true) {
+        case this.$node.hasClass("create-new-topic-link"):
+          this.trigger(document, "uiNeedsAjaxTopicWriting", {
+            forumId: parseInt(this.$node.data("forum-id"), 10)
+          });
+          break;
+        case this.$node.hasClass("create-new-post-link"):
+          this.trigger(document, "uiNeedsAjaxPostWriting", {
+            topicId: parseInt(this.$node.data("topic-id"), 10)
+          });
+          break;
+        default:
+          logger.warn("Unknown behaviour for this button:", this.$node);
+      }
 
       return false;
+
     };
 
     this.createAjaxWritingWidget = function() {
