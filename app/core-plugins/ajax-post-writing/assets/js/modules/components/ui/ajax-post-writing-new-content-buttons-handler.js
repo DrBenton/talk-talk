@@ -28,7 +28,7 @@ define(function (require, exports, module) {
 
       this.$node.css("opacity", 0.5);
       this.trigger(document, "uiNeedsAjaxTopicWriting", {
-        forumId: parseInt(this.$node.data("forum-id"))
+        forumId: parseInt(this.$node.data("forum-id"), 10)
       });
 
       return false;

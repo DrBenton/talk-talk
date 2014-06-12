@@ -6,6 +6,7 @@ define(function (require, exports, module) {
   var withAjax = require("app-modules/utils/mixins/data/with-ajax");
   var varsRegistry = require("app-modules/core/vars-registry");
   var appConfig = require("app/config");
+  var _ = require("lodash");
   var $ = require("jquery");
   var logger = require("logger");
 
