@@ -196,7 +196,94 @@ form {
 
 // Ajax Topic/Post writing
 #ajax-writing-widget {
-  .panel {
+
+  position: fixed;
+  bottom: -2px;
+  right: -2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 0 22px;
+
+  .form-container {
+    form {
+      min-width: 400px;
+      min-height: 300px;
+    }
+  }
+
+  &.ajax-loading {
+    min-width: 400px;
+    min-height: 300px;
+    opacity: 0.5;
+    background-color: @gray-lighter;
+    border: solid @gray-light 1px;
+    border-radius: @border-radius-base;
+  }
+
+  // "Normal" state display
+  &.state-normal {
+    textarea, iframe {
+      max-width: 320px;
+      max-height: 200px;
+    }
+    .bt-cancel-minimize, .bt-cancel-fullscreen {
+      display: none;
+    }
+  }
+  // "Minimized" state display
+  &.state-minimized {
+    .header-container .header {
+      opacity: 0.5;
+      font-style: italic;
+    }
+    .form-container {
+      height: 0;
+      padding: 2px;
+      form {
+        display: none;
+      }
+    }
+    .bt-minimize, .bt-fullscreen, .bt-cancel-fullscreen {
+      display: none;
+    }
+  }
+  // "Full screen" state display
+  &.state-fullscreen {
+    top: 5%;
+    left: 50%;
+    margin-left: -45%;
+    /* margin-top: -45%; */
+    width: 90%;
+    height: 90%;
+    .bt-fullscreen, .bt-cancel-minimize {
+      display: none;
+    }
+    .ajax-writing-frame-container, .ajax-writing-frame, .form-container, form {
+      height: 100%;
+    }
+  }
+
+  .ajax-writing-frame-container {
+    position: relative;
     margin-bottom: 0;
+    .frame-tools-container {
+      .frame-tools {
+        .bt {
+          position: absolute;
+          z-index: 1;
+          top: 3px;
+          &.bt-minimize, &.bt-cancel-minimize {
+            right: 45px;
+          }
+          &.bt-fullscreen, &.bt-cancel-fullscreen {
+            right: 90px;
+          }
+          &.bt-close {
+            right: 2px;
+          }
+        }
+      }
+    }
+    .panel {
+      margin-bottom: 0;
+    }
   }
 }

@@ -37,7 +37,8 @@ define(function (require, exports, module) {
             plugins: "bbcode",
             style: scEditorBase + "minified/jquery.sceditor.default.min.css",
             toolbar: "bold,italic,underline|link,unlink|quote|bulletlist,orderedlist|emoticon|maximize|source",
-            emoticonsRoot: scEditorBase
+            emoticonsRoot: scEditorBase,
+            width: "95%"
           });
           break;
 
