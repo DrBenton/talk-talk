@@ -10,3 +10,23 @@ files:
   - Decoda/Component/AbstractComponent.php
   - Decoda/Filter/AbstractFilter.php
   - Decoda/Filter/ImageFilter.php
+  - Decoda/Hook.php
+  - Decoda/Hook/AbstractHook.php
+  - Decoda/Hook/EmptyHook.php
+  - Decoda/Hook/ClickableHook.php
+  - Decoda/Hook/CensorHook.php
+  - Decoda/Hook/CodeHook.php
+  - Decoda/Loader.php
+  - Decoda/Loader/AbstractLoader.php
+  - Decoda/Loader/FileLoader.php
+  - Decoda/Filter/ListFilter.php
+  - Decoda/Filter/QuoteFilter.php
+  - Decoda/Filter/CodeFilter.php
+  - Decoda/Filter/VideoFilter.php
+  - Decoda/Filter/BlockFilter.php
+  - Decoda/Filter/TextFilter.php
+  - Decoda/Filter/UrlFilter.php
+  - Decoda/Filter/EmailFilter.php
+  - Decoda/Filter/DefaultFilter.php
+  - Decoda/Filter/EmptyFilter.php
+  - Decoda/Decoda.php
