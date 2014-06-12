@@ -67,6 +67,11 @@
       topic: topic-id
     firewalls:
       - authentication-required
+  -
+    # GET /smileys => actions/get-smileys.php
+    url: /smileys
+    target: get-smileys
+    name: forum-base/get-smileys
 
 @actions-params-converters:
   - forum-id

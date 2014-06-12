@@ -9,8 +9,16 @@ $action = function (Request $request, Forum $forum) use ($app) {
     // Forum children retrieval
     $forumChildren = $forum->getChildren();
 
+    // Total number of topics retrieval
+    $nbTopicsTotal = Topic::where('forum_id', '=', $forum->id)->count();
+
     // Topics retrieval (only those of the current page)
-    $pageNum = $request->query->getInt('page', 1);
+    $pageNum = $request->query->get('page', 1);
+    if ('last' === $pageNum) {
+        $pageNum = ceil($nbTopicsTotal / $app->vars['forum-base.pagination.topics.nb_per_page']);
+    } elseif (!is_numeric($pageNum)) {
+        $pageNum = 1;
+    }
     $topics = $forum->topics();
     $topicsToDisplay = $topics->getQuery()
         ->orderBy('updated_at', 'DESC')
@@ -21,9 +29,6 @@ $action = function (Request $request, Forum $forum) use ($app) {
         ->get()
         ->load('author') /* "author" eager loading */
         ->all();
-
-    // Total number of topics retrieval
-    $nbTopicsTotal = Topic::where('forum_id', '=', $forum->id)->count();
 
     // Pagination stuff
     $paginationData = array(

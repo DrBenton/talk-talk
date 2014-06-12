@@ -9,6 +9,8 @@ $action = function (Request $request, Topic $topic) use ($app) {
     //TODO: validation
 
     $newPostData = $request->request->get('post');
+    $newPostData['content'] = $app->exec('forum-base.markup-manager.handle_forum_markup_before_save.smileys', $newPostData['content']);
+
     $newPost = new Post($newPostData);
     $newPost->forum_id = $topic->forum()->id;
     $newPost->topic_id = $topic->id;
