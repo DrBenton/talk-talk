@@ -10,6 +10,8 @@ class SessionFlash extends BaseService
 
     const FLASHES_SESSION_NS = 'talktalk.flash';
 
+    protected $flashedContent = array();
+
     public function __construct()
     {
         if (!isset($_COOKIE['PHPSESSID'])) {
@@ -32,7 +34,9 @@ class SessionFlash extends BaseService
 
     public function keepFlashes()
     {
-        //TODO
+        if (null !== $this->flashedContent && !empty($this->flashedContent)) {
+            $_SESSION[self::FLASHES_SESSION_NS] = $this->flashedContent;
+        }
     }
 
     public function getFlashes($flashesKeyPrefix = null)
@@ -59,6 +63,7 @@ class SessionFlash extends BaseService
         );
 
         //TODO: make it cleaner, or use Symfony Session & FlashBag
+        $this->flashedContent = $_SESSION[self::FLASHES_SESSION_NS];
         unset($_SESSION[self::FLASHES_SESSION_NS]);
 
         //echo '$filteredFlashes=<pre>'.print_r($filteredFlashes, true).'</pre>';
