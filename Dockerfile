@@ -93,7 +93,7 @@ ENTRYPOINT `/usr/sbin/mysqld >/dev/null 2>&1 &` && service apache2 start && serv
 # Once:
 # docker build -t rougemine/talk-talk-ubuntu .
 # Then, each time you want to use this image :
-# docker run -i -t -p 9000:9000 -p 8080:80 -p 3307:3306 -p 10010:10000 -v $PWD:/host rougemine/talk-talk-ubuntu /bin/bash
+# docker run -i -t -p 8080:80 -p 3307:3306 -p 10010:10000 -p 35729:35729 -v $PWD:/host rougemine/talk-talk-ubuntu /bin/bash
 # Commit container changes to its repository:
 # docker ps
 # docker commit <container_id> rougemine/talk-talk-ubuntu
