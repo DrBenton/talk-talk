@@ -321,7 +321,7 @@ class Application implements ApplicationInterface
 
         $this->get('utils.array')->sortBy($this->beforeRunCallbacks, 'priority');
 
-        foreach($this->beforeRunCallbacks as $beforeRunCallbackData) {
+        foreach ($this->beforeRunCallbacks as $beforeRunCallbackData) {
             call_user_func($beforeRunCallbackData['callable']);
         }
     }

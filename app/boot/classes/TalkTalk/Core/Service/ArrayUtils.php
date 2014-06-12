@@ -45,13 +45,12 @@ class ArrayUtils
     }
 
     /**
-     * @param array $array
+     * @param array  $array
      * @param string $fieldName
      */
     public function sortBy(array &$array, $fieldName)
     {
-        $actionsSorter = function (array $actionA, array $actionB) use ($fieldName)
-        {
+        $actionsSorter = function (array $actionA, array $actionB) use ($fieldName) {
             $priorityA = $actionA[$fieldName];
             $priorityB = $actionB[$fieldName];
             if ($priorityA > $priorityB) {

@@ -2,7 +2,6 @@
 
 namespace TalkTalk\CorePlugin\Core\Service;
 
-use TalkTalk\Core\ApplicationInterface;
 use TalkTalk\Core\Service\BaseService;
 
 class SessionFlash extends BaseService

@@ -71,7 +71,7 @@ class PluginsPacker extends BaseService
         $this->app->vars['perfs.plugins.packing.duration'] = round((microtime(true) - $startTime) * 1000);
         $this->app->get('logger')->info(__METHOD__ . ' - Plugins packed. '.$this->app->vars['perfs.plugins.packing.duration'].'ms.');
     }
-    
+
     /**
      * @param array $unpackedPlugins
      */

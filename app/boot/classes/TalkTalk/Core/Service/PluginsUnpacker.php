@@ -51,7 +51,7 @@ class PluginsUnpacker extends BaseService
     }
 
     /**
-     * @param  string $pluginId
+     * @param  string                       $pluginId
      * @return \TalkTalk\Core\Plugin\Plugin
      */
     protected function unpackPlugin($pluginId)

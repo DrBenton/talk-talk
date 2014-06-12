@@ -54,6 +54,4 @@ class User extends BaseService
         return UserModel::findOrFail($this->app->get('session')->get('userId'));
     }
 
-
-
 }

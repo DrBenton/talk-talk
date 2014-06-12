@@ -1,6 +1,5 @@
 <?php
 
-
 $action = function () use ($app) {
     ob_start();
 

@@ -28,7 +28,7 @@ namespace {
             );
 
             // 2) Actions params converters are registered!
-            foreach($converters as $converterId => $converterCallback) {
+            foreach ($converters as $converterId => $converterCallback) {
 
                 if (!preg_match('~^[a-z][-a-z0-9_]+$~i', $converterId)) {
                     throw new \DomainException(sprintf('Converter id "%s" is not correct (as they are converters to class methods, their name must follow the PHP classes methods naming restrictions)', $converterId));

@@ -50,7 +50,7 @@ class StringUtils extends BaseService
     /**
      * More convenient API for str_replace
      * @param $string
-     * @param array $varsMap
+     * @param  array  $varsMap
      * @return string
      */
     public function replace($string, array $varsMap)
@@ -65,7 +65,7 @@ class StringUtils extends BaseService
     /**
      * Converts underscored or dasherized string to a camelized one.
      * Begins with a lower case letter unless it starts with an underscore or string
-     * @param string $string
+     * @param  string $string
      * @return string
      */
     public function camelize($string)
