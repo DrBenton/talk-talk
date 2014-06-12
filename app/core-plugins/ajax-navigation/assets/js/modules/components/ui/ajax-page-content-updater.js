@@ -6,7 +6,7 @@ define(function (require, exports, module) {
   var $ = require("jquery");
   var logger = require("logger");
 
-  var myDebug = !false;
+  var myDebug = false;
 
   // Exports: component definition
   module.exports = defineComponent(ajaxPageContentUpdater, withAlertsCapabilities);
@@ -17,6 +17,8 @@ define(function (require, exports, module) {
   function ajaxPageContentUpdater() {
 
     this.onContentUpdateRequest = function (ev, data) {
+
+      this.trigger(document, "uiContentAboutToBeUpdated", data);
 
       var $targetContentContainer = $(data.target);
       $targetContentContainer.html(data.content);

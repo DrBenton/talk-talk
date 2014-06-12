@@ -7,7 +7,7 @@ define(function (require, exports, module) {
   var $ = require("jquery");
   var logger = require("logger");
 
-  var myDebug = !false;
+  var myDebug = false;
 
   // Exports: component definition
   module.exports = defineComponent(ajaxBreadcrumbHandler, withUrlNormalization, withHttpStatusManagement);
