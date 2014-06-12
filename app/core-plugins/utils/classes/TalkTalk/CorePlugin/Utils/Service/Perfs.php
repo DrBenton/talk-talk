@@ -104,7 +104,6 @@ class Perfs extends BaseService
             $perfsInfo['queryPathDuration'] = $this->app->vars['perfs.querypath.duration'];
         }
 
-
         return $perfsInfo;
     }
 }

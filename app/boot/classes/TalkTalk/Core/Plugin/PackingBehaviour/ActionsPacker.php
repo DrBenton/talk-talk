@@ -33,7 +33,7 @@ namespace {
             $app->get('utils.array')->sortBy($actions, 'priority');
 
             // 2) Actions are registered!
-            foreach($actions as $action) {
+            foreach ($actions as $action) {
                 call_user_func($action['actionRegistering']);
             }
         }
@@ -162,7 +162,6 @@ namespace {
 
             // Action registration (from Plugin "%plugin-id%")
             $action = $app->addAction('%url-pattern%', function () use ($app) {
-
                 return $app->exec('actions.run', '%action-file-path%');
             });
             $action->method('%method%');
@@ -220,6 +219,7 @@ ONLY_FOR_DEBUG_BEFORE_CODE;
 
             if (in_array('%action-name%', $app->vars['plugins.actions.names'])) {
                 $app->get('logger')->debug('Action "%action-name%" not added to router, as this route name is already registered (plugin "%plugin-id%").');
+
                 return;
             }
 

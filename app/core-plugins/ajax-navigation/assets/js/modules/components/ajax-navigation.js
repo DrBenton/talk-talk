@@ -18,7 +18,7 @@ define(function (require, exports, module) {
   var ajaxHistory = require("./data/ajax-history");
   var ajaxContentLoadingDisplay = require("./ui/ajax-content-loading-display");
 
-  var myDebug = !false;
+  var myDebug = false;
 
   // Exports: component definition
   module.exports = defineComponent(ajaxNavigation, withUrlNormalization, withHttpStatusManagement);

@@ -51,6 +51,10 @@ PACKER_INIT_PHP_CODE;
             )
         );
 
+        if (!file_exists($translationFilePath)) {
+            throw new \DomainException(sprintf('Translation file "%s" not found!', $translationFilePath));
+        }
+
         $translationContent = file_get_contents($translationFilePath);
         $translationData = Yaml::parse($translationContent);
 

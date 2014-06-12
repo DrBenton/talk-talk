@@ -7,7 +7,7 @@ define(function (require, exports, module) {
   var _ = require("lodash");
   var logger = require("logger");
 
-  var myDebug = !false;
+  var myDebug = false;
 
   // Exports: component definition
   module.exports = defineComponent(ajaxAdvancedPerfsDebugInfo);

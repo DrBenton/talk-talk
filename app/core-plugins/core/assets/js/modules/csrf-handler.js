@@ -4,7 +4,7 @@ define(function (require, exports, module) {
   var varsRegistry = require("app-modules/core/vars-registry");
   var logger = require("logger");
 
-  var myDebug = !false;
+  var myDebug = false;
   var CSRF_PROTECTED_METHODS = ["POST", "PUT", "DELETE"];
 
   // Exports

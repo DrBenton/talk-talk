@@ -64,7 +64,7 @@ RUN su - $USER_LOGIN -c "git clone https://github.com/creationix/nvm.git /home/$
 RUN su - $USER_LOGIN -c "echo '[ -s /home/$USER_LOGIN/.nvm/nvm.sh ] && . /home/$USER_LOGIN/.nvm/nvm.sh # This loads NVM' >> $BASHRC"
 RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && nvm install 0.10"
 RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && nvm alias default 0.10"
-RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && npm install -g grunt-cli gulp bower"
+RUN su - $USER_LOGIN -c "source /home/$USER_LOGIN/.nvm/nvm.sh && npm install -g grunt-cli gulp bower less"
 
 # Some shell stuff for our "dev" user
 ENV QUOTE "'"
@@ -93,7 +93,7 @@ ENTRYPOINT `/usr/sbin/mysqld >/dev/null 2>&1 &` && service apache2 start && serv
 # Once:
 # docker build -t rougemine/talk-talk-ubuntu .
 # Then, each time you want to use this image :
-# docker run -i -t -p 9000:9000 -p 8080:80 -p 3307:3306 -p 10010:10000 -v $PWD:/host rougemine/talk-talk-ubuntu /bin/bash
+# docker run -i -t -p 8080:80 -p 3307:3306 -p 10010:10000 -p 35729:35729 -v $PWD:/host rougemine/talk-talk-ubuntu /bin/bash
 # Commit container changes to its repository:
 # docker ps
 # docker commit <container_id> rougemine/talk-talk-ubuntu

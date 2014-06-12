@@ -34,6 +34,8 @@ class View extends BaseService
             $this->app->vars['perfs.view.rendering.duration'] = round((microtime(true) - $startTime) * 1000);
         }
 
+        $this->app->vars['app.view.rendering_done'] = true;
+
         return $viewContent;
     }
 

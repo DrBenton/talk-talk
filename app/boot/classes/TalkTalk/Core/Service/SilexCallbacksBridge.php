@@ -3,7 +3,6 @@
 namespace TalkTalk\Core\Service;
 
 use TalkTalk\Core\ApplicationInterface;
-use TalkTalk\Core\Service\BaseService;
 
 class SilexCallbacksBridge extends BaseService
 {
@@ -34,9 +33,8 @@ class SilexCallbacksBridge extends BaseService
         }
 
         $callback = call_user_func($this->registeredCallbacks[$name]);
+
         return call_user_func_array($callback, $arguments);
     }
-
-
 
 }

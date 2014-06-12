@@ -299,3 +299,21 @@ $hooks['html.phpbb_db_settings_form'] = function (DOMQuery $html) {
     $html->find('form#phpbb-import-start-form .submit-button')
         ->prepend('<span class="glyphicon glyphicon-wrench"></span>');
 };
+
+$hooks['html.ajax_topic_writing_widget'] = $hooks['html.ajax_post_writing_widget'] = function (DOMQuery $html) {
+    $ajaxWritingWidget = $html->find('.ajax-writing-frame');
+    // We give the usual "panel" UI behaviours to our Ajax Topic/Post content writing widget
+    $ajaxWritingWidget->addClass('panel panel-default');
+    $ajaxWritingWidget->find('.header-container')
+        ->wrap('<div class="panel-heading"></div>')
+        ->addClass('panel-title');
+    $ajaxWritingWidget->find('.form-container')->addClass('panel-body');
+    // Let's give some personality to our frame buttons :-)
+    $buttons = $ajaxWritingWidget->find('.frame-tools .bt');
+    $buttons->addClass("btn btn-default btn-sm");
+    $buttons->filter('.bt-minimize')->html('<i class="glyphicon glyphicon-collapse-down"></i>');
+    $buttons->filter('.bt-cancel-minimize')->html('<i class="glyphicon glyphicon-collapse-up"></i>');
+    $buttons->filter('.bt-fullscreen')->html('<i class="glyphicon glyphicon-fullscreen"></i>');
+    $buttons->filter('.bt-cancel-fullscreen')->html('<i class="glyphicon glyphicon-resize-small"></i>');
+    $buttons->filter('.bt-close')->html('<i class="glyphicon glyphicon-remove-circle"></i>');
+};

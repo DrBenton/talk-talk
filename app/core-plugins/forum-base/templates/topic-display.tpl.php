@@ -3,7 +3,8 @@
 <span class="ajax-loading-data" data-ajax-cache="<?= $this->e(json_encode(array('duration' => 30))) ?>"></span>
 
 <?= $this->hooks()->html('page.topic', 'topic') ?>
-<div class="topic-container">
+<div class="topic-container"
+     data-topic-id="<?= $this->e($this->topic->id) ?>">
     <div class="topic">
         <h2 class="topic-title"><?= $this->e($this->topic->title) ?></h2>
         <div class="topic-desc">

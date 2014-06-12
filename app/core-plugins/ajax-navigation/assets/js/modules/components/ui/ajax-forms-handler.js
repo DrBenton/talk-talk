@@ -10,7 +10,7 @@ define(function (require, exports, module) {
 
   require("jquery-form");
 
-  var myDebug = !false;
+  var myDebug = false;
 
   // Exports: component definition
   module.exports = defineComponent(ajaxFormsHandler, withAlertsCapabilities, withDateUtils);

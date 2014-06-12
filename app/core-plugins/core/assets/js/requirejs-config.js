@@ -8,15 +8,16 @@
   var debug = appConfigData["debug"];
   var minExt = (debug) ? "" : ".min" ;
 
+  // let's expose our app config data as a Module
+  define("app/config", [], appConfigData);
+
   require.config({
     baseUrl: appConfigData["base_url"] + "/",
     paths: {
       // App core Plugins assets paths aliases
+      // (Other Plugins Modules will probably use some Modules from these Plugins)
       "app-modules/core": "app/core-plugins/core/assets/js/modules",
-      "app-modules/ajax-nav": "app/core-plugins/ajax-navigation/assets/js/modules",
       "app-modules/utils": "app/core-plugins/utils/assets/js/modules",
-      "app-modules/forum-base": "app/core-plugins/forum-base/assets/js/modules",
-      "app-modules/phpbb": "app/core-plugins/phpbb/assets/js/modules",
       // Third-party libraries aliases
       "jquery": "vendor/js/jquery/dist/jquery" + minExt,
       "lodash": "vendor/js/lodash/dist/lodash" + minExt,
@@ -49,9 +50,5 @@
     //urlArgs: "dev-bust=" + (new Date()).getTime() //TODO: remove this later :-)
     lastItem: true
   });
-
-  // let's expose our app config data as a Module
-  define("app/config", [], appConfigData);
-
 
 })();

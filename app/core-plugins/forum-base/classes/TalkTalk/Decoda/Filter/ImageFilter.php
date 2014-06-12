@@ -18,20 +18,19 @@ use Decoda\Filter\ImageFilter as BaseImageFilter;
 /**
  * Provides tags for images.
  */
-class ImageFilter extends BaseImageFilter {
-
+class ImageFilter extends BaseImageFilter
+{
     /**
      * Regex pattern.
      */
     const IMAGE_PATTERN = '/^((?:https?:\/)?(?:\.){0,2}\/)((?:.*?)\.(jpg|jpeg|png|gif|bmp|php))(\?[^#]+)?(#[\-\w]+)?$/is';
 
-    public function construct() {
-
+    public function construct()
+    {
         $this->_tags['img']['contentPattern'] = self::IMAGE_PATTERN;
         $this->_tags['image']['contentPattern'] = self::IMAGE_PATTERN;
 
         parent::construct();
     }
-
 
 }

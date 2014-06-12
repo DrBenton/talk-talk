@@ -10,6 +10,7 @@
   "sub": true,
   "undef": true,
   "trailing": true,
+  "laxbreak": true,
   "-W058": true,
 
   "globals": {

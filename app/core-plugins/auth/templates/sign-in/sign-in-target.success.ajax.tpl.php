@@ -1,6 +1,5 @@
 <?php $this->layout('ajax-nav::layouts/ajax-layout') ?>
 
-
 <div class="ajax-redirecting">
     <?= $this->transE('core-plugins.ajax-navigation.redirecting') ?>
 </div>

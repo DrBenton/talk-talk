@@ -50,7 +50,7 @@ abstract class BasePacker extends ApplicationAware implements PluginPackerBehavi
      * let's give them a shortcut to StringUtils::replace.
      *
      * @param $string
-     * @param array $varsMap
+     * @param  array  $varsMap
      * @return string
      */
     protected function replace($string, array $varsMap)

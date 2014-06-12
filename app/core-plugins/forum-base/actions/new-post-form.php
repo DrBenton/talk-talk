@@ -46,7 +46,7 @@ $action = function (Request $request, Topic $topic) use ($app) {
     }
 
     return $app->get('view')->render(
-        'forum-base::new-post-form',
+        'forum-base::new-post-page',
         array(
             'topic' => $topic,
             'post' => $post,

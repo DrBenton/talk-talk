@@ -1,6 +1,5 @@
 <?php
 
-
 use QueryPath\DOMQuery;
 
 // Page header stuff
@@ -67,4 +66,3 @@ $app->defineFunction(
         $node->attr('data-component', implode(',', $nodeCurrentComponents));
     }
 );
-

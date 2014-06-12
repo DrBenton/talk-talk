@@ -51,7 +51,7 @@ class PluginsUnpacker extends BaseService
     }
 
     /**
-     * @param  string $pluginId
+     * @param  string                       $pluginId
      * @return \TalkTalk\Core\Plugin\Plugin
      */
     protected function unpackPlugin($pluginId)
@@ -63,8 +63,6 @@ class PluginsUnpacker extends BaseService
 
     protected function isPermanentlyDisabled(array $pluginMetadata)
     {
-        static $requestPathInfo;
-
         if (empty($pluginMetadata['disabled'])) {
             return false;
         }
@@ -74,7 +72,7 @@ class PluginsUnpacker extends BaseService
         $this->app->get('logger')
             ->debug(sprintf('Plugin "%s" is permanently disabled"', $pluginMetadata['id']));
 
-        return false;
+        return true;
     }
 
     protected function isDisabledForCurrentUrl(array $pluginMetadata)

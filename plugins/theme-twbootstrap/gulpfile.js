@@ -14,12 +14,13 @@ gulp.task("less", function () {
     .pipe(gulp.dest("assets/css"));
 });
 
-gulp.task("watch", function () {
+gulp.task("watch", ["watch:less", "watch:livereload"]);
 
-  // Preprocessors
+gulp.task("watch:less", ["less"], function () {
   gulp.watch("assets-src/less/**/*.less", ["less"]);
+});
 
-  // Livereload
+gulp.task("watch:livereload", function () {
   var server = livereload();
   gulp.watch([
     "**/*.php",
@@ -27,7 +28,6 @@ gulp.task("watch", function () {
     "assets/**/*.css"
   ]).on("change", function(file) {
     console.log(file.path + " changed.");
-
     server.changed(file.path);
   });
 });

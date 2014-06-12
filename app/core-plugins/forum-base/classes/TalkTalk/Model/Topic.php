@@ -81,7 +81,7 @@ class Topic extends ModelWithMetadata
     }
 
     /**
-     * @param  int   $nbPosts
+     * @param  int                                              $nbPosts
      * @return \Illuminate\Database\Eloquent\Relations\Relation
      */
     public function lastPosts($nbPosts)

@@ -15,7 +15,7 @@ $action = function (Request $request, Forum $forum) use ($app) {
     );
 
     return $app->get('view')->render(
-        'forum-base::new-topic-form',
+        'forum-base::new-topic-page',
         array(
             'forum' => $forum,
             'topic' => $request->get('topic', new Topic()),
