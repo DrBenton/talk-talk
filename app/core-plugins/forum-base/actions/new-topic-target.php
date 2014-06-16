@@ -10,6 +10,7 @@ $action = function (Request $request, Forum $forum) use ($app) {
     //TODO: validation
 
     $newTopicData = $request->request->get('topic');
+    $newTopicData['content'] = $app->exec('forum-base.markup-manager.handle_forum_markup_before_save.smileys', $newTopicData['content']);
 
     $newTopic = new Topic($newTopicData);
     $newTopic->forum_id = $forum->id;

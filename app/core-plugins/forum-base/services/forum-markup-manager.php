@@ -26,19 +26,38 @@ $app->defineFunction(
     }
 );
 
+//TODO: rename "{SMILIES_PATH}" to "{SMILEYS_PATH}" (and convert it at phpBB import)
 $app->defineFunction(
-    'forum-base.markup-manager.handle_forum_markup.smilies',
+    'forum-base.markup-manager.handle_forum_markup.smileys',
     function ($forumContent) use ($app) {
         $forumContent = preg_replace(
-            '~<!-- s[^ >]+ --><img src="([^"]+)" alt="([^"]+)"[^>]+/?><!-- s[^ >]+ -->~i',
+            '~<!-- s[^ >]+ --><img src="([^"]+)" alt="([^"]+)"[^>]*/?><!-- s[^ >]+ -->~i',
             '[img alt="$2"]$1[/img]',
             $forumContent
         );
         $forumContent = str_replace(
             '{SMILIES_PATH}',
-            $app->get('settings')->get('app.smilies.location', 'upload/smilies/'),
+            $app->get('settings')->get('app.smileys.location'),
             $forumContent
         );
+
+        return $forumContent;
+    }
+);
+
+$app->defineFunction(
+    'forum-base.markup-manager.handle_forum_markup_before_save.smileys',
+    function ($forumContent) use ($app) {
+
+        $smileys = \TalkTalk\Model\Smiley::all(array('code', 'emotion', 'url'));
+
+        foreach ($smileys as $smiley) {
+            $forumContent = str_replace(
+              $smiley->code,
+              '<!-- s'.$smiley->code.' --><img src="{SMILIES_PATH}/'.$smiley->url.'" alt="'.$smiley->emotion.'"><!-- s'.$smiley->code.' -->',
+              $forumContent
+            );
+        }
 
         return $forumContent;
     }
@@ -73,7 +92,7 @@ $app->defineFunction(
 $app->defineFunction(
     'forum-base.markup-manager.handle_forum_markup.all',
     function ($forumContent) use ($app) {
-        $forumContent = $app->exec('forum-base.markup-manager.handle_forum_markup.smilies', $forumContent);
+        $forumContent = $app->exec('forum-base.markup-manager.handle_forum_markup.smileys', $forumContent);
         $forumContent = $app->exec('forum-base.markup-manager.handle_forum_markup.links', $forumContent);
         $forumContent = $app->exec('forum-base.markup-manager.handle_forum_markup.bbcode', $forumContent);
         $forumContent = $app->exec('forum-base.markup-manager.handle_forum_markup.add_blank_targets', $forumContent);

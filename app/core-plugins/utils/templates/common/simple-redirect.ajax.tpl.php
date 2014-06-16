@@ -16,5 +16,5 @@
 
 <?php
 // Keep Flashes for the next page, please!
-$this->app()->get('session')->keepFlashes();
+$this->app()->get('flash')->keepFlashes();
 ?>

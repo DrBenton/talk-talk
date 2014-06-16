@@ -48,7 +48,7 @@ define(function (require, exports, module) {
 
     this.onCloseBtClick = function (ev, data)
     {
-      this.$node.fadeOut("fast");
+      this.close();
     };
 
     this.onMinimizeBtClick = function (ev, data)
@@ -69,6 +69,11 @@ define(function (require, exports, module) {
     this.onCancelFullscreenBtClick = function (ev, data)
     {
       this.$node.removeClass(this.statesClasses).addClass("state-normal");
+    };
+
+    this.close = function ()
+    {
+      this.$node.fadeOut("fast");
     };
 
     this.loadNewTopicWidgetContent = function (forumId) {
@@ -96,8 +101,45 @@ define(function (require, exports, module) {
     this.onWidgetContentRetrieved = function (data) {
         this.$node.removeClass("ajax-loading");
         this.$node.html(data);
-        this.trigger(document, "widgetsSearchRequested", {selector: "#" + this.$node.attr("id")});
+
+        var mySelector = "#" + this.$node.attr("id");
+        this.trigger(document, "widgetsSearchRequested", {selector: mySelector});
+        this.trigger(document, "uiContentUpdated", {
+          target: mySelector
+        });
+
+        _.defer(
+          _.bind(function () {
+            var $contentWritingForm = this.$node.find("form");
+            $contentWritingForm
+              .on("submit.ajax-post-writing", _.bind(this.onFormSubmit, this));
+          }, this)
+        );
+
         this.initEventsBindings();
+    };
+
+    this.onFormSubmit = function (e) {
+      // Let's wait for Ajax content loading result...
+      this.on(document, "ajaxContentLoadingDone", this.onAjaxContentLoadingAfterFormSubmit);
+      this.on(document, "ajaxContentLoadingError", this.onAjaxContentLoadingErrorAfterFormSubmit);
+    };
+
+    this.onAjaxContentLoadingAfterFormSubmit = function (ev, data) {
+      // All right, it seems that our form has been successfully sent.
+      // Let's close this Topic/Post writing widget!
+      this.close();
+      this.$node.find("form").off("submit.ajax-post-writing");
+      this.off(document, "ajaxContentLoadingDone", this.onAjaxContentLoadingAfterFormSubmit);
+      this.off(document, "ajaxContentLoadingError", this.onAjaxContentLoadingAfterFormSubmit);
+    };
+
+    this.onAjaxContentLoadingErrorAfterFormSubmit = function (ev, data) {
+      // Too bad!
+      logger.warn("Ajax Topic/Post writing form failed!");
+      this.$node.find("form").off("submit.ajax-post-writing");
+      this.off(document, "ajaxContentLoadingDone", this.onAjaxContentLoadingAfterFormSubmit);
+      this.off(document, "ajaxContentLoadingError", this.onAjaxContentLoadingAfterFormSubmit);
     };
 
     this.initEventsBindings = function () {
