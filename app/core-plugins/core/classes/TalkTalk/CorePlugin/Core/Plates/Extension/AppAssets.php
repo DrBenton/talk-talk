@@ -44,6 +44,10 @@ class AppAssets extends BaseExtension
     public function getJavascriptConfigData()
     {
         $jsConfigData = $this->app->get('hooks')->triggerPluginsHook('define_javascript_app_config');
+        if (empty($jsConfigData)) {
+            return array();
+        }
+
         $jsConfigDataFlattened = call_user_func_array('array_merge', $jsConfigData);
 
         return $jsConfigDataFlattened;

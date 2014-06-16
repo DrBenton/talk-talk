@@ -73,7 +73,7 @@ return function (array $customConfig = array()) {
     $app->vars['app.http_status_code'] = 200;//everything goes well... until now :-)
 
     // Classes automatic repacking management
-    if (!empty($config['debug']['packing']['always_repack_profiles'])) {
+    if (!empty($app->vars['config']['packing']['always_repack_profiles'])) {
         $app->after(
           function () use ($app) {
               $app->get('logger')->debug(
@@ -88,7 +88,7 @@ return function (array $customConfig = array()) {
     }
 
     // Services packs management
-    if (!empty($config['packing']['use_app_packing'])) {
+    if (!empty($app->vars['config']['packing']['use_app_packing'])) {
         $servicesIncludedInAppPhpPacks = array(
             'app/boot/services',
         );
@@ -104,8 +104,6 @@ return function (array $customConfig = array()) {
     $coreServicesToInit = array(
         'logger',
         'cache',
-        'packing-manager',
-        'packing-profiles-manager',
         'autoloader',
         'string-utils',
         'array-utils',
@@ -118,6 +116,22 @@ return function (array $customConfig = array()) {
             $app->includeInApp($app->vars['app.boot_services_path'] . '/' . $serviceFileName . '.php');
         }
     );
+
+    // PHP packs management
+    if (!empty($app->vars['config']['packing']['use_vendors_packing'])) {
+        if (!$app->hasService('packing-manager')) {
+            if (!class_exists('TalkTalk\Core\Service\PackingManager')) {
+                include_once $app->vars['app.boot_path'] . '/classes/TalkTalk/Core/Service/PackingManager.php';
+            }
+            $app->includeInApp($app->vars['app.boot_services_path'] . '/packing-manager.php');
+        }
+        if (!$app->hasService('packing-profiles-manager')) {
+            if (!class_exists('TalkTalk\Core\Service\PackingProfilesManager')) {
+                include_once $app->vars['app.boot_path'] . '/classes/TalkTalk/Core/Service/PackingProfilesManager.php';
+            }
+            $app->includeInApp($app->vars['app.boot_services_path'] . '/packing-profiles-manager.php');
+        }
+    }
 
     // Pretty errors display, if we are in debug mode and "Whoops" flag is set to 'true'
     if ($app->vars['debug'] && !empty($app->vars['config']['debug']['use_whoops_for_errors'])) {

@@ -2,13 +2,13 @@
 
 use TalkTalk\Core\Service\PluginsFinder;
 
-$app->vars['plugins.config_files_pattern'] = '/*/plugin-config.yml.php';
+$app->vars['plugins.plugins_files_pattern'] = '/*/plugin---*.php';
 
 $app->defineService(
     'plugins.finder',
     function () use ($app) {
         $service = new PluginsFinder();
-        $service->setPluginsConfigFilesGlobPattern($app->vars['plugins.config_files_pattern']);
+        $service->setPluginsFilesGlobPattern($app->vars['plugins.plugins_files_pattern']);
 
         return $service;
     }

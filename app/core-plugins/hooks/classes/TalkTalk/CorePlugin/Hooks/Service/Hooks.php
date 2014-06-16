@@ -2,12 +2,34 @@
 
 namespace TalkTalk\CorePlugin\Hooks\Service;
 
+use TalkTalk\Core\ApplicationInterface;
 use TalkTalk\Core\Service\BaseService;
 
 class Hooks extends BaseService
 {
 
     protected $pluginsHooksImplementations = array();
+
+    public function setApplication(ApplicationInterface $app)
+    {
+        parent::setApplication($app);
+
+        $this->app->vars['hooks.registry'] = array();
+    }
+
+    public function addHooksFile($hooksFilePath)
+    {
+        $hooks = array();
+        $app = &$this->app;
+        $myComponentsUrl = 'TODO';
+        include_once $hooksFilePath;
+        foreach ($hooks as $hookName => $hookImplementation) {
+            $this->app->vars['hooks.registry'][$hookName][] = array(
+                'priority' => 0,//TODO
+                'implementation' => $hookImplementation,
+            );
+        }
+    }
 
     public function triggerPluginsHook($hookName, array $hookArgs = array())
     {
@@ -27,19 +49,6 @@ class Hooks extends BaseService
         }
 
         return $results;
-    }
-
-    protected function sortHooks(array $hookA, array $hookB)
-    {
-        $priorityA = $hookA['priority'];
-        $priorityB = $hookB['priority'];
-        if ($priorityA > $priorityB) {
-            return -1;
-        } elseif ($priorityA < $priorityB) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
 }

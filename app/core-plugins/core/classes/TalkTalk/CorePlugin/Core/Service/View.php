@@ -6,6 +6,7 @@ use League\Plates\Engine;
 use League\Plates\Template;
 use League\Plates\Extension\ExtensionInterface;
 use TalkTalk\Core\Service\BaseService;
+use TalkTalk\Core\ApplicationAwareInterface;
 
 class View extends BaseService
 {
@@ -18,10 +19,6 @@ class View extends BaseService
      * @var string
      */
     protected $templatesFilesExtension;
-    /**
-     * @var array
-     */
-    protected $templatesExtensions = array();
 
     protected $perfsTracking = false;
 
@@ -53,15 +50,6 @@ class View extends BaseService
         $this->templatesFilesExtension = $ext;
     }
 
-    public function addExtension(ExtensionInterface $extension)
-    {
-        $this->templatesExtensions[] = $extension;
-
-        if (null !== $this->platesEngine) {
-            $this->platesEngine->loadExtension($extension);
-        }
-    }
-
     protected function initEngine()
     {
         if (null !== $this->platesEngine) {
@@ -71,16 +59,24 @@ class View extends BaseService
         $engine = new Engine();
         $engine->setFileExtension($this->templatesFilesExtension);
 
+        $app = &$this->app;
+
         // Registered Extensions
-        array_walk(
-            $this->templatesExtensions,
-            function (ExtensionInterface $extension) use ($engine) {
-                $engine->loadExtension($extension);
-            }
-        );
+        if (!empty($this->app->vars['view.extensions'])) {
+            array_walk(
+                $this->app->vars['view.extensions'],
+                function ($extensionClass) use ($app, $engine) {
+                    $extensionInstance = new $extensionClass;
+                    if ($extensionInstance instanceof ApplicationAwareInterface) {
+                        $extensionInstance->setApplication($app);
+                    }
+                    $engine->loadExtension($extensionInstance);
+                }
+            );
+        }
 
         // Views folders init
-        if (isset($this->app->vars['view.folders'])) {
+        if (!empty($this->app->vars['view.folders'])) {
             array_walk(
                 $this->app->vars['view.folders'],
                 function ($viewFolderData) use ($engine) {

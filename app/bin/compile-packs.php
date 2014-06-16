@@ -44,6 +44,13 @@ return call_user_func(
         $app = call_user_func($appInitClosure, $customAppConfig);
 
         // Packing Services init
+        $app->vars['config']['packing']['use_vendors_packing'] = false;
+        if (!$app->hasService('packing-manager')) {
+            $app->includeInApp($app->vars['app.boot_services_path'] . '/packing-manager.php');
+        }
+        if (!$app->hasService('packing-profiles-manager')) {
+            $app->includeInApp($app->vars['app.boot_services_path'] . '/packing-profiles-manager.php');
+        }
         $packingProfilesManager = $app->getService('packing-profiles-manager');
         $packingProfilesManager->clearAllPackedProfiles();
         $packsProfiles = $packingProfilesManager->runAllPackProfiles();

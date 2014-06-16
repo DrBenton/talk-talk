@@ -8,44 +8,44 @@ use Symfony\Component\Yaml\Yaml;
 class PluginsFinder extends BaseService
 {
 
-    const PLUGINS_BEHAVIOURS_INIT_DIR = 'plugins-behaviours-init';
-    const PLUGINS_BEHAVIOURS_INIT_FILE_PATTERN = '~^[a-z-]-behaviour\.php$~';
+    protected $pluginsFilesPatten;
+    protected $plugins = array();
 
-    protected $pluginsConfigFilesPatten;
-
-    public function setPluginsConfigFilesGlobPattern($pattern)
+    public function setPluginsFilesGlobPattern($pattern)
     {
-        $this->pluginsConfigFilesPatten = $pattern;
+        $this->pluginsFilesPatten = $pattern;
+    }
+
+    /**
+     * @return array an array of Plugins
+     */
+    public function getPlugins()
+    {
+        return $this->plugins;
     }
 
     /**
      * @param  string $basePath
-     * @return array  an array of UnpackedPlugins
      */
     public function findPlugins($basePath)
     {
-        $pluginsConfigFiles = glob($basePath . $this->pluginsConfigFilesPatten);
+        $pluginsFiles = glob($basePath . $this->pluginsFilesPatten);
 
         $app = &$this->app;
 
-        return array_map(
+        $this->plugins = array_merge($this->plugins, array_map(
             function ($pluginConfigFilePath) use ($app) {
 
                 $plugin = new Plugin();
                 $plugin->setApplication($app);
+                $plugin->entryPoint = $pluginConfigFilePath;
                 $plugin->path = $app->appPath(dirname($pluginConfigFilePath));
-                $plugin->config = Yaml::parse($pluginConfigFilePath);
-
-                if (!isset($plugin->config['@general']['id'])) {
-                    throw new \DomainException(sprintf('Plugin "%s" config file must define a "@general/id" value!', $pluginConfigFilePath));
-                }
-
-                $plugin->id = strtolower($plugin->config['@general']['id']);
+                $plugin->id = preg_replace('~^.+/([^/]+)/[^/]+$~', '$1', $pluginConfigFilePath);
 
                 return $plugin;
             },
-            $pluginsConfigFiles
-        );
+            $pluginsFiles
+        ));
     }
 
 }

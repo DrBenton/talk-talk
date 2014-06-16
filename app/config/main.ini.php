@@ -4,10 +4,10 @@
 
 [debug]
 debug = true
-use_whoops_for_errors = true
+use_whoops_for_errors = false
 livereload = false
 livereload.port = 35729
-perfs.tracking.enabled = true
+perfs.tracking.enabled = false
 perfs.tracking.session_content.max_length = 250
 perfs.tracking.sql_queries.enabled = true
 perfs.tracking.sql_queries.max_length = 20
