@@ -3,12 +3,16 @@ require([
   'logger',
   'flight',
   'app/data',
+  'app/core/vars-registry',
+  'app/core/csrf-handler',
   'app/core/components/data/components-factory',
-  'app/core/csrf-handler'
-], function ($, logger, flight, appData, componentsFactory, csrfHandler) {
+  'app/core/components/ui/layout-init-handler'
+], function ($, logger, flight, appData, varsRegistry, csrfHandler, componentsFactory, layoutInitHandler) {
   'use strict';
 
   logger.debug('App Main loaded!');
+
+  var bootModules = appData['bootModules'];
 
   if (appData.debug) {
     require(['vendor/js/flight/lib/debug'], function (flightDebug) {
@@ -20,15 +24,17 @@ require([
   // CSRF token global management
   csrfHandler.init();
 
+  // Core Components init
+  layoutInitHandler.attachTo(varsRegistry.$body, {
+    nbBootModules: bootModules.length
+  });
+  componentsFactory.attachTo(document);
+
   // Boot modules init
-  var bootModules = appData['bootModules'];
   require(bootModules, function() {
-    // Our boot Modules are loaded, let's proced to Flight Components initialization!
+    // Our boot Modules are loaded, let's roll!
 
-    // Core Components init
-    componentsFactory.attachTo(document);
-
-    // Widgets creation request!
+    // First widgets creation request
     $(document).trigger('widgetsSearchRequested');
   });
 

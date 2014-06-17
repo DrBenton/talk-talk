@@ -7,12 +7,21 @@ use TalkTalk\Kernel\Plugin\PluginBase;
 class TWBootstrapPlugin extends PluginBase
 {
 
-
     public function registerHooks()
     {
         parent::registerHooks();
 
-        $this->app->get('hooks')->onHook('layout.js.get_data', array($this, 'onHookLayoutGetJsData'));
+        // JS and CSS files & data
+        $this->app->get('hooks')->onHook(
+            'layout.js.get_data',
+            array($this, 'onHookLayoutGetJsData')
+        );
+
+        // JS files to compile for production
+        $this->app->get('hooks')->onHook(
+            'layout.js.get_files_to_compile',
+            array($this, 'onHookLayoutGetJsFilesToCompile')
+        );
     }
 
     /**
@@ -20,7 +29,7 @@ class TWBootstrapPlugin extends PluginBase
      */
     public function onHookLayoutGetJsData()
     {
-        $myBootModule = $this->amdModulesBaseUrl . '/twbootstrap-init.js';
+        $myBootModule = $this->amdModulesBaseUrl . '/twbootstrap-init';
         return array(
             'bootModules' => array(
                 $myBootModule
@@ -34,6 +43,21 @@ class TWBootstrapPlugin extends PluginBase
                 )
             )
         );
+    }
+
+
+    /**
+     * @private
+     */
+    public function onHookLayoutGetJsFilesToCompile()
+    {
+        $myJsAmdModulesRootUrl = $this->path . '/assets/js/amd';
+
+        $myJsAmdModulesIds = array(
+            //$myJsAmdModulesRootUrl . '/twbootstrap-init'
+        );
+
+        return $myJsAmdModulesIds;
     }
 
 }

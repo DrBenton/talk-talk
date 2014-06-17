@@ -51,17 +51,27 @@ abstract class PluginBase implements PluginInterface
         return $this->path;
     }
 
+    public function getAbsPath()
+    {
+        return $this->app->vars['app.root_path'] . '/' . $this->path;
+    }
+
     public function setAssetsBaseUrl($assetsBaseUrl)
     {
         $this->assetsBaseUrl = $assetsBaseUrl;
         $this->javascriptsBaseUrl = $this->assetsBaseUrl . '/js';
-        $this->amdModulesBaseUrl = $this->javascriptsBaseUrl . '/amd';
+        $this->amdModulesBaseUrl = preg_replace('~^/~', '', $this->javascriptsBaseUrl) . '/amd';
         $this->componentsBaseUrl = $this->amdModulesBaseUrl . '/components';
     }
 
     public function setVendorsBaseUrl($jsVendorsBaseUrl)
     {
         $this->vendorsBaseUrl = $jsVendorsBaseUrl;
+    }
+
+    public function registerServices()
+    {
+        // Default implementation is a no-op
     }
 
     public function registerHooks()

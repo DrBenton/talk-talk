@@ -71,6 +71,7 @@ class ApplicationInitializer
         $pluginsFinder->findThemes($app->vars['app.root_path'] . '/themes');
 
         // Plugins init!
+        $app->vars['app.js_vendors_url'] = $app->get('utils.string')->appPathToUrl($app->vars['app.js_vendors_path']);
         $app->get('plugins.initializer')->initPlugins($pluginsFinder->getPlugins());
     }
 

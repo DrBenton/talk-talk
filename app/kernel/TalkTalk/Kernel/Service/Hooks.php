@@ -9,10 +9,9 @@ class Hooks extends BaseService
 
     /**
      * @param string $hookName
-     * @param array $args
      * @return array
      */
-    public function triggerHook($hookName, array $args = array())
+    public function triggerHook($hookName)
     {
         if (empty($this->hooksRegistrations[$hookName])) {
             return array();
@@ -22,8 +21,9 @@ class Hooks extends BaseService
         $this->app->get('utils.array')->sortBy($hooksRegistrations, 'priority');
 
         $hookResults = array();
+        $hooksArgs = array_slice(func_get_args(), 1);
         foreach ($hooksRegistrations as $hookRegistration) {
-            $hookResult = call_user_func_array($hookRegistration['callback'], $args);
+            $hookResult = call_user_func_array($hookRegistration['callback'], $hooksArgs);
             if (null !== $hookResult) {
                 $hookResults[] = $hookResult;
             }

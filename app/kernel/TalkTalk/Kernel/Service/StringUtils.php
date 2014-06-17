@@ -12,7 +12,7 @@ class StringUtils extends BaseService
 
     public function appPathToUrl($appPath)
     {
-        return $this->app->vars['app.root_url'] . $this->app->appPath($appPath);
+        return $this->app->vars['app.root_url'] . '/' . $this->app->appPath($appPath);
     }
 
     public function indent($text, $nbIndents = 1, $indent = '    ')

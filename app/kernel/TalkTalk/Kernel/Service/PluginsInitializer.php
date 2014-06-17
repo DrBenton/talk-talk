@@ -21,8 +21,9 @@ class PluginsInitializer extends BaseService
             $this->app->get('utils.string')->appPathToUrl($plugin->getPath() . '/assets')
         );
         $plugin->setVendorsBaseUrl(
-            $this->app->get('utils.string')->appPathToUrl($this->app->vars['app.js_vendors_path'])
+            $this->app->vars['app.js_vendors_url']
         );
+        $plugin->registerServices();
         $plugin->registerHooks();
         $plugin->registerRestResources();
     }

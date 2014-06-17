@@ -18,6 +18,7 @@
     "illuminate/validation": "4.1.x",
     "illuminate/cache": "4.1.x",
     "ircmaxell/password-compat": "1.0.2",
+    "league/plates": "2.*",
     "teacup/log" : "0.1.0"
   },
   "config": {

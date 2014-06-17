@@ -13,20 +13,20 @@
     */ ?>
 
     <?php
-    $appStyleSheets = $app->get('hooks')->getHookFlattenedResult('layout.css.get_stylesheets');
+    $appStyleSheets = $this->appAssets()->getCss();
     foreach($appStyleSheets as $cssResource): ?>
         <link rel="stylesheet" href="<?= $cssResource['url'] ?>">
     <?php endforeach ?>
 
 
 </head>
-<body>
+<body class="waiting-initialization">
 <!--[if lt IE 9]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div id="site-container" class="waiting-initialization">
+<div id="site-container">
 
     <header>
         <div class="header-content"></div>
@@ -34,7 +34,7 @@
 
     <div id="main-content-container">
         <div id="main-content">
-            <?php /* I'm waiting your orders, Sire! */ ?>
+            <?= $this->content() ?>
         </div>
     </div>
 
@@ -47,19 +47,21 @@
 
 <?php
 /* App data to expose to JavaScript */
-$appData = $app->get('hooks')->getHookFlattenedResult('layout.js.get_data');
+$appData = $this->appAssets()->getJsData();
 ?>
 <div id="app-data"
-     data-config="<?= $app->get('utils.string')->escape(json_encode($appData)) ?>"></div>
+     data-config="<?= $this->e(json_encode($appData)) ?>"></div>
 
 <?php
 /* JavaScript, it's up to you now! */
-$appJavascripts = $app->get('hooks')->getHookFlattenedResult('layout.js.get_scripts');
+$endOfBodyJsOpts = (isset($this->endOfBodyJsOpts)) ? $this->endOfBodyJsOpts : array() ;
+$appJavascripts = $this->appAssets()->getEndOfBodyJs($endOfBodyJsOpts);
 foreach($appJavascripts as $jsResource):
-    $jsResource = $app->get('utils.array')->getArray($jsResource, 'url');
 ?>
     <script src="<?= $jsResource['url'] ?>"></script>
 <?php endforeach ?>
+
+<?php if (!empty($this->endOfBody)) { echo $this->endOfBody; } ?>
 
 </body>
 </html>

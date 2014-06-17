@@ -8,6 +8,7 @@
   var debug = appData['debug'];
   var minExt = (debug) ? '' : '.min' ;
   var vendorsRootUrl = appData['vendorsRootUrl'];
+  var vendorsModulesRootUrl = vendorsRootUrl.replace(/^\//, '');
 
   // let's expose our app config data as a Module
   define('app/data', [], appData);
@@ -45,7 +46,7 @@
     },
     map: {
       '*': {
-        'css': vendorsRootUrl + '/require-css/css'
+        'css': vendorsModulesRootUrl + '/require-css/css'
       }
     },
     waitSeconds: 2,

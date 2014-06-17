@@ -14,7 +14,7 @@ define(function (require, exports, module) {
   registry.$mainContent = $('#main-content');
   registry.$breadcrumb = $('#breadcrumb');
   registry.$debugInfoContainer = $('#debug-info-container');
-
+  registry.appStartTime = (new Date()).getTime();
 
   module.exports = registry;
 
