@@ -1,0 +1,31 @@
+{
+  "name": "rougemine/talk-talk",
+  "license": "GPL v2",
+  "description": "yet another Open-Source PHP forum",
+  "version": "0.0.1-dev",
+  "authors": [
+    {
+      "name": "Olivier Philippon",
+      "email": "olivier@rougemine.com",
+      "homepage": "http://rougemine.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3",
+    "silex/silex": "~1.2",
+    "illuminate/database": "4.1.x",
+    "illuminate/validation": "4.1.x",
+    "illuminate/cache": "4.1.x",
+    "ircmaxell/password-compat": "1.0.2",
+    "teacup/log" : "0.1.0"
+  },
+  "config": {
+    "vendor-dir": "vendor/php"
+  },
+  "autoload": {
+    "psr-4": {
+      "TalkTalk\\Kernel\\": "app/kernel/TalkTalk/Kernel"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Talk-Talk Twitter Bootstrap theme",
+  "version": "0.0.0",
+  "authors": [
+    "Olivier Philippon <olivier@rougemine.com>"
+  ],
+  "description": "a first test theme for Talk-Talk project",
+  "keywords": [
+    "talk-talk",
+    "theme",
+    "bootstrap"
+  ],
+  "license": "GPL v2",
+  "homepage": "http://rougemine.com",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.1.1"
+  }
+}
