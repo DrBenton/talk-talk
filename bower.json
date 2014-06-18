@@ -1,0 +1,31 @@
+{
+  "name": "talk-talk",
+  "version": "0.0.0",
+  "authors": [
+    "Olivier Philippon <olivier@rougemine.com>"
+  ],
+  "license": "GPL v2",
+  "description": "yet another Open-Source PHP forum",
+  "dependencies": {
+    "requirejs": "~2.1.10",
+    "jquery": "1.11.0",
+    "lodash": "~2.4.1",
+    "flight": "~1.1.4",
+    "history.js": "~1.8.0",
+    "pace": "~0.4.17",
+    "locache": "~0.4.2",
+    "purl": "~2.3.1",
+    "momentjs": "~2.5.1",
+    "jquery-form": "~3.46.0",
+    "q": "1.0.1",
+    "html5shiv": "~3.7.2",
+    "require-css": "~0.1.2",
+    "SCEditor": "~1.4.4"
+  },
+  "keywords": [
+    "forum",
+    "php",
+    "silex"
+  ],
+  "private": true
+}
