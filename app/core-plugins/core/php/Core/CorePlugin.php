@@ -5,23 +5,47 @@ namespace TalkTalk\CorePlugin\Core;
 use TalkTalk\CorePlugin\Core\Controller\BaseController;
 use TalkTalk\Kernel\Plugin\PluginBase;
 use TalkTalk\Kernel\ApplicationInterface;
+use TalkTalk\Kernel\Plugin\PluginInterface;
 
 class CorePlugin extends PluginBase
 {
+
+    protected $pluginId = 'core';
+    protected $pluginType = PluginInterface::PLUGIN_TYPE_CORE_PLUGIN;
+    protected $jsFilesInclusionPriority = ApplicationInterface::EARLY_EVENT;
+    protected $jsFilesToCompilePriority = ApplicationInterface::EARLY_EVENT;
 
     public function setApplication(ApplicationInterface $app)
     {
         parent::setApplication($app);
 
+        // As the "Core Plugin", I'm in charge of setting the static Controllers app instance.
+        // With great power come you-know-what...
         BaseController::setApplication($this->app);
     }
 
     public function registerServices()
     {
         $app = &$this->app;
+
+        // "view" Service
         $this->app->defineService('view', function () use ($app) {
             $service = new Service\View();
             $service->setTemplatesFilesExtension('tpl.php');
+
+            return $service;
+        });
+
+        // "db" Service
+        // As we have to link the database lazy connection to Illuminate Models immediately,
+        // this Service is not lazy-loaded.
+        $dbService = new Service\Database();
+        $dbService->setApplication($this->app);
+        $this->app->defineService('db',  $dbService);
+
+        // "cache" Service
+        $this->app->defineService('cache', function () use ($app) {
+            $service = new Service\Cache();
 
             return $service;
         });
@@ -31,106 +55,63 @@ class CorePlugin extends PluginBase
     {
         parent::registerRestResources();
 
-        $app = &$this->app;
-        $app->addRestResource('GET', '/', 'TalkTalk\\CorePlugin\\Core\\Controller\\HomeController::home');
-    }
-
-    public function registerHooks()
-    {
-        parent::registerHooks();
-
-        // JS and CSS files & data
-        $this->app->get('hooks')->onHook(
-            'layout.js.get_data',
-            array($this, 'onHookLayoutGetJsData'),
-            ApplicationInterface::EARLY_EVENT
-        );
-        $this->app->get('hooks')->onHook(
-            'layout.js.get_scripts',
-            array($this, 'onHookLayoutGetJsScripts'),
-            ApplicationInterface::EARLY_EVENT
-        );
-
-        // JS files to compile for production
-        $this->app->get('hooks')->onHook(
-            'layout.js.get_files_to_compile',
-            array($this, 'onHookLayoutGetJsFilesToCompile')
-        );
-
-        // View stuff
-        $this->app->get('hooks')->onHook(
-            'view.get_extensions',
-            array($this, 'onHookViewGetExtensions')
-        );
-        $this->app->get('hooks')->onHook(
-            'view.get_templates_folders',
-            array($this, 'onHookViewGetTemplatesFolders')
-        );
-
+        $NS = 'TalkTalk\\CorePlugin\\Core\\Controller';
+        $this->app->addRestResource('GET', '/', "$NS\\HomeController::home");
     }
 
     /**
-     * @private
+     * @inheritdoc
      */
-    public function onHookLayoutGetJsData()
+    public function getJsData()
     {
         return array(
           'debug' => $this->app->vars['debug'],
           'rootUrl' => $this->app->vars['app.root_url'],
           'vendorsRootUrl' => $this->vendorsBaseUrl,
-          'bootModules' => array(),
         );
     }
 
     /**
-     * @private
+     * @inheritdoc
      */
-    public function onHookLayoutGetJsScripts(array $opts)
+    public function getHtmlPageJsFiles(array $opts = array())
     {
         if (empty($opts['jsFilesBuild'])) {
+
             // Standard bootstrap files
-            $jsFiles =  array(
-                $this->vendorsBaseUrl . '/requirejs/require.js',
-                $this->javascriptsBaseUrl . '/requirejs-init.js',
-            );
-            if (file_exists($this->app->vars['app.var_path'] . '/assets/app-core.js')) {
+            $jsFiles =  array();
+            $jsFiles[] = $this->vendorsBaseUrl . '/requirejs/require.js';
+            $jsFiles[] = $this->javascriptsBaseUrl . '/requirejs-init.js';
+
+            // Do we have a "all-in-one" app JS file?
+            if (
+                !empty($this->app->vars['config']['optimization']['use_compiled_js_if_available']) &&
+                file_exists($this->app->vars['app.var_path'] . '/assets/app-core.js')
+            ) {
                 $jsFiles[] = $this->app->vars['app.root_url'] . '/' . $this->app->appPath($this->app->vars['app.var_path']) . '/assets/app-core.js';
             }
+
             $jsFiles[] = $this->javascriptsBaseUrl . '/main.js';
+
         } else {
+
             // Specific "JS files build" bootstrap files
             $jsFiles =  array(
                 $this->app->vars['app.root_url'] . '/node_modules/requirejs/bin/r.js',
-                $this->app->vars['app.root_url'] . '/node_modules/requirejs/require.js',
+                //$this->app->vars['app.root_url'] . '/node_modules/requirejs/require.js',
                 $this->javascriptsBaseUrl . '/requirejs-init.js',
                 $this->javascriptsBaseUrl . '/main.js',
             );
+
         }
 
         return $jsFiles;
     }
 
     /**
-     * @private
+     * @inheritdoc
      */
-    public function onHookLayoutGetJsFilesToCompile()
-    {
-        $myJsAmdModulesRootUrl = $this->path . '/assets/js/amd';
-
-        $myJsAmdModulesIds = array(
-            'app/core/vars-registry',
-            'app/core/csrf-handler',
-            'app/core/components/data/components-factory',
-            'app/core/components/ui/layout-init-handler'
-        );
-
-        return $myJsAmdModulesIds;
-    }
-
-    /**
-     * @private
-     */
-    public function onHookViewGetExtensions()
+    public function getViewExtensions()
     {
         return array(
           new Plates\Extension\App(),
@@ -139,9 +120,9 @@ class CorePlugin extends PluginBase
     }
 
     /**
-     * @private
+     * @inheritdoc
      */
-    public function onHookViewGetTemplatesFolders()
+    public function getTemplatesFolders()
     {
         return array(
             array(

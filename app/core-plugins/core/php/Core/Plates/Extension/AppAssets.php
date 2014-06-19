@@ -76,9 +76,9 @@ class AppAssets extends BaseExtension
     /**
      * @return array
      */
-    public function getJsFilesToCompile()
+    public function getJsModulesToCompile()
     {
-        return $this->app->get('hooks')->getHookFlattenedResult('layout.js.get_files_to_compile');
+        return $this->app->get('hooks')->getHookFlattenedResult('layout.js.get_modules_to_compile');
     }
 
 }

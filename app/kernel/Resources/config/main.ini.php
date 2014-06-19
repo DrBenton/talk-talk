@@ -5,6 +5,9 @@
 [debug]
 debug = true
 
+[optimization]
+use_compiled_js_if_available = true
+
 [data-cache]
 enabled = false
 

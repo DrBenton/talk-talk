@@ -1,38 +1,28 @@
 <?php
 
-namespace TalkTalk\CorePlugin\Utils;
+namespace TalkTalk\CorePlugin\ForumBase;
 
 use TalkTalk\Kernel\Plugin\PluginBase;
 use TalkTalk\Kernel\Plugin\PluginInterface;
 
-class UtilsPlugin extends PluginBase
+class ForumBasePlugin extends PluginBase
 {
 
-    protected $pluginId = 'utils';
+    protected $pluginId = 'forum-base';
     protected $pluginType = PluginInterface::PLUGIN_TYPE_CORE_PLUGIN;
-    protected $hasJsBootstrapModule = false;
 
     public function registerRestResources()
     {
         parent::registerRestResources();
 
-        $NS = 'TalkTalk\\CorePlugin\\Utils\\Controller';
-
-        if ($this->app->vars['debug']) {
-            $this->app->addRestResource('GET', '/utils/phpinfo', "$NS\\UtilsController::phpinfo");
-        }
-
-        $this->app->addRestResource('GET', '/utils/js-app-compilation', "$NS\\UtilsController::compileJsApp");
-        $this->app->addRestResource('POST', '/utils/js-app-compilation', "$NS\\UtilsController::saveJsAppCompilation");
+        $NS = 'TalkTalk\\CorePlugin\\ForumBase\\Controller';
+        $this->app->addRestResource('GET', '/api/forums', "$NS\\ForumBaseApiController::forums");
     }
 
     /**
      * @inheritdoc
-     */
     public function getJsModulesToCompile()
     {
-        return array();
-
         $myJsAmdModulesRootPath = $this->app->vars['app.root_path'] . '/' . $this->path . '/assets/js/amd';
         $myJsAmdModulesFilesPaths = $this->app
             ->get('utils.io')
@@ -48,21 +38,7 @@ class UtilsPlugin extends PluginBase
 
         return $myJsAmdModulesIds;
     }
-
-
-
-    /**
-     * @inheritdoc
      */
-    public function getTemplatesFolders()
-    {
-        return array(
-            array(
-                'namespace' => 'utils',
-                'path' => $this->getAbsPath() . '/php/Utils/Resources/templates'
-            )
-        );
-    }
 
 
 }

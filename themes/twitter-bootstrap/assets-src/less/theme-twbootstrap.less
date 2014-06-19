@@ -1,6 +1,28 @@
 
 @import "../../assets/bower_components/bootstrap/less/variables.less";
 
+.waiting-initialization()
+{
+    opacity: 0.3;
+    background-color: @gray-lighter;
+    border: solid @gray-light 1px;
+    border-radius: @border-radius-base;
+}
+
+header {
+  .waiting-initialization & {
+    .waiting-initialization();
+    min-height: 100px;
+  }
+}
+
+footer {
+  .waiting-initialization & {
+    .waiting-initialization();
+    min-height: 100px;
+  }
+}
+
 .page-header {
   margin: 0;
 }
@@ -15,10 +37,7 @@
   position: relative;
   min-height: 400px;
   .waiting-initialization & {
-    background-color: #D0D0D0;
-    opacity: 0.2;
-    border-radius: 15px;
-    border: solid @gray 1px;
+    .waiting-initialization();
   }
   .loading-ajax-content-area {
     display: none;
@@ -218,12 +237,7 @@ form {
   }
 
   &.ajax-loading {
-    min-width: 400px;
-    min-height: 300px;
-    opacity: 0.5;
-    background-color: @gray-lighter;
-    border: solid @gray-light 1px;
-    border-radius: @border-radius-base;
+    .waiting-initialization();
   }
 
   // "Normal" state display

@@ -5,10 +5,10 @@ define(function (require, exports, module) {
   var Q = require('q');
 
   // Exports: mixin definition
-  module.exports = withCssLoadingCapabilities;
+  module.exports = withCssLoading;
 
 
-  function withCssLoadingCapabilities() {
+  function withCssLoading() {
 
     this.loadStylesheets = function(styleSheetsUrls) {
       var deferred = Q.defer();
@@ -18,9 +18,15 @@ define(function (require, exports, module) {
         requiredAssetsUrls.push('css!' + cssUrl);
       });
 
-      require(requiredAssetsUrls, function () {
-        deferred.resolve();
-      });
+      require(
+        requiredAssetsUrls,
+        function () {
+          deferred.resolve(styleSheetsUrls);
+        },
+        function (err) {
+          deferred.reject(new Error('CSS loading failed: ' + err.requireModules.join(', ')));
+        }
+      );
 
       return deferred.promise;
     };

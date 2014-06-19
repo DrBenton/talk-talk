@@ -2,6 +2,8 @@ define(function (require, exports, module) {
   'use strict';
 
   var defineComponent = require('flight').component;
+  var withModulesLoading = require('app/core/mixins/data/with-modules-loading');
+  var withComponentsAttachment = require('app/core/mixins/ui/with-components-attachment');
   var $ = require('jquery');
   var _ = require('lodash');
   var logger = require('logger');
@@ -9,18 +11,18 @@ define(function (require, exports, module) {
   var myDebug = false;
 
   // Exports: component definition
-  module.exports = defineComponent(componentsFactory);
+  module.exports = defineComponent(componentsFactory, withModulesLoading, withComponentsAttachment);
 
   myDebug && logger.debug(module.id, 'Component on the bridge, captain!');
 
 
   function componentsFactory() {
 
-    this.onWidgetsSearchRequest = function (ev, data) {
-      var $targetComponentsContainer = (data &&data.selector)
+    this.onComponentsSearchRequest = function (ev, data) {
+      var $targetComponentsContainer = (data && data.selector)
         ? $(data.selector)
         : this.$node;
-      this.searchAndTriggerWidgets($targetComponentsContainer);
+      this.searchAndAttachComponents($targetComponentsContainer);
     };
 
     this.loadComponents = function ($jqElement) {
@@ -33,22 +35,17 @@ define(function (require, exports, module) {
         return componentName.replace(/^\//, '', componentName);
       });
 
-      require(componentsToAttach, function () {
-
-        _.forEach(arguments, function (component, i) {
-          if (!component || !component.attachTo) {
-            myDebug && logger.warn(module.id, 'Invalid component "'+componentsToAttach[i]+'" spotted!');
-            return;
-          }
-          component.attachTo($jqElement);
-          $jqElement.addClass('flight-component-attached');
-        });
-
-      });
+      this.loadModules(componentsToAttach)
+        .then(_.bind(function (loadedComponents) {
+          _.forEach(loadedComponents, _.bind(function (component, i) {
+            this.attachComponentTo(component, $jqElement);
+          }, this));
+        }, this));
     };
 
-    this.searchAndTriggerWidgets = function ($componentsContainer) {
-      var $dataModules = $componentsContainer.find('.flight-component')
+    this.searchAndAttachComponents = function ($componentsContainer) {
+      var $dataModules = $componentsContainer
+        .find('.flight-component')
         .not('.flight-component-attached');
       var nbDataModules = $dataModules.length;
 
@@ -61,8 +58,9 @@ define(function (require, exports, module) {
 
     // Component initialization
     this.after('initialize', function() {
-      this.on(document, 'widgetsSearchRequested', this.onWidgetsSearchRequest);
-      this.on(document, 'uiContentUpdated', this.onWidgetsSearchRequest);
+      this.on(document, 'appBootstrapDone', this.onComponentsSearchRequest);
+      this.on(document, 'componentsSearchRequested', this.onComponentsSearchRequest);
+      this.on(document, 'uiContentUpdated', this.onComponentsSearchRequest);
     });
   }
 

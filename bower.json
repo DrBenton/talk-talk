@@ -20,7 +20,11 @@
     "q": "1.0.1",
     "html5shiv": "~3.7.2",
     "require-css": "~0.1.2",
-    "SCEditor": "~1.4.4"
+    "requirejs-text": "~2.0.12",
+    "SCEditor": "~1.4.4",
+    "handlebars": "~1.3.0",
+    "requirejs-hbs": "~0.1.0",
+    "require-handlebars-plugin": "~0.8.1"
   },
   "keywords": [
     "forum",

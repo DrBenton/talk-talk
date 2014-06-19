@@ -18,7 +18,7 @@ $this->endOfBodyJsOpts = array('jsFilesBuild' => true);
     <h1>r.js build in the browser</h1>
 
     <p>
-        <button id="build">Build it</button>
+        <button id="build" class="hidden">Build it</button>
     </p>
 
     <h2>Build Messages</h2>
@@ -34,7 +34,7 @@ $this->endOfBodyJsOpts = array('jsFilesBuild' => true);
 
     <?php
     /* JavaScripts to compile */
-    $jsFilesToCompile = $this->appAssets()->getJsFilesToCompile();
+    $jsFilesToCompile = $this->appAssets()->getJsModulesToCompile();
     ?>
     <div id="app-js-core-files-to-compile"
          data-files="<?= $this->e(json_encode($jsFilesToCompile)) ?>"></div>

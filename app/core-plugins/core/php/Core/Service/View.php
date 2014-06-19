@@ -4,7 +4,6 @@ namespace TalkTalk\CorePlugin\Core\Service;
 
 use League\Plates\Engine;
 use League\Plates\Template;
-use League\Plates\Extension\ExtensionInterface;
 use TalkTalk\Kernel\Service\BaseService;
 use TalkTalk\Kernel\ApplicationAwareInterface;
 

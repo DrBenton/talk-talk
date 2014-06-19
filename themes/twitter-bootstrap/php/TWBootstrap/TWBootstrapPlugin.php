@@ -3,45 +3,21 @@
 namespace TalkTalk\Theme\TWBootstrap;
 
 use TalkTalk\Kernel\Plugin\PluginBase;
+use TalkTalk\Kernel\Plugin\PluginInterface;
+use TalkTalk\Kernel\ApplicationInterface;
 
 class TWBootstrapPlugin extends PluginBase
 {
 
-    public function registerHooks()
+    protected $pluginId = 'twitter-bootstrap';
+    protected $pluginType = PluginInterface::PLUGIN_TYPE_THEME;
+    protected $jsFilesToCompilePriority = ApplicationInterface::LATE_EVENT;
+
+    public function getHtmlPageCssFiles(array $opts = array())
     {
-        parent::registerHooks();
-
-        // JS and CSS files & data
-        $this->app->get('hooks')->onHook(
-            'layout.js.get_data',
-            array($this, 'onHookLayoutGetJsData')
-        );
-
-        // JS files to compile for production
-        $this->app->get('hooks')->onHook(
-            'layout.js.get_files_to_compile',
-            array($this, 'onHookLayoutGetJsFilesToCompile')
-        );
-    }
-
-    /**
-     * @private
-     */
-    public function onHookLayoutGetJsData()
-    {
-        $myBootModule = $this->amdModulesBaseUrl . '/twbootstrap-init';
         return array(
-            'bootModules' => array(
-                $myBootModule
-            ),
-            'requireJsConfig' => array(
-                'config' => array(
-                    $myBootModule => array(
-                        'myAssetsBaseUrl' => $this->assetsBaseUrl,
-                        'twBootstrapDistBaseUrl' => $this->assetsBaseUrl . '/bower_components/bootstrap/dist',
-                    )
-                )
-            )
+          $this->assetsBaseUrl . '/bower_components/bootstrap/dist/css/bootstrap.min.css',
+          $this->assetsBaseUrl . '/css/theme-twbootstrap.css',
         );
     }
 
@@ -49,13 +25,15 @@ class TWBootstrapPlugin extends PluginBase
     /**
      * @private
      */
-    public function onHookLayoutGetJsFilesToCompile()
+    public function getJsModulesToCompile()
     {
-        $myJsAmdModulesRootUrl = $this->path . '/assets/js/amd';
+        $myJsAssetsRootUrl = $this->path . '/assets/js';
 
-        $myJsAmdModulesIds = array(
-            //$myJsAmdModulesRootUrl . '/twbootstrap-init'
-        );
+        $myJsAmdModulesIds = parent::getJsModulesToCompile();
+
+        $myJsAmdModulesIds = array_merge($myJsAmdModulesIds, array(
+            $myJsAssetsRootUrl . '/templates-to-compile'
+        ));
 
         return $myJsAmdModulesIds;
     }
